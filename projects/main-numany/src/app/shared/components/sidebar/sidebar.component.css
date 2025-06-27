@@ -1,0 +1,8 @@
+.active {
+  background-color: #fff;
+  color: #000;
+}
+.active .sidenav-link-icon,
+.active .sidenav-link-text {
+  color: #000;
+}

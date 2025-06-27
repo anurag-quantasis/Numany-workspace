@@ -1,0 +1,12 @@
+<app-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+  (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)">
+</app-sidebar>
+
+
+<main class="body flex flex-col h-screen" [ngClass]="screenClass()">
+  <app-header></app-header>
+
+  <div class="flex-1 overflow-auto dark:bg-[#121212]">
+    <router-outlet></router-outlet>
+  </div>
+</main>

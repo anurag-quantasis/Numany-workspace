@@ -1,0 +1,38 @@
+<div class="bg-primary-400 top-0 z-10 w-66 h-screen transition-all duration-500 fixed"
+   [ngClass]="isLeftSidebarCollapsed() ? 'w-[5rem]' : ''"
+>
+  <!-- Sidebar Header -->
+  <div class="flex items-center w-full p-4">
+    <button class="text-center w-12 rounded-md p-1 text-2xl font-black cursor-pointer min-w-[3rem] bg-white border-none" (click)="toggleCollapse()">
+      <i class="pi pi-bars dark:text-black"></i>
+    </button>
+    @if (!isLeftSidebarCollapsed()) {
+      <div class="ml-6 text-2xl font-bold text-white truncate">App</div>
+    }
+  </div>
+
+  <!-- Sidebar Menu -->
+  <ul class="p-4 m-0 flex flex-col items-center list-none h-[calc(100%-3.65rem)] w-full overflow-y-auto">
+    @for (item of items(); track item.routeLink ?? item.label) {
+      <li class="w-full mb-1">
+        <!-- Parent or Leaf -->
+        <div 
+          class="flex items-center h-12 text-gray-200 no-underline rounded-lg transition-all duration-100 ease-in-out truncate px-2 cursor-pointer hover:bg-white hover:text-black"
+          
+          (click)="handleItemClick(item)"
+          [routerLink]="!item.isParent ? item.routeLink : null"
+          [routerLinkActive]="!item.isParent ? 'active' : ''"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <i class="text-xl w-8 text-center min-w-[2rem]" [class]="item.icon"></i>
+          @if (!isLeftSidebarCollapsed()) {
+            <span class="ml-4 flex-1 truncate">{{ item.label }}</span>
+            @if (item.isParent) {
+              <i class="pi" [ngClass]="item.expanded ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
+            }
+          }
+        </div>
+      </li>
+    }
+  </ul>
+</div>
