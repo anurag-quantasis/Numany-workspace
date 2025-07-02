@@ -1,8 +1,10 @@
-import { Component, computed, HostListener, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "../shared/components/header/header.component";
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from "../shared/components/sidebar/sidebar.component";
+import { Subscription } from 'rxjs';
+import { ShortcutService } from '../core/services/shortcut.service';
 
 @Component({
   selector: 'app-layout',
@@ -11,6 +13,9 @@ import { SidebarComponent } from "../shared/components/sidebar/sidebar.component
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
+  private readonly shortcutService = inject(ShortcutService);
+  private shortcutSubscription?: Subscription;
+
   isLeftSidebarCollapsed = signal<boolean>(true);
   screenWidth = signal<number>(window.innerWidth);
 
@@ -22,8 +27,20 @@ export class LayoutComponent {
     }
   }
 
+  // ngOnInit(): void {
+  //   // this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
+  // }
+
   ngOnInit(): void {
-    // this.isLeftSidebarCollapsed.set(this.screenWidth() < 768);
+    this.shortcutSubscription = this.shortcutService.on('alt.b', () => {
+      console.log('ALT+B from LayoutComponent: Toggling sidebar.');
+      let currentState = this.isLeftSidebarCollapsed();
+      this.isLeftSidebarCollapsed.set(!currentState);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    
   }
 
   changeIsLeftSidebarCollapsed(isLeftSidebarCollapsed: boolean): void {
@@ -37,4 +54,9 @@ export class LayoutComponent {
     }
     return this.screenWidth() > 768 ? 'body-trimmed' : 'body-md-screen';
   });
+
+  // Clean up the subscription when the layout is destroyed (e.g., on logout).
+  ngOnDestroy(): void {
+    this.shortcutSubscription?.unsubscribe();
+  }
 }

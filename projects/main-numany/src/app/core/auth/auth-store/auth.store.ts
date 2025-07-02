@@ -5,6 +5,8 @@ import { AuthService } from '../services/auth.service';
 import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { withPermissions } from '../permissions/permissions.utils';
 import { AuthState } from './auth.state';
+import { MessageService } from 'primeng/api';
+import { toastSeverity } from '../../utils/main.constants';
 
 export const initialState: AuthState = {
   user: null,
@@ -29,7 +31,7 @@ export const AuthStore = signalStore(
   })),
 
   // 3. Define methods to update the state and trigger side effects
-  withMethods((store, authService = inject(AuthService)) => ({
+  withMethods((store, authService = inject(AuthService), messageService = inject(MessageService)) => ({
 
     // --- ASYNC METHODS (EFFECTS) ---
     login: rxMethod<{ email: string; password: string }>(
@@ -39,7 +41,6 @@ export const AuthStore = signalStore(
           authService.login(credentials).pipe(
             // This `tap` now ONLY handles the SUCCESS path.
             tap(({ token, user }) => {
-              console.log('Login successful:', user);
               authService.saveToken(token);
               // Set success state and clear any previous error.
               patchState(store, { user, token, isLoading: false, error: null });
@@ -47,8 +48,15 @@ export const AuthStore = signalStore(
 
             // `catchError` is the safety net for the FAILURE path.
             catchError((err) => {
-              console.error('Login error caught:', err);
               patchState(store, { error: 'Login Failed', isLoading: false });
+
+              messageService.add({
+                key: 'custom-toast',
+                severity: toastSeverity.error,
+                summary: 'Login Failed',
+                detail: 'Please check your credentials.',
+                life: 3000,
+              });
 
               // Return EMPTY. This gracefully ends this inner operation
               // while keeping the main `rxMethod` stream alive for the next attempt.
