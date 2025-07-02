@@ -32,7 +32,7 @@ type DisplaySidebarItem = MasterSidebarItem & {
     CommonModule,
     RouterModule,
     ShortcutDirective,
-    ShortcutKeyHintDirective,
+    ShortcutKeyHintDirective
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
@@ -45,13 +45,6 @@ export class SidebarComponent {
 
   // Define shortcut keys and hints for your menu items.
   private allItems: MasterSidebarItem[] = [
-    {
-      routeLink: 'dashboard',
-      icon: 'pi pi-home',
-      label: 'Dashboard',
-      shortcut: 'alt.d',
-      shortcutHint: 'd',
-    },
     {
       routeLink: 'patients',
       icon: 'pi pi-users',
