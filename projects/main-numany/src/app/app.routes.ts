@@ -13,6 +13,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       { 
+        path: 'beds', 
+        loadComponent: () => import('./features/beds/beds.component').then(m => m.BedsComponent)
+      },
+      { 
         path: 'settings', 
         loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent)
       },

@@ -65,7 +65,7 @@ export class SidebarComponent {
       shortcutHint: 'f',
       children: [
         {
-          routeLink: 'bed',
+          routeLink: 'beds',
           icon: 'pi pi-plus-circle',
           shortcut: 'alt.b',
           shortcutHint: 'b',
