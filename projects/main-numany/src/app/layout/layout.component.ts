@@ -32,8 +32,7 @@ export class LayoutComponent {
   // }
 
   ngOnInit(): void {
-    this.shortcutSubscription = this.shortcutService.on('alt.b', () => {
-      console.log('ALT+B from LayoutComponent: Toggling sidebar.');
+    this.shortcutSubscription = this.shortcutService.on('alt.shift.b', () => {
       let currentState = this.isLeftSidebarCollapsed();
       this.isLeftSidebarCollapsed.set(!currentState);
     });

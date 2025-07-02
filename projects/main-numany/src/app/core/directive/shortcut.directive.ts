@@ -31,11 +31,11 @@ export class ShortcutDirective implements OnInit, OnDestroy {
     } else {
       // ROLE 2: A context provider. Pushes a new context onto the stack.
 
-      console.error(
-        `%c[ShortcutDirective] I am CREATING A NEW CONTEXT because of this element:`,
-        'color: orange; font-size: 14px; font-weight: bold;'
-      );
-      console.log(this.elementRef.nativeElement);
+      // console.error(
+      //   `%c[ShortcutDirective] I am CREATING A NEW CONTEXT because of this element:`,
+      //   'color: orange; font-size: 14px; font-weight: bold;'
+      // );
+      // console.log(this.elementRef.nativeElement);
       this.isContext = true;
       this.contextId = this.shortcutService.pushContext();
     }
