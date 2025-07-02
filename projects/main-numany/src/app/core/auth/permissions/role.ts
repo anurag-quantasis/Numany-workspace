@@ -7,6 +7,7 @@ export type Patient = TenantResource & {
   id: string;
   name: string;
   isDischarged: boolean;
+  isCritical: boolean;
   assignedPhysicianId?: string;
 };
 
@@ -40,9 +41,22 @@ export type Role = "super_admin" | "tenant_admin" | "physician" | "nurse";
 // It would be populated from the JWT claims.
 export type User = {
   id: string;
+  name: string;
+  email: string;
   tenantId: string | null; // Super admins might not belong to a single tenant
   roles: Role[];
+  featureCodes: FeatureCode[]; // Optional feature codes for advanced permissions
 };
+
+// --- Define Your Application's Feature Codes ---
+export const FeatureCodes = {
+  VIEW_CRITICAL_PATIENTS: 'critical_patients_access',
+  MANAGE_ICU_BEDS: 'icu_bed_management',
+  DISCHARGE_ANY_PATIENT: 'discharge_any_patient_override',
+} as const;
+
+// Optional: create a type for a single feature code for better type safety
+export type FeatureCode = typeof FeatureCodes[keyof typeof FeatureCodes];
 
 // --- Defining the Resources and Actions ---
 export type Permissions = {
@@ -122,7 +136,18 @@ const ROLES = {
   },
   nurse: {
     patients: {
-      view: true, // A nurse can view any patient in their tenant
+      view: (user, patient) => {
+        if (!patient) {
+          return true;
+        }
+
+        // If the patient is critical, we require a specific feature code.
+        if (patient.isCritical) {
+          return user.featureCodes.includes(FeatureCodes.VIEW_CRITICAL_PATIENTS);
+        }
+        // For all non-critical patients, any nurse can view them.
+        return true;
+      }, // A nurse can view any patient in their tenant
       update: (user, patient) => !patient.isDischarged, // Can update records of non-discharged patients
     },
     beds: {

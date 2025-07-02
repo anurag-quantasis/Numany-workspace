@@ -1,12 +1,4 @@
-import { Role } from "../permissions/role";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  roles: Role[];
-  tenantId: string | null;
-}
+import { User, Role } from "../permissions/role";
 
 // The shape of our global authentication state
 export interface AuthState {

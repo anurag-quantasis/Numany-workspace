@@ -4,10 +4,11 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
+// import { MessageModule } from 'primeng/message';
 import { AuthStore } from '../../core/auth/auth-store/auth.store';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { toastSeverity } from '../../core/utils/main.constants';
 
 @Component({
   selector: 'main-login',
@@ -17,7 +18,6 @@ import { MessageService } from 'primeng/api';
     ButtonModule,
     CardModule,
     InputTextModule,
-    MessageModule
   ],
   templateUrl: './login.component.html',
   styles: ``
@@ -44,7 +44,7 @@ export class LoginComponent {
         // Use untracked to prevent the effect from re-running if the router state changes
         this.messageService.add({
           key: 'custom-toast',
-          severity: 'success',
+          severity: toastSeverity.success,
           summary: 'Success',
           detail: 'Logged in successfully!',
           styleClass: 'border-none bg-white',
@@ -53,25 +53,12 @@ export class LoginComponent {
         untracked(() => {
           this.router.navigateByUrl('/');
         });
-        console.log("this.store.isAuthenticated()", this.store.isAuthenticated());
       }
     });
 
-    effect(() => {
-      const errorMessage = this.store.error();
-      console.log("errorMessage", errorMessage);
-
-      // Only trigger the toast if there is an actual error message.
-      if (errorMessage) {
-        this.messageService.add({
-          key: 'custom-toast',
-          severity: 'error',
-          summary: 'Login Failed',
-          detail: 'Please check your Credentials',
-          life: 3000 // Toast will disappear after 3 seconds
-        });
-      }
-    });
+    // effect(() => {
+    //   const errorMessage = this.store.error();
+    // });
   }
 
   onSubmit() {
