@@ -33,7 +33,7 @@ type DisplaySidebarItem = MasterSidebarItem & {
     CommonModule,
     RouterModule,
     ShortcutDirective,
-    ShortcutKeyHintDirective,
+    ShortcutKeyHintDirective
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
