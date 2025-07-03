@@ -60,8 +60,8 @@
     </section>
   </form>
   <div class="flex justify-center items-center gap-x-4 my-5">
-    <p-button (click)="resetForm()">Add</p-button>
-    <p-button>Delete</p-button>
-    <p-button>Update</p-button>
+    <p-button (click)="resetForm()" [shortcut]="'alt.a'">Add</p-button>
+    <p-button [shortcut]="'alt.d'">Delete</p-button>
+    <p-button [shortcut]="'alt.u'">Update</p-button>
   </div>
 </main>

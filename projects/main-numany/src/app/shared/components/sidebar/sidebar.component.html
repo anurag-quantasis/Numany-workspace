@@ -56,7 +56,7 @@
   <ul
     class="p-4 m-0 flex flex-col items-center list-none h-[calc(100%-3.65rem)] w-full overflow-y-auto"
   >
-    @for (item of items(); track item.routeLink ?? item.label) {
+    @for (item of items(); track item.id ?? item.label) {
       <li class="w-full mb-1">
         <!-- Use @if to check if a shortcut exists for this item -->
         @if (item.shortcut) {

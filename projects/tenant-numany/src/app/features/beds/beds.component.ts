@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'tenant-beds',
   imports: [],
   templateUrl: './beds.component.html',
-  styleUrl: './beds.component.css'
+  styleUrl: './beds.component.css',
 })
-export class BedsComponent {
-
-}
+export class BedsComponent {}
