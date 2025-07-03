@@ -33,7 +33,7 @@ export class ShortcutService implements OnDestroy {
           const activeContext = this.contextStack[this.contextStack.length - 1];
           if (!activeContext) return;
 
-          const key = this.normalizeKey(event);
+          const key = this.normalizeKey(event); // This will now log to the console
           if (activeContext.shortcuts.has(key)) {
             event.preventDefault(); // Stop browser default actions (e.g., Alt+F).
             activeContext.shortcuts.get(key)!.next(event); // Trigger the shortcut.
@@ -68,7 +68,6 @@ export class ShortcutService implements OnDestroy {
     const normalizedKey = key.toLowerCase();
     const activeContext = this.contextStack[this.contextStack.length - 1];
 
-    // If no context exists, throw a helpful, detailed error.
     if (!activeContext) {
       let errorMessage = `Cannot register shortcut '${key}'. No active shortcut context was found.`;
       errorMessage += `\n\n[Fix]: Ensure a parent element is marked with the 'shortcut' attribute to create a context.`;
@@ -94,19 +93,36 @@ export class ShortcutService implements OnDestroy {
     return this.register({ key, callback });
   }
 
-  /** Ensures consistent key string format (e.g., 'alt.s', not 's.alt'). */
+  /**
+   * Ensures a consistent and predictable key string format.
+   * Modifiers are sorted and placed before the main key.
+   */
   private normalizeKey(event: KeyboardEvent): string {
-    const parts: string[] = [];
-    if (event.altKey) parts.push('alt');
-    if (event.ctrlKey) parts.push('ctrl');
-    if (event.shiftKey) parts.push('shift');
-    if (event.metaKey) parts.push('meta'); // For Mac Command key
+    const modifiers: string[] = [];
+    if (event.altKey) modifiers.push('alt');
+    if (event.ctrlKey) modifiers.push('ctrl');
+    if (event.shiftKey) modifiers.push('shift');
+    if (event.metaKey) modifiers.push('meta');
 
     const mainKey = event.key.toLowerCase();
+    
+    let result: string;
     if (!['alt', 'control', 'shift', 'meta'].includes(mainKey)) {
-      parts.push(mainKey);
+      result = [...modifiers.sort(), mainKey].join('.');
+    } else {
+      result = modifiers.sort().join('.');
     }
-    return parts.sort().join('.');
+
+    // --- ADDED FOR DEBUGGING ---
+    // This will log the raw key and the final normalized string to the console.
+    // console.log(
+    //   `%c[ShortcutService] normalizeKey | Raw key: '${event.key}' -> Normalized: '%c${result}'`,
+    //   'color: #999; font-weight: bold;', // Style for the static text
+    //   'color: #007bff; font-weight: bold; text-decoration: underline;' // Style for the dynamic result
+    // );
+    // --- END DEBUGGING CODE ---
+
+    return result;
   }
 
   /** Cleans up all subscriptions and contexts when the service is destroyed. */
