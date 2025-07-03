@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'shared-branded-button',
   imports: [],
   templateUrl: './branded-button.component.html',
-  styleUrl: './branded-button.component.css'
+  styleUrl: './branded-button.component.css',
 })
-export class BrandedButtonComponent {
-
-}
+export class BrandedButtonComponent {}

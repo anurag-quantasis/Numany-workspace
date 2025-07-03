@@ -19,13 +19,14 @@ export class BedService {
   getBeds(event: TableLazyLoadEvent): Observable<PaginatedBedsResponse> {
     const page = (event.first || 0) / (event.rows || 10);
     const pageSize = event.rows || 10;
-    
+
     // Simple filter simulation
     const filterQuery = (event.globalFilter as string)?.toLowerCase() || '';
-    const filteredData = MOCK_BEDS.filter(bed => 
-      bed.name.toLowerCase().includes(filterQuery) ||
-      bed.area.toLowerCase().includes(filterQuery) ||
-      bed.section.toLowerCase().includes(filterQuery)
+    const filteredData = MOCK_BEDS.filter(
+      (bed) =>
+        bed.name.toLowerCase().includes(filterQuery) ||
+        bed.area.toLowerCase().includes(filterQuery) ||
+        bed.section.toLowerCase().includes(filterQuery),
     );
 
     const paginatedItems = filteredData.slice(page * pageSize, (page + 1) * pageSize);
@@ -39,16 +40,16 @@ export class BedService {
   // Simulate adding a new bed
   addBed(newBed: NewBed): Observable<Bed> {
     // Simulate validation
-    if (MOCK_BEDS.some(b => b.name.toLowerCase() === newBed.name.toLowerCase())) {
-        return throwError(() => new Error(`A bed with the name "${newBed.name}" already exists.`));
+    if (MOCK_BEDS.some((b) => b.name.toLowerCase() === newBed.name.toLowerCase())) {
+      return throwError(() => new Error(`A bed with the name "${newBed.name}" already exists.`));
     }
 
     const bed: Bed = {
       ...newBed,
-      id: `bed_${Date.now()}` // Generate a unique ID
+      id: `bed_${Date.now()}`, // Generate a unique ID
     };
     MOCK_BEDS.unshift(bed); // Add to the start of the list
-    
+
     return of(bed).pipe(delay(500));
   }
 
@@ -60,7 +61,7 @@ export class BedService {
    */
   deleteBed(bedId: string): Observable<void> {
     // Find the index of the bed to delete.
-    const bedIndex = MOCK_BEDS.findIndex(b => b.id === bedId);
+    const bedIndex = MOCK_BEDS.findIndex((b) => b.id === bedId);
 
     // If the bed wasn't found, simulate a "Not Found" error from the API.
     if (bedIndex === -1) {

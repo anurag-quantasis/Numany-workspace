@@ -1,12 +1,12 @@
 <div class="mx-4 mt-4">
   <p-card>
-    <p-table 
+    <p-table
       #pTable
-      [value]="store.beds()" 
-      [lazy]="true" 
-      (onLazyLoad)="loadBeds($event)" 
-      [paginator]="true" 
-      [rows]="5" 
+      [value]="store.beds()"
+      [lazy]="true"
+      (onLazyLoad)="loadBeds($event)"
+      [paginator]="true"
+      [rows]="5"
       [first]="store.first()"
       [totalRecords]="store.total()"
       [loading]="store.isLoading()"
@@ -21,16 +21,16 @@
     >
       <ng-template pTemplate="caption">
         <div class="flex justify-end align-items-center gap-4">
-          <p-button 
+          <p-button
             label="Insert Bed"
-            icon="pi pi-plus" 
+            icon="pi pi-plus"
             shortcut="alt.i"
             (click)="showAddDialog()"
           ></p-button>
 
-          <p-button 
+          <p-button
             label="Delete"
-            icon="pi pi-trash" 
+            icon="pi pi-trash"
             severity="danger"
             shortcut="alt.d"
             (click)="confirmDelete()"
@@ -38,9 +38,9 @@
           ></p-button>
         </div>
       </ng-template>
-      <ng-template pTemplate="header" >
+      <ng-template pTemplate="header">
         <tr>
-          <th style="width: 5rem;">#</th>
+          <th style="width: 5rem">#</th>
           <th>Name</th>
           <th>Area</th>
           <th>Section</th>
@@ -50,7 +50,7 @@
       <ng-template pTemplate="body" let-bed let-rowIndex="rowIndex">
         <tr [pSelectableRow]="bed">
           <!-- The rowIndex gives us the order number for the current page -->
-          <td>{{ rowIndex + 1 }}</td> 
+          <td>{{ rowIndex + 1 }}</td>
           <td>{{ bed.name }}</td>
           <td>{{ bed.area }}</td>
           <td>{{ bed.section }}</td>
@@ -67,11 +67,7 @@
 </div>
 
 <!-- Add Bed Dialog -->
-<p-dialog 
-  header="Add a New Bed" 
-  [(visible)]="isAddDialogVisible" 
-  [modal]="true" 
->
+<p-dialog header="Add a New Bed" [(visible)]="isAddDialogVisible" [modal]="true">
   <form [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
     <div class="flex flex-column gap-3">
       <div class="flex flex-column gap-2">
@@ -89,15 +85,15 @@
     </div>
 
     <div class="flex justify-content-end gap-2 mt-4">
-      <p-button 
-        label="Cancel" 
+      <p-button
+        label="Cancel"
         shortcut="alt.c"
-        severity="secondary" 
+        severity="secondary"
         (click)="isAddDialogVisible = false"
       ></p-button>
-      <p-button 
-        type="submit" 
-        label="Save" 
+      <p-button
+        type="submit"
+        label="Save"
         shortcut="alt.s"
         [disabled]="bedForm.invalid"
         [loading]="store.isLoading()"
@@ -107,29 +103,25 @@
 </p-dialog>
 
 <div>
-  <p-confirmDialog 
-    #cd
-    key="delete-bed-confirmation"
-    [style]="{width: '450px'}"
-  >
+  <p-confirmDialog #cd key="delete-bed-confirmation" [style]="{ width: '450px' }">
     <ng-template pTemplate="footer">
       <div class="flex justify-end gap-2">
         <!-- The Cancel (Reject) Button -->
-        <button 
+        <button
           pButton
           type="button"
-          label="Cancel" 
-          severity="secondary" 
+          label="Cancel"
+          severity="secondary"
           outlined="true"
           shortcut="alt.c"
           (click)="cd.onReject()"
         ></button>
-        
+
         <!-- The Delete (Accept) Button -->
-        <button 
+        <button
           pButton
           type="button"
-          label="Delete" 
+          label="Delete"
           severity="danger"
           shortcut="alt.d"
           (click)="cd.onAccept()"

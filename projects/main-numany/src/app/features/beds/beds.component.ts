@@ -25,7 +25,7 @@ import { ShortcutService } from '../../core/services/shortcut.service';
     ShortcutDirective,
     CardModule,
     ConfirmDialogModule,
-    ShortcutKeyHintDirective
+    ShortcutKeyHintDirective,
   ],
   templateUrl: './beds.component.html',
   styles: ``,
@@ -54,20 +54,20 @@ export class BedsComponent {
   //   this.store.loadBeds({ first: 0, rows: 10 });
   // }
 
-   ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     // Register all our keyboard navigation shortcuts.
     this.keyNavSubscription.add(
-      this.shortcutService.on('arrowdown', () => this.navigateSelection('down'))
+      this.shortcutService.on('arrowdown', () => this.navigateSelection('down')),
     );
     this.keyNavSubscription.add(
-      this.shortcutService.on('arrowup', () => this.navigateSelection('up'))
+      this.shortcutService.on('arrowup', () => this.navigateSelection('up')),
     );
     this.keyNavSubscription.add(
       // The shortcut now calls the new, simplified method
-      this.shortcutService.on('arrowright', () => this.navigatePage('next'))
+      this.shortcutService.on('arrowright', () => this.navigatePage('next')),
     );
     this.keyNavSubscription.add(
-      this.shortcutService.on('arrowleft', () => this.navigatePage('previous'))
+      this.shortcutService.on('arrowleft', () => this.navigatePage('previous')),
     );
   }
 
@@ -123,19 +123,19 @@ export class BedsComponent {
     });
   }
 
-
   /** Navigates the selected row up or down. */
   navigateSelection(direction: 'up' | 'down'): void {
     const currentBeds = this.store.beds();
     if (currentBeds.length === 0) return;
 
     const selected = this.store.selectedBed();
-    const currentIndex = selected ? currentBeds.findIndex(b => b.id === selected.id) : -1;
+    const currentIndex = selected ? currentBeds.findIndex((b) => b.id === selected.id) : -1;
 
     let newIndex = 0;
     if (direction === 'down') {
       newIndex = currentIndex >= currentBeds.length - 1 ? 0 : currentIndex + 1; // Wraps to top
-    } else { // 'up'
+    } else {
+      // 'up'
       newIndex = currentIndex <= 0 ? currentBeds.length - 1 : currentIndex - 1; // Wraps to bottom
     }
 

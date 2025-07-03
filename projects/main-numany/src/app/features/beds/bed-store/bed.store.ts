@@ -11,7 +11,7 @@ import { TableLazyLoadEvent } from 'primeng/table';
 
 export const BedStore = signalStore(
   // 1. Initial State
-  withState({...initialState, selectedBed: null as Bed | null,}),
+  withState({ ...initialState, selectedBed: null as Bed | null }),
 
   // 2. Computed Signals (optional, but good for derived state)
   withComputed(({ beds, totalRecords, selectedBed, lastLazyLoadEvent }) => ({
@@ -32,7 +32,12 @@ export const BedStore = signalStore(
       pipe(
         tap((event) => {
           lastLazyLoadEvent = event; // Save the event for refreshing
-          patchState(store, { isLoading: true, error: null, selectedBed: null,lastLazyLoadEvent: event, });
+          patchState(store, {
+            isLoading: true,
+            error: null,
+            selectedBed: null,
+            lastLazyLoadEvent: event,
+          });
         }),
         switchMap((event) =>
           bedService.getBeds(event).pipe(
@@ -54,10 +59,10 @@ export const BedStore = signalStore(
                 life: 3000,
               });
               return of(null);
-            })
-          )
-        )
-      )
+            }),
+          ),
+        ),
+      ),
     );
 
     const addBed = rxMethod<NewBed>(
@@ -88,10 +93,10 @@ export const BedStore = signalStore(
                 life: 3000,
               });
               return of(null);
-            })
-          )
-        )
-      )
+            }),
+          ),
+        ),
+      ),
     );
 
     const deleteBed = rxMethod<string>( // The ID is now a string
@@ -120,10 +125,10 @@ export const BedStore = signalStore(
                 life: 3000,
               });
               return of(null);
-            })
-          )
-        )
-      )
+            }),
+          ),
+        ),
+      ),
     );
 
     // --- NEW SELECTION METHOD ---
@@ -163,5 +168,5 @@ export const BedStore = signalStore(
 
     // --- RETURN THE METHODS ---
     return { loadBeds, addBed, deleteBed, selectBed, paginate };
-  })
+  }),
 );

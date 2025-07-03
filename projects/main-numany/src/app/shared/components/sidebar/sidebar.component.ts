@@ -29,12 +29,7 @@ type DisplaySidebarItem = MasterSidebarItem & {
   selector: 'app-sidebar',
   standalone: true, // Make sure your component is standalone
   // Add the shortcut directives to the imports array
-  imports: [
-    CommonModule,
-    RouterModule,
-    ShortcutDirective,
-    ShortcutKeyHintDirective
-  ],
+  imports: [CommonModule, RouterModule, ShortcutDirective, ShortcutKeyHintDirective],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
@@ -175,14 +170,14 @@ export class SidebarComponent {
       // permission: { resource: 'patients', action: 'view' },
     },
     {
-      id:'7',
+      id: '7',
       routeLink: '',
       icon: 'pi pi-question-circle',
       label: 'Help',
       // permission: { resource: 'patients', action: 'view' },
     },
     {
-      id:'8',
+      id: '8',
       routeLink: '',
       icon: 'pi pi-list-check',
       label: 'Sign Verbal Orders',
@@ -222,10 +217,7 @@ export class SidebarComponent {
       for (const item of items) {
         const hasPermission =
           !item.permission ||
-          this.authStore.hasPermission()(
-            item.permission.resource,
-            item.permission.action
-          );
+          this.authStore.hasPermission()(item.permission.resource, item.permission.action);
         if (!hasPermission) continue;
         const isParent = !!item.children?.length;
         const isExpanded = isParent && expanded.has(item.label);
@@ -243,9 +235,7 @@ export class SidebarComponent {
     if (item.isParent) {
       this.expandedMenus.update((current) => {
         const updated = new Set(current);
-        updated.has(item.label)
-          ? updated.delete(item.label)
-          : updated.add(item.label);
+        updated.has(item.label) ? updated.delete(item.label) : updated.add(item.label);
         return updated;
       });
     } else if (item.routeLink && this.isLeftSidebarCollapsed()) {

@@ -12,15 +12,9 @@ import { toastSeverity } from '../../core/utils/main.constants';
 
 @Component({
   selector: 'main-login',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    CardModule,
-    InputTextModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule, CardModule, InputTextModule],
   templateUrl: './login.component.html',
-  styles: ``
+  styles: ``,
 })
 export class LoginComponent {
   readonly store = inject(AuthStore);

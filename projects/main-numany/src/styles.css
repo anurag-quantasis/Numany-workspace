@@ -1,89 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import "tailwindcss";
-@import "primeicons/primeicons.css";
+@import 'tailwindcss';
+@import 'primeicons/primeicons.css';
 
 @theme {
   /* // Primary color */
-  --color-primary-50: #A5FEFF;
-  --color-primary-75: #95F1F2;
-  --color-primary-100: #84E4E5;
-  --color-primary-200: #63C9CB;
-  --color-primary-300: #42AFB0;
+  --color-primary-50: #a5feff;
+  --color-primary-75: #95f1f2;
+  --color-primary-100: #84e4e5;
+  --color-primary-200: #63c9cb;
+  --color-primary-300: #42afb0;
   --color-primary-400: #219496;
-  --color-primary-500: #007A7C;
+  --color-primary-500: #007a7c;
   --color-primary-600: #006263;
-  --color-primary-700: #00494A;
+  --color-primary-700: #00494a;
   --color-primary-800: #003132;
   --color-primary-850: #002525;
   --color-primary-900: #001819;
 
   /* // Secondary color */
-  --color-secondary-50: #E3EFFC;
-  --color-secondary-75: #C6DDF7;
-  --color-secondary-100: #B6D8FF;
-  --color-secondary-200: #80BBFF;
-  --color-secondary-300: #3D89DF;
-  --color-secondary-400: #1671D9;
-  --color-secondary-500: #0D5EBA;
+  --color-secondary-50: #e3effc;
+  --color-secondary-75: #c6ddf7;
+  --color-secondary-100: #b6d8ff;
+  --color-secondary-200: #80bbff;
+  --color-secondary-300: #3d89df;
+  --color-secondary-400: #1671d9;
+  --color-secondary-500: #0d5eba;
   --color-secondary-600: #034592;
-  --color-secondary-700: #04326B;
+  --color-secondary-700: #04326b;
   --color-secondary-800: #012657;
   --color-secondary-900: #001633;
 
   /* Neutral colors */
-  --color-grey-50: #F9FAFB;
-  --color-grey-75: #F7F9FC;
-  --color-grey-100: #F0F2F5;
-  --color-grey-200: #E4E7EC;
-  --color-grey-300: #D0D5DD;
-  --color-grey-400: #98A2B3;
+  --color-grey-50: #f9fafb;
+  --color-grey-75: #f7f9fc;
+  --color-grey-100: #f0f2f5;
+  --color-grey-200: #e4e7ec;
+  --color-grey-300: #d0d5dd;
+  --color-grey-400: #98a2b3;
   --color-grey-500: #667185;
   --color-grey-600: #475367;
   --color-grey-700: #344054;
-  --color-grey-800: #1D2739;
+  --color-grey-800: #1d2739;
   --color-grey-900: #101928;
 
   /* Success color */
-  --color-success-50: #ECFDF3;
-  --color-success-75: #D1FADF;
-  --color-success-100: #A6F4C5;
-  --color-success-200: #6CE9A6;
-  --color-success-300: #32D583;
-  --color-success-400: #12B76A;
+  --color-success-50: #ecfdf3;
+  --color-success-75: #d1fadf;
+  --color-success-100: #a6f4c5;
+  --color-success-200: #6ce9a6;
+  --color-success-300: #32d583;
+  --color-success-400: #12b76a;
   --color-success-500: #039855;
   --color-success-600: #039855;
-  --color-success-700: #027A48;
-  --color-success-800: #05603A;
-  --color-success-900: #054F31;
+  --color-success-700: #027a48;
+  --color-success-800: #05603a;
+  --color-success-900: #054f31;
 
   /* Warning color */
-  --color-warning-50: #FEF6E7;
-  --color-warning-75: #FBE2B7;
-  --color-warning-100: #FEF0C7;
-  --color-warning-200: #FEDF89;
-  --color-warning-300: #FEC84B;
-  --color-warning-400: #FDB022;
-  --color-warning-500: #F79009;
-  --color-warning-600: #DC6803;
-  --color-warning-700: #B54708;
-  --color-warning-800: #93370D;
+  --color-warning-50: #fef6e7;
+  --color-warning-75: #fbe2b7;
+  --color-warning-100: #fef0c7;
+  --color-warning-200: #fedf89;
+  --color-warning-300: #fec84b;
+  --color-warning-400: #fdb022;
+  --color-warning-500: #f79009;
+  --color-warning-600: #dc6803;
+  --color-warning-700: #b54708;
+  --color-warning-800: #93370d;
   --color-warning-900: #523300;
 
   /* Error color */
-  --color-error-50: #FEF3F2;
-  --color-error-75: #FEE4E2;
-  --color-error-100: #FECDCA;
-  --color-error-200: #FDA29B;
-  --color-error-300: #F97066;
-  --color-error-400: #F04438;
-  --color-error-500: #D92D20;
-  --color-error-600: #D92D20;
-  --color-error-700: #B42318;
+  --color-error-50: #fef3f2;
+  --color-error-75: #fee4e2;
+  --color-error-100: #fecdca;
+  --color-error-200: #fda29b;
+  --color-error-300: #f97066;
+  --color-error-400: #f04438;
+  --color-error-500: #d92d20;
+  --color-error-600: #d92d20;
+  --color-error-700: #b42318;
   --color-error-800: #912018;
   --color-error-900: #591000;
 }
 
-html, body {
-   font-family: "Inter", sans-serif;
+html,
+body {
+  font-family: 'Inter', sans-serif;
 }

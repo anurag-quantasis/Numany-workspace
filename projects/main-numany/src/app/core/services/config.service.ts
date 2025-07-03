@@ -4,10 +4,10 @@ import { environment } from 'projects/main-numany/src/environments/environment';
 type AppEnv = typeof environment;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfigService {
-  constructor() { }
+  constructor() {}
 
   getEnvironment(): AppEnv {
     return environment;

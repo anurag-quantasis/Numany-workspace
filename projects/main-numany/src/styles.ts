@@ -28,9 +28,9 @@ export const MyPreset = definePreset(Aura, {
           700: '#003F2F',
           800: '#002A20',
           900: '#001510',
-        }
-      }
-    }
+        },
+      },
+    },
   },
   components: {
     card: {
@@ -48,19 +48,18 @@ export const MyPreset = definePreset(Aura, {
           },
           subtitle: {
             // color: '{surface.500}'
-          }
+          },
         },
         dark: {
           root: {
             background: '{surface.900}',
-            color: '{surface.0}'
+            color: '{surface.0}',
           },
           subtitle: {
-            color: '{surface.400}'
-          }
-        }
-      }
-    }
-  }
+            color: '{surface.400}',
+          },
+        },
+      },
+    },
+  },
 });
-

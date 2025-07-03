@@ -38,7 +38,7 @@ export class ShortcutService implements OnDestroy {
             event.preventDefault(); // Stop browser default actions (e.g., Alt+F).
             activeContext.shortcuts.get(key)!.next(event); // Trigger the shortcut.
           }
-        })
+        }),
       )
       .subscribe();
   }
@@ -74,7 +74,8 @@ export class ShortcutService implements OnDestroy {
       if (element) {
         const elementTag = element.tagName.toLowerCase();
         const elementId = element.id ? `#${element.id}` : '';
-        const elementClasses = element.classList.length > 0 ? `.${Array.from(element.classList).join('.')}`: '';
+        const elementClasses =
+          element.classList.length > 0 ? `.${Array.from(element.classList).join('.')}` : '';
         errorMessage += `\n\n[Source]: The error originated from the element: <${elementTag}${elementId}${elementClasses}>`;
       }
       throw new Error(errorMessage);
@@ -105,7 +106,7 @@ export class ShortcutService implements OnDestroy {
     if (event.metaKey) modifiers.push('meta');
 
     const mainKey = event.key.toLowerCase();
-    
+
     let result: string;
     if (!['alt', 'control', 'shift', 'meta'].includes(mainKey)) {
       result = [...modifiers.sort(), mainKey].join('.');

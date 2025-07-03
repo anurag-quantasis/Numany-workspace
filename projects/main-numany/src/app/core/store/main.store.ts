@@ -23,17 +23,18 @@ export const MainStore = signalStore(
   // 5. Methods for the admin
   withMethods((store, http = inject(HttpClient)) => ({
     loadTenants: rxMethod<void>(
-        pipe(
-            tap(() => patchState(store, { isLoading: true })),
-            switchMap(() =>
-                http.get<TenantSummary[]>('https://api.mainapp.com/admin/tenants').pipe(
-                    tap({
-                        next: (tenants) => patchState(store, { tenants, isLoading: false }),
-                        error: (e) => patchState(store, { error: 'Failed to load tenants', isLoading: false }),
-                    })
-                )
-            )
-        )
+      pipe(
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap(() =>
+          http.get<TenantSummary[]>('https://api.mainapp.com/admin/tenants').pipe(
+            tap({
+              next: (tenants) => patchState(store, { tenants, isLoading: false }),
+              error: (e) =>
+                patchState(store, { error: 'Failed to load tenants', isLoading: false }),
+            }),
+          ),
+        ),
+      ),
     ),
-  }))
+  })),
 );

@@ -1,7 +1,5 @@
 <div class="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-900 px-4">
-  
   <p-card styleClass="w-full max-w-md shadow-xl rounded-lg">
-    
     <ng-template pTemplate="header">
       <div class="text-center p-6 border-b border-slate-200 dark:border-slate-700">
         <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">
@@ -12,51 +10,57 @@
 
     <div class="p-6">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-6">
-        
         <!-- Email Field -->
         <div>
-          <label for="main-email" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label
+            for="main-email"
+            class="block text-sm font-medium text-slate-700 dark:text-slate-300"
+          >
             Email address
           </label>
           <div class="mt-1">
-            <input 
-              pInputText 
-              id="main-email" 
-              formControlName="email" 
-              type="email" 
+            <input
+              pInputText
+              id="main-email"
+              formControlName="email"
+              type="email"
               class="w-full"
-              placeholder="you@example.com" />
+              placeholder="you@example.com"
+            />
           </div>
         </div>
 
         <!-- Password Field -->
         <div>
-          <label for="main-password" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label
+            for="main-password"
+            class="block text-sm font-medium text-slate-700 dark:text-slate-300"
+          >
             Password
           </label>
           <div class="mt-1">
-            <input 
-              pInputText 
-              id="main-password" 
-              formControlName="password" 
-              type="password" 
-              class="w-full" />
+            <input
+              pInputText
+              id="main-password"
+              formControlName="password"
+              type="password"
+              class="w-full"
+            />
           </div>
         </div>
-        
+
         <!-- API Error Message -->
-        
+
         <!-- Submit Button -->
         <p-button
           label="Log In"
           type="submit"
           styleClass="p-button-primary w-full"
           [loading]="store.isLoading()"
-          [disabled]="loginForm.invalid || store.isLoading()">
+          [disabled]="loginForm.invalid || store.isLoading()"
+        >
         </p-button>
-
       </form>
     </div>
-
   </p-card>
 </div>

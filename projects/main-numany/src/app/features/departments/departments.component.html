@@ -1,8 +1,4 @@
-<h3
-  class="p-5 text-xl font-semibold"
-  [shortcut]="'alt.p'"
-  [shortcutKeyHint]="'p'"
->
+<h3 class="p-5 text-xl font-semibold" [shortcut]="'alt.p'" [shortcutKeyHint]="'p'">
   Print All Records
 </h3>
 
@@ -27,48 +23,45 @@
       </div>
       <div class="flex justify-between">
         <label for="">ADDRESS:</label>
-        <input type="text" pInputText formControlName="address" class="h-18"/>
+        <input type="text" pInputText formControlName="address" class="h-18" />
       </div>
       <div class="flex justify-between">
         <label for="">CITY:</label>
-        <input type="text" pInputText formControlName="city" class="h-8"/>
+        <input type="text" pInputText formControlName="city" class="h-8" />
       </div>
       <div class="flex justify-between">
         <label for="">STATE:</label>
-        <input type="text" pInputText formControlName="state" class="h-8"/>
+        <input type="text" pInputText formControlName="state" class="h-8" />
       </div>
       <div class="flex justify-between">
         <label for="">ZIP:</label>
-        <input type="text" pInputText formControlName="zip" class="h-8"/>
+        <input type="text" pInputText formControlName="zip" class="h-8" />
       </div>
       <div class="flex justify-between">
         <label for="">PHONE:</label>
-        <input type="text" pInputText formControlName="phone" class="h-8"/>
+        <input type="text" pInputText formControlName="phone" class="h-8" />
       </div>
       <div class="flex justify-between">
         <label for="">NOTE:</label>
-        <input type="text" pInputText formControlName="note" class="h-8"/>
+        <input type="text" pInputText formControlName="note" class="h-8" />
       </div>
       <div class="flex justify-between">
         <label for="">COST_BASIS:</label>
-        <input type="text" pInputText formControlName="cost_basis" class="h-8"/>
+        <input type="text" pInputText formControlName="cost_basis" class="h-8" />
       </div>
       <div class="flex justify-between">
         <label for="">MARKUP:</label>
-        <input type="text" pInputText formControlName="markup" class="h-8"/>
+        <input type="text" pInputText formControlName="markup" class="h-8" />
       </div>
       <div class="flex justify-between">
         <label for="">TAX_FLAG:</label>
-        <input type="text" pInputText formControlName="tax_flag" class="h-8"/>
+        <input type="text" pInputText formControlName="tax_flag" class="h-8" />
       </div>
     </section>
   </form>
   <div class="flex justify-center items-center gap-x-4 my-5">
-    <p-button (click)="resetForm()"  [shortcut]="'alt.a'"
-  >Add</p-button>
-    <p-button  [shortcut]="'alt.d'"
-  >Delete</p-button>
-    <p-button  [shortcut]="'alt.u'"
-  >Update</p-button>
+    <p-button (click)="resetForm()" [shortcut]="'alt.a'">Add</p-button>
+    <p-button [shortcut]="'alt.d'">Delete</p-button>
+    <p-button [shortcut]="'alt.u'">Update</p-button>
   </div>
 </main>

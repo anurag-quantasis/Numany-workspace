@@ -12,7 +12,7 @@ export type Patient = TenantResource & {
 };
 
 export type Bed = TenantResource & {
-  id:string;
+  id: string;
   roomNumber: string;
   isOccupied: boolean;
   patientId: string | null;
@@ -34,7 +34,7 @@ export type Tenant = {
 // tenant_admin: Manages users, beds, etc., within their own tenant
 // physician: Manages patients assigned to them
 // nurse: Manages patient care within a tenant
-export type Role = "super_admin" | "tenant_admin" | "physician" | "nurse";
+export type Role = 'super_admin' | 'tenant_admin' | 'physician' | 'nurse';
 
 // --- The User Object ---
 // This represents the currently logged-in user.
@@ -56,27 +56,27 @@ export const FeatureCodes = {
 } as const;
 
 // Optional: create a type for a single feature code for better type safety
-export type FeatureCode = typeof FeatureCodes[keyof typeof FeatureCodes];
+export type FeatureCode = (typeof FeatureCodes)[keyof typeof FeatureCodes];
 
 // --- Defining the Resources and Actions ---
 export type Permissions = {
   patients: {
     dataType: Patient;
-    action: "view" | "create" | "update" | "discharge" | "assign_bed";
+    action: 'view' | 'create' | 'update' | 'discharge' | 'assign_bed';
   };
   beds: {
     dataType: Bed;
-    action: "view_all" | "create" | "update_status";
+    action: 'view_all' | 'create' | 'update_status';
   };
   tenant_users: {
     dataType: TenantUser;
-    action: "view_all" | "create" | "update_roles";
+    action: 'view_all' | 'create' | 'update_roles';
   };
   // The 'tenants' resource is special. Its dataType is not a TenantResource.
   tenants: {
-      dataType: Tenant; 
-      action: "create" | "view_all";
-  }
+    dataType: Tenant;
+    action: 'create' | 'view_all';
+  };
 };
 
 export type PermissionRequirement = {
@@ -88,12 +88,12 @@ export type PermissionRequirement = {
 
 type PermissionCheck<Key extends keyof Permissions> =
   | boolean
-  | ((user: User, data: Permissions[Key]["dataType"]) => boolean);
+  | ((user: User, data: Permissions[Key]['dataType']) => boolean);
 
 type RolesWithPermissions = {
   [R in Role]: Partial<{
     [Key in keyof Permissions]: Partial<{
-      [Action in Permissions[Key]["action"]]: PermissionCheck<Key>;
+      [Action in Permissions[Key]['action']]: PermissionCheck<Key>;
     }>;
   }>;
 };
@@ -159,14 +159,14 @@ const ROLES = {
 
 // A type guard function to check if an object is a TenantResource
 function isTenantResource(data: any): data is TenantResource {
-    return data && typeof data.tenantId === 'string';
+  return data && typeof data.tenantId === 'string';
 }
 
 export function hasPermission<Resource extends keyof Permissions>(
   user: User,
   resource: Resource,
-  action: Permissions[Resource]["action"],
-  data?: Permissions[Resource]["dataType"]
+  action: Permissions[Resource]['action'],
+  data?: Permissions[Resource]['dataType'],
 ): boolean {
   // Use the type guard for a safe tenancy check.
   // This check now only applies to resources that are expected to have a tenantId.
@@ -182,14 +182,14 @@ export function hasPermission<Resource extends keyof Permissions>(
       return false;
     }
 
-    if (typeof permission === "boolean") {
+    if (typeof permission === 'boolean') {
       return permission;
     }
-    
+
     if (data) {
       return permission(user, data);
     }
-    
+
     return false;
   });
 }

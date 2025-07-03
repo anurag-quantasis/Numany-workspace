@@ -1,8 +1,8 @@
 import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from "../shared/components/header/header.component";
+import { HeaderComponent } from '../shared/components/header/header.component';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from "../shared/components/sidebar/sidebar.component";
+import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { Subscription } from 'rxjs';
 import { ShortcutService } from '../core/services/shortcut.service';
 
@@ -10,7 +10,7 @@ import { ShortcutService } from '../core/services/shortcut.service';
   selector: 'app-layout',
   imports: [CommonModule, RouterOutlet, HeaderComponent, SidebarComponent],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  styleUrl: './layout.component.css',
 })
 export class LayoutComponent {
   private readonly shortcutService = inject(ShortcutService);
@@ -38,9 +38,7 @@ export class LayoutComponent {
     });
   }
 
-  ngAfterViewInit(): void {
-    
-  }
+  ngAfterViewInit(): void {}
 
   changeIsLeftSidebarCollapsed(isLeftSidebarCollapsed: boolean): void {
     this.isLeftSidebarCollapsed.set(isLeftSidebarCollapsed);
@@ -49,7 +47,7 @@ export class LayoutComponent {
   screenClass = computed(() => {
     const isLeftSidebarCollapsed = this.isLeftSidebarCollapsed();
     if (isLeftSidebarCollapsed) {
-      return ''
+      return '';
     }
     return this.screenWidth() > 768 ? 'body-trimmed' : 'body-md-screen';
   });
