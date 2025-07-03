@@ -8,7 +8,10 @@ export class ShortcutKeyHintDirective implements OnChanges {
   // The character in the element's text that should be underlined.
   @Input({ required: true, alias: 'shortcutKeyHint' }) keyHint!: string;
 
-  constructor(private el: ElementRef<HTMLElement>, private renderer: Renderer2) {}
+  constructor(
+    private el: ElementRef<HTMLElement>,
+    private renderer: Renderer2,
+  ) {}
 
   // Updates the underline whenever the input text changes.
   ngOnChanges(): void {
@@ -42,9 +45,6 @@ export class ShortcutKeyHintDirective implements OnChanges {
   private clearHint(): void {
     const originalText = this.el.nativeElement.textContent || '';
     this.renderer.setProperty(this.el.nativeElement, 'innerHTML', ''); // Clear first
-    this.renderer.appendChild(
-      this.el.nativeElement,
-      this.renderer.createText(originalText)
-    );
+    this.renderer.appendChild(this.el.nativeElement, this.renderer.createText(originalText));
   }
 }

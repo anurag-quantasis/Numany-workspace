@@ -7,7 +7,7 @@ import { AuthStore } from '../../../core/auth/auth-store/auth.store';
   selector: 'app-header',
   imports: [ButtonModule],
   templateUrl: './header.component.html',
-  styles: ``
+  styles: ``,
 })
 export class HeaderComponent {
   private readonly router = inject(Router);

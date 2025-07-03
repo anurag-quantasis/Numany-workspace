@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CookieService {
   static readonly APP_PREFIX = 'NG-TEMPLATE-';
@@ -19,8 +19,8 @@ export class CookieService {
       return null;
     }
 
-    const cookies = this.document.cookie.split(';').map(c => c.trim());
-    const cookie = cookies.find(c => c.startsWith(name + '='));
+    const cookies = this.document.cookie.split(';').map((c) => c.trim());
+    const cookie = cookies.find((c) => c.startsWith(name + '='));
 
     if (!cookie) {
       return null;
@@ -45,7 +45,7 @@ export class CookieService {
       expiresInHours?: number;
       path?: string;
       sameSite?: 'Lax' | 'Strict' | 'None';
-    } = {}
+    } = {},
   ): void {
     const {
       expiresInHours = 2, // Default to 2 hours

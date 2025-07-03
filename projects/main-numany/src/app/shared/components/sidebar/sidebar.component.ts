@@ -28,12 +28,7 @@ type DisplaySidebarItem = MasterSidebarItem & {
   selector: 'app-sidebar',
   standalone: true, // Make sure your component is standalone
   // Add the shortcut directives to the imports array
-  imports: [
-    CommonModule,
-    RouterModule,
-    ShortcutDirective,
-    ShortcutKeyHintDirective
-  ],
+  imports: [CommonModule, RouterModule, ShortcutDirective, ShortcutKeyHintDirective],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
@@ -102,10 +97,7 @@ export class SidebarComponent {
       for (const item of items) {
         const hasPermission =
           !item.permission ||
-          this.authStore.hasPermission()(
-            item.permission.resource,
-            item.permission.action
-          );
+          this.authStore.hasPermission()(item.permission.resource, item.permission.action);
         if (!hasPermission) continue;
         const isParent = !!item.children?.length;
         const isExpanded = isParent && expanded.has(item.label);
@@ -123,9 +115,7 @@ export class SidebarComponent {
     if (item.isParent) {
       this.expandedMenus.update((current) => {
         const updated = new Set(current);
-        updated.has(item.label)
-          ? updated.delete(item.label)
-          : updated.add(item.label);
+        updated.has(item.label) ? updated.delete(item.label) : updated.add(item.label);
         return updated;
       });
     } else if (item.routeLink && this.isLeftSidebarCollapsed()) {

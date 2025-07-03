@@ -3,12 +3,11 @@ import { Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
-
 @Component({
   selector: 'main-toaster',
   imports: [ToastModule, CommonModule],
   templateUrl: './toaster.component.html',
-  styles: ``
+  styles: ``,
 })
 export class ToasterComponent {
   private readonly messageService = inject(MessageService);

@@ -2,15 +2,11 @@ import { Component } from '@angular/core';
 import { ShortcutKeyHintDirective } from '../../core/directive/shortcut-key-hint.directive';
 import { ShortcutDirective } from '../../core/directive/shortcut.directive';
 
-
 @Component({
   selector: 'app-settings',
-  imports: [
-    ShortcutDirective,
-    ShortcutKeyHintDirective
-  ],
+  imports: [ShortcutDirective, ShortcutKeyHintDirective],
   templateUrl: './settings.component.html',
-  styles: ``
+  styles: ``,
 })
 export class SettingsComponent {
   openFileMenu() {

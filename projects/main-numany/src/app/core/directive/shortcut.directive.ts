@@ -33,7 +33,7 @@ export class ShortcutDirective implements OnInit, OnDestroy {
 
       console.error(
         `%c[ShortcutDirective] I am CREATING A NEW CONTEXT because of this element:`,
-        'color: orange; font-size: 14px; font-weight: bold;'
+        'color: orange; font-size: 14px; font-weight: bold;',
       );
       console.log(this.elementRef.nativeElement);
       this.isContext = true;

@@ -8,9 +8,8 @@ describe('SharedUiComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedUiComponent]
-    })
-    .compileComponents();
+      imports: [SharedUiComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SharedUiComponent);
     component = fixture.componentInstance;

@@ -7,19 +7,21 @@ import { providePrimeNG } from 'primeng/config';
 import { MyPreset } from '../styles';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
     provideAnimationsAsync(),
     providePrimeNG({
-    theme: {
-      preset: MyPreset,
-      options: {
-        darkModeSelector: '.my-app-dark',
-        cssLayer: {
-          name: 'primeng',
-          order: 'theme, base, primeng'
-        }
-      }
-    }
-  })
-  ]
+      theme: {
+        preset: MyPreset,
+        options: {
+          darkModeSelector: '.my-app-dark',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng',
+          },
+        },
+      },
+    }),
+  ],
 };

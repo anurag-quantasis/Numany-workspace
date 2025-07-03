@@ -28,9 +28,9 @@ export const MyPreset = definePreset(Aura, {
           700: '#003F2F',
           800: '#002A20',
           900: '#001510',
-        }
-      }
-    }
+        },
+      },
+    },
   },
   components: {
     // card: {
@@ -55,6 +55,5 @@ export const MyPreset = definePreset(Aura, {
     //     }
     //   }
     // }
-  }
+  },
 });
-

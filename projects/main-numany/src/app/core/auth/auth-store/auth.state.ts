@@ -1,4 +1,4 @@
-import { User, Role } from "../permissions/role";
+import { User, Role } from '../permissions/role';
 
 // The shape of our global authentication state
 export interface AuthState {
