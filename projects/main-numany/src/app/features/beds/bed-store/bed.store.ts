@@ -14,10 +14,11 @@ export const BedStore = signalStore(
   withState({...initialState, selectedBed: null as Bed | null,}),
 
   // 2. Computed Signals (optional, but good for derived state)
-  withComputed(({ beds, totalRecords, selectedBed }) => ({
+  withComputed(({ beds, totalRecords, selectedBed, lastLazyLoadEvent }) => ({
     bedCount: computed(() => beds().length),
     total: computed(() => totalRecords()),
-    isBedSelected: computed(() => selectedBed() !== null), // Very useful for the UI
+    isBedSelected: computed(() => selectedBed() !== null),
+    first: computed(() => lastLazyLoadEvent().first ?? 0),
   })),
 
   // 3. Methods
@@ -31,7 +32,7 @@ export const BedStore = signalStore(
       pipe(
         tap((event) => {
           lastLazyLoadEvent = event; // Save the event for refreshing
-          patchState(store, { isLoading: true, error: null, selectedBed: null });
+          patchState(store, { isLoading: true, error: null, selectedBed: null,lastLazyLoadEvent: event, });
         }),
         switchMap((event) =>
           bedService.getBeds(event).pipe(
@@ -132,7 +133,35 @@ export const BedStore = signalStore(
       patchState(store, { selectedBed: bed });
     };
 
+    // 4. NEW METHOD to handle pagination logic
+    const paginate = (direction: 'next' | 'previous') => {
+      const currentEvent = store.lastLazyLoadEvent();
+      const total = store.totalRecords();
+
+      // --- FIX IS HERE ---
+      // Use the nullish coalescing operator (??) to provide a default value
+      // if 'first' or 'rows' are null/undefined.
+      const first = currentEvent.first ?? 0;
+      const rows = currentEvent.rows ?? 5; // Default to 5, matching our initial state
+
+      // Now, 'rows' is guaranteed to be a number, and the error is gone.
+      if (total <= rows) return;
+
+      let newFirst = first;
+      if (direction === 'next' && first + rows < total) {
+        newFirst = first + rows;
+      } else if (direction === 'previous' && first > 0) {
+        newFirst = first - rows;
+      }
+
+      if (newFirst !== first) {
+        // Trigger a load with the full event context, only updating `first`.
+        // This preserves sorting and other parameters.
+        loadBeds({ ...currentEvent, first: newFirst });
+      }
+    };
+
     // --- RETURN THE METHODS ---
-    return { loadBeds, addBed, deleteBed, selectBed };
+    return { loadBeds, addBed, deleteBed, selectBed, paginate };
   })
 );

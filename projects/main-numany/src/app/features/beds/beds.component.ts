@@ -38,7 +38,7 @@ export class BedsComponent {
   private readonly fb = inject(FormBuilder).nonNullable;
   private readonly confirmationService = inject(ConfirmationService);
   private readonly shortcutService = inject(ShortcutService);
-  @ViewChild('pTable') pTable!: Table;
+  // @ViewChild('pTable') pTable!: Table;
   private keyNavSubscription = new Subscription();
   isAddDialogVisible = false;
 
@@ -49,10 +49,10 @@ export class BedsComponent {
     section: ['', Validators.required],
   });
 
-  ngOnInit(): void {
-    // Initial load. The PrimeNG table will also trigger this with default values.
-    this.store.loadBeds({ first: 0, rows: 10 });
-  }
+  // ngOnInit(): void {
+  //   // Initial load. The PrimeNG table will also trigger this with default values.
+  //   this.store.loadBeds({ first: 0, rows: 10 });
+  // }
 
    ngAfterViewInit(): void {
     // Register all our keyboard navigation shortcuts.
@@ -63,10 +63,11 @@ export class BedsComponent {
       this.shortcutService.on('arrowup', () => this.navigateSelection('up'))
     );
     this.keyNavSubscription.add(
-      // this.shortcutService.on('arrowright', () => this.navigatePage('next'))
+      // The shortcut now calls the new, simplified method
+      this.shortcutService.on('arrowright', () => this.navigatePage('next'))
     );
     this.keyNavSubscription.add(
-      // this.shortcutService.on('arrowleft', () => this.navigatePage('previous'))
+      this.shortcutService.on('arrowleft', () => this.navigatePage('previous'))
     );
   }
 
@@ -143,41 +144,6 @@ export class BedsComponent {
 
   /** Navigates to the next or previous page in the paginator. */
   navigatePage(direction: 'next' | 'previous'): void {
-    // We still need the pTable reference to get state, but we won't call its methods.
-    if (!this.pTable) return;
-
-    // Get the current state directly from the pTable instance.
-     const currentFirst = this.pTable.first ?? 0;
-    const rows = this.pTable.rows || 10;
-    const totalRecords = this.store.total(); // Get total from the store
-
-    if (totalRecords === 0) return;
-
-    let newFirst: number;
-
-    if (direction === 'next') {
-      // Calculate the index of the first record for the next page.
-      newFirst = currentFirst + rows;
-      // If we go past the end, wrap around to the first page (index 0).
-      if (newFirst >= totalRecords) {
-        newFirst = 0;
-      }
-    } else { // 'previous'
-      // Calculate the index of the first record for the previous page.
-      newFirst = currentFirst - rows;
-      // If we go before the beginning, wrap around to the last page.
-      if (newFirst < 0) {
-        // Calculate the first record index of the very last page.
-        const lastPage = Math.floor((totalRecords - 1) / rows);
-        newFirst = lastPage * rows;
-      }
-    }
-
-    // Manually trigger our own lazy load event handler with the new state.
-    // The table will react to the updated state and change its page.
-    this.loadBeds({
-      first: newFirst,
-      rows: rows,
-    });
+    this.store.paginate(direction);
   }
 }

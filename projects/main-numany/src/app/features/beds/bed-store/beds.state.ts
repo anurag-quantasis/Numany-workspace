@@ -1,3 +1,4 @@
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Bed } from './beds.model';
 
 export interface BedState {
@@ -7,6 +8,7 @@ export interface BedState {
   error: string | null;
   filter: string;       // To hold any search/filter query
   selectedBed?: Bed | null; // Optional: to hold the currently selected bed for details or editing
+  lastLazyLoadEvent: TableLazyLoadEvent;
 }
 
 export const initialState: BedState = {
@@ -15,5 +17,6 @@ export const initialState: BedState = {
   isLoading: false,
   error: null,
   filter: '',
-  selectedBed: null
+  selectedBed: null,
+  lastLazyLoadEvent: { first: 0, rows: 5 },
 };
