@@ -5,6 +5,7 @@ import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } fr
 import { ButtonModule } from 'primeng/button';
 import { ShortcutDirective } from '../../core/directive/shortcut.directive';
 import { ShortcutKeyHintDirective } from '../../core/directive/shortcut-key-hint.directive';
+import { CustomInputComponent } from '../../../../../shared-ui/src/lib/components/form-components/custom-input/custom-input.component';
 
 @Component({
   selector: 'main-departments',
@@ -15,6 +16,7 @@ import { ShortcutKeyHintDirective } from '../../core/directive/shortcut-key-hint
     ButtonModule,
     ShortcutDirective,
     ShortcutKeyHintDirective,
+    CustomInputComponent,
   ],
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.css',

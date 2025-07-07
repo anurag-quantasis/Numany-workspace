@@ -1,0 +1,116 @@
+<h1 class="text-2xl font-semibold text-center p-5">Administration Schedule File Maintenance</h1>
+
+<main [formGroup]="form" class="p-6 space-y-6">
+  <!-- Section 1: Schedule ID & Schedule Type -->
+  <section class="flex justify-between items-center">
+    <div>
+      <shared-custom-input formControlName="scheduleId" type="text" label="Schedule Id" />
+<span
+  *ngIf="scheduleId?.hasError('required') && (scheduleId?.dirty || scheduleId?.touched)"
+  class="text-sm text-red-500"
+>
+  Schedule Id is required
+</span>
+    </div>
+
+    <div>
+      <h2 class="font-medium text-sm mb-2">Schedule Type</h2>
+      <div class="flex flex-wrap gap-4">
+        <span class="flex items-center gap-1">
+          <p-radiobutton
+            formControlName="selectedSchedule"
+            value="time interval"
+            inputId="schedule-time"
+          ></p-radiobutton>
+          <label class="text-sm" for="schedule-time">Time Interval Schedule</label>
+        </span>
+        <span class="flex items-center gap-1">
+          <p-radiobutton
+            formControlName="selectedSchedule"
+            value="every day"
+            inputId="schedule-every"
+          ></p-radiobutton>
+          <label class="text-sm" for="schedule-every">Fixed Time of Every Day</label>
+        </span>
+        <span class="flex items-center gap-1">
+          <p-radiobutton
+            formControlName="selectedSchedule"
+            value="specific days"
+            inputId="schedule-specific"
+          ></p-radiobutton>
+          <label class="text-sm" for="schedule-specific">Fixed Time of Specific Days</label>
+        </span>
+        <span class="flex items-center gap-1">
+          <p-radiobutton
+            formControlName="selectedSchedule"
+            value="prn info"
+            inputId="schedule-prn"
+          ></p-radiobutton>
+          <label class="text-sm" for="schedule-prn">PRN Info Only</label>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Description & Doses + Interval -->
+  <section class="flex justify-between items-center">
+    <shared-custom-input formControlName="description" type="text" label="Description" />
+
+    <span class="flex flex-col items-center gap-y-4">
+      <label for="doses" class="text-sm font-medium"># of doses/24hr</label>
+      <input id="doses" type="text" pInputText formControlName="dosesPerDay" class="w-20 border" />
+    </span>
+
+    <div>
+      <p class="text-sm font-medium mb-1">Administration Time Interval</p>
+      <main-schedule-selector
+        [showDurationInputs]="true"
+        [showTimeSlots]="false"
+        [showWeekDays]="false"
+        (scheduleChange)="handleSchedule($event, 'timeInterval')"
+      ></main-schedule-selector>
+    </div>
+  </section>
+
+  <!-- Section 3: Administration Times Grid -->
+  <section>
+    <p class="text-sm font-medium mb-2">Administration Times</p>
+    <main-schedule-selector
+      [showDurationInputs]="false"
+      [showTimeSlots]="true"
+      [showWeekDays]="false"
+      (scheduleChange)="handleSchedule($event, 'adminTimes')"
+    ></main-schedule-selector>
+  </section>
+
+  <!-- Section 4: Weekdays and Action Buttons -->
+  <section class="grid grid-cols-2 gap-6">
+    <div>
+      <p class="text-sm font-medium mb-2">Week Days</p>
+      <main-schedule-selector
+        [showDurationInputs]="false"
+        [showTimeSlots]="false"
+        [showWeekDays]="true"
+        (scheduleChange)="handleSchedule($event, 'weekDays')"
+      ></main-schedule-selector>
+    </div>
+    <div class="flex items-end gap-3">
+      <p-button
+        label="Add"
+        (click)="onSubmit()"
+        variant="outlined"
+        styleClass="h-8 w-25"
+      ></p-button>
+      <p-button
+        label="New"
+        variant="outlined"
+        styleClass="h-8 w-25 text-green-500 hover:bg-green-50 border-green-500"
+      ></p-button>
+      <p-button
+        label="Delete"
+        variant="outlined"
+        styleClass="h-8 w-25 text-red-500 border-red-500 hover:bg-red-50"
+      ></p-button>
+    </div>
+  </section>
+</main>

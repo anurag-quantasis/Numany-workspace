@@ -3,7 +3,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -16,9 +16,9 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "paths": {
-      "shared-ui": [
-        "./dist/shared-ui"
-      ]
+      "@shared-ui/components/*": ["projects/shared-ui/src/lib/components/*"],
+      "@main/*": ["projects/main-numany/src/app/*"],
+      "@tenant/*": ["projects/tenant-numany/src/app/*"]
     },
     "importHelpers": true,
     "target": "ES2022",

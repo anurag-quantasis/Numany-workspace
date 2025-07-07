@@ -1,1 +1,14 @@
 <p>beds works!</p>
+<form [formGroup]="userForm" class="p-fluid">
+  <shared-custom-input label="Full Name" placeholder="Enter your name" formControlName="name">
+  </shared-custom-input>
+
+  <shared-custom-input
+    label="Email Address"
+    placeholder="e.g., user@example.com"
+    type="email"
+    pKeyFilter="email"
+    formControlName="email"
+  >
+  </shared-custom-input>
+</form>

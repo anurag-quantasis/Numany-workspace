@@ -1,0 +1,50 @@
+<div [formGroup]="form" class="space-y-4">
+  <!-- Days, Hours, Minutes -->
+  <div *ngIf="showDurationInputs" formGroupName="duration" class="flex gap-4 items-center">
+    <div class="flex flex-col text-center">
+      <label class="text-sm font-medium">Days</label>
+      <input pInputText type="number" class="w-20 input input-sm border" formControlName="days" />
+    </div>
+    <div class="flex flex-col text-center">
+      <label class="text-sm font-medium">Hours</label>
+      <input pInputText type="number" class="w-20 input input-sm border" formControlName="hours" />
+    </div>
+    <div class="flex flex-col text-center">
+      <label class="text-sm font-medium">Minutes</label>
+      <input
+        pInputText
+        type="number"
+        class="w-20 input input-sm border"
+        formControlName="minutes"
+      />
+    </div>
+  </div>
+
+  <!-- Time Slot Grid -->
+  <div *ngIf="showTimeSlots" class="max-h-60 overflow-y-auto border rounded p-4 bg-gray-50">
+    <div class="grid grid-cols-8 gap-3" formArrayName="timeSlots">
+      <ng-container *ngFor="let slot of timeSlots.controls; let i = index">
+        <span>
+          <p-checkbox
+            [formControlName]="i"
+            [inputId]="timeSlotsData[i].label"
+            binary="true"
+          ></p-checkbox>
+          <label [for]="timeSlotsData[i].label" class="ml-1 text-xs">{{
+            timeSlotsData[i].label
+          }}</label>
+        </span>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Weekday Selection -->
+  <div *ngIf="showWeekDays" formArrayName="weekDays" class="flex flex-wrap gap-4 justify-start">
+    <ng-container *ngFor="let ctrl of weekDays.controls; let i = index">
+      <div>
+        <p-checkbox [formControlName]="i" [inputId]="weekDaysData[i]" binary="true"></p-checkbox>
+        <label [for]="weekDaysData[i]" class="ml-1 text-sm">{{ weekDaysData[i] }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -10,58 +10,92 @@
       optionLabel="name"
       optionValue="id"
       placeholder="Select a Department"
-      class="w-full md:w-56 h-8 mb-10 flex justify-center items-center"
+      class="w-full mb-10 flex justify-center items-center"
     />
-    <section class="grid grid-cols-2 gap-x-12 gap-y-4">
-      <div class="flex justify-between">
-        <label for="">ID:</label>
-        <input type="text" pInputText formControlName="id" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">NAME:</label>
-        <input type="text" pInputText formControlName="name" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">ADDRESS:</label>
-        <input type="text" pInputText formControlName="address" class="h-18" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">CITY:</label>
-        <input type="text" pInputText formControlName="city" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">STATE:</label>
-        <input type="text" pInputText formControlName="state" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">ZIP:</label>
-        <input type="text" pInputText formControlName="zip" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">PHONE:</label>
-        <input type="text" pInputText formControlName="phone" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">NOTE:</label>
-        <input type="text" pInputText formControlName="note" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">COST_BASIS:</label>
-        <input type="text" pInputText formControlName="cost_basis" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">MARKUP:</label>
-        <input type="text" pInputText formControlName="markup" class="h-8" />
-      </div>
-      <div class="flex justify-between">
-        <label for="">TAX_FLAG:</label>
-        <input type="text" pInputText formControlName="tax_flag" class="h-8" />
-      </div>
+    <section class="grid grid-cols-3 gap-x-8 gap-y-3">
+      <shared-custom-input label="ID" placeholder="Id" type="text" formControlName="id">
+      </shared-custom-input>
+      <shared-custom-input
+        label="Name"
+        placeholder="Enter Name"
+        type="text"
+        formControlName="name"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="Address"
+        placeholder="Enter Address"
+        type="text"
+        formControlName="address"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="City"
+        placeholder="Enter City"
+        type="text"
+        formControlName="city"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="State"
+        placeholder="Enter State"
+        type="text"
+        formControlName="state"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="Zip"
+        placeholder="Enter Zip Code"
+        type="text"
+        formControlName="zip"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="Phone"
+        placeholder="Enter Phone Number"
+        type="text"
+        formControlName="phone"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="Note"
+        placeholder="Enter Note"
+        type="text"
+        formControlName="note"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="Cost Basis"
+        placeholder="Enter Cost Basis"
+        type="text"
+        formControlName="cost_basis"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="Markup"
+        type="text"
+        placeholder="Enter Markup"
+        formControlName="markup"
+      ></shared-custom-input>
+      <shared-custom-input
+        label="Tax Flag"
+        placeholder="Enter Tax Flag"
+        type="text"
+        formControlName="tax_flag"
+      ></shared-custom-input>
     </section>
   </form>
-  <div class="flex justify-center items-center gap-x-4 my-5">
-    <p-button (click)="resetForm()" [shortcut]="'alt.a'">Add</p-button>
-    <p-button [shortcut]="'alt.d'">Delete</p-button>
-    <p-button [shortcut]="'alt.u'">Update</p-button>
+  <div class="flex justify-end items-center gap-x-4 my-5 w-full mr-14">
+    <p-button
+      (click)="resetForm()"
+      [shortcut]="'alt.a'"
+      raised="true"
+      styleClass="h-8 w-25"
+      variant="outlined"
+      >Add</p-button
+    >
+    <p-button
+      [shortcut]="'alt.d'"
+      severity="danger"
+      raised="true"
+      styleClass="h-8 w-25"
+      variant="outlined"
+      >Delete</p-button
+    >
+    <p-button [shortcut]="'alt.u'" severity="warn" styleClass="h-8 w-25" variant="outlined"
+      >Update</p-button
+    >
   </div>
 </main>

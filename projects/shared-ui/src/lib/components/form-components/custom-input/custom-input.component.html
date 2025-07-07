@@ -1,0 +1,38 @@
+<!-- src/app/shared-ui/form-components/custom-input/custom-input.component.html -->
+
+<div class="w-full max-w-88">
+  <!-- 1. The Label -->
+  <label *ngIf="label" [for]="label" class="block mb-0.5 ml-1">{{ label }}</label>
+
+  <!-- 2. The PrimeNG Input -->
+  <input
+    pInputText
+    [id]="label"
+    [type]="type"
+    [placeholder]="placeholder"
+    [value]="value"
+    [disabled]="isDisabled"
+    (input)="onInputChange($event)"
+    (blur)="onInputBlur()"
+    class="w-90"
+    [style]="inputStyle"
+    [ngClass]="inputStyleClass"
+    [pKeyFilter]="pKeyFilter"
+  />
+  <!-- [ngClass]="{ 'ng-invalid ng-dirty': showError }" -->
+
+  <!-- 3. The Error Field -->
+  <!-- <small class="block my-1 text-xs min-h-[1rem] text-red-500">
+  <ng-container *ngIf="showError">
+    <ng-container *ngIf="control?.errors?.['required']">
+      This field is required.
+    </ng-container>
+    <ng-container *ngIf="control?.errors?.['email']">
+      Please enter a valid email address.
+    </ng-container>
+    <ng-container *ngIf="control?.errors?.['minlength']">
+      Must be at least {{ control?.errors?.['minlength'].requiredLength }} characters.
+    </ng-container> 
+  </ng-container>
+</small> -->
+</div>

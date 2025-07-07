@@ -25,7 +25,6 @@ import { ShortcutService } from '../../core/services/shortcut.service';
     ShortcutDirective,
     CardModule,
     ConfirmDialogModule,
-    ShortcutKeyHintDirective,
   ],
   templateUrl: './beds.component.html',
   styles: ``,
