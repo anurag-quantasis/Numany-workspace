@@ -1,13 +1,17 @@
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { computed, inject } from '@angular/core';
-import { catchError, of, pipe, switchMap, tap } from 'rxjs';
+import { computed, DestroyRef, inject } from '@angular/core';
+import { catchError, of, pipe, switchMap, tap, timer } from 'rxjs';
 import { MessageService, LazyLoadEvent } from 'primeng/api';
 import { BedService } from '../services/beds.service';
 import { initialState } from './beds.state';
 import { Bed, NewBed } from './beds.model';
 import { toastSeverity } from '../../../core/utils/main.constants'; // Assuming you have this path
 import { TableLazyLoadEvent } from 'primeng/table';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
+// const REFRESH_INTERVAL_MS = 10000;
 
 export const BedStore = signalStore(
   // 1. Initial State
@@ -30,34 +34,54 @@ export const BedStore = signalStore(
 
     const loadBeds = rxMethod<TableLazyLoadEvent>(
       pipe(
-        tap((event) => {
-          lastLazyLoadEvent = event; // Save the event for refreshing
+        // Keep a reference to the currently selected ID before we do anything else.
+        switchMap((event) => {
+          const selectedBedId = store.selectedBed()?.id; // Get ID before the load
+          return of({ event, selectedBedId });
+        }),
+        tap(({ event }) => {
+          // Update loading state but DO NOT touch selectedBed here.
+          // This prevents UI flicker.
           patchState(store, {
             isLoading: true,
             error: null,
-            selectedBed: null,
             lastLazyLoadEvent: event,
           });
         }),
-        switchMap((event) =>
+        switchMap(({ event, selectedBedId }) =>
           bedService.getBeds(event).pipe(
             tap(({ items, totalRecords }) => {
-              patchState(store, { beds: items, totalRecords, isLoading: false });
-
-              // After loading, select the first bed if the list is not empty.
-              if (items.length > 0) {
-                patchState(store, { selectedBed: items[0] });
+              // --- SELECTION RECONCILIATION LOGIC ---
+              let newSelectedBed: Bed | null = null;
+              
+              if (selectedBedId) {
+                // Try to find the previously selected bed in the new list.
+                const reselectedBed = items.find(b => b.id === selectedBedId);
+                if (reselectedBed) {
+                  // Found it! Keep it selected.
+                  newSelectedBed = reselectedBed;
+                }
               }
+
+              // If the old selection is gone, or if nothing was selected before,
+              // we fall back to selecting the first item as a default.
+              if (newSelectedBed === null && items.length > 0) {
+                 // Check if the refresh was triggered by a user action (like add/delete)
+                 // vs a background timer. For background refresh, we might not want to auto-select.
+                 // For simplicity here, we'll keep the original behavior of selecting the first.
+                 newSelectedBed = items[0];
+              }
+
+              patchState(store, {
+                beds: items,
+                totalRecords,
+                isLoading: false,
+                selectedBed: newSelectedBed,
+              });
             }),
             catchError((err) => {
               patchState(store, { error: 'Failed to load beds.', isLoading: false });
-              messageService.add({
-                key: 'custom-toast',
-                severity: toastSeverity.error,
-                summary: 'Error',
-                detail: 'Could not fetch bed data.',
-                life: 3000,
-              });
+              messageService.add({ key: 'custom-toast', severity: toastSeverity.error, summary: 'Error', detail: 'Could not fetch bed data.', life: 3000 });
               return of(null);
             }),
           ),
@@ -168,5 +192,24 @@ export const BedStore = signalStore(
 
     // --- RETURN THE METHODS ---
     return { loadBeds, addBed, deleteBed, selectBed, paginate };
+  }),
+
+   // 4. NEW: LIFECYCLE HOOKS for auto-refresh
+  withHooks({
+    onInit(store, destroyRef = inject(DestroyRef)) {
+      // Start a timer that emits after 5 minutes, and then every 5 minutes after that.
+      timer(REFRESH_INTERVAL_MS, REFRESH_INTERVAL_MS)
+        .pipe(
+          // Automatically unsubscribe when the store is destroyed.
+          takeUntilDestroyed(destroyRef)
+        )
+        .subscribe(() => {
+          console.log('Auto-refreshing bed data...');
+          // Call the loadBeds method, passing the *last used* lazy load event.
+          // This ensures we refresh the current page, preserving sorting and filtering.
+          store.loadBeds(store.lastLazyLoadEvent());
+        });
+    },
+    // No onDestroy needed thanks to takeUntilDestroyed()
   }),
 );

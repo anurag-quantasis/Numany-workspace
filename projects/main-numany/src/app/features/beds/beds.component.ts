@@ -46,15 +46,8 @@ export class BedsComponent {
   // Form for adding a new bed
   bedForm = this.fb.group({
     name: ['', Validators.required],
-    area: [null as number | null, [Validators.required, noNegativeValues]], // Explicitly type for numbers
+    area: ['', [Validators.required, noNegativeValues]], // Explicitly type for numbers
     section: ['', [Validators.required, Validators.minLength(3)]],
-  });
-
-  globalWarmingForm = this.fb.group({
-    co2: [null, [Validators.required, Validators.min(0)]],
-    methane: [null, [Validators.required, Validators.min(0)]],
-    source: ['', [Validators.required, Validators.minLength(3)]],
-    tempAnomaly: [null, [Validators.required, noNegativeValues]], // Using a custom validator
   });
 
   // ngOnInit(): void {
@@ -104,21 +97,11 @@ export class BedsComponent {
     }
     
     // The form value matches the NewBed type
-    // this.store.addBed(this.bedForm.getRawValue());
+    this.store.addBed(this.bedForm.getRawValue());
     this.isAddDialogVisible = false;
     
     // Optional: Reset the form and the submitted flag for the next time the dialog opens
     this.bedForm.reset();
-  }
-
-  onSubmit(): void {
-    if (this.globalWarmingForm.invalid) {
-      console.log("FORm Invalid")
-      this.globalWarmingForm.markAllAsTouched();
-      return;
-    }
-    // this.submittedData = this.globalWarmingForm.value;
-    console.log("Submitted Data", this.globalWarmingForm.value);
   }
 
   confirmDelete() {

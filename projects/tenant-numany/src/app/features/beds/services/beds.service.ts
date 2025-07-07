@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { delay, Observable, of, throwError } from 'rxjs';
 import { Bed, NewBed, PaginatedBedsResponse } from '../bed-store/beds.model';
 import { LazyLoadEvent } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
+import { ApiService } from '../../../core/services/api.service';
 
 // --- MOCK DATABASE ---
 const MOCK_BEDS: Bed[] = Array.from({ length: 55 }, (_, i) => ({
@@ -15,6 +16,8 @@ const MOCK_BEDS: Bed[] = Array.from({ length: 55 }, (_, i) => ({
 
 @Injectable({ providedIn: 'root' })
 export class BedService {
+   private apiService = inject(ApiService);
+
   // Simulate fetching a paginated list of beds from an API
   getBeds(event: TableLazyLoadEvent): Observable<PaginatedBedsResponse> {
     const page = (event.first || 0) / (event.rows || 10);
@@ -74,5 +77,9 @@ export class BedService {
     // A real HTTP DELETE often returns a 204 No Content status.
     // We simulate this by returning an Observable of void.
     return of(undefined).pipe(delay(500));
+  }
+
+  getBeds2(): Observable<Bed[]> {
+    return this.apiService.get<Bed[]>('/beds');
   }
 }

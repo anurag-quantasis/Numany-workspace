@@ -69,86 +69,52 @@
 
 <!-- Add Bed Dialog -->
 <p-dialog header="Add a New Bed" draggable="false" [(visible)]="isAddDialogVisible" [modal]="true">
-  <!-- <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4" [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
-    <app-custom-input
-      label="Data Source"
-      placeholder="e.g., NOAA"
-      type="text"
-      formControlName="name"
-    ></app-custom-input>
-
-    <app-custom-input
-      label="Data Source"
-      placeholder="e.g., NOAA"
-      type="text"
-      formControlName="area"
-    ></app-custom-input>
-
-    <app-custom-input
-      label="Data Source"
-      placeholder="e.g., NOAA"
-      type="number"
-      formControlName="section"
-      [errorMessages]="{ noNegative: 'Anomaly cannot be a negative number.' }"
-    ></app-custom-input>
-
-   <div class="md:col-span-2">
-      <p-button
-        label="Cancel"
-        shortcut="alt.c"
-        severity="secondary"
-        (click)="isAddDialogVisible = false"
-      ></p-button>
-      <p-button
-        type="submit"
-        label="Save"
-        shortcut="alt.s"
-        [disabled]="bedForm.invalid"
-        [loading]="store.isLoading()"
-      ></p-button>
-    </div>
-  </form> -->
-
-  <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4" [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
+  <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 " [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
 
   <!-- Bed Name Input -->
-  <app-custom-input
-    label="Bed Name"
-    placeholder="e.g., Rose Garden Section A"
-    type="text"
-    formControlName="name"
-    [errorMessages]="{ required: 'The bed name is required.' }"
-  ></app-custom-input>
+   <div class="min-h-24">
+     <app-custom-input
+       label="Bed Name"
+       placeholder="e.g.Bed A"
+       type="text"
+       formControlName="name"
+       [errorMessages]="{ required: 'The bed name is required.' }"
+     ></app-custom-input>
+   </div>
 
   <!-- Area Input (Number) -->
-  <app-custom-input
-    label="Area"
-    placeholder=""
-    type="number"
-    formControlName="area"
-    [errorMessages]="{ 
-      required: 'The area is required.',
-      noNegative: 'Area cannot be a negative value.'
-    }"
-  ></app-custom-input>
+   <div class="min-h-24">
+     <app-custom-input
+       label="Area"
+       placeholder=""
+       type="number"
+       formControlName="area"
+       [errorMessages]="{ 
+         required: 'The area is required.',
+         noNegative: 'Area cannot be a negative value.'
+       }"
+     ></app-custom-input>
+   </div>
   
   <!-- Section Input (Text with minlength) -->
-  <app-custom-input
-    label="Section Code"
-    placeholder="e.g., NORTH-1"
-    type="text"
-    formControlName="section"
-    [errorMessages]="{ 
-      required: 'The section code is required.',
-      minlength: 'Section code must be at least 3 characters long.'
-    }"
-    [toastErrors]="{ 
-      minlength: { severity: 'warn', summary: 'Input Too Short' } 
-    }"
-  ></app-custom-input>
+   <div class="min-h-24">
+     <app-custom-input
+       label="Section Code"
+       placeholder="e.g., NORTH-1"
+       type="text"
+       formControlName="section"
+       [errorMessages]="{ 
+         required: 'The section code is required.',
+         minlength: 'Section code must be at least 3 characters long.'
+       }"
+       [toastErrors]="{ 
+         minlength: { severity: 'warn', summary: 'Input Too Short' } 
+       }"
+     ></app-custom-input>
+   </div>
   
   <!-- Form Actions (e.g., Save and Cancel buttons) -->
-  <div class="flex justify-end gap-2 mt-4">
+  <div class="flex justify-end col-span-2 gap-2 mt-4">
     <button
       pButton
       pRipple

@@ -3,7 +3,7 @@ import { BedStore } from './bed-store/bed.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ShortcutDirective, ShortcutService } from 'shared-ui';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Bed } from './bed-store/beds.model';
 import { ButtonModule } from 'primeng/button';
@@ -11,6 +11,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { BedService } from './services/beds.service';
 
 @Component({
   selector: 'tenant-beds',
@@ -38,6 +39,9 @@ export class BedsComponent {
   private keyNavSubscription = new Subscription();
   isAddDialogVisible = false;
 
+  private bedsService = inject(BedService);
+  public beds$!: Observable<any[]>;
+
   // Form for adding a new bed
   bedForm = this.fb.group({
     name: ['', Validators.required],
@@ -45,10 +49,17 @@ export class BedsComponent {
     section: ['', Validators.required],
   });
 
-  // ngOnInit(): void {
-  //   // Initial load. The PrimeNG table will also trigger this with default values.
-  //   this.store.loadBeds({ first: 0, rows: 10 });
-  // }
+  ngOnInit(): void {
+    // Initial load. The PrimeNG table will also trigger this with default values.
+    this.store.loadBeds({ first: 0, rows: 10 });
+
+    this.beds$ = this.bedsService.getBeds2();
+
+    this.beds$.subscribe((value)=> {
+      console.log("BEDS Inside api",value);
+    })
+
+  }
 
   ngAfterViewInit(): void {
     // Register all our keyboard navigation shortcuts.
