@@ -6,3 +6,11 @@
 .active .sidenav-link-text {
   color: #000;
 }
+
+::ng-deep .scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+::ng-deep .scrollbar-hide {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}

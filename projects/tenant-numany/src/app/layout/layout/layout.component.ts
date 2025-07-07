@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HeaderBarComponent } from '../../../../../shared-ui/src/lib/header-bar/header-bar.component';
+import { HeaderBarComponent } from '../../../../../shared-ui/src/lib/components/header-bar/header-bar.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

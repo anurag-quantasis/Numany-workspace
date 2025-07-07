@@ -64,27 +64,35 @@
       </ng-template>
     </p-table>
   </p-card>
+
 </div>
 
 <!-- Add Bed Dialog -->
-<p-dialog header="Add a New Bed" [(visible)]="isAddDialogVisible" [modal]="true">
-  <form [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
-    <div class="flex flex-column gap-3">
-      <div class="flex flex-column gap-2">
-        <label for="name">Name</label>
-        <input pInputText id="name" formControlName="name" />
-      </div>
-      <div class="flex flex-column gap-2">
-        <label for="area">Area</label>
-        <input pInputText id="area" formControlName="area" />
-      </div>
-      <div class="flex flex-column gap-2">
-        <label for="section">Section</label>
-        <input pInputText id="section" formControlName="section" />
-      </div>
-    </div>
+<p-dialog header="Add a New Bed" draggable="false" [(visible)]="isAddDialogVisible" [modal]="true">
+  <!-- <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4" [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
+    <app-custom-input
+      label="Data Source"
+      placeholder="e.g., NOAA"
+      type="text"
+      formControlName="name"
+    ></app-custom-input>
 
-    <div class="flex justify-content-end gap-2 mt-4">
+    <app-custom-input
+      label="Data Source"
+      placeholder="e.g., NOAA"
+      type="text"
+      formControlName="area"
+    ></app-custom-input>
+
+    <app-custom-input
+      label="Data Source"
+      placeholder="e.g., NOAA"
+      type="number"
+      formControlName="section"
+      [errorMessages]="{ noNegative: 'Anomaly cannot be a negative number.' }"
+    ></app-custom-input>
+
+   <div class="md:col-span-2">
       <p-button
         label="Cancel"
         shortcut="alt.c"
@@ -99,7 +107,68 @@
         [loading]="store.isLoading()"
       ></p-button>
     </div>
-  </form>
+  </form> -->
+
+  <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4" [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
+
+  <!-- Bed Name Input -->
+  <app-custom-input
+    label="Bed Name"
+    placeholder="e.g., Rose Garden Section A"
+    type="text"
+    formControlName="name"
+    [errorMessages]="{ required: 'The bed name is required.' }"
+  ></app-custom-input>
+
+  <!-- Area Input (Number) -->
+  <app-custom-input
+    label="Area"
+    placeholder=""
+    type="number"
+    formControlName="area"
+    [errorMessages]="{ 
+      required: 'The area is required.',
+      noNegative: 'Area cannot be a negative value.'
+    }"
+  ></app-custom-input>
+  
+  <!-- Section Input (Text with minlength) -->
+  <app-custom-input
+    label="Section Code"
+    placeholder="e.g., NORTH-1"
+    type="text"
+    formControlName="section"
+    [errorMessages]="{ 
+      required: 'The section code is required.',
+      minlength: 'Section code must be at least 3 characters long.'
+    }"
+    [toastErrors]="{ 
+      minlength: { severity: 'warn', summary: 'Input Too Short' } 
+    }"
+  ></app-custom-input>
+  
+  <!-- Form Actions (e.g., Save and Cancel buttons) -->
+  <div class="flex justify-end gap-2 mt-4">
+    <button
+      pButton
+      pRipple
+      type="button" 
+      label="Cancel" 
+      class="p-button-secondary" 
+      (click)="isAddDialogVisible = false"
+    ></button>
+    <button
+      pButton
+      pRipple
+      type="submit" 
+      label="Save Bed" 
+      class="p-button-success" 
+      icon="pi pi-check"
+      [disabled]="bedForm.invalid"
+    ></button>
+  </div>
+
+</form>
 </p-dialog>
 
 <div>

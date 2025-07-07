@@ -1,0 +1,4 @@
+::ng-deep .scrollable-submenu .p-menubar-submenu{
+  max-height: 300px;
+  overflow-y: auto;
+}

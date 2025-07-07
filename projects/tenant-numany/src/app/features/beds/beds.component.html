@@ -1,1 +1,132 @@
-<p>beds works!</p>
+<div shortcut="" class="mx-4 mt-4">
+  <p-card>
+    <p-table
+      #pTable
+      [value]="store.beds()"
+      [lazy]="true"
+      (onLazyLoad)="loadBeds($event)"
+      [paginator]="true"
+      [rows]="5"
+      [first]="store.first()"
+      [totalRecords]="store.total()"
+      [loading]="store.isLoading()"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      dataKey="id"
+      stripedRows
+      styleClass="rounded-lg"
+      selectionMode="single"
+      [selection]="store.selectedBed()"
+      (selectionChange)="store.selectBed($event)"
+      styleClass=""
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-end align-items-center gap-4">
+          <p-button
+            label="Insert Bed"
+            icon="pi pi-plus"
+            shortcut="alt.i"
+            (click)="showAddDialog()"
+          ></p-button>
+
+          <p-button
+            label="Delete"
+            icon="pi pi-trash"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="confirmDelete()"
+            [disabled]="!store.isBedSelected()"
+          ></p-button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 5rem">#</th>
+          <th>Name</th>
+          <th>Area</th>
+          <th>Section</th>
+          <th>Bed ID</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-bed let-rowIndex="rowIndex">
+        <tr [pSelectableRow]="bed">
+          <!-- The rowIndex gives us the order number for the current page -->
+          <td>{{ rowIndex + 1 }}</td>
+          <td>{{ bed.name }}</td>
+          <td>{{ bed.area }}</td>
+          <td>{{ bed.section }}</td>
+          <td>{{ bed.id }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">No beds found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<!-- Add Bed Dialog -->
+<p-dialog header="Add a New Bed" [(visible)]="isAddDialogVisible" [modal]="true">
+  <form [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
+    <div class="flex flex-column gap-3">
+      <div class="flex flex-column gap-2">
+        <label for="name">Name</label>
+        <input pInputText id="name" formControlName="name" />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="area">Area</label>
+        <input pInputText id="area" formControlName="area" />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="section">Section</label>
+        <input pInputText id="section" formControlName="section" />
+      </div>
+    </div>
+
+    <div class="flex justify-content-end gap-2 mt-4">
+      <p-button
+        label="Cancel"
+        shortcut="alt.c"
+        severity="secondary"
+        (click)="isAddDialogVisible = false"
+      ></p-button>
+      <p-button
+        type="submit"
+        label="Save"
+        shortcut="alt.s"
+        [disabled]="bedForm.invalid"
+        [loading]="store.isLoading()"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>
+
+<div>
+  <p-confirmDialog #cd key="delete-bed-confirmation" [style]="{ width: '450px' }">
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <!-- The Cancel (Reject) Button -->
+        <button
+          pButton
+          type="button"
+          label="Cancel"
+          severity="secondary"
+          outlined="true"
+          shortcut="alt.c"
+          (click)="cd.onReject()"
+        ></button>
+
+        <!-- The Delete (Accept) Button -->
+        <button
+          pButton
+          type="button"
+          label="Delete"
+          severity="danger"
+          shortcut="alt.d"
+          (click)="cd.onAccept()"
+        ></button>
+      </div>
+    </ng-template>
+  </p-confirmDialog>
+</div>
