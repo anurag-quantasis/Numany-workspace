@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CustomInputComponent } from '../../../../../shared-ui/src/lib/components/form-components/custom-input/custom-input.component';
@@ -48,8 +54,8 @@ export class AdministrationSchedulesComponent implements OnInit {
     });
   }
 
-  get scheduleId(){
-    return this.form.get('scheduleId')
+  get scheduleId() {
+    return this.form.get('scheduleId');
   }
 
   handleSchedule(schedule: ScheduleSelection, controlName: string) {

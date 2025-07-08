@@ -5,12 +5,12 @@
   <section class="flex justify-between items-center">
     <div>
       <shared-custom-input formControlName="scheduleId" type="text" label="Schedule Id" />
-<span
-  *ngIf="scheduleId?.hasError('required') && (scheduleId?.dirty || scheduleId?.touched)"
-  class="text-sm text-red-500"
->
-  Schedule Id is required
-</span>
+      <span
+        *ngIf="scheduleId?.hasError('required') && (scheduleId?.dirty || scheduleId?.touched)"
+        class="text-sm text-red-500"
+      >
+        Schedule Id is required
+      </span>
     </div>
 
     <div>

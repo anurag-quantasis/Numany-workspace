@@ -7,6 +7,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { routes } from './app.routes';
 import { MyPreset } from '../styles';
 import { MessageService } from 'primeng/api';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { MainInterceptor } from './core/auth/interceptor/main.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +27,7 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    provideHttpClient(withInterceptors([MainInterceptor])),
     MessageService,
   ],
 };
