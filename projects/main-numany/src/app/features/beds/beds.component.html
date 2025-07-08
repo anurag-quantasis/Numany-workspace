@@ -75,7 +75,7 @@
     (lazyLoad)="store.loadBeds($event)" 
     (selectionChange)="handleSelectionChange($event)"
     [tableActions]="true"
-    selectionMode="single"
+    selectionMode="multiple"
     >
     <!--
       This content is projected into the [tableActions] slot
@@ -96,10 +96,10 @@
     ADVANCED: Example of a custom cell template for the 'name' column.
     This demonstrates the power of the ColumnTemplateDirective.
   -->
-  <ng-template appColumnTemplate="name" let-bed>
+  <!-- <ng-template appColumnTemplate="name" let-bed>
     <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
     <strong>{{ bed.name }}</strong>
-  </ng-template>
+  </ng-template> -->
   
   </shared-data-table>
   </div>
