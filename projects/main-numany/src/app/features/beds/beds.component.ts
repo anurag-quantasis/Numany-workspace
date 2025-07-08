@@ -1,158 +1,147 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common'; // <-- Import CommonModule for *ngIf
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
+// Your Store, Models, and Services
 import { BedStore } from './bed-store/bed.store';
-import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { Bed } from './bed-store/beds.model';
+import { ShortcutService } from '../../core/services/shortcut.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
+
+// Shared and PrimeNG UI Modules
+import { SharedDataTableComponent, ColumnTemplateDirective, ColumnDef, CustomInputComponent, noNegativeValues } from 'shared-ui';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ShortcutDirective } from '../../core/directive/shortcut.directive';
-// import { ShortcutKeyHintDirective } from '../../core/directive/shortcut-key-hint.directive';
-import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { Bed } from './bed-store/beds.model';
-import { Subscription } from 'rxjs';
-import { ShortcutService } from '../../core/services/shortcut.service';
-import { CustomInputComponent, noNegativeValues } from 'shared-ui';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'main-beds',
+  standalone: true, // <-- Best practice for modern Angular
   imports: [
-    TableModule,
+    CommonModule, // For *ngIf
+    ReactiveFormsModule,
+    SharedDataTableComponent,
+    ColumnTemplateDirective,
+    CustomInputComponent,
     ButtonModule,
     DialogModule,
-    InputTextModule,
-    ReactiveFormsModule,
-    ShortcutDirective,
-    CardModule,
     ConfirmDialogModule,
-    CustomInputComponent,
+    CardModule,
   ],
   templateUrl: './beds.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [BedStore, MessageService, ConfirmationService],
 })
-export class BedsComponent {
-  // Inject the store. Because it's provided above, a new instance is created.
+export class BedsComponent implements OnDestroy {
+  // --- INJECTIONS ---
   readonly store = inject(BedStore);
   private readonly fb = inject(FormBuilder).nonNullable;
   private readonly confirmationService = inject(ConfirmationService);
   private readonly shortcutService = inject(ShortcutService);
-  // @ViewChild('pTable') pTable!: Table;
   private keyNavSubscription = new Subscription();
+
+  // --- COMPONENT STATE ---
   isAddDialogVisible = false;
 
-  // Form for adding a new bed
+  // Form for adding a new bed (this remains unchanged)
   bedForm = this.fb.group({
     name: ['', Validators.required],
-    area: ['', [Validators.required, noNegativeValues]], // Explicitly type for numbers
+    area: ['', [Validators.required, noNegativeValues]],
     section: ['', [Validators.required, Validators.minLength(3)]],
   });
 
-  // ngOnInit(): void {
-  //   // Initial load. The PrimeNG table will also trigger this with default values.
-  //   this.store.loadBeds({ first: 0, rows: 10 });
-  // }
+  // Column definitions for our generic table (this remains unchanged)
+  readonly columns: ColumnDef<Bed>[] = [
+    { field: 'name', header: 'Name' },
+    { field: 'area', header: 'Area' },
+    { field: 'section', header: 'Section' },
+    { field: 'id', header: 'Bed ID' },
+  ];
 
-  ngAfterViewInit(): void {
-    // Register all our keyboard navigation shortcuts.
-    this.keyNavSubscription.add(
-      this.shortcutService.on('arrowdown', () => this.navigateSelection('down')),
-    );
-    this.keyNavSubscription.add(
-      this.shortcutService.on('arrowup', () => this.navigateSelection('up')),
-    );
-    this.keyNavSubscription.add(
-      // The shortcut now calls the new, simplified method
-      this.shortcutService.on('arrowright', () => this.navigatePage('next')),
-    );
-    this.keyNavSubscription.add(
-      this.shortcutService.on('arrowleft', () => this.navigatePage('previous')),
-    );
+  constructor() {
+    this.setupShortcuts();
   }
 
-  // Method to be called by the PrimeNG table's (onLazyLoad) event
-  loadBeds(event: TableLazyLoadEvent) {
-    this.store.loadBeds(event);
+  ngOnDestroy(): void {
+    // Clean up subscriptions to prevent memory leaks
+    this.keyNavSubscription.unsubscribe();
   }
+
+  private setupShortcuts(): void {
+    this.keyNavSubscription.add(this.shortcutService.on('arrowdown', () => this.navigateSelection('down')));
+    this.keyNavSubscription.add(this.shortcutService.on('arrowup', () => this.navigateSelection('up')));
+    // Simplify: have shortcuts call the store directly
+    this.keyNavSubscription.add(this.shortcutService.on('arrowright', () => this.store.paginate('next')));
+    this.keyNavSubscription.add(this.shortcutService.on('arrowleft', () => this.store.paginate('previous')));
+  }
+
+  // --- EVENT HANDLERS ---
+
+  /** Handles selection changes from the generic table. Type-safe for single or multi-select events. */
+  handleSelectionChange(event: Bed | Bed[] | null): void {
+    const selectionAsArray = !event ? null : Array.isArray(event) ? event : [event];
+    this.store.setSelection(selectionAsArray);
+  }
+
+  /** Opens the confirmation dialog to delete one or more selected beds. */
+  confirmDelete() {
+    const selected = this.store.selectedBeds();
+    if (selected.length === 0) {
+      return;
+    }
+
+    const message = selected.length === 1
+      ? `Are you sure you want to delete "${selected[0].name}"?`
+      : `Are you sure you want to delete these ${selected.length} beds?`;
+
+    this.confirmationService.confirm({
+      key: 'delete-bed-confirmation',
+      message,
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        const idsToDelete = selected.map(bed => bed.id);
+        this.store.deleteBeds(idsToDelete);
+      },
+      // ... other confirmation properties
+    });
+  }
+
+  /** Navigates the "active" selection up or down using arrow keys. */
+  navigateSelection(direction: 'up' | 'down'): void {
+    const currentBeds = this.store.beds();
+    if (currentBeds.length === 0) return;
+
+    // Use the computed signal to find the "active" row
+    const firstSelected = this.store.firstSelectedBed(); 
+    const currentIndex = firstSelected ? currentBeds.findIndex((b) => b.id === firstSelected.id) : -1;
+
+    // Use modulo for clean, wrapping navigation
+    let newIndex = (direction === 'down')
+      ? (currentIndex + 1) % currentBeds.length
+      : (currentIndex - 1 + currentBeds.length) % currentBeds.length;
+
+    // When navigating with arrows, we select just one item
+    this.store.setSelection([currentBeds[newIndex]]);
+  }
+  
+  // --- DIALOG METHODS (Unchanged) ---
 
   showAddDialog() {
     this.bedForm.reset();
     this.isAddDialogVisible = true;
   }
 
-  onSelectionChange(bed: Bed) {
-    console.log('Selected Bed:', bed);
-    this.store.selectBed(bed);
-  }
-
   saveNewBed() {
-    // Set the flag to true when the user attempts to save
-    
     if (this.bedForm.invalid) {
-      // This is still useful for accessibility and certain styling hooks
       this.bedForm.markAllAsTouched();
       return;
     }
-    
-    // The form value matches the NewBed type
     this.store.addBed(this.bedForm.getRawValue());
     this.isAddDialogVisible = false;
-    
-    // Optional: Reset the form and the submitted flag for the next time the dialog opens
-    this.bedForm.reset();
-  }
-
-  confirmDelete() {
-    const bedToDelete = this.store.selectedBed();
-    if (!bedToDelete) {
-      return;
-    }
-
-    this.confirmationService.confirm({
-      key: 'delete-bed-confirmation',
-      closable: true,
-      closeOnEscape: true,
-      rejectButtonProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: 'Save',
-      },
-      message: `Are you sure you want to delete "${bedToDelete.name}"?`,
-      header: 'Confirm Deletion',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        // If the user clicks "Yes", call the deleteBed method in the store.
-        this.store.deleteBed(bedToDelete.id);
-      },
-    });
-  }
-
-  /** Navigates the selected row up or down. */
-  navigateSelection(direction: 'up' | 'down'): void {
-    const currentBeds = this.store.beds();
-    if (currentBeds.length === 0) return;
-
-    const selected = this.store.selectedBed();
-    const currentIndex = selected ? currentBeds.findIndex((b) => b.id === selected.id) : -1;
-
-    let newIndex = 0;
-    if (direction === 'down') {
-      newIndex = currentIndex >= currentBeds.length - 1 ? 0 : currentIndex + 1; // Wraps to top
-    } else {
-      // 'up'
-      newIndex = currentIndex <= 0 ? currentBeds.length - 1 : currentIndex - 1; // Wraps to bottom
-    }
-
-    this.store.selectBed(currentBeds[newIndex]);
-  }
-
-  /** Navigates to the next or previous page in the paginator. */
-  navigatePage(direction: 'next' | 'previous'): void {
-    this.store.paginate(direction);
   }
 }

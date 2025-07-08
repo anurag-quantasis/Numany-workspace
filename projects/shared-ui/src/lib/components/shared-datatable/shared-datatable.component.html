@@ -1,0 +1,89 @@
+<p-card>
+  <p-table
+    [value]="data()"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoad.emit($event)"
+    [paginator]="true"
+    [rows]="rows()"
+    [first]="first()"
+    [totalRecords]="totalRecords()"
+    [loading]="loading()"
+    [rowsPerPageOptions]="rowsPerPageOptions()"
+    [dataKey]="dataKey()"
+    stripedRows
+    styleClass="rounded-lg"
+    [selectionMode]="selectionMode()"
+    [selection]="selection()"
+    (selectionChange)="selectionChange.emit($event)"
+  >
+    <!--
+      Content Projection Slot for Actions (Insert, Delete, etc.)
+      The parent component will provide the content for this slot.
+    -->
+    @if(tableActions()){
+      <ng-template pTemplate="caption">
+        <div>
+          <ng-content select="[tableActions]"></ng-content>
+        </div>
+      </ng-template>
+    }
+
+    <!-- Dynamic Header Generation -->
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- 
+          CHANGE 1: Add the header checkbox column, but only for multi-select mode.
+          This is the component PrimeNG uses for the "select all" functionality.
+        -->
+        <th *ngIf="selectionMode() === 'multiple'" style="width: 3rem">
+          <p-tableHeaderCheckbox />
+        </th>
+
+        <th style="width: 5rem">#</th>
+        <th *ngFor="let col of columns()" [style]="col.style">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+
+    <!-- Dynamic Body Generation -->
+    <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+      <tr [pSelectableRow]="item">
+        <td *ngIf="selectionMode() === 'multiple'">
+          <p-tableCheckbox [value]="item" />
+        </td>
+
+        <!-- The rowIndex gives us the order number for the current page -->
+        <td>{{ first() + rowIndex + 1 }}</td>
+        <!--
+          Loop through columns to create cells.
+          This makes the component data-agnostic.
+        -->
+        <td *ngFor="let col of columns()">
+          <!--
+            Check if a custom template exists for this column's field.
+            If yes, render it. If not, display the plain data.
+          -->
+          <ng-container *ngIf="customTemplateMap.has(col.field); else defaultCell">
+            <ng-container
+              *ngTemplateOutlet="customTemplateMap.get(col.field)!; context: { $implicit: item }"
+            ></ng-container>
+          </ng-container>
+
+          <ng-template #defaultCell>
+            {{ getNestedValue(item, col.field) }}
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- Empty Message -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="columns().length + (selectionMode() === 'multiple' ? 2 : 1)">
+          {{ emptyMessage() }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

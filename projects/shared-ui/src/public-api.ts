@@ -9,6 +9,7 @@ export * from './lib/shared-ui.component';
 export * from './lib/components/branded-button/branded-button.component';
 export * from './lib/components/header-bar/header-bar.component';
 export * from './lib/components/custom-input/custom-input.component';
+export * from './lib/components/shared-datatable/shared-datatable.component';
 
 // Shared Services
 export * from './lib/services/shortcut.service';

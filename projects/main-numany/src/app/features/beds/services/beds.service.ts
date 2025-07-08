@@ -59,17 +59,17 @@ export class BedService {
    * @param bedId The string ID of the bed to delete.
    * @returns An Observable of void on success, or an error if the bed is not found.
    */
-  deleteBed(bedId: string): Observable<void> {
+  deleteBed(bedId: string[]): Observable<void> {
     // Find the index of the bed to delete.
-    const bedIndex = MOCK_BEDS.findIndex((b) => b.id === bedId);
+    // const bedIndex = MOCK_BEDS.findIndex((b) => b.id === bedId);
 
     // If the bed wasn't found, simulate a "Not Found" error from the API.
-    if (bedIndex === -1) {
-      return throwError(() => new Error(`Bed with ID ${bedId} not found.`)).pipe(delay(500));
-    }
+    // if (bedIndex === -1) {
+    //   return throwError(() => new Error(`Bed with ID ${bedId} not found.`)).pipe(delay(500));
+    // }
 
     // If found, remove it from the array.
-    MOCK_BEDS.splice(bedIndex, 1);
+    // MOCK_BEDS.splice(bedIndex, 1);
 
     // A real HTTP DELETE often returns a 204 No Content status.
     // We simulate this by returning an Observable of void.

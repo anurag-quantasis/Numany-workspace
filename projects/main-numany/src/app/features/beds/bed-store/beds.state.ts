@@ -7,7 +7,7 @@ export interface BedState {
   isLoading: boolean;
   error: string | null;
   filter: string; // To hold any search/filter query
-  selectedBed?: Bed | null; // Optional: to hold the currently selected bed for details or editing
+  selectedBeds: Bed[]; // Optional: to hold the currently selected bed for details or editing
   lastLazyLoadEvent: TableLazyLoadEvent;
 }
 
@@ -17,6 +17,6 @@ export const initialState: BedState = {
   isLoading: false,
   error: null,
   filter: '',
-  selectedBed: null,
+  selectedBeds: [],
   lastLazyLoadEvent: { first: 0, rows: 5 },
 };
