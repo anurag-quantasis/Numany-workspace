@@ -47,6 +47,7 @@ export class HeaderBarComponent implements OnInit {
             shortcutHint: 'u',
             command: () => { console.log("Unconfrimed List") }
           },
+
         ]
       },
       // Patients
@@ -295,12 +296,23 @@ export class HeaderBarComponent implements OnInit {
             // shortcut: 'alt.f v',
             // shortcutHint: 'V',
             command: () => { console.log('Pharmacist Intervention Setup clicked'); },
-            items: [],
+            items: [
+               {
+                 label: 'Intervention Types',
+                 route: '/pharmacist-intervention-type'
+                 
+               },
+               {
+                label: 'Intervention Data Classes',
+                route: '/pharmacist-intervention-type-maintainance'
+               }
+            ],
           },
           {
             label: 'Physician',
             shortcut: 'alt.f y',
             shortcutHint: 'Y',
+            route: '/physician',
             command: () => { console.log('Physician clicked'); },
           },
           {
