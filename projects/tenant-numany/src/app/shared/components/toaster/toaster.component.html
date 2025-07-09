@@ -1,0 +1,69 @@
+<p-toast key="custom-toast" position="top-right" [baseZIndex]="5000">
+  <ng-template let-message #headless let-closeFn="closeFn">
+    <div class="flex min-h-16 rounded-lg justify-between border border-grey-200">
+      <!-- Line, Info Circle, Message Sections -->
+      <div class="flex flex-row gap-2">
+        <!-- vertical line -->
+        <div
+          class="w-1.5 flex-shrink-0 min-h-full rounded-l-lg"
+          [class.bg-success-600]="message.severity === 'success'"
+          [class.bg-error-600]="message.severity === 'error'"
+          [class.bg-warning-600]="message.severity === 'warn'"
+          [class.bg-secondary-600]="message.severity === 'info'"
+        ></div>
+
+        <!-- message and icon section -->
+        <div class="flex flex-row gap-2 p-2">
+          <!-- Icon Section -->
+          <div
+            class="h-6 w-6 rounded-lg border flex items-center justify-center flex-shrink-0"
+            [ngClass]="{
+              'bg-success-50 border-success-75': message.severity === 'success',
+              'bg-error-50 border-error-75': message.severity === 'error',
+              'bg-warning-50 border-warn-75': message.severity === 'warn',
+              'bg-secondary-50 border-info-75': message.severity === 'info',
+            }"
+          >
+            <div
+              class="h-[9px] w-[9px] rounded-full flex items-center justify-center"
+              [ngClass]="{
+                'bg-success-600': message.severity === 'success',
+                'bg-error-600': message.severity === 'error',
+                'bg-warning-600': message.severity === 'warn',
+                'bg-secondary-600': message.severity === 'info',
+              }"
+            >
+              <i class="pi pi-check text-white text-[5px] text-center" style="font-weight: 900"></i>
+            </div>
+          </div>
+
+          <!-- Message Section -->
+          <div class="flex flex-col">
+            <!-- Message Summary -->
+            <span class="font-steviesans text-active font-bold">
+              {{ message.summary }}
+            </span>
+
+            <!-- Message Details -->
+            @if (message.detail) {
+              <ol class="list-none text-active {{ message.summary ? 'mt-2' : '' }} ml-4">
+                @for (detail of message.detail?.split('|'); track detail) {
+                  <li>
+                    <span class="font-steviesans text-sm text-grey-600">{{ detail }}</span>
+                  </li>
+                }
+              </ol>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Close Button Section -->
+      <i
+        class="pi pi-times hover:cursor-pointer p-3"
+        style="font-weight: 900"
+        (click)="close()"
+      ></i>
+    </div>
+  </ng-template>
+</p-toast>

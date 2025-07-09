@@ -61,5 +61,20 @@ export const MyPreset = definePreset(Aura, {
         },
       },
     },
+    button: {
+      colorScheme: {
+        light: {
+          info: {
+            outlined: {
+              root: {
+                border: {
+                  color: '#9B870C',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
 });

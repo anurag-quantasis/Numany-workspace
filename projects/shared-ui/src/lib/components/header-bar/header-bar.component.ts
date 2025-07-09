@@ -337,7 +337,17 @@ export class HeaderBarComponent implements OnInit {
             command: () => {
               console.log('Drug clicked');
             },
-            items: [],
+            items: [
+              {
+                label: 'Item Maintenance',
+              },
+              {
+                label: 'Expiration',
+              },
+              {
+                label: 'Print',
+              },
+            ],
           },
           {
             label: 'Financial Reporting Groups',

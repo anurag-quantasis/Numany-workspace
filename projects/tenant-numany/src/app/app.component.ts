@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { ToasterComponent } from './shared/components/toaster/toaster.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ButtonModule],
+  imports: [RouterOutlet, ButtonModule, ToasterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

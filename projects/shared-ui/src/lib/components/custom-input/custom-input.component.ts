@@ -55,6 +55,7 @@ let nextId = 0;
           [(ngModel)]="value"
           (ngModelChange)="onChange($event)"
           (onBlur)="onBlur()"
+          [useGrouping]="useGrouping()"
           [disabled]="disabled"
           [placeholder]="placeholder()"
           styleClass="w-full"
@@ -107,6 +108,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   labelClass = input<string>('');
   id = input<string>(`custom-input-${nextId++}`);
   toastErrors = input<{ [key: string]: ToastErrorConfig }>({});
+  useGrouping = input<boolean>(false);
 
   // --- Injections ---
   public ngControl: NgControl = inject(NgControl, { self: true });
