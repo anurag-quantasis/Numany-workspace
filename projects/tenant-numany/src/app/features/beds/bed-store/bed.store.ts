@@ -30,73 +30,36 @@ export const BedStore = signalStore(
 
     const loadBeds = rxMethod<TableLazyLoadEvent>(
       pipe(
-        tap((event) => {
-          lastLazyLoadEvent = event; // Save the event for refreshing
-          patchState(store, {
-            isLoading: true,
-            error: null,
-            selectedBed: null,
-            lastLazyLoadEvent: event,
-          });
-        }),
-        switchMap((event) =>
-          bedService.getBeds(event).pipe(
-            tap(({ items, totalRecords }) => {
+        tap((event) => patchState(store, { isLoading: true, error: null, lastLazyLoadEvent: event })),
+        switchMap((event) => bedService.getBeds(event).pipe(
+          tap((response) => {
+            if (response.status === 'success') {
+              const { items, totalRecords } = response.data;
               patchState(store, { beds: items, totalRecords, isLoading: false });
-
-              // After loading, select the first bed if the list is not empty.
-              if (items.length > 0) {
-                patchState(store, { selectedBed: items[0] });
-              }
-            }),
-            catchError((err) => {
-              patchState(store, { error: 'Failed to load beds.', isLoading: false });
-              messageService.add({
-                key: 'custom-toast',
-                severity: toastSeverity.error,
-                summary: 'Error',
-                detail: 'Could not fetch bed data.',
-                life: 3000,
-              });
-              return of(null);
-            }),
-          ),
-        ),
-      ),
+            } else {
+              patchState(store, { error: response.error, isLoading: false, beds: [], totalRecords: 0 });
+              messageService.add({ severity: 'error', summary: 'Loading Failed', detail: response.error });
+            }
+          })
+        ))
+      )
     );
 
     const addBed = rxMethod<NewBed>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        switchMap((newBed) =>
-          bedService.addBed(newBed).pipe(
-            tap((createdBed) => {
-              messageService.add({
-                key: 'custom-toast',
-                severity: toastSeverity.success,
-                summary: 'Success',
-                detail: `Bed "${createdBed.name}" was created successfully.`,
-                life: 3000,
-              });
-              // After adding, refresh the current page of the table
-              // V-- THIS IS THE FIX --V
-              // Call the local 'loadBeds' constant directly.
-              loadBeds(lastLazyLoadEvent);
-            }),
-            catchError((err: Error) => {
-              patchState(store, { error: err.message, isLoading: false });
-              messageService.add({
-                key: 'custom-toast',
-                severity: toastSeverity.error,
-                summary: 'Creation Failed',
-                detail: err.message || 'An unknown error occurred.',
-                life: 3000,
-              });
-              return of(null);
-            }),
-          ),
-        ),
-      ),
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((newBed) => bedService.addBed(newBed).pipe(
+          tap((response) => {
+            if (response.status === 'success') {
+              messageService.add({ severity: 'success', summary: 'Success', detail: 'Bed created successfully.' });
+              loadBeds(store.lastLazyLoadEvent()); // Reload table on success
+            } else {
+              patchState(store, { error: response.error, isLoading: false });
+              messageService.add({ severity: 'error', summary: 'Creation Failed', detail: response.error });
+            }
+          })
+        ))
+      )
     );
 
     const deleteBed = rxMethod<string>( // The ID is now a string
