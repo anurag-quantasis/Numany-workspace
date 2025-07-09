@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BedService } from './services/beds.service';
+import { SharedDataTableComponent } from 'shared-ui';
 
 @Component({
   selector: 'tenant-beds',
@@ -39,26 +40,14 @@ export class BedsComponent {
   private keyNavSubscription = new Subscription();
   isAddDialogVisible = false;
 
-  private bedsService = inject(BedService);
-  public beds$!: Observable<any[]>;
-
   // Form for adding a new bed
   bedForm = this.fb.group({
     name: ['', Validators.required],
     area: ['', Validators.required],
-    section: ['', Validators.required],
+    section: [null, Validators.required],
   });
 
-  ngOnInit(): void {
-    // Initial load. The PrimeNG table will also trigger this with default values.
-    this.store.loadBeds({ first: 0, rows: 10 });
-
-    this.beds$ = this.bedsService.getBeds2();
-
-    this.beds$.subscribe((value) => {
-      console.log('BEDS Inside api', value);
-    });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     // Register all our keyboard navigation shortcuts.
@@ -96,8 +85,15 @@ export class BedsComponent {
     if (this.bedForm.invalid) {
       return;
     }
-    // The form value matches the NewBed type
-    this.store.addBed(this.bedForm.getRawValue());
+    const formValue = this.bedForm.getRawValue();
+
+    const newBedPayload = {
+      name: formValue.name,
+      area: formValue.area,
+      // We are certain `section` is a number because the form is valid.
+      section: formValue.section!,
+    };
+    this.store.addBed(newBedPayload);
     this.isAddDialogVisible = false;
   }
 

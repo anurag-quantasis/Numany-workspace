@@ -49,7 +49,6 @@
       </ng-template>
       <ng-template pTemplate="body" let-bed let-rowIndex="rowIndex">
         <tr [pSelectableRow]="bed">
-          <!-- The rowIndex gives us the order number for the current page -->
           <td>{{ rowIndex + 1 }}</td>
           <td>{{ bed.name }}</td>
           <td>{{ bed.area }}</td>
@@ -80,7 +79,7 @@
       </div>
       <div class="flex flex-column gap-2">
         <label for="section">Section</label>
-        <input pInputText id="section" formControlName="section" />
+        <input pInputText type="number" id="section" formControlName="section" />
       </div>
     </div>
 

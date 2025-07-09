@@ -320,7 +320,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Charge Algorithm',
             shortcut: 'alt.f c',
             shortcutHint: 'C',
-            route: '/charge-algorithm',
+            route: 'charge-algorithm',
             command: () => {
               console.log('Charge Algorithm clicked');
             },
@@ -341,8 +341,8 @@ export class HeaderBarComponent implements OnInit {
             items: [
               {
                 label: 'Item Maintenance',
-                shortcut: 'alf.f i',
-                shortcutHint: 'i',
+                shortcut: 'alt.f d',
+                shortcutHint: 'd',
                 route: '/item-maintenance',
               },
             ],
