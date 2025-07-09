@@ -304,6 +304,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Administration Schedules',
             shortcut: 'alt.f a',
             shortcutHint: 'A',
+            route: 'administration-schedules',
             command: () => {
               console.log('Administration Schedules clicked');
             },
@@ -327,6 +328,9 @@ export class HeaderBarComponent implements OnInit {
           },
           {
             label: 'Department Names',
+            shortcut: 'alt.f d',
+            shortcutHint: 'D',
+            route: '/departments',
             command: () => {
               console.log('Department Names clicked');
             },
@@ -384,6 +388,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Printer/Report Selection',
             shortcut: 'f8',
             shortcutLabel: 'F8',
+            route: '/report-selection',
             command: () => {
               console.log('Printer/Report Selection clicked');
             },

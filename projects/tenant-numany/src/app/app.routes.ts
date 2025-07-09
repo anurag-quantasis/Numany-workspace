@@ -11,6 +11,13 @@ export const routes: Routes = [
         loadComponent: () => import('./features/beds/beds.component').then((m) => m.BedsComponent),
       },
       {
+        path: 'administration-schedules',
+        loadComponent: () =>
+          import('./features/administration-schedules/administration-schedules.component').then(
+            (m) => m.AdministrationSchedulesComponent,
+          ),
+      },
+      {
         path: 'charge-algorithm',
         loadComponent: () =>
           import('./features/charge-algorithm/charge-algorithm.component').then(
@@ -22,6 +29,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/departments/departments.component').then(
             (m) => m.DepartmentsComponent,
+          ),
+      },
+      {
+        path: 'report-selection',
+        loadComponent: () =>
+          import('./features/report-selection/report-selection.component').then(
+            (m) => m.ReportSelectionComponent,
           ),
       },
       {
