@@ -51,7 +51,6 @@ interface ApiMutationResponse {
   message: string | null;
 }
 
-
 @Injectable({ providedIn: 'root' })
 export class BedService {
   private apiService = inject(ApiService);
@@ -62,9 +61,9 @@ export class BedService {
     const params = this.createHttpParams(event);
 
     return this.apiService.get<ApiGetBedsResponse>(this.bedsEndpoint, { params }).pipe(
-      map(apiResponse => {
+      map((apiResponse) => {
         // Map the snake_case API data to our clean, camelCase Bed model
-        const mappedItems: Bed[] = apiResponse.data.map(apiBed => ({
+        const mappedItems: Bed[] = apiResponse.data.map((apiBed) => ({
           id: apiBed.id,
           name: apiBed.id_Bed,
           area: apiBed.id_Area,
@@ -82,7 +81,7 @@ export class BedService {
       catchError((err: HttpErrorResponse) => {
         const message = 'Could not connect to the server. Please try again later.';
         return of({ status: 'error', error: message } as const);
-      })
+      }),
     );
   }
 
@@ -97,10 +96,13 @@ export class BedService {
     };
 
     return this.apiService.post<ApiMutationResponse>(this.singleBedEndpoint, apiPayload).pipe(
-      map(apiResponse => {
+      map((apiResponse) => {
         // Check for a business logic error (e.g., "ID already in use")
         if (!apiResponse.data) {
-          return { status: 'error', error: apiResponse.message || 'An unknown error occurred.' } as const;
+          return {
+            status: 'error',
+            error: apiResponse.message || 'An unknown error occurred.',
+          } as const;
         }
 
         // It was a true success, so map the response to our Bed model
@@ -117,12 +119,11 @@ export class BedService {
         // Handle network/server errors
         const message = err.error?.message || 'The request failed.';
         return of({ status: 'error', error: message } as const);
-      })
+      }),
     );
   }
-  
 
-   /** Helper to create standard pagination params. */
+  /** Helper to create standard pagination params. */
   private createHttpParams(event: TableLazyLoadEvent): HttpParams {
     let params = new HttpParams();
     params = params.set('pageNumber', ((event.first ?? 0) / (event.rows ?? 10) + 1).toString());

@@ -9,7 +9,7 @@ export class ValidationPipe implements PipeTransform {
   // Takes form errors and returns a user-friendly string.
   transform(
     errors: ValidationErrors | null | undefined,
-    customMessages: { [key: string]: string } = {}
+    customMessages: { [key: string]: string } = {},
   ): string {
     if (!errors) return '';
 

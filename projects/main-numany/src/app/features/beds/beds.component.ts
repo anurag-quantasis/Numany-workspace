@@ -11,7 +11,13 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 
 // Shared and PrimeNG UI Modules
-import { SharedDataTableComponent, ColumnTemplateDirective, ColumnDef, CustomInputComponent, noNegativeValues } from 'shared-ui';
+import {
+  SharedDataTableComponent,
+  ColumnTemplateDirective,
+  ColumnDef,
+  CustomInputComponent,
+  noNegativeValues,
+} from 'shared-ui';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -71,11 +77,19 @@ export class BedsComponent implements OnDestroy {
   }
 
   private setupShortcuts(): void {
-    this.keyNavSubscription.add(this.shortcutService.on('arrowdown', () => this.navigateSelection('down')));
-    this.keyNavSubscription.add(this.shortcutService.on('arrowup', () => this.navigateSelection('up')));
+    this.keyNavSubscription.add(
+      this.shortcutService.on('arrowdown', () => this.navigateSelection('down')),
+    );
+    this.keyNavSubscription.add(
+      this.shortcutService.on('arrowup', () => this.navigateSelection('up')),
+    );
     // Simplify: have shortcuts call the store directly
-    this.keyNavSubscription.add(this.shortcutService.on('arrowright', () => this.store.paginate('next')));
-    this.keyNavSubscription.add(this.shortcutService.on('arrowleft', () => this.store.paginate('previous')));
+    this.keyNavSubscription.add(
+      this.shortcutService.on('arrowright', () => this.store.paginate('next')),
+    );
+    this.keyNavSubscription.add(
+      this.shortcutService.on('arrowleft', () => this.store.paginate('previous')),
+    );
   }
 
   // --- EVENT HANDLERS ---
@@ -93,9 +107,10 @@ export class BedsComponent implements OnDestroy {
       return;
     }
 
-    const message = selected.length === 1
-      ? `Are you sure you want to delete "${selected[0].name}"?`
-      : `Are you sure you want to delete these ${selected.length} beds?`;
+    const message =
+      selected.length === 1
+        ? `Are you sure you want to delete "${selected[0].name}"?`
+        : `Are you sure you want to delete these ${selected.length} beds?`;
 
     this.confirmationService.confirm({
       key: 'delete-bed-confirmation',
@@ -103,7 +118,7 @@ export class BedsComponent implements OnDestroy {
       header: 'Confirm Deletion',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        const idsToDelete = selected.map(bed => bed.id);
+        const idsToDelete = selected.map((bed) => bed.id);
         this.store.deleteBeds(idsToDelete);
       },
       // ... other confirmation properties
@@ -116,18 +131,21 @@ export class BedsComponent implements OnDestroy {
     if (currentBeds.length === 0) return;
 
     // Use the computed signal to find the "active" row
-    const firstSelected = this.store.firstSelectedBed(); 
-    const currentIndex = firstSelected ? currentBeds.findIndex((b) => b.id === firstSelected.id) : -1;
+    const firstSelected = this.store.firstSelectedBed();
+    const currentIndex = firstSelected
+      ? currentBeds.findIndex((b) => b.id === firstSelected.id)
+      : -1;
 
     // Use modulo for clean, wrapping navigation
-    let newIndex = (direction === 'down')
-      ? (currentIndex + 1) % currentBeds.length
-      : (currentIndex - 1 + currentBeds.length) % currentBeds.length;
+    let newIndex =
+      direction === 'down'
+        ? (currentIndex + 1) % currentBeds.length
+        : (currentIndex - 1 + currentBeds.length) % currentBeds.length;
 
     // When navigating with arrows, we select just one item
     this.store.setSelection([currentBeds[newIndex]]);
   }
-  
+
   // --- DIALOG METHODS (Unchanged) ---
 
   showAddDialog() {

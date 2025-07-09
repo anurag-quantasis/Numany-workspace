@@ -25,8 +25,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
-    provideHttpClient(
-      withInterceptors([TenantInterceptor])
-    ),
+    provideHttpClient(withInterceptors([TenantInterceptor])),
   ],
 };

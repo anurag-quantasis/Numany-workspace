@@ -21,7 +21,7 @@
       Content Projection Slot for Actions (Insert, Delete, etc.)
       The parent component will provide the content for this slot.
     -->
-    @if(tableActions()){
+    @if (tableActions()) {
       <ng-template pTemplate="caption">
         <div>
           <ng-content select="[tableActions]"></ng-content>

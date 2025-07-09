@@ -1,4 +1,14 @@
-import { Component, ContentChildren, QueryList, AfterContentInit, input, output, TemplateRef, Directive, inject } from '@angular/core';
+import {
+  Component,
+  ContentChildren,
+  QueryList,
+  AfterContentInit,
+  input,
+  output,
+  TemplateRef,
+  Directive,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface ColumnDef<T> {
@@ -36,7 +46,6 @@ export class ColumnTemplateDirective {
   standalone: true,
   imports: [CommonModule, TableModule, CardModule],
   templateUrl: './shared-datatable.component.html',
-  
 })
 export class SharedDataTableComponent<T extends { id: any }> implements AfterContentInit {
   // --- Required Inputs ---
@@ -48,15 +57,15 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
   totalRecords = input.required<number>();
   /** The loading state of the table. */
   loading = input.required<boolean>();
-  
+
   // --- Optional Inputs with Defaults ---
   /** The number of rows to display per page. */
   rows = input<number>(5);
   /** The index of the first row to be displayed. */
   first = input<number>(0);
   /** The options for rows per page dropdown. */
-  rowsPerPageOptions = input<number[]>([5 ,10 , 20, 50]);
-   /** Defines the selection behavior. Can be 'single', 'multiple', or null to disable. */
+  rowsPerPageOptions = input<number[]>([5, 10, 20, 50]);
+  /** Defines the selection behavior. Can be 'single', 'multiple', or null to disable. */
   selectionMode = input<'single' | 'multiple' | null>('single');
   /** The currently selected item(s). */
   selection = input<T | T[] | null>(null);
@@ -65,7 +74,7 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
   /** Message to display when there is no data. */
   emptyMessage = input<string>('No records found.');
   /** The option to conditionally render the table action space. */
-  tableActions = input<boolean>(false); 
+  tableActions = input<boolean>(false);
 
   // --- Outputs ---
   /** Emits when lazy loading is triggered (pagination, sorting). */
@@ -82,7 +91,7 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
 
   ngAfterContentInit() {
     // After the view is initialized, we map the custom templates by their field name
-    this.customTemplates.forEach(directive => {
+    this.customTemplates.forEach((directive) => {
       this.customTemplateMap.set(directive.name(), directive.template);
     });
   }

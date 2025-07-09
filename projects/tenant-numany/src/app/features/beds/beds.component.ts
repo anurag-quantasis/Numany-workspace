@@ -25,7 +25,7 @@ import { SharedDataTableComponent } from 'shared-ui';
     CardModule,
     ConfirmDialogModule,
     ShortcutDirective,
-    SharedDataTableComponent
+    SharedDataTableComponent,
   ],
   templateUrl: './beds.component.html',
   styleUrl: './beds.component.css',
@@ -41,17 +41,14 @@ export class BedsComponent {
   private keyNavSubscription = new Subscription();
   isAddDialogVisible = false;
 
-
   // Form for adding a new bed
   bedForm = this.fb.group({
     name: ['', Validators.required],
     area: ['', Validators.required],
-    section: [null , Validators.required],
+    section: [null, Validators.required],
   });
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     // Register all our keyboard navigation shortcuts.
@@ -95,7 +92,7 @@ export class BedsComponent {
       name: formValue.name,
       area: formValue.area,
       // We are certain `section` is a number because the form is valid.
-      section: formValue.section!, 
+      section: formValue.section!,
     };
     this.store.addBed(newBedPayload);
     this.isAddDialogVisible = false;
