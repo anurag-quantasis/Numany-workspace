@@ -1,5 +1,5 @@
 <div shortcut="" class="mx-4 mt-4">
-  <p-card>
+  <!-- <p-card>
     <p-table
       #pTable
       [value]="store.beds()"
@@ -62,16 +62,66 @@
         </tr>
       </ng-template>
     </p-table>
-  </p-card>
+  </p-card> -->
+
+  <shared-data-table
+    [data]="store.beds()"
+    [columns]="columns"
+    [totalRecords]="store.total()"
+    [loading]="store.isLoading()"
+    [first]="store.first()"
+    [selection]="store.selectedBed()"
+    (lazyLoad)="store.loadBeds($event)"
+    (selectionChange)="handleSelectionChange($any($event))"
+    [tableActions]="true"
+    selectionMode="single"
+  >
+    <!--
+      This content is projected into the [tableActions] slot
+      in the DataTableComponent.
+    -->
+    <div tableActions class="flex justify-end align-items-center gap-4">
+      <p-button
+        label="Insert Bed"
+        icon="pi pi-plus"
+        shortcut="alt.i"
+        variant="outlined"
+        (click)="showAddDialog()"
+      ></p-button>
+
+      <!-- <p-button
+        label="Edit"
+        icon="pi pi-pencil"
+        shortcut="alt.e"
+        variant="outlined"
+        severity="info"
+        
+        styleClass="p-button-secondary"
+      ></p-button> -->
+
+      <p-button
+        label="Delete"
+        icon="pi pi-trash"
+        severity="danger"
+        variant="outlined"
+        shortcut="alt.d"
+        (click)="confirmDelete()"
+      ></p-button>
+    </div>
+  </shared-data-table>
 </div>
 
 <!-- Add Bed Dialog -->
 <p-dialog header="Add a New Bed" [(visible)]="isAddDialogVisible" [modal]="true">
-  <form [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
-    <div class="flex flex-column gap-3">
+  <form
+    class="grid grid-cols-1 md:grid-cols-2 gap-x-6"
+    [formGroup]="bedForm"
+    (ngSubmit)="saveNewBed()"
+  >
+    <!-- <div class="flex flex-column gap-3">
       <div class="flex flex-column gap-2">
-        <label for="name">Name</label>
-        <input pInputText id="name" formControlName="name" />
+        <label for="name">Bed Id</label>
+        <input pInputText id="name" formControlName="bedId" />
       </div>
       <div class="flex flex-column gap-2">
         <label for="area">Area</label>
@@ -81,9 +131,48 @@
         <label for="section">Section</label>
         <input pInputText type="number" id="section" formControlName="section" />
       </div>
+    </div> -->
+
+    <div class="min-h-24">
+      <app-custom-input
+        label="Bed Name"
+        type="text"
+        formControlName="bedId"
+        [errorMessages]="{ required: 'The bed name is required.' }"
+      ></app-custom-input>
     </div>
 
-    <div class="flex justify-content-end gap-2 mt-4">
+    <!-- Area Input (Number) -->
+    <div class="min-h-24">
+      <app-custom-input
+        label="Area"
+        placeholder=""
+        type="text"
+        formControlName="area"
+        [errorMessages]="{
+          required: 'The area is required.',
+          noNegative: 'Area cannot be a negative value.',
+        }"
+      ></app-custom-input>
+    </div>
+
+    <!-- Section Input (Text with minlength) -->
+    <div class="min-h-24">
+      <app-custom-input
+        label="Section Code"
+        type="number"
+        formControlName="section"
+        [errorMessages]="{
+          required: 'The section code is required.',
+          minlength: 'Section code must be at least 3 characters long.',
+        }"
+        [toastErrors]="{
+          minlength: { severity: 'warn', summary: 'Input Too Short' },
+        }"
+      ></app-custom-input>
+    </div>
+
+    <div class="flex justify-end col-span-2 gap-2 mt-4">
       <p-button
         label="Cancel"
         shortcut="alt.c"
@@ -129,3 +218,4 @@
     </ng-template>
   </p-confirmDialog>
 </div>
+<p-toast key="custom-toast2"></p-toast>

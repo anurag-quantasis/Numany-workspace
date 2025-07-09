@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { BedStore } from './bed-store/bed.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ShortcutDirective, ShortcutService } from 'shared-ui';
+import { ColumnDef, CustomInputComponent, ShortcutDirective, ShortcutService } from 'shared-ui';
 import { Observable, Subscription } from 'rxjs';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Bed } from './bed-store/beds.model';
@@ -13,6 +13,7 @@ import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BedService } from './services/beds.service';
 import { SharedDataTableComponent } from 'shared-ui';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'tenant-beds',
@@ -25,6 +26,9 @@ import { SharedDataTableComponent } from 'shared-ui';
     CardModule,
     ConfirmDialogModule,
     ShortcutDirective,
+    SharedDataTableComponent,
+    CustomInputComponent,
+    Toast,
   ],
   templateUrl: './beds.component.html',
   styleUrl: './beds.component.css',
@@ -42,10 +46,17 @@ export class BedsComponent {
 
   // Form for adding a new bed
   bedForm = this.fb.group({
-    name: ['', Validators.required],
+    bedId: ['', Validators.required],
     area: ['', Validators.required],
-    section: [null, Validators.required],
+    section: [null, [Validators.required, Validators.pattern('^[0-9]+$'), Validators.max(9998)]],
   });
+
+  readonly columns: ColumnDef<Bed>[] = [
+    { field: 'name', header: 'Bed Id' },
+    { field: 'area', header: 'Area' },
+    { field: 'section', header: 'Section' },
+    { field: 'patientName', header: 'Name' },
+  ];
 
   ngOnInit(): void {}
 
@@ -76,9 +87,14 @@ export class BedsComponent {
     this.isAddDialogVisible = true;
   }
 
-  onSelectionChange(bed: Bed) {
-    console.log('Selected Bed:', bed);
-    this.store.selectBed(bed);
+  // onSelectionChange(bed: Bed) {
+  //   console.log('Selected Bed:', bed);
+  //   this.store.selectBed(bed);
+  // }
+
+  handleSelectionChange(bed: Bed | null): void {
+    // The event now emits a single object, not an array.
+    this.store.setSelection(bed);
   }
 
   saveNewBed() {
@@ -88,7 +104,7 @@ export class BedsComponent {
     const formValue = this.bedForm.getRawValue();
 
     const newBedPayload = {
-      name: formValue.name,
+      name: formValue.bedId,
       area: formValue.area,
       // We are certain `section` is a number because the form is valid.
       section: formValue.section!,
@@ -99,6 +115,8 @@ export class BedsComponent {
 
   confirmDelete() {
     const bedToDelete = this.store.selectedBed();
+
+    console.log('Bed select', bedToDelete);
     if (!bedToDelete) {
       return;
     }
@@ -141,7 +159,7 @@ export class BedsComponent {
       newIndex = currentIndex <= 0 ? currentBeds.length - 1 : currentIndex - 1; // Wraps to bottom
     }
 
-    this.store.selectBed(currentBeds[newIndex]);
+    // this.store.selectBed(currentBeds[newIndex]);
   }
 
   /** Navigates to the next or previous page in the paginator. */

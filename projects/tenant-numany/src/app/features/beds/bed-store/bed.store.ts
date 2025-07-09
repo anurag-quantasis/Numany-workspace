@@ -6,7 +6,7 @@ import { MessageService, LazyLoadEvent } from 'primeng/api';
 import { BedService } from '../services/beds.service';
 import { initialState } from './beds.state';
 import { Bed, NewBed } from './beds.model';
-import { toastSeverity } from '../../../core/utils/tenant.constants'; // Assuming you have this path
+import { toastSeverity } from '../../../core/utils/tenant.constants';
 import { TableLazyLoadEvent } from 'primeng/table';
 
 export const BedStore = signalStore(
@@ -23,11 +23,7 @@ export const BedStore = signalStore(
 
   // 3. Methods
   withMethods((store, bedService = inject(BedService), messageService = inject(MessageService)) => {
-    // We'll store the last load event to easily refresh the table
-    let lastLazyLoadEvent: TableLazyLoadEvent = { first: 0, rows: 10 };
-
-    // --- DEFINE METHODS AS LOCAL CONSTANTS ---
-
+    // let lastLazyLoadEvent: TableLazyLoadEvent = { first: 0, rows: 10 };
     const loadBeds = rxMethod<TableLazyLoadEvent>(
       pipe(
         tap((event) =>
@@ -66,6 +62,7 @@ export const BedStore = signalStore(
             tap((response) => {
               if (response.status === 'success') {
                 messageService.add({
+                  key: 'custom-toast2',
                   severity: 'success',
                   summary: 'Success',
                   detail: 'Bed created successfully.',
@@ -74,6 +71,7 @@ export const BedStore = signalStore(
               } else {
                 patchState(store, { error: response.error, isLoading: false });
                 messageService.add({
+                  key: 'custom-toast2',
                   severity: 'error',
                   summary: 'Creation Failed',
                   detail: response.error,
@@ -85,57 +83,75 @@ export const BedStore = signalStore(
       ),
     );
 
-    const deleteBed = rxMethod<string>( // The ID is now a string
+    const deleteBed = rxMethod<string>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        // switchMap((bedId) =>
-        //   bedService.deleteBed(bedId).pipe(
-        //     tap(() => {
-        //       messageService.add({
-        //         key: 'custom-toast',
-        //         severity: toastSeverity.success,
-        //         summary: 'Success',
-        //         detail: `Bed was deleted successfully`,
-        //         life: 3000,
-        //       });
-        //       // Refresh the table to get the correct data and total record count.
-        //       loadBeds(lastLazyLoadEvent);
-        //     }),
-        //     catchError((err: Error) => {
-        //       patchState(store, { error: err.message, isLoading: false });
-        //       messageService.add({
-        //         key: 'custom-toast',
-        //         severity: toastSeverity.error,
-        //         summary: 'Deletion Failed',
-        //         detail: err.message || 'An unknown error occurred',
-        //         life: 3000,
-        //       });
-        //       return of(null);
-        //     }),
-        //   ),
-        // ),
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((bedId) =>
+          bedService.deleteBed(bedId).pipe(
+            tap((response) => {
+              console.log('STORE DELETE PART');
+              if (response.status === 'success') {
+                console.log('response', response);
+                messageService.add({
+                  key: 'custom-toast2',
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Bed was deleted.',
+                });
+                loadBeds(store.lastLazyLoadEvent());
+              } else {
+                patchState(store, { error: response.error, isLoading: false });
+                messageService.add({
+                  key: 'custom-toast2',
+                  severity: 'error',
+                  summary: 'Deletion Failed',
+                  detail: response.error,
+                });
+              }
+            }),
+          ),
+        ),
       ),
     );
 
-    // --- NEW SELECTION METHOD ---
+    const updateBed = rxMethod<Bed>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((bed) =>
+          bedService.updateBed(bed).pipe(
+            tap((response) => {
+              if (response.status === 'success') {
+                messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Bed updated successfully.',
+                });
+                loadBeds(store.lastLazyLoadEvent()); // Reload table on success
+              } else {
+                patchState(store, { error: response.error, isLoading: false });
+                messageService.add({
+                  severity: 'error',
+                  summary: 'Update Failed',
+                  detail: response.error,
+                });
+              }
+            }),
+          ),
+        ),
+      ),
+    );
 
-    /** A simple "state writer" to update the selected bed from the UI. */
-    const selectBed = (bed: Bed | null) => {
+    const setSelection = (bed: Bed | null) => {
       patchState(store, { selectedBed: bed });
     };
 
-    // 4. NEW METHOD to handle pagination logic
     const paginate = (direction: 'next' | 'previous') => {
       const currentEvent = store.lastLazyLoadEvent();
       const total = store.totalRecords();
 
-      // --- FIX IS HERE ---
-      // Use the nullish coalescing operator (??) to provide a default value
-      // if 'first' or 'rows' are null/undefined.
       const first = currentEvent.first ?? 0;
-      const rows = currentEvent.rows ?? 5; // Default to 5, matching our initial state
+      const rows = currentEvent.rows ?? 5;
 
-      // Now, 'rows' is guaranteed to be a number, and the error is gone.
       if (total <= rows) return;
 
       let newFirst = first;
@@ -146,13 +162,10 @@ export const BedStore = signalStore(
       }
 
       if (newFirst !== first) {
-        // Trigger a load with the full event context, only updating `first`.
-        // This preserves sorting and other parameters.
         loadBeds({ ...currentEvent, first: newFirst });
       }
     };
 
-    // --- RETURN THE METHODS ---
-    return { loadBeds, addBed, deleteBed, selectBed, paginate };
+    return { loadBeds, addBed, deleteBed, updateBed, setSelection, paginate };
   }),
 );

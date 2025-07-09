@@ -1,6 +1,6 @@
 <!-- The outer div is no longer needed for context. It's just a container. -->
 <div class="zoom-container">
-  <p-menubar [model]="items">
+  <p-menubar class="custom-pmenu" [model]="items">
     <ng-template #end>
       <div class="flex items-center gap-2">
         <input pInputText type="text" placeholder="Search" class="w-36" [shortcut]="'alt.k'" />

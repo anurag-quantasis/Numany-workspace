@@ -2,12 +2,12 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { Bed } from './beds.model';
 
 export interface BedState {
-  beds: Bed[]; // The beds for the *current* page
-  totalRecords: number; // Total beds in the database for pagination
+  beds: Bed[];
+  totalRecords: number;
   isLoading: boolean;
   error: string | null;
-  filter: string; // To hold any search/filter query
-  selectedBed?: Bed | null; // Optional: to hold the currently selected bed for details or editing
+  filter: string;
+  selectedBed?: Bed | null;
   lastLazyLoadEvent: TableLazyLoadEvent;
 }
 
@@ -18,5 +18,5 @@ export const initialState: BedState = {
   error: null,
   filter: '',
   selectedBed: null,
-  lastLazyLoadEvent: { first: 0, rows: 5 },
+  lastLazyLoadEvent: { first: 0, rows: 10 },
 };
