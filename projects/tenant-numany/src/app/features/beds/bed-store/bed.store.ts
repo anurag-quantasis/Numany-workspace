@@ -102,32 +102,32 @@ export const BedStore = signalStore(
     const deleteBed = rxMethod<string>( // The ID is now a string
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        switchMap((bedId) =>
-          bedService.deleteBed(bedId).pipe(
-            tap(() => {
-              messageService.add({
-                key: 'custom-toast',
-                severity: toastSeverity.success,
-                summary: 'Success',
-                detail: `Bed was deleted successfully`,
-                life: 3000,
-              });
-              // Refresh the table to get the correct data and total record count.
-              loadBeds(lastLazyLoadEvent);
-            }),
-            catchError((err: Error) => {
-              patchState(store, { error: err.message, isLoading: false });
-              messageService.add({
-                key: 'custom-toast',
-                severity: toastSeverity.error,
-                summary: 'Deletion Failed',
-                detail: err.message || 'An unknown error occurred',
-                life: 3000,
-              });
-              return of(null);
-            }),
-          ),
-        ),
+        // switchMap((bedId) =>
+        //   bedService.deleteBed(bedId).pipe(
+        //     tap(() => {
+        //       messageService.add({
+        //         key: 'custom-toast',
+        //         severity: toastSeverity.success,
+        //         summary: 'Success',
+        //         detail: `Bed was deleted successfully`,
+        //         life: 3000,
+        //       });
+        //       // Refresh the table to get the correct data and total record count.
+        //       loadBeds(lastLazyLoadEvent);
+        //     }),
+        //     catchError((err: Error) => {
+        //       patchState(store, { error: err.message, isLoading: false });
+        //       messageService.add({
+        //         key: 'custom-toast',
+        //         severity: toastSeverity.error,
+        //         summary: 'Deletion Failed',
+        //         detail: err.message || 'An unknown error occurred',
+        //         life: 3000,
+        //       });
+        //       return of(null);
+        //     }),
+        //   ),
+        // ),
       ),
     );
 

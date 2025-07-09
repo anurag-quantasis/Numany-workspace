@@ -1,85 +1,135 @@
 import { inject, Injectable } from '@angular/core';
-import { delay, Observable, of, throwError } from 'rxjs';
-import { Bed, NewBed, PaginatedBedsResponse } from '../bed-store/beds.model';
+import { catchError, delay, map, Observable, of, throwError } from 'rxjs';
+import { ApiResponse, Bed, NewBed, PaginatedBedsResponse } from '../bed-store/beds.model';
 import { LazyLoadEvent } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { ApiService } from '../../../core/services/api.service';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
-// --- MOCK DATABASE ---
-const MOCK_BEDS: Bed[] = Array.from({ length: 55 }, (_, i) => ({
-  id: `bed_${i + 1}`,
-  name: `Patient Bed ${i + 1}`,
-  area: `Area ${(i % 4) + 1}`,
-  section: `Section ${String.fromCharCode(65 + (i % 3))}`, // A, B, C
-}));
-// --- END MOCK ---
+// --- API-SPECIFIC DTOs ---
+// These interfaces model the exact structure of the API response.
+
+interface ApiBed {
+  id: string;
+  bed_Seq: number;
+  id_Bed: string;
+  id_Area: string;
+  ip_Sec: number;
+  oeip: boolean;
+  status: number;
+}
+
+// --- API Data Transfer Objects (DTOs) ---
+// These interfaces exactly match the JSON from your backend.
+
+interface ApiBed {
+  id: string;
+  bed_Seq: number;
+  id_Bed: string;
+  id_Area: string;
+  ip_Sec: number;
+  oeip: boolean;
+  status: number;
+}
+
+interface ApiPaging {
+  totalItems: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+// For GET /beds
+interface ApiGetBedsResponse {
+  data: ApiBed[];
+  paging: ApiPaging;
+}
+
+// For POST, DELETE, etc.
+interface ApiMutationResponse {
+  data: ApiBed | null;
+  message: string | null;
+}
+
 
 @Injectable({ providedIn: 'root' })
 export class BedService {
-   private apiService = inject(ApiService);
+  private apiService = inject(ApiService);
+  private readonly bedsEndpoint = '/beds';
+  private readonly singleBedEndpoint = '/bed';
 
-  // Simulate fetching a paginated list of beds from an API
-  getBeds(event: TableLazyLoadEvent): Observable<PaginatedBedsResponse> {
-    const page = (event.first || 0) / (event.rows || 10);
-    const pageSize = event.rows || 10;
+  getBeds(event: TableLazyLoadEvent): Observable<ApiResponse<PaginatedBedsResponse>> {
+    const params = this.createHttpParams(event);
 
-    // Simple filter simulation
-    const filterQuery = (event.globalFilter as string)?.toLowerCase() || '';
-    const filteredData = MOCK_BEDS.filter(
-      (bed) =>
-        bed.name.toLowerCase().includes(filterQuery) ||
-        bed.area.toLowerCase().includes(filterQuery) ||
-        bed.section.toLowerCase().includes(filterQuery),
+    return this.apiService.get<ApiGetBedsResponse>(this.bedsEndpoint, { params }).pipe(
+      map(apiResponse => {
+        // Map the snake_case API data to our clean, camelCase Bed model
+        const mappedItems: Bed[] = apiResponse.data.map(apiBed => ({
+          id: apiBed.id,
+          name: apiBed.id_Bed,
+          area: apiBed.id_Area,
+          section: apiBed.ip_Sec, // Or however you wish to format it
+        }));
+
+        const paginatedData: PaginatedBedsResponse = {
+          items: mappedItems,
+          totalRecords: apiResponse.paging.totalItems,
+        };
+
+        return { status: 'success', data: paginatedData } as const;
+      }),
+      // This `catchError` handles network/server errors (e.g., 500, 404)
+      catchError((err: HttpErrorResponse) => {
+        const message = 'Could not connect to the server. Please try again later.';
+        return of({ status: 'error', error: message } as const);
+      })
     );
-
-    const paginatedItems = filteredData.slice(page * pageSize, (page + 1) * pageSize);
-
-    return of({
-      items: paginatedItems,
-      totalRecords: filteredData.length,
-    }).pipe(delay(500)); // Simulate network latency
   }
 
-  // Simulate adding a new bed
-  addBed(newBed: NewBed): Observable<Bed> {
-    // Simulate validation
-    if (MOCK_BEDS.some((b) => b.name.toLowerCase() === newBed.name.toLowerCase())) {
-      return throwError(() => new Error(`A bed with the name "${newBed.name}" already exists.`));
-    }
-
-    const bed: Bed = {
-      ...newBed,
-      id: `bed_${Date.now()}`, // Generate a unique ID
+  addBed(newBed: NewBed): Observable<ApiResponse<Bed>> {
+    // Create the payload the API expects
+    const apiPayload = {
+      bed: {
+        id_Bed: newBed.name,
+        id_Area: newBed.area,
+        ip_Sec: newBed.section,
+      },
     };
-    MOCK_BEDS.unshift(bed); // Add to the start of the list
 
-    return of(bed).pipe(delay(500));
+    return this.apiService.post<ApiMutationResponse>(this.singleBedEndpoint, apiPayload).pipe(
+      map(apiResponse => {
+        // Check for a business logic error (e.g., "ID already in use")
+        if (!apiResponse.data) {
+          return { status: 'error', error: apiResponse.message || 'An unknown error occurred.' } as const;
+        }
+
+        // It was a true success, so map the response to our Bed model
+        const createdBed: Bed = {
+          id: apiResponse.data.id,
+          name: apiResponse.data.id_Bed,
+          area: apiResponse.data.id_Area,
+          section: apiResponse.data.ip_Sec,
+        };
+
+        return { status: 'success', data: createdBed } as const;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        // Handle network/server errors
+        const message = err.error?.message || 'The request failed.';
+        return of({ status: 'error', error: message } as const);
+      })
+    );
   }
+  
 
-  // --- NEW METHOD TO SIMULATE DELETING A BED ---
-  /**
-   * Simulates deleting a bed by its ID from the mock database.
-   * @param bedId The string ID of the bed to delete.
-   * @returns An Observable of void on success, or an error if the bed is not found.
-   */
-  deleteBed(bedId: string): Observable<void> {
-    // Find the index of the bed to delete.
-    const bedIndex = MOCK_BEDS.findIndex((b) => b.id === bedId);
-
-    // If the bed wasn't found, simulate a "Not Found" error from the API.
-    if (bedIndex === -1) {
-      return throwError(() => new Error(`Bed with ID ${bedId} not found.`)).pipe(delay(500));
+   /** Helper to create standard pagination params. */
+  private createHttpParams(event: TableLazyLoadEvent): HttpParams {
+    let params = new HttpParams();
+    params = params.set('pageNumber', ((event.first ?? 0) / (event.rows ?? 10) + 1).toString());
+    params = params.set('pageSize', (event.rows ?? 10).toString());
+    if (event.globalFilter) {
+      // params = params.set('search', event.globalFilter);
     }
-
-    // If found, remove it from the array.
-    MOCK_BEDS.splice(bedIndex, 1);
-
-    // A real HTTP DELETE often returns a 204 No Content status.
-    // We simulate this by returning an Observable of void.
-    return of(undefined).pipe(delay(500));
-  }
-
-  getBeds2(): Observable<Bed[]> {
-    return this.apiService.get<Bed[]>('/beds');
+    return params;
   }
 }

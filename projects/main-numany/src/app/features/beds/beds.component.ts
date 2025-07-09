@@ -24,7 +24,6 @@ import { CardModule } from 'primeng/card';
     CommonModule, // For *ngIf
     ReactiveFormsModule,
     SharedDataTableComponent,
-    ColumnTemplateDirective,
     CustomInputComponent,
     ButtonModule,
     DialogModule,

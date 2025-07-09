@@ -34,7 +34,7 @@ export class ColumnTemplateDirective {
 @Component({
   selector: 'shared-data-table',
   standalone: true,
-  imports: [CommonModule, TableModule, CardModule, ColumnTemplateDirective],
+  imports: [CommonModule, TableModule, CardModule],
   templateUrl: './shared-datatable.component.html',
   
 })
@@ -55,7 +55,7 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
   /** The index of the first row to be displayed. */
   first = input<number>(0);
   /** The options for rows per page dropdown. */
-  rowsPerPageOptions = input<number[]>([10, 20, 50]);
+  rowsPerPageOptions = input<number[]>([5 ,10 , 20, 50]);
    /** Defines the selection behavior. Can be 'single', 'multiple', or null to disable. */
   selectionMode = input<'single' | 'multiple' | null>('single');
   /** The currently selected item(s). */

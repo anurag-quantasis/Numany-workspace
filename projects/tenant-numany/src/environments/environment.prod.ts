@@ -5,5 +5,5 @@ export const environment = {
   ...devEnv,
   production: true,
   appVersion: version,
-  apiUrl: 'https://1199-110-227-208-213.ngrok-free.app/api',
+  apiUrl: 'https://3c2ba651778b.ngrok-free.app/api',
 };
