@@ -19,4 +19,4 @@ export * from './lib/directives/shortcut.directive';
 export * from './lib/directives/shortcut-key-hint.directive';
 
 // Shared Custom-Validation
-export * from './lib/utils/custom-validation'
+export * from './lib/utils/custom-validation';

@@ -64,30 +64,40 @@
     </p-table>
   </p-card> -->
 
-  
-  <shared-data-table 
+  <shared-data-table
     [data]="store.beds()"
-    [columns]="columns" 
+    [columns]="columns"
     [totalRecords]="store.total()"
-    [loading]="store.isLoading()" 
-    [first]="store.first()" 
+    [loading]="store.isLoading()"
+    [first]="store.first()"
     [selection]="store.selectedBeds()"
-    (lazyLoad)="store.loadBeds($event)" 
+    (lazyLoad)="store.loadBeds($event)"
     (selectionChange)="handleSelectionChange($event)"
     [tableActions]="true"
     selectionMode="multiple"
-    >
+  >
     <!--
       This content is projected into the [tableActions] slot
       in the DataTableComponent.
     -->
     <div tableActions class="flex justify-end align-items-center gap-4">
-      <p-button label="Insert Bed" icon="pi pi-plus" shortcut="alt.i" (click)="showAddDialog()"></p-button>
-  
-      <p-button label="Delete" icon="pi pi-trash" severity="danger" shortcut="alt.d" (click)="confirmDelete()"
-        [disabled]="!store.isAnyBedSelected()"></p-button>
+      <p-button
+        label="Insert Bed"
+        icon="pi pi-plus"
+        shortcut="alt.i"
+        (click)="showAddDialog()"
+      ></p-button>
+
+      <p-button
+        label="Delete"
+        icon="pi pi-trash"
+        severity="danger"
+        shortcut="alt.d"
+        (click)="confirmDelete()"
+        [disabled]="!store.isAnyBedSelected()"
+      ></p-button>
     </div>
-  
+
     <!--
       ADVANCED: Example of a custom cell template for the 'name' column.
       This demonstrates the power of the ColumnTemplateDirective.
@@ -96,82 +106,83 @@
     ADVANCED: Example of a custom cell template for the 'name' column.
     This demonstrates the power of the ColumnTemplateDirective.
   -->
-  <!-- <ng-template appColumnTemplate="name" let-bed>
+    <!-- <ng-template appColumnTemplate="name" let-bed>
     <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
     <strong>{{ bed.name }}</strong>
   </ng-template> -->
-  
   </shared-data-table>
-  </div>
+</div>
 
 <!-- Add Bed Dialog -->
 <p-dialog header="Add a New Bed" draggable="false" [(visible)]="isAddDialogVisible" [modal]="true">
-  <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 " [formGroup]="bedForm" (ngSubmit)="saveNewBed()">
+  <form
+    class="grid grid-cols-1 md:grid-cols-2 gap-x-6"
+    [formGroup]="bedForm"
+    (ngSubmit)="saveNewBed()"
+  >
+    <!-- Bed Name Input -->
+    <div class="min-h-24">
+      <app-custom-input
+        label="Bed Name"
+        placeholder="e.g.Bed A"
+        type="text"
+        formControlName="name"
+        [errorMessages]="{ required: 'The bed name is required.' }"
+      ></app-custom-input>
+    </div>
 
-  <!-- Bed Name Input -->
-   <div class="min-h-24">
-     <app-custom-input
-       label="Bed Name"
-       placeholder="e.g.Bed A"
-       type="text"
-       formControlName="name"
-       [errorMessages]="{ required: 'The bed name is required.' }"
-     ></app-custom-input>
-   </div>
+    <!-- Area Input (Number) -->
+    <div class="min-h-24">
+      <app-custom-input
+        label="Area"
+        placeholder=""
+        type="number"
+        formControlName="area"
+        [errorMessages]="{
+          required: 'The area is required.',
+          noNegative: 'Area cannot be a negative value.',
+        }"
+      ></app-custom-input>
+    </div>
 
-  <!-- Area Input (Number) -->
-   <div class="min-h-24">
-     <app-custom-input
-       label="Area"
-       placeholder=""
-       type="number"
-       formControlName="area"
-       [errorMessages]="{ 
-         required: 'The area is required.',
-         noNegative: 'Area cannot be a negative value.'
-       }"
-     ></app-custom-input>
-   </div>
-  
-  <!-- Section Input (Text with minlength) -->
-   <div class="min-h-24">
-     <app-custom-input
-       label="Section Code"
-       placeholder="e.g., NORTH-1"
-       type="text"
-       formControlName="section"
-       [errorMessages]="{ 
-         required: 'The section code is required.',
-         minlength: 'Section code must be at least 3 characters long.'
-       }"
-       [toastErrors]="{ 
-         minlength: { severity: 'warn', summary: 'Input Too Short' } 
-       }"
-     ></app-custom-input>
-   </div>
-  
-  <!-- Form Actions (e.g., Save and Cancel buttons) -->
-  <div class="flex justify-end col-span-2 gap-2 mt-4">
-    <button
-      pButton
-      pRipple
-      type="button" 
-      label="Cancel" 
-      class="p-button-secondary" 
-      (click)="isAddDialogVisible = false"
-    ></button>
-    <button
-      pButton
-      pRipple
-      type="submit" 
-      label="Save Bed" 
-      class="p-button-success" 
-      icon="pi pi-check"
-      [disabled]="bedForm.invalid"
-    ></button>
-  </div>
+    <!-- Section Input (Text with minlength) -->
+    <div class="min-h-24">
+      <app-custom-input
+        label="Section Code"
+        placeholder="e.g., NORTH-1"
+        type="text"
+        formControlName="section"
+        [errorMessages]="{
+          required: 'The section code is required.',
+          minlength: 'Section code must be at least 3 characters long.',
+        }"
+        [toastErrors]="{
+          minlength: { severity: 'warn', summary: 'Input Too Short' },
+        }"
+      ></app-custom-input>
+    </div>
 
-</form>
+    <!-- Form Actions (e.g., Save and Cancel buttons) -->
+    <div class="flex justify-end col-span-2 gap-2 mt-4">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Cancel"
+        class="p-button-secondary"
+        (click)="isAddDialogVisible = false"
+      ></button>
+      <button
+        pButton
+        pRipple
+        type="submit"
+        label="Save Bed"
+        class="p-button-success"
+        icon="pi pi-check"
+        [disabled]="bedForm.invalid"
+      ></button>
+    </div>
+  </form>
 </p-dialog>
 
 <div>

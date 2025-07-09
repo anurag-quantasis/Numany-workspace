@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Self, computed, effect, inject, input, signal } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormsModule,
+  NgControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 
@@ -41,7 +48,6 @@ let nextId = 0;
 
       <!-- Switch between PrimeNG components based on type -->
       <ng-container [ngSwitch]="type()">
-        
         <!-- Case for Number Inputs -->
         <p-inputNumber
           *ngSwitchCase="'number'"
@@ -53,7 +59,8 @@ let nextId = 0;
           [placeholder]="placeholder()"
           styleClass="w-full"
           [class.ng-invalid]="isInvalid()"
-          [class.ng-dirty]="isInvalid()">
+          [class.ng-dirty]="isInvalid()"
+        >
         </p-inputNumber>
 
         <!-- Default Case for Text, Email, Password, etc. -->
@@ -81,7 +88,14 @@ let nextId = 0;
       </div>
     </div>
   `,
-  styles: [`:host { display: block; width: 100%; }`],
+  styles: [
+    `
+      :host {
+        display: block;
+        width: 100%;
+      }
+    `,
+  ],
 })
 export class CustomInputComponent implements ControlValueAccessor {
   // --- Modern Signal-Based Inputs ---
@@ -98,7 +112,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   public ngControl: NgControl = inject(NgControl, { self: true });
   private messageService = inject(MessageService);
   private validationPipe = inject(ValidationPipe);
-  
+
   // --- Writable Signal for State Tracking ---
   // This signal acts as a trigger for our computed signals.
   private controlStatus = signal<string | null>(null);
@@ -115,9 +129,7 @@ export class CustomInputComponent implements ControlValueAccessor {
     // Bridge the form control's RxJS statusChanges to our internal signal.
     // `takeUntilDestroyed` automatically handles unsubscribing when the component is destroyed.
     if (this.ngControl.control) {
-      this.ngControl.control.statusChanges.pipe(
-        takeUntilDestroyed()
-      ).subscribe((status) => {
+      this.ngControl.control.statusChanges.pipe(takeUntilDestroyed()).subscribe((status) => {
         // Every time the form control's status changes (e.g., from markAllAsTouched),
         // we update our signal, which triggers our computed signals to re-evaluate.
         this.controlStatus.set(status);
@@ -131,7 +143,7 @@ export class CustomInputComponent implements ControlValueAccessor {
 
       // We use isInvalid() here because it's a computed signal that depends on our trigger.
       if (this.isInvalid() && control?.errors) {
-        const errorKey = Object.keys(control.errors).find(key => toastConfigs[key]);
+        const errorKey = Object.keys(control.errors).find((key) => toastConfigs[key]);
         if (errorKey) {
           const config = toastConfigs[errorKey];
           this.messageService.add({
@@ -161,10 +173,18 @@ export class CustomInputComponent implements ControlValueAccessor {
   });
 
   // --- ControlValueAccessor Implementation ---
-  writeValue = (v: any): void => { this.value = v; }
-  registerOnChange = (fn: any): void => { this.onChange = fn; }
-  registerOnTouched = (fn: any): void => { this.onTouched = fn; }
-  setDisabledState = (isDisabled: boolean): void => { this.disabled = isDisabled; }
+  writeValue = (v: any): void => {
+    this.value = v;
+  };
+  registerOnChange = (fn: any): void => {
+    this.onChange = fn;
+  };
+  registerOnTouched = (fn: any): void => {
+    this.onTouched = fn;
+  };
+  setDisabledState = (isDisabled: boolean): void => {
+    this.disabled = isDisabled;
+  };
 
   // --- Component Event Handlers ---
   onBlur = (): void => {
@@ -172,5 +192,5 @@ export class CustomInputComponent implements ControlValueAccessor {
     // Manually update the signal on blur for the most immediate feedback,
     // as the statusChanges observable might have a microtask delay.
     this.controlStatus.set(this.ngControl.control?.status ?? null);
-  }
+  };
 }

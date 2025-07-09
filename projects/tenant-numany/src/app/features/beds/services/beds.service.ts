@@ -16,7 +16,7 @@ const MOCK_BEDS: Bed[] = Array.from({ length: 55 }, (_, i) => ({
 
 @Injectable({ providedIn: 'root' })
 export class BedService {
-   private apiService = inject(ApiService);
+  private apiService = inject(ApiService);
 
   // Simulate fetching a paginated list of beds from an API
   getBeds(event: TableLazyLoadEvent): Observable<PaginatedBedsResponse> {

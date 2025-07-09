@@ -23,7 +23,7 @@ import { BedService } from './services/beds.service';
     ReactiveFormsModule,
     CardModule,
     ConfirmDialogModule,
-    ShortcutDirective
+    ShortcutDirective,
   ],
   templateUrl: './beds.component.html',
   styleUrl: './beds.component.css',
@@ -55,10 +55,9 @@ export class BedsComponent {
 
     this.beds$ = this.bedsService.getBeds2();
 
-    this.beds$.subscribe((value)=> {
-      console.log("BEDS Inside api",value);
-    })
-
+    this.beds$.subscribe((value) => {
+      console.log('BEDS Inside api', value);
+    });
   }
 
   ngAfterViewInit(): void {

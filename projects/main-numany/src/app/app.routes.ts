@@ -29,6 +29,27 @@ export const routes: Routes = [
             (m) => m.DepartmentsComponent,
           ),
       },
+      {
+        path: 'charge-maintenance',
+        loadComponent: () =>
+          import('./features/charge-maintenance/charge-maintenance.component').then(
+            (m) => m.ChargeMaintenanceComponent,
+          ),
+      },
+      {
+        path: 'report-selection',
+        loadComponent: () =>
+          import('./features/report-selection/report-selection.component').then(
+            (m) => m.ReportSelectionComponent,
+          ),
+      },
+      {
+        path: 'administration-schedules',
+        loadComponent: () =>
+          import('./features/administration-schedules/administration-schedules.component').then(
+            (m) => m.AdministrationSchedulesComponent,
+          ),
+      },
     ],
   },
 

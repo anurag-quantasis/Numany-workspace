@@ -1,0 +1,29 @@
+<h1 class="text-2xl font-bold text-gray-800 my-3 text-center py-2">Item Maintenance</h1>
+
+<form [formGroup]="form">
+  <table class="w-full border mb-2">
+    <thead>
+      <!-- <tr>
+        <th *ngFor="let col of columns">{{ col.header }}</th>
+      </tr> -->
+      <tr>
+        <th *ngFor="let col of columns">
+          <input
+            type="text"
+            [formControlName]="col.field"
+            placeholder="Search {{ col.header }}"
+            class="w-full border px-1 py-0.5"
+          />
+        </th>
+      </tr>
+    </thead>
+  </table>
+</form>
+
+<shared-data-table
+  [columns]="columns"
+  [data]="filteredItems"
+  [totalRecords]="filteredItems.length"
+  [loading]="false"
+>
+</shared-data-table>

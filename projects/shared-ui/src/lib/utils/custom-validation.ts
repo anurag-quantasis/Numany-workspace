@@ -1,4 +1,4 @@
-import { FormControl, ValidationErrors } from "@angular/forms";
+import { FormControl, ValidationErrors } from '@angular/forms';
 
 // Example custom validator function
 export function noNegativeValues(control: FormControl): ValidationErrors | null {
