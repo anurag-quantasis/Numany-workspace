@@ -6,7 +6,7 @@ export const TenantInterceptor: HttpInterceptorFn = (
 ) => {
   // TODO: Replace 'YOUR_TENANT_ID' with your actual tenant identifier.
   // You might get this from a service, environment file, or a constants file.
-  const tenantId = 'cfe6014a-3a9e-40d3-9ce9-a081d58e6184';
+  const tenantId = 'B2B9ACF1-70CC-483F-B171-B0C3EBB41F8E';
 
   const clonedReq = req.clone({
     headers: req.headers.set('X-Tenant-ID', tenantId).set('ngrok-skip-browser-warning', 'true'),
