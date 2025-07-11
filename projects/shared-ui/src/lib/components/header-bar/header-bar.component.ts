@@ -400,6 +400,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Remote Inventory Location IDs',
             shortcut: 'alt.f r',
             shortcutHint: 'R',
+            route: 'remote-inventory-location',
             command: () => { console.log('Remote Inventory Location IDs clicked'); },
           },
           {

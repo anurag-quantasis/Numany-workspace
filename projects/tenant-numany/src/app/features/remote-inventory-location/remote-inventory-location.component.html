@@ -1,0 +1,25 @@
+<p-card class="p-4">
+    <h1 class="mt-5 ml-5 text-2xl">Remote Inventory Location</h1>
+
+<form [formGroup]="remoteInventoryLocation" class="p-5">
+  <div class="mb-4">
+    <label for="locationID" class="block text-[18px] font-medium text-gray-700 mb-2.5">
+      Location ID
+    </label>
+    <p-select
+      id="locationID"
+      [options]="locationIDs"
+      formControlName="locationID"
+      optionLabel="name"
+      placeholder="Select Location"
+      class="w-[400px]"
+    ></p-select>
+
+    <p-divider class="mt-3.5"></p-divider>
+
+    <h1 class="text-[18px] font-semibold">ITEMS LISTEDFOR LOCATION &lt; CMK Area &gt; </h1>
+
+  </div>
+</form>
+
+</p-card>

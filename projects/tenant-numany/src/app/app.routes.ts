@@ -63,6 +63,14 @@ export const routes: Routes = [
       import('./features/lab-result-type-maintenance/lab-result-type-maintenance.component').then(
         (m) => m.LabResultTypeMaintenanceComponent,
       )
+  },
+
+  {
+    path: 'remote-inventory-location',
+    loadComponent: () =>
+      import('./features/remote-inventory-location/remote-inventory-location.component').then(
+        (m) => m.RemoteInventoryLocationComponent
+      )
   }
 
     ],

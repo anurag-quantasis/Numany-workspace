@@ -25,14 +25,12 @@
             formControlName="labId"
             placeholder="Enter Lab ID"
             class="w-full md:w-[280px]" /> -->
-            <app-custom-input
-              label="Lab ID"
-              formControlName="labId"
-              placeholder="Enter Lab ID"
-              type="text"
-            >
-
-            </app-custom-input>
+          <app-custom-input
+            label="Lab ID"
+            formControlName="labId"
+            placeholder="Enter Lab ID"
+            type="text">
+          </app-custom-input>
         </div>
 
         <!-- Host ID -->
@@ -45,14 +43,12 @@
             formControlName="hostId"
             placeholder="Enter Host ID"
             class="w-full md:w-[280px]" /> -->
-             <app-custom-input
-              label="Host ID"
-              formControlName="hostId"
-              placeholder="Enter Host ID"
-              type="text"
-            >
-
-            </app-custom-input> 
+          <app-custom-input
+            label="Host ID"
+            formControlName="hostId"
+            placeholder="Enter Host ID"
+            type="text">
+          </app-custom-input>
         </div>
 
         <!-- Units -->
@@ -65,16 +61,13 @@
             formControlName="units"
             placeholder="Enter Units"
             class="w-full md:w-[280px]" /> -->
-            
-            <app-custom-input
-              label="Units"
-              id="units-id"
-              formControlName="units"
-              placeholder="Enter Units"
-              type="text"
-            >
-
-            </app-custom-input>
+          <app-custom-input
+            label="Units"
+            id="units-id"
+            formControlName="units"
+            placeholder="Enter Units"
+            type="text">
+          </app-custom-input>
         </div>
       </div>
 
@@ -102,58 +95,54 @@
         <p-divider></p-divider>
       </div>
 
-<div class="flex items-center gap-6 mt-2">
+      <div class="flex items-center gap-6 mt-2">
+        <div class="flex items-center gap-2 mt-2">
+          <label for="includeReport" class="uppercase font-medium">Include on Report</label>
+          <p-checkbox inputId="includeReport" formControlName="includeOnReport" [binary]="true"></p-checkbox>
+        </div>
 
-  <div class="flex items-center gap-2 mt-2">
-    <label for="includeReport" class="uppercase font-medium">Include on Report</label>
-    <p-checkbox inputId="includeReport" formControlName="includeOnReport" [binary]="true"></p-checkbox>
-  </div>
+        <!-- NORMAL RANGE SECTION -->
+        <div class="flex items-center gap-3 mt-2">
+          <label class="uppercase font-medium">Normal Range</label>
 
-  <!-- NORMAL RANGE SECTION -->
-  <div class="flex items-center gap-3 mt-2">
-    <label class="uppercase font-medium">Normal Range</label>
+          <!-- LOW -->
+          <div class="flex flex-col items-center">
+            <!-- <label for="low" class="text-xs font-medium uppercase">Low</label>
+            <input
+              id="low"
+              type="text"
+              pInputText
+              formControlName="low"
+              placeholder="0"
+              class="w-[60px] text-center" /> -->
+            <app-custom-input
+              label="Low"
+              formControlName="low"
+              type="number">
+            </app-custom-input>
+          </div>
 
-    <!-- LOW -->
-    <div class="flex flex-col items-center">
-      <!-- <label for="low" class="text-xs font-medium uppercase">Low</label>
-      <input
-        id="low"
-        type="text"
-        pInputText
-        formControlName="low"
-        placeholder="0"
-        class="w-[60px] text-center" /> -->
+          <!-- HIGH -->
+          <div class="flex flex-col items-center">
+            <label for="high" class="text-xs font-medium uppercase">High</label>
+            <input
+              id="high"
+              type="text"
+              pInputText
+              formControlName="high"
+              placeholder="0"
+              class="w-[60px] text-center" />
+          </div>
+        </div>
+      </div>
 
-        <app-custom-input
-          label="Low"
-          formControlName="low"
-           type="number"
-        >
-
-        </app-custom-input>
-    </div>
-
-    <!-- HIGH -->
-    <div class="flex flex-col items-center">
-      <label for="high" class="text-xs font-medium uppercase">High</label>
-      <input
-        id="high"
-        type="text"
-        pInputText
-        formControlName="high"
-        placeholder="0"
-        class="w-[60px] text-center" />
-    </div>
-  </div>
+<!-- Buttons -->
+<div class="flex mb-4 gap-2.5">
+  <p-button label="Update" variant="outlined" severity="info" (click)="onUpdate()"></p-button>
+  <p-button label="New" variant="outlined" severity="success" (click)="onNew()"></p-button>
+  <p-button label="Delete" variant="outlined" severity="danger" (click)="onDelete()"></p-button>
 </div>
- 
 
-      <!-- Buttons -->
-       <div class="flex mb-4 gap-2.5">
-          <p-button label="Update" variant="outlined" severity="info" />
-          <p-button label="New" variant="outlined" severity="success" />
-          <p-button label="Delete" variant="outlined" severity="danger" />
-       </div>
     </form>
   </p-card>
 </div>
