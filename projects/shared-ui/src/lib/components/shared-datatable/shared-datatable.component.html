@@ -1,89 +1,129 @@
-<p-card>
-  <p-table
-    [value]="data()"
-    [lazy]="true"
-    (onLazyLoad)="lazyLoad.emit($event)"
-    [paginator]="true"
-    [rows]="rows()"
-    [first]="first()"
-    [totalRecords]="totalRecords()"
-    [loading]="loading()"
-    [rowsPerPageOptions]="rowsPerPageOptions()"
-    [dataKey]="dataKey()"
-    stripedRows
-    styleClass="rounded-lg"
-    [selectionMode]="selectionMode()"
-    [selection]="selection()"
-    (selectionChange)="selectionChange.emit($event)"
-  >
-    <!--
-      Content Projection Slot for Actions (Insert, Delete, etc.)
-      The parent component will provide the content for this slot.
-    -->
-    @if(tableActions()){
-      <ng-template pTemplate="caption">
-        <div>
-          <ng-content select="[tableActions]"></ng-content>
-        </div>
-      </ng-template>
+<div class="border border-gray-300 rounded-xl">
+  <p-table #dt [value]="data()" [lazy]="true" (onLazyLoad)="lazyLoad.emit($event)" [paginator]="true" [rows]="rows()"
+    [first]="first()" [totalRecords]="totalRecords()" [loading]="loading()" [rowsPerPageOptions]="rowsPerPageOptions()"
+    [dataKey]="dataKey()" [selectionMode]="selectionMode()" [selection]="selection()"
+    (selectionChange)="selectionChange.emit($event)" styleClass="rounded-table-container" stripedRows
+    [showGridlines]="showGridLne()" paginatorStyleClass="rounded-b-xl">
+    <!-- Caption for table actions remains the same -->
+    @if (tableActions()) {
+    <ng-template class="rounded-t-xl" pTemplate="caption">
+      <div class="">
+        <ng-content select="[tableActions]"></ng-content>
+      </div>
+    </ng-template>
     }
 
-    <!-- Dynamic Header Generation -->
-    <ng-template pTemplate="header">
-      <tr>
-        <!-- 
-          CHANGE 1: Add the header checkbox column, but only for multi-select mode.
-          This is the component PrimeNG uses for the "select all" functionality.
-        -->
-        <th *ngIf="selectionMode() === 'multiple'" style="width: 3rem">
-          <p-tableHeaderCheckbox />
-        </th>
+    <!-- Dynamic Header Generation using new Control Flow -->
+    <!-- src/app/shared/components/data-table/shared-datatable.component.html -->
 
+    <ng-template pTemplate="header">
+      <!-- Header Titles Row -->
+      <tr>
+        @if (selectionMode() === 'multiple') { <th style="width: 3rem"><p-tableHeaderCheckbox /></th> }
+        @if (showOrder()) {
         <th style="width: 5rem">#</th>
-        <th *ngFor="let col of columns()" [style]="col.style">
-          {{ col.header }}
-        </th>
+        }
+        @for (col of columns(); track col.field) {
+        <th [style]="col.style">{{ col.header }}</th>
+        }
       </tr>
+
+      <!-- Advanced Filter Row -->
+      @if (isAnyColumnFilterable()) {
+      <tr>
+        @if (selectionMode() === 'multiple') { <th></th> }
+        @if (showOrder()) {
+        <th style="width: 5rem">#</th>
+        } <!-- Spacer for # column -->
+        @for (col of columns(); track col.field) {
+        <th>
+          @if (col.filter; as filterConfig) {
+          <!-- Use @switch to render the correct filter based on config -->
+          @switch (filterConfig.type) {
+
+          @case ('text') {
+          <!-- This is correct. It renders an inline text input. -->
+          <p-columnFilter type="text" [field]="col.field"  [placeholder]="filterConfig.placeholder"
+            filterOn="input" />
+          }
+
+          @case ('boolean') {
+          <!-- FIX: Added display="row" to render an inline dropdown (Yes/No). -->
+          <p-columnFilter type="boolean" [field]="col.field" display="row" />
+          }
+
+          @case ('select') {
+          <!-- 
+                  FIX: Replaced the complex template with the simple, built-in row display.
+                  p-columnFilter will render the dropdown for you.
+                -->
+          <!-- <p-columnFilter
+                  type="select"
+                  [field]="col.field"
+                  display="row"
+                  [options]="filterConfig.options!"
+                  [optionLabel]="filterConfig.optionLabel"
+                  [optionValue]="filterConfig.optionValue"
+                  [placeholder]="filterConfig.placeholder || 'Select'"
+                  [matchMode]="filterConfig.matchMode || 'equals'"
+                /> -->
+          }
+
+          @case ('custom') {
+          <!-- This approach remains the same for fully custom UIs. -->
+          <p-columnFilter [field]="col.field" [matchMode]="filterConfig.matchMode || 'in'" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <ng-container
+                *ngTemplateOutlet="customFilterTemplateMap.get(filterConfig.customFilterKey!)!; context: {$implicit: value, filterCallback: filter}"></ng-container>
+            </ng-template>
+          </p-columnFilter>
+          }
+          }
+          }
+        </th>
+        }
+      </tr>
+      }
     </ng-template>
 
     <!-- Dynamic Body Generation -->
+    <!-- NOTE: We CANNOT use @for here because p-table controls the row iteration -->
     <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
       <tr [pSelectableRow]="item">
-        <td *ngIf="selectionMode() === 'multiple'">
-          <p-tableCheckbox [value]="item" />
-        </td>
-
-        <!-- The rowIndex gives us the order number for the current page -->
+        @if (selectionMode() === 'multiple') { <td><p-tableCheckbox [value]="item" /></td> }
+        @if (showOrder()) {
         <td>{{ first() + rowIndex + 1 }}</td>
-        <!--
-          Loop through columns to create cells.
-          This makes the component data-agnostic.
-        -->
-        <td *ngFor="let col of columns()">
-          <!--
-            Check if a custom template exists for this column's field.
-            If yes, render it. If not, display the plain data.
-          -->
-          <ng-container *ngIf="customTemplateMap.has(col.field); else defaultCell">
-            <ng-container
-              *ngTemplateOutlet="customTemplateMap.get(col.field)!; context: { $implicit: item }"
-            ></ng-container>
-          </ng-container>
-
-          <ng-template #defaultCell>
-            {{ getNestedValue(item, col.field) }}
-          </ng-template>
+        }
+        @for (col of columns(); track col.field) {
+        <td>
+          @if (col.customBodyKey && customBodyTemplateMap.has(col.customBodyKey)) {
+          <ng-container
+            *ngTemplateOutlet="customBodyTemplateMap.get(col.customBodyKey)!; context: { $implicit: item }"></ng-container>
+          } @else {
+          <span>{{ getNestedValue(item, col.field) }}</span>
+          }
         </td>
+        }
       </tr>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      @for (_ of placeholderRowsArray(); track $index) {
+        <tr class="">
+          <td class="border-0 h-[50px]" [attr.colspan]="colspan()">
+             
+          </td>
+        </tr>
+      }
     </ng-template>
 
     <!-- Empty Message -->
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="columns().length + (selectionMode() === 'multiple' ? 2 : 1)">
+        <td [attr.colspan]="colspan()">
           {{ emptyMessage() }}
         </td>
       </tr>
     </ng-template>
   </p-table>
-</p-card>
+</div>

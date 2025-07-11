@@ -1,4 +1,11 @@
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, DestroyRef, inject } from '@angular/core';
 import { catchError, of, pipe, switchMap, tap, timer } from 'rxjs';
@@ -30,7 +37,7 @@ export const BedStore = signalStore(
   })),
 
   // 3. Methods
-    withMethods((store, bedService = inject(BedService), messageService = inject(MessageService)) => {
+  withMethods((store, bedService = inject(BedService), messageService = inject(MessageService)) => {
     // We'll store the last load event to easily refresh the table
     let lastLazyLoadEvent: TableLazyLoadEvent = { first: 0, rows: 10 };
 
@@ -40,7 +47,7 @@ export const BedStore = signalStore(
       pipe(
         // Get the array of selected IDs before the load
         switchMap((event) => {
-          const selectedBedIds = store.selectedBeds().map(b => b.id);
+          const selectedBedIds = store.selectedBeds().map((b) => b.id);
           return of({ event, selectedBedIds });
         }),
         tap(({ event }) => {
@@ -51,14 +58,14 @@ export const BedStore = signalStore(
             tap(({ items, totalRecords }) => {
               // --- SELECTION RECONCILIATION FOR MULTI-SELECT ---
               // Find all previously selected beds that are present in the new data page.
-              const reselectedBeds = items.filter(b => selectedBedIds.includes(b.id));
+              const reselectedBeds = items.filter((b) => selectedBedIds.includes(b.id));
 
               patchState(store, {
                 beds: items,
                 totalRecords,
                 isLoading: false,
                 // Set the selection to the reconciled list
-                selectedBeds: reselectedBeds, 
+                selectedBeds: reselectedBeds,
               });
             }),
             catchError((err) => {
@@ -107,8 +114,8 @@ export const BedStore = signalStore(
     const deleteBeds = rxMethod<string[]>( // The ID is now a string
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-       switchMap((bedIds) => 
-          bedService.deleteBed(bedIds).pipe( 
+        switchMap((bedIds) =>
+          bedService.deleteBed(bedIds).pipe(
             tap(() => {
               messageService.add({
                 key: 'custom-toast',
@@ -176,14 +183,14 @@ export const BedStore = signalStore(
     return { loadBeds, addBed, deleteBeds, setSelection, paginate };
   }),
 
-   // 4. NEW: LIFECYCLE HOOKS for auto-refresh
+  // 4. NEW: LIFECYCLE HOOKS for auto-refresh
   withHooks({
     onInit(store, destroyRef = inject(DestroyRef)) {
       // Start a timer that emits after 5 minutes, and then every 5 minutes after that.
       timer(REFRESH_INTERVAL_MS, REFRESH_INTERVAL_MS)
         .pipe(
           // Automatically unsubscribe when the store is destroyed.
-          takeUntilDestroyed(destroyRef)
+          takeUntilDestroyed(destroyRef),
         )
         .subscribe(() => {
           console.log('Auto-refreshing bed data...');

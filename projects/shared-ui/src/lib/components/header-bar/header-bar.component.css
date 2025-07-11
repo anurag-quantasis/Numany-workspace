@@ -1,4 +1,21 @@
-::ng-deep .scrollable-submenu .p-menubar-submenu{
+/* ::ng-deep .scrollable-submenu .p-menubar-submenu {
   max-height: 300px;
   overflow-y: auto;
+} */
+
+/* ::ng-deep .custom-menu .p-menubar .p-menubarsub .p-menubarsub .p-menubar-submenu {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+} */
+
+/* Prevent nested submenus from inheriting the scroll */
+::ng-deep .custom-pmenu .scrollable-submenu .p-submenu-list .p-submenu-list {
+  max-height: unset !important;
+  overflow: visible !important;
+}
+
+::ng-deep .custom-pmenu > .p-menubar{
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

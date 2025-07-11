@@ -9,7 +9,7 @@ export class ValidationPipe implements PipeTransform {
   // Takes form errors and returns a user-friendly string.
   transform(
     errors: ValidationErrors | null | undefined,
-    customMessages: { [key: string]: string } = {}
+    customMessages: { [key: string]: string } = {},
   ): string {
     if (!errors) return '';
 
@@ -31,6 +31,8 @@ export class ValidationPipe implements PipeTransform {
         return `Minimum length must be ${errorValue.requiredLength}.`;
       case 'min':
         return `The minimum value is ${errorValue.min}.`;
+      case 'max':
+        return `The maximum value is ${errorValue.max}.`;
       case 'noNegative':
         return 'Value cannot be negative.';
       // Add more global default messages here.

@@ -24,7 +24,9 @@ export class ShortcutDirective implements OnInit, OnDestroy {
       const element = this.elementRef.nativeElement;
       const tagName = element.tagName.toUpperCase();
       const focusableTags = ['INPUT', 'TEXTAREA', 'SELECT'];
-      const action = focusableTags.includes(tagName) ? () => element.focus() : () => element.click();
+      const action = focusableTags.includes(tagName)
+        ? () => element.focus()
+        : () => element.click();
 
       this.subscription = this.shortcutService.register({
         key: this.key,

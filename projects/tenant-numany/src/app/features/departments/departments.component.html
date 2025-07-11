@@ -1,1 +1,71 @@
-<p>departments works!</p>
+<shared-panel-container>
+  <main class="flex flex-col justify-center items-center w-full gap-y-2">
+    <h3 class="p-5 text-xl font-semibold" [shortcut]="'alt.p'" [shortcutKeyHint]="'p'">
+      Print All Records
+    </h3>
+    <form [formGroup]="departmentForm" (ngSubmit)="printForm()">
+      <p-select
+        [options]="departmentOptions"
+        formControlName="department"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Select a Department"
+        class="w-full md:w-56 h-8 mb-10 flex justify-center items-center"
+      />
+      <section class="grid grid-cols-2 gap-x-12 gap-y-4">
+        <div class="flex justify-between">
+          <label for="">ID:</label>
+          <input type="text" pInputText formControlName="id" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">NAME:</label>
+          <input type="text" pInputText formControlName="name" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">ADDRESS:</label>
+          <input type="text" pInputText formControlName="address" class="h-18" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">CITY:</label>
+          <input type="text" pInputText formControlName="city" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">STATE:</label>
+          <input type="text" pInputText formControlName="state" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">ZIP:</label>
+          <input type="text" pInputText formControlName="zip" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">PHONE:</label>
+          <input type="text" pInputText formControlName="phone" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">NOTE:</label>
+          <input type="text" pInputText formControlName="note" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">COST_BASIS:</label>
+          <input type="text" pInputText formControlName="cost_basis" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">MARKUP:</label>
+          <input type="text" pInputText formControlName="markup" class="h-8" />
+        </div>
+        <div class="flex justify-between">
+          <label for="">TAX_FLAG:</label>
+          <input type="text" pInputText formControlName="tax_flag" class="h-8" />
+        </div>
+      </section>
+    </form>
+    <div class="flex justify-center items-center gap-x-4 my-5">
+      <p-button (click)="resetForm()" [shortcut]="'alt.a'">Add</p-button>
+      <p-button [shortcut]="'alt.d'">Delete</p-button>
+      <p-button [shortcut]="'alt.u'">Update</p-button>
+    </div>
+  </main>
+
+</shared-panel-container>
+
+

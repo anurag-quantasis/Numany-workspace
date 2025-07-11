@@ -161,11 +161,20 @@ export class ShortcutService implements OnDestroy {
     // Case 2: No modifiers are present (the key is part of a sequence).
     // This is the updated, more permissive logic.
     const isAlphanumeric = mainKey.length === 1 && mainKey.match(/[a-z0-9]/i);
-    const isFunctionKey = mainKey.startsWith('f') && mainKey.length > 1 && !isNaN(Number(mainKey.substring(1)));
-    const allowedSpecialKeys = ['enter', 'escape', 'tab', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
-    
+    const isFunctionKey =
+      mainKey.startsWith('f') && mainKey.length > 1 && !isNaN(Number(mainKey.substring(1)));
+    const allowedSpecialKeys = [
+      'enter',
+      'escape',
+      'tab',
+      'arrowup',
+      'arrowdown',
+      'arrowleft',
+      'arrowright',
+    ];
+
     if (isAlphanumeric || isFunctionKey || allowedSpecialKeys.includes(mainKey)) {
-        return mainKey;
+      return mainKey;
     }
 
     // If none of the above, it's not a key we want to track in a sequence.

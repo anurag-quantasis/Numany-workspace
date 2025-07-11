@@ -1,0 +1,276 @@
+<shared-panel-container>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- SECTION 1: GENERAL INFORMATION -->
+      <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-4">
+        <app-custom-input label="Drug ID" formControlName="drugId"></app-custom-input>
+        <app-custom-input label="Primary Name" formControlName="primaryName"></app-custom-input>
+        <app-custom-input label="Secondary Name" formControlName="secondaryName"></app-custom-input>
+        <app-custom-input label="Unit of Use" formControlName="secondaryName"></app-custom-input>
+        <app-custom-input label="Dose Check Units" formControlName="secondaryName"></app-custom-input>
+        <app-custom-input
+          label="AHES Class"
+          type="number"
+          formControlName="ahesClass"
+        ></app-custom-input>
+        <app-custom-input
+          label="NDC Number"
+          type="number"
+          formControlName="ndcNumber"
+        ></app-custom-input>
+        <app-custom-input label="Metric" type="number" formControlName="ndcNumber"></app-custom-input>
+        <app-custom-input
+          label="Billing"
+          type="number"
+          formControlName="ndcNumber"
+        ></app-custom-input>
+        <div class="field">
+          <label for="listColor">List Color</label>
+          <p-dropdown
+            id="listColor"
+            formControlName="listColor"
+            [options]="listColorOptions"
+            placeholder="Select Color"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label class="mb-3">Formulary Status</label>
+          <div class="flex flex-wrap gap-3">
+            <div *ngFor="let option of formularyStatusOptions" class="flex align-items-center">
+              <p-radioButton
+                [name]="'formularyStatus'"
+                [value]="option.value"
+                [inputId]="option.label"
+                formControlName="formularyStatus"
+              ></p-radioButton>
+              <label [for]="option.label">{{ option.label }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="mb-3">Clinical Checks</label>
+          <div class="flex flex-wrap gap-3">
+            <div *ngFor="let option of clinicalChecksOptions" class="flex align-items-center">
+              <p-radioButton
+                [name]="'clinicalChecks'"
+                [value]="option.value"
+                [inputId]="option.label"
+                formControlName="clinicalChecks"
+              ></p-radioButton>
+              <label [for]="option.label">{{ option.label }}</label>
+            </div>
+          </div>
+        </div>
+        <app-custom-input label="Generic Name" formControlName="genericName"></app-custom-input>
+        <app-custom-input
+          label="Strength"
+          type="number"
+          formControlName="strength"
+        ></app-custom-input>
+        <app-custom-input label="Unit" formControlName="unit"></app-custom-input>
+        <app-custom-input label="Dose Form" formControlName="doseForm"></app-custom-input>
+        <app-custom-input label="Volume" formControlName="doseForm"></app-custom-input>
+        <app-custom-input label="GPI" formControlName="doseForm"></app-custom-input>
+        <app-custom-input
+          label="Supplemental Name"
+          formControlName="supplementalName"
+        ></app-custom-input>
+      </div>
+
+      <!-- SECTION 2: CODES & IDS -->
+      <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-6">
+        <app-custom-input label="GPI" type="number" formControlName="gpi"></app-custom-input>
+
+        <app-custom-input
+          label="Host Generic Code"
+          type="number"
+          formControlName="hostGenericCode"
+        ></app-custom-input>
+        <app-custom-input
+          label="Alternate Barcode Scan"
+          type="number"
+          formControlName="alternateBarcodeScan"
+        ></app-custom-input>
+        <app-custom-input
+          label="SuppName Drug ID"
+          type="number"
+          formControlName="suppNameDrugId"
+        ></app-custom-input>
+        <app-custom-input label="Vendor Drug ID" formControlName="vendorDrugId"></app-custom-input>
+        <app-custom-input label="Billing Code" formControlName="billingCode"></app-custom-input>
+        <app-custom-input
+          label="J-Code Units"
+          type="number"
+          formControlName="jcodeUnits"
+        ></app-custom-input>
+      </div>
+
+      <!-- SECTION 3: CONFIGURATION -->
+      <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-6">
+        <div class="field">
+          <label for="medicationType">Medication Type</label>
+          <p-dropdown
+            id="medicationType"
+            formControlName="medicationType"
+            [options]="medicationTypeOptions"
+            placeholder="Select a Type"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="drugControlClass">Drug Control Class</label>
+          <p-dropdown
+            id="drugControlClass"
+            formControlName="drugControlClass"
+            [options]="drugControlClassOptions"
+            placeholder="Select a Class"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="listColor">List Color</label>
+          <p-dropdown
+            id="listColor"
+            formControlName="listColor"
+            [options]="listColorOptions"
+            placeholder="Select Color"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="expirationDate">Expiration Date</label>
+          <p-calendar
+            id="expirationDate"
+            formControlName="expirationDate"
+            [showIcon]="true"
+            dateFormat="mm/dd/yy"
+          ></p-calendar>
+        </div>
+
+        <!-- Checkbox section -->
+        <div class="grid grid-cols-2">
+          <div class="">
+            <p-checkbox
+              formControlName="displayClinicalInfo"
+              [binary]="true"
+              inputId="dispClinInfo"
+            ></p-checkbox>
+            <label for="dispClinInfo">Display Clinical Info</label>
+          </div>
+          <div class="field-checkbox">
+            <p-checkbox
+              formControlName="reCalculateCharge"
+              [binary]="true"
+              inputId="recalcCharge"
+            ></p-checkbox>
+            <label for="recalcCharge">Re-calculate Charge</label>
+          </div>
+          <div class="field-checkbox">
+            <p-checkbox formControlName="skipEmar" [binary]="true" inputId="skipEmar"></p-checkbox>
+            <label for="skipEmar">Skip E-MAR</label>
+          </div>
+          <div class="field-checkbox">
+            <p-checkbox
+              formControlName="requireSecondValidation"
+              [binary]="true"
+              inputId="reqSecondVal"
+            ></p-checkbox>
+            <label for="reqSecondVal">Require 2nd Validation</label>
+          </div>
+        </div>
+
+        <!-- Vital Signs -->
+        <div class="flex">
+          <div class="">
+            <p-checkbox formControlName="pulse" [binary]="true" inputId="vsPulse"></p-checkbox>
+            <label for="vsPulse">Pulse</label>
+          </div>
+          <div class="">
+            <p-checkbox formControlName="temp" [binary]="true" inputId="vsTemp"></p-checkbox>
+            <label for="vsTemp">Temp</label>
+          </div>
+          <div class="">
+            <p-checkbox formControlName="bp" [binary]="true" inputId="vsBp"></p-checkbox>
+            <label for="vsBp">BP</label>
+          </div>
+          <div class="">
+            <p-checkbox formControlName="resp" [binary]="true" inputId="vsResp"></p-checkbox>
+            <label for="vsResp">Resp</label>
+          </div>
+          <div class="field-checkbox col-4 md:col-2">
+            <p-checkbox formControlName="misc" [binary]="true" inputId="vsMisc"></p-checkbox>
+            <label for="vsMisc">Misc</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: USAGE & STOCK -->
+      <div class="formgrid mt-6 grid grid-cols-3">
+        <div formGroupName="currentUsage">
+          <app-custom-input label="YTD Usage" formControlName="ytdUsage"></app-custom-input>
+          <app-custom-input label="Stock Level" formControlName="stockLevel"></app-custom-input>
+          <app-custom-input label="MTD Dispensed" formControlName="mtdDispensed"></app-custom-input>
+          <app-custom-input label="Reorder Level" formControlName="reorderLevel"></app-custom-input>
+          <app-custom-input label="MTD Orders" formControlName="mtdOrders"></app-custom-input>
+          <app-custom-input
+            label="Emergency Reorder"
+            formControlName="emergencyReorder"
+          ></app-custom-input>
+        </div>
+        <div>
+          <app-custom-input label="Supplier" formControlName="supplier"></app-custom-input>
+          <app-custom-input label="Manufacturer" formControlName="manufacturer"></app-custom-input>
+          <app-custom-input label="Locator" formControlName="locator"></app-custom-input>
+        </div>
+      </div>
+
+      <div formGroupName="usageLast12Months" class="grid grid-cols-6 gap-4 mt-4">
+        <app-custom-input label="Jan" formControlName="jan"></app-custom-input>
+        <app-custom-input label="Feb" formControlName="feb"></app-custom-input>
+        <app-custom-input label="Mar" formControlName="mar"></app-custom-input>
+        <app-custom-input label="Apr" formControlName="apr"></app-custom-input>
+        <app-custom-input label="May" formControlName="may"></app-custom-input>
+        <app-custom-input label="Jun" formControlName="jun"></app-custom-input>
+        <app-custom-input label="Jul" formControlName="jul"></app-custom-input>
+        <app-custom-input label="Aug" formControlName="aug"></app-custom-input>
+        <app-custom-input label="Sep" formControlName="sep"></app-custom-input>
+        <app-custom-input label="Oct" formControlName="oct"></app-custom-input>
+        <app-custom-input label="Nov" formControlName="nov"></app-custom-input>
+        <app-custom-input label="Dec" formControlName="dec"></app-custom-input>
+      </div>
+
+      <!-- SECTION 5: NOTES -->
+      <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-6">
+        <div class="field">
+          <label for="adminNote">Admin Note</label>
+          <textarea
+            id="adminNote"
+            pInputTextarea
+            formControlName="adminNote"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+        <div class="field">
+          <label for="miscNote">Misc Note</label>
+          <textarea
+            id="miscNote"
+            pInputTextarea
+            formControlName="miscNote"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+        <div class="field">
+          <label for="noteForOrderEntry">Note for Order Entry</label>
+          <textarea
+            id="noteForOrderEntry"
+            pInputTextarea
+            formControlName="noteForOrderEntry"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</shared-panel-container>
+

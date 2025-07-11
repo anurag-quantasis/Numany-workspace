@@ -1,0 +1,26 @@
+<div
+  class="flex items-center justify-between px-6 py-2 border-b border-gray-200 dark:border-gray-700 bg-primary-400 dark:bg-[#121212] text-black dark:text-white"
+>
+  <div class="flex items-center gap-4">
+    <!-- <p-button [rounded]="true" [text]="true" severity="secondary" (click)="themeStore.toggleTheme()">
+      <i [class]="themeStore.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"></i>
+    </p-button> -->
+    <div routerLink="/" class="text-2xl text-white flex gap-1.5 items-center cursor-pointer">
+      <!-- <img src="images/logo2.png" role="button" class="h-10 w-10" alt="" /> -->
+      <div role="button">Numany</div>
+    </div>
+  </div>
+  <div class="flex items-center gap-4">
+    <div class="flex items-center space-x-2">
+      <div
+        class="w-8 h-8 rounded-full bg-gray-300 overflow-hidden border-2 border-white shadow flex justify-center items-center text-primary-500"
+      >
+        <!-- <img src="https://placehold.co/40x40?text=%E2%80%8B" alt="Profile" class="w-full h-full object-cover" /> -->
+        <i class="pi pi-user"></i>
+      </div>
+    </div>
+    <p-button label="Logout" severity="secondary">
+      <i class="pi pi-sign-out"></i>
+    </p-button>
+  </div>
+</div>

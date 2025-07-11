@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { BedStore } from './bed-store/bed.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ShortcutDirective, ShortcutService } from 'shared-ui';
+import { ColumnDef, CustomInputComponent, ShortcutDirective, ShortcutService, SharedPanelContainerComponent } from 'shared-ui';
 import { Observable, Subscription } from 'rxjs';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Bed } from './bed-store/beds.model';
@@ -12,6 +12,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BedService } from './services/beds.service';
+import { SharedDataTableComponent } from 'shared-ui';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'tenant-beds',
@@ -23,8 +25,12 @@ import { BedService } from './services/beds.service';
     ReactiveFormsModule,
     CardModule,
     ConfirmDialogModule,
-    ShortcutDirective
-  ],
+    ShortcutDirective,
+    SharedDataTableComponent,
+    CustomInputComponent,
+    Toast,
+    SharedPanelContainerComponent
+],
   templateUrl: './beds.component.html',
   styleUrl: './beds.component.css',
   providers: [BedStore, MessageService, ConfirmationService],
@@ -39,27 +45,21 @@ export class BedsComponent {
   private keyNavSubscription = new Subscription();
   isAddDialogVisible = false;
 
-  private bedsService = inject(BedService);
-  public beds$!: Observable<any[]>;
-
   // Form for adding a new bed
   bedForm = this.fb.group({
-    name: ['', Validators.required],
+    bedId: ['', Validators.required],
     area: ['', Validators.required],
-    section: ['', Validators.required],
+    section: [null, [Validators.required, Validators.pattern('^[0-9]+$'), Validators.max(9998)]],
   });
 
-  ngOnInit(): void {
-    // Initial load. The PrimeNG table will also trigger this with default values.
-    this.store.loadBeds({ first: 0, rows: 10 });
+  readonly columns: ColumnDef<Bed>[] = [
+    { field: 'id_Bed', header: 'Bed Id',filter: { type: 'text', placeholder: 'Search by name' }, },
+    { field: 'id_Area', header: 'Area',filter: { type: 'text', placeholder: 'Search by name' }, },
+    { field: 'ip_Sec', header: 'Section',filter: { type: 'text', placeholder: 'Search by name' }, },
+    { field: 'patientName', header: 'Name',filter: { type: 'text', placeholder: 'Search by name' }, },
+  ];
 
-    this.beds$ = this.bedsService.getBeds2();
-
-    this.beds$.subscribe((value)=> {
-      console.log("BEDS Inside api",value);
-    })
-
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     // Register all our keyboard navigation shortcuts.
@@ -88,22 +88,36 @@ export class BedsComponent {
     this.isAddDialogVisible = true;
   }
 
-  onSelectionChange(bed: Bed) {
-    console.log('Selected Bed:', bed);
-    this.store.selectBed(bed);
+  // onSelectionChange(bed: Bed) {
+  //   console.log('Selected Bed:', bed);
+  //   this.store.selectBed(bed);
+  // }
+
+  handleSelectionChange(bed: Bed | null): void {
+    // The event now emits a single object, not an array.
+    this.store.setSelection(bed);
   }
 
   saveNewBed() {
     if (this.bedForm.invalid) {
       return;
     }
-    // The form value matches the NewBed type
-    this.store.addBed(this.bedForm.getRawValue());
+    const formValue = this.bedForm.getRawValue();
+
+    const newBedPayload = {
+      name: formValue.bedId,
+      area: formValue.area,
+      // We are certain `section` is a number because the form is valid.
+      section: formValue.section!,
+    };
+    this.store.addBed(newBedPayload);
     this.isAddDialogVisible = false;
   }
 
   confirmDelete() {
     const bedToDelete = this.store.selectedBed();
+
+    console.log('Bed select', bedToDelete);
     if (!bedToDelete) {
       return;
     }
@@ -120,7 +134,7 @@ export class BedsComponent {
       acceptButtonProps: {
         label: 'Save',
       },
-      message: `Are you sure you want to delete "${bedToDelete.name}"?`,
+      message: `Are you sure you want to delete "${bedToDelete.id_Area}"?`,
       header: 'Confirm Deletion',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -146,7 +160,7 @@ export class BedsComponent {
       newIndex = currentIndex <= 0 ? currentBeds.length - 1 : currentIndex - 1; // Wraps to bottom
     }
 
-    this.store.selectBed(currentBeds[newIndex]);
+    // this.store.selectBed(currentBeds[newIndex]);
   }
 
   /** Navigates to the next or previous page in the paginator. */
