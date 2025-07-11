@@ -3,6 +3,7 @@ import { delay, Observable, of, throwError } from 'rxjs';
 import { User, FeatureCodes, FeatureCode } from '../permissions/role';
 import { CookieService } from '../../services/cookie.service';
 import { ConfigService } from '../../services/config.service';
+import { ApiService } from '../../services/api.service';
 
 // our mock users in a map.
 const MOCK_USERS: Record<string, User> = {
@@ -55,7 +56,7 @@ export class AuthService {
   private cookieService = inject(CookieService);
   // INJECT the ConfigService
   private configService = inject(ConfigService);
-
+  apiService = inject(ApiService);
   // DYNAMICALLY get the token key from the ConfigService
   private readonly tokenKey = this.configService.getAuthSettings().accessTokenKey;
 
@@ -75,14 +76,16 @@ export class AuthService {
 
   // --- API Calls (Mocks) ---
   login(credentials: {
-    email: string;
+    user_name: string;
     password: string;
   }): Observable<{ token: string; user: User }> {
-    const user = MOCK_USERS[credentials.email];
-    if (user) {
-      const mockToken = `jwt-mock-token-for-${user.id}`;
-      return of({ token: mockToken, user: user }).pipe(delay(1000));
-    }
+    // const user = MOCK_USERS[credentials.email];
+    // if (user) {
+    //   const mockToken = `jwt-mock-token-for-${user.id}`;
+    //   return of({ token: mockToken, user: user }).pipe(delay(1000));
+    // }
+
+    return this.apiService.post('/Auth/login', credentials);
     return throwError(() => new Error('Invalid credentials')).pipe(delay(1000));
   }
 

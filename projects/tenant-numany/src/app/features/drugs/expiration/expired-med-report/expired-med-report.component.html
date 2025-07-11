@@ -1,0 +1,30 @@
+<!-- .../expired-med-report/expired-med-report.component.html -->
+<section class="flex flex-col justify-center items-center gap-y-5 p-4">
+  <h1 class="text-xl font-bold">Drug Expiration Report</h1>
+  <p>Print report of Medications expiring before selected date</p>
+
+  <!-- Use ngIf on the formGroup instance itself -->
+  <div [formGroup]="reportDateGroup">
+    <p-datePicker inline="true" [showWeek]="true" formControlName="reportDate"></p-datePicker>
+    <div class="flex items-center gap-x-2.5 mt-4">
+      <p-checkbox formControlName="ischecked" [binary]="true" inputId="nonformulary"></p-checkbox>
+      <label for="nonformulary">Include Non-formulary Items</label>
+    </div>
+  </div>
+
+  <div class="flex justify-center items-center gap-x-3 mt-4">
+    <!-- Bind to your startReport method -->
+    <p-button
+      label="Start"
+      (onClick)="startReport()"
+      [disabled]="reportDateGroup.invalid"
+    ></p-button>
+
+    <!-- The onClick event is an output property, not an attribute -->
+    <p-button
+      label="Cancel"
+      styleClass="p-button-danger p-button-outlined"
+      (onClick)="cancel()"
+    ></p-button>
+  </div>
+</section>

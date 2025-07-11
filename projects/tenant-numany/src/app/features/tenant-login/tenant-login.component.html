@@ -1,0 +1,33 @@
+<div
+  class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-primary-400"
+>
+  <div
+    class="w-full max-w-md p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20"
+  >
+    <h1 class="text-3xl font-semibold text-center text-white mb-6">Sign In to Your Account</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <app-custom-input
+        label="Username"
+        type="text"
+        placeholder="Enter username"
+        formControlName="user_name"
+      ></app-custom-input>
+
+      <app-custom-input
+        label="Password"
+        type="password"
+        placeholder="Enter password"
+        formControlName="password"
+      ></app-custom-input>
+
+      <div class="flex justify-center items-center w-full">
+        <p-button
+          type="submit"
+          label="Login"
+          styleClass="w-50 bg-primary-600 hover:bg-primary-700"
+        ></p-button>
+      </div>
+    </form>
+  </div>
+</div>

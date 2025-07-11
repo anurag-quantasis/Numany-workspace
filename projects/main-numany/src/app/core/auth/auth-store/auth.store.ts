@@ -14,6 +14,7 @@ import { withPermissions } from '../permissions/permissions.utils';
 import { AuthState } from './auth.state';
 import { MessageService } from 'primeng/api';
 import { toastSeverity } from '../../utils/main.constants';
+import { Router } from '@angular/router';
 
 export const initialState: AuthState = {
   user: null,
@@ -29,28 +30,40 @@ export const AuthStore = signalStore(
   withState(initialState),
 
   // --- Permission Feature from permission utils ---
-  withPermissions(),
+  // withPermissions(),
 
   // 2. Define computed signals for derived state
-  withComputed(({ token, user }) => ({
-    isAuthenticated: computed(() => !!token() && !!user()),
-    // You can add more computed signals like `userName`, `userRoles`, etc.
-  })),
+  // withComputed(({ token, user }) => ({
+  //   isAuthenticated: computed(() => !!token() && !!user()),
+  //   // You can add more computed signals like `userName`, `userRoles`, etc.
+  // })),
 
   // 3. Define methods to update the state and trigger side effects
   withMethods(
-    (store, authService = inject(AuthService), messageService = inject(MessageService)) => ({
+    (
+      store,
+      authService = inject(AuthService),
+      messageService = inject(MessageService),
+      router = inject(Router),
+    ) => ({
       // --- ASYNC METHODS (EFFECTS) ---
-      login: rxMethod<{ email: string; password: string }>(
+      login: rxMethod<{ user_name: string; password: string }>(
         pipe(
-          tap(() => patchState(store, { isLoading: true, error: null })),
+          tap(() => patchState(store, { isLoading: false, error: null })),
           switchMap((credentials) =>
             authService.login(credentials).pipe(
               // This `tap` now ONLY handles the SUCCESS path.
-              tap(({ token, user }) => {
-                authService.saveToken(token);
+              tap((res) => {
+                // authService.saveToken(token);
                 // Set success state and clear any previous error.
-                patchState(store, { user, token, isLoading: false, error: null });
+                patchState(store, {
+                  user: res.user,
+                  token: res.token,
+                  isLoading: false,
+                  error: null,
+                });
+                console.log('RESSSS', res.token);
+                router.navigate(['/']);
               }),
 
               // `catchError` is the safety net for the FAILURE path.
@@ -75,23 +88,23 @@ export const AuthStore = signalStore(
       ),
 
       // This method is for rehydrating state on app load
-      hydrateUser: rxMethod<void>(
-        pipe(
-          // We don't set loading state here, it's a silent background process
-          switchMap(() =>
-            authService.getUserProfile().pipe(
-              tap({
-                next: (user) => patchState(store, { user }),
-                error: () => {
-                  // If fetching user fails, clear the token and log out
-                  authService.removeToken();
-                  patchState(store, { user: null, token: null });
-                },
-              }),
-            ),
-          ),
-        ),
-      ),
+      // hydrateUser: rxMethod<void>(
+      //   pipe(
+      //     // We don't set loading state here, it's a silent background process
+      //     switchMap(() =>
+      //       authService.getUserProfile().pipe(
+      //         tap({
+      //           next: (user) => patchState(store, { user }),
+      //           error: () => {
+      //             // If fetching user fails, clear the token and log out
+      //             authService.removeToken();
+      //             patchState(store, { user: null, token: null });
+      //           },
+      //         }),
+      //       ),
+      //     ),
+      //   ),
+      // ),
 
       // --- SYNC METHODS ---
       logout(): void {
@@ -103,14 +116,14 @@ export const AuthStore = signalStore(
   ),
 
   // 4. LifeCycle hooks
-  withHooks({
-    onInit({ hydrateUser, ...store }, authService = inject(AuthService)) {
-      const initialToken = authService.getToken();
-      if (initialToken) {
-        patchState(store, { token: initialToken });
-        // If a token exists, try to fetch the user profile to re-establish the session
-        hydrateUser();
-      }
-    },
-  }),
+  // withHooks({
+  //   onInit({ hydrateUser, ...store }, authService = inject(AuthService)) {
+  //     const initialToken = authService.getToken();
+  //     if (initialToken) {
+  //       patchState(store, { token: initialToken });
+  //       // If a token exists, try to fetch the user profile to re-establish the session
+  //       hydrateUser();
+  //     }
+  //   },
+  // }),
 );

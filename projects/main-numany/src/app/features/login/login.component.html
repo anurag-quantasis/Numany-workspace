@@ -22,7 +22,7 @@
             <input
               pInputText
               id="main-email"
-              formControlName="email"
+              formControlName="user_name"
               type="email"
               class="w-full"
               placeholder="you@example.com"
@@ -60,6 +60,8 @@
           [disabled]="loginForm.invalid || store.isLoading()"
         >
         </p-button>
+
+        <p-button (onClick)="onNavigate()" label="Go"></p-button>
       </form>
     </div>
   </p-card>

@@ -43,7 +43,7 @@ export const MyPreset = definePreset(Aura, {
       colorScheme: {
         light: {
           root: {
-            // background: '{red.100}',
+            background: '{gray.100}',
             // color: '{surface.700}'
           },
           subtitle: {

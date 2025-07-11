@@ -8,12 +8,14 @@
         type="text"
         [class]="'!w-20 !font-semibold'"
         formControlName="ichid"
+        [readonly]="!isEdit && !isAddMode"
       ></app-custom-input>
       <app-custom-input
         label="Class Name"
         type="text"
         [class]="'!w-100 !font-semibold'"
         formControlName="namcls"
+        [readonly]="!isEdit && !isAddMode"
       ></app-custom-input>
     </div>
     <section class="grid grid-cols-6 gap-5">
@@ -23,40 +25,45 @@
       <p class="text-center font-semibold">Administration Fee</p>
       <p class="text-center font-semibold">Markup Factor</p>
       <p class="text-center font-semibold">Minimum Unit Charge</p>
+
       <p class="font-semibold">Cost Range 1</p>
-      <input type="text" pInputText formControlName="lo1" />
-      <input type="text" pInputText formControlName="hi1" />
-      <input type="text" pInputText formControlName="fee1" />
-      <input type="text" pInputText formControlName="markup1" />
-      <input type="text" pInputText formControlName="minchrg1" />
+      <input type="text" pInputText formControlName="lo1" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="hi1" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="fee1" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="markup1" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="minchrg1" [readonly]="!isEdit && !isAddMode" />
+
       <p class="font-semibold">Cost Range 2</p>
-      <input type="text" pInputText formControlName="lo2" />
-      <input type="text" pInputText formControlName="hi2" />
-      <input type="text" pInputText formControlName="fee2" />
-      <input type="text" pInputText formControlName="markup2" />
-      <input type="text" pInputText formControlName="minchrg2" />
+      <input type="text" pInputText formControlName="lo2" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="hi2" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="fee2" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="markup2" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="minchrg2" [readonly]="!isEdit && !isAddMode" />
+
       <p class="font-semibold">Cost Range 3</p>
-      <input type="text" pInputText formControlName="lo3" />
-      <input type="text" pInputText formControlName="hi3" />
-      <input type="text" pInputText formControlName="fee3" />
-      <input type="text" pInputText formControlName="markup3" />
-      <input type="text" pInputText formControlName="minchrg3" />
+      <input type="text" pInputText formControlName="lo3" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="hi3" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="fee3" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="markup3" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="minchrg3" [readonly]="!isEdit && !isAddMode" />
+
       <p class="font-semibold">Cost Range 4</p>
-      <input type="text" pInputText formControlName="lo4" />
-      <input type="text" pInputText formControlName="hi4" />
-      <input type="text" pInputText formControlName="fee4" />
-      <input type="text" pInputText formControlName="markup4" />
-      <input type="text" pInputText formControlName="minchrg4" />
+      <input type="text" pInputText formControlName="lo4" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="hi4" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="fee4" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="markup4" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="minchrg4" [readonly]="!isEdit && !isAddMode" />
+
       <p class="font-semibold">Cost Range 5</p>
-      <input type="text" pInputText formControlName="lo5" />
-      <input type="text" pInputText formControlName="hi5" />
-      <input type="text" pInputText formControlName="fee5" />
-      <input type="text" pInputText formControlName="markup5" />
-      <input type="text" pInputText formControlName="minchrg5" />
+      <input type="text" pInputText formControlName="lo5" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="hi5" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="fee5" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="markup5" [readonly]="!isEdit && !isAddMode" />
+      <input type="text" pInputText formControlName="minchrg5" [readonly]="!isEdit && !isAddMode" />
     </section>
   </form>
   <section>
-    <div class="flex justify-center items-center gap-x-4 mt-5" *ngIf="!isEdit">
+    <div class="flex justify-center items-center gap-x-4 mt-5" *ngIf="!isEdit && !isAddMode">
       <p-button styleClass="h-8 w-34 text-sm" variant="outlined" (onClick)="addClicked()"
         >Add</p-button
       >
@@ -79,14 +86,10 @@
         >Refresh</p-button
       >
     </div>
-    <div class="flex justify-start items-center gap-x-4 mt-5 ml-44" *ngIf="isEdit">
-      <p-button
-        styleClass="h-8 w-30 text-sm"
-        variant="outlined"
-        (onClick)="updateClicked()"
-        (onClick)="updateClicked()"
-        >Update</p-button
-      >
+    <div class="flex justify-start items-center gap-x-4 mt-5 ml-44" *ngIf="isEdit || isAddMode">
+      <p-button styleClass="h-8 w-30 text-sm" variant="outlined" (onClick)="updateClicked()">
+        Update
+      </p-button>
       <p-button
         styleClass="h-8 w-30 text-sm border-red-500 text-red-500 hover:bg-red-50"
         variant="outlined"
@@ -94,7 +97,7 @@
         >Cancel</p-button
       >
     </div>
-    <div class="flex justify-center items-center gap-2 my-5">
+    <div class="flex justify-center items-center gap-2 my-5" *ngIf="!isEdit && !isAddMode">
       <p-button
         icon="pi pi-step-backward"
         styleClass="h-8"

@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { ShortcutDirective } from '../../directives/shortcut.directive';
 import { ShortcutKeyHintDirective } from '../../directives/shortcut-key-hint.directive';
 import { InputTextModule } from 'primeng/inputtext';
+import { DynamicDialogModule, DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ExpiredMedReportComponent } from 'projects/tenant-numany/src/app/features/drugs/expiration/expired-med-report/expired-med-report.component';
 
 interface CustomMenuItem extends MenuItem {
   shortcut?: string; // e.g., 'Ctrl+S'
@@ -15,6 +17,7 @@ interface CustomMenuItem extends MenuItem {
 
 @Component({
   selector: 'shared-header-bar',
+  standalone: true,
   imports: [
     CommonModule,
     RouterLink,
@@ -23,12 +26,15 @@ interface CustomMenuItem extends MenuItem {
     BadgeModule,
     InputTextModule,
     ShortcutDirective,
+    DynamicDialogModule,
   ],
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.css',
 })
 export class HeaderBarComponent implements OnInit {
   items: CustomMenuItem[] = [];
+  ref: DynamicDialogRef | undefined;
+  private dialogService = inject(DialogService);
   ngOnInit() {
     this.items = [
       // UCO List
@@ -349,6 +355,27 @@ export class HeaderBarComponent implements OnInit {
                 shortcutHint: 'd',
                 route: '/item-maintenance',
               },
+              {
+                label: 'Expiration',
+                shortcut: 'alt.f e',
+                shortcutHint: 'e',
+                // route: '/expiration',
+                items: [
+                  {
+                    label: 'Expired Med Report',
+                    shortcut: 'alt.f x',
+                    shortcutHint: 'x',
+                    command: () => {
+                      this.openDialog(ExpiredMedReportComponent, 'Expired Med Report');
+                    },
+                  },
+                  {
+                    label: 'Modify Date',
+                    shortcut: 'alt.f m',
+                    shortcutHint: 'm',
+                  },
+                ],
+              },
             ],
           },
           {
@@ -551,6 +578,24 @@ export class HeaderBarComponent implements OnInit {
         ],
       },
     ];
+  }
+
+  openDialog(component: any, headerText: string) {
+    this.ref = this.dialogService.open(component, {
+      header: headerText,
+      width: '50%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+    });
+
+    // Optional: Subscribe to the dialog closing event to get data back
+    this.ref.onClose.subscribe((data: any) => {
+      if (data) {
+        console.log('Dialog closed with data:', data);
+        // e.g., show a toast message: this.messageService.add(...)
+      }
+    });
   }
 
   // This handler is crucial to preserve the original 'command' functionality
