@@ -1,25 +1,49 @@
 <p-card class="p-4">
-    <h1 class="mt-5 ml-5 text-2xl">Remote Inventory Location</h1>
+  <h1 class="mt-5 ml-5 text-2xl">Remote Inventory Location</h1>
 
-<form [formGroup]="remoteInventoryLocation" class="p-5">
-  <div class="mb-4">
-    <label for="locationID" class="block text-[18px] font-medium text-gray-700 mb-2.5">
-      Location ID
-    </label>
-    <p-select
-      id="locationID"
-      [options]="locationIDs"
-      formControlName="locationID"
-      optionLabel="name"
-      placeholder="Select Location"
-      class="w-[400px]"
-    ></p-select>
+  <!-- Make sure you have imported ReactiveFormsModule in your feature module (e.g., remote-inventory-location.module.ts or app.module.ts) -->
+  <form [formGroup]="remoteInventoryLocation" class="p-5">
+    <div class="mb-4">
+      <label for="locationID" class="block text-[18px] font-medium text-gray-700 mb-2.5">
+        Location ID
+      </label>
 
-    <p-divider class="mt-3.5"></p-divider>
+      <div class="card flex justify-start">
+        <p-select
+          id="locationID"
+          formControlName="locationID"
+          [options]="locationIDs"
+          optionLabel="name"
+          placeholder="Select Location"
+          class="w-full md:w-56"
+        ></p-select>
+      </div>
 
-    <h1 class="text-[18px] font-semibold">ITEMS LISTEDFOR LOCATION &lt; CMK Area &gt; </h1>
+      <p-divider class="mt-3.5"></p-divider>
 
-  </div>
-</form>
+      <h1 class="text-[18px] font-semibold mb-3">
+        ITEMS LISTED FOR LOCATION &lt; {{ selectedLocation?.name || '...' }} &gt;
+      </h1>
 
+      <shared-data-table
+        [data]="store.inventory()()"
+        [columns]="columns"
+        [totalRecords]="store.total()()"
+        [loading]="store.isLoading()()"
+        [first]="store.first()()"
+        [selection]="store.selectedItem()()"
+        (lazyLoad)="store.loadInventory($event)"
+        (selectionChange)="handleSelectionChange($any($event))"
+        [tableActions]="false"
+        selectionMode="single"
+      >
+      </shared-data-table>
+
+      <div class="mt-5 flex justify-end gap-3">
+        <p-button label="Add to Location" variant="outlined" severity="success" (click)="onAddItem()" />
+        <p-button label="Delete Selected Location" variant="outlined" severity="danger" (click)="onDeleteItem()" />
+        <p-button label="Change Location ID" variant="outlined" severity="info" (click)="onChangeLocationID()" />
+      </div>
+    </div>
+  </form>
 </p-card>
