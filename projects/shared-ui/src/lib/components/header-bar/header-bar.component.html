@@ -1,11 +1,11 @@
 <!-- The outer div is no longer needed for context. It's just a container. -->
-<div class="zoom-container">
+<div>
   <p-menubar class="custom-pmenu" [model]="items">
-    <ng-template #end>
+    <!-- <ng-template #end>
       <div class="flex items-center gap-2">
         <input pInputText type="text" placeholder="Search" class="w-36" [shortcut]="'alt.k'" />
       </div>
-    </ng-template>
+    </ng-template> -->
 
     <ng-template #item let-item let-root="root">
       <a
@@ -24,12 +24,12 @@
             *ngIf="item.items"
             [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
           ></i>
-          <span
+          <!-- <span
             *ngIf="item.shortcutLabel"
             class="mx-auto border border-surface rounded bg-primary-400 text-white text-xs p-1 min-w-5.5 text-center"
           >
             {{ item.shortcutLabel }}
-          </span>
+          </span> -->
         </div>
       </a>
     </ng-template>

@@ -14,7 +14,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
-import { CustomInputComponent } from 'shared-ui';
+import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 import { MessageService } from 'primeng/api';
 import { TextareaModule } from 'primeng/textarea';
 
@@ -34,7 +34,8 @@ import { TextareaModule } from 'primeng/textarea';
     CalendarModule,
     CustomInputComponent,
     TextareaModule,
-  ],
+    SharedPanelContainerComponent
+],
   providers: [MessageService],
   templateUrl: './item-maintenance-form.component.html',
 })

@@ -166,6 +166,7 @@ export const BedStore = signalStore(
       }
     };
 
+    // return { loadBeds, deleteBed, setSelection, paginate };
     return { loadBeds, addBed, deleteBed, updateBed, setSelection, paginate };
   }),
 );

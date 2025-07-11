@@ -1,23 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, delay, map, Observable, of, throwError } from 'rxjs';
 import { ApiResponse, Bed, NewBed, PaginatedBedsResponse } from '../bed-store/beds.model';
-import { LazyLoadEvent } from 'primeng/api';
+import { FilterMetadata, LazyLoadEvent } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { ApiService } from '../../../core/services/api.service';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { createHttpParams } from '../../../shared/utils/utils';
 
 // --- API Data Transfer Objects (DTOs) ---
 // These interfaces exactly match the JSON from your backend.
 
-interface ApiBed {
-  id: string;
-  bed_Seq: number;
-  id_Bed: string;
-  id_Area: string;
-  ip_Sec: number;
-  oeip: boolean;
-  status: number;
-}
 
 interface ApiPaging {
   totalItems: number;
@@ -28,13 +20,13 @@ interface ApiPaging {
 
 // For GET /beds
 interface ApiGetBedsResponse {
-  data: ApiBed[];
+  data: Bed[];
   paging: ApiPaging;
 }
 
 // For POST, DELETE, etc.
 interface ApiMutationResponse {
-  data: ApiBed | null;
+  data: Bed | null;
   message: string | null;
 }
 
@@ -45,20 +37,13 @@ export class BedService {
   private readonly singleBedEndpoint = '/bed';
 
   getBeds(event: TableLazyLoadEvent): Observable<ApiResponse<PaginatedBedsResponse>> {
-    const params = this.createHttpParams(event);
+    const params = createHttpParams(event);
 
     return this.apiService.get<ApiGetBedsResponse>(this.bedsEndpoint, { params }).pipe(
       map((apiResponse) => {
         // Map the snake_case API data to our clean, camelCase Bed model
-        const mappedItems: Bed[] = apiResponse.data.map((apiBed) => ({
-          id: apiBed.id,
-          name: apiBed.id_Bed,
-          area: apiBed.id_Area,
-          section: apiBed.ip_Sec, // Or however you wish to format it
-        }));
-
         const paginatedData: PaginatedBedsResponse = {
-          items: mappedItems,
+          items: apiResponse.data, // Just use the data as-is
           totalRecords: apiResponse.paging.totalItems,
         };
 
@@ -73,7 +58,8 @@ export class BedService {
   }
 
   addBed(newBed: NewBed): Observable<ApiResponse<Bed>> {
-    // Create the payload the API expects
+    // 1. Create the payload the API expects from your `NewBed` form model.
+    //    This is the "mapping on the way in".
     const apiPayload = {
       bed: {
         id_Bed: newBed.name,
@@ -84,7 +70,7 @@ export class BedService {
 
     return this.apiService.post<ApiMutationResponse>(this.singleBedEndpoint, apiPayload).pipe(
       map((apiResponse) => {
-        // Check for a business logic error (e.g., "ID already in use")
+        // 2. Check for business logic errors from the API.
         if (!apiResponse.data) {
           return {
             status: 'error',
@@ -92,18 +78,12 @@ export class BedService {
           } as const;
         }
 
-        // It was a true success, so map the response to our Bed model
-        const createdBed: Bed = {
-          id: apiResponse.data.id,
-          name: apiResponse.data.id_Bed,
-          area: apiResponse.data.id_Area,
-          section: apiResponse.data.ip_Sec,
-        };
-
-        return { status: 'success', data: createdBed } as const;
+        // 3. On success, return the full `Bed` object from the API directly.
+        //    No manual mapping is needed here because the response `data`
+        //    already matches your `Bed` interface.
+        return { status: 'success', data: apiResponse.data } as const;
       }),
       catchError((err: HttpErrorResponse) => {
-        // Handle network/server errors
         const message = err.error?.message || 'The request failed.';
         return of({ status: 'error', error: message } as const);
       }),
@@ -111,45 +91,38 @@ export class BedService {
   }
 
   updateBed(bedToUpdate: Bed): Observable<ApiResponse<Bed>> {
-    // 1. Create the nested payload required by the API
+    // 1. Create the payload from the full `Bed` object.
+    //    Your API example shows it expects `id`, `id_Bed`, `id_Area`, and `ip_Sec`.
     const apiPayload = {
       bed: {
         id: bedToUpdate.id,
-        id_Bed: bedToUpdate.name,
-        id_Area: bedToUpdate.area,
-        ip_Sec: Number(bedToUpdate.section), // Ensure section is a number
+        id_Bed: bedToUpdate.id_Bed,
+        id_Area: bedToUpdate.id_Area,
+        ip_Sec: Number(bedToUpdate.ip_Sec), // Ensure it's a number
       },
     };
 
-    // 2. Make the PUT request to the specific bed's endpoint
-    return this.apiService
-      .put<ApiMutationResponse>(`${this.singleBedEndpoint}/${bedToUpdate.id}`, apiPayload)
-      .pipe(
-        map((apiResponse) => {
-          // 3. Check for business logic errors from the API
-          if (!apiResponse.data) {
-            return {
-              status: 'error',
-              error: apiResponse.message || 'An unknown error occurred.',
-            } as const;
-          }
+    // The endpoint includes the bed's ID.
+    const updateUrl = `${this.singleBedEndpoint}/${bedToUpdate.id}`;
 
-          // 4. On true success, map the result back to our clean Bed model
-          const updatedBed: Bed = {
-            id: apiResponse.data.id,
-            name: apiResponse.data.id_Bed,
-            area: apiResponse.data.id_Area,
-            section: apiResponse.data.ip_Sec,
-          };
+    return this.apiService.put<ApiMutationResponse>(updateUrl, apiPayload).pipe(
+      map((apiResponse) => {
+        // 2. Check for business logic errors.
+        if (!apiResponse.data) {
+          return {
+            status: 'error',
+            error: apiResponse.message || 'An unknown error occurred.',
+          } as const;
+        }
 
-          return { status: 'success', data: updatedBed } as const;
-        }),
-        // 5. Handle network or server errors
-        catchError((err: HttpErrorResponse) => {
-          const message = err.error?.message || 'The update request failed.';
-          return of({ status: 'error', error: message } as const);
-        }),
-      );
+        // 3. On success, return the full `Bed` object from the API directly.
+        return { status: 'success', data: apiResponse.data } as const;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const message = err.error?.message || 'The update request failed.';
+        return of({ status: 'error', error: message } as const);
+      }),
+    );
   }
 
   deleteBed(bedId: string): Observable<ApiResponse<void>> {
@@ -168,13 +141,132 @@ export class BedService {
   }
 
   /** Helper to create standard pagination params. */
-  private createHttpParams(event: TableLazyLoadEvent): HttpParams {
-    let params = new HttpParams();
-    params = params.set('pageNumber', ((event.first ?? 0) / (event.rows ?? 10) + 1).toString());
-    params = params.set('pageSize', (event.rows ?? 10).toString());
-    if (event.globalFilter) {
-      // params = params.set('search', event.globalFilter);
-    }
-    return params;
-  }
+  // private createHttpParams(event: TableLazyLoadEvent): HttpParams {
+  //   let params = new HttpParams();
+
+  //   // 1. Handle Pagination
+  //   // Your backend seems to use page/size, so we calculate it
+  //   const page = (event.first ?? 0) / (event.rows ?? 10);
+  //   const size = event.rows ?? 10;
+  //   params = params.set('page', page.toString());
+  //   params = params.set('size', size.toString());
+
+  //   // 2. Handle Sorting (Good practice to add)
+  //   if (event.sortField && typeof event.sortField === 'string') {
+  //     const sortDirection = event.sortOrder === 1 ? 'asc' : 'desc';
+  //     // Your backend might expect a format like 'sort=name,asc'
+  //     params = params.set('sort', `${event.sortField},${sortDirection}`);
+  //   }
+
+  //   // 3. Handle Filtering (THIS IS THE FIX)
+  //   if (event.filters) {
+  //     // Loop over each filter the user has applied in the table
+  //     for (const field in event.filters) {
+  //       const filterMeta = event.filters[field];
+
+  //       // PrimeNG puts filter data in an array, we usually care about the first one.
+  //       // We also check that the value is not null or an empty string.
+  //       const filterValue = Array.isArray(filterMeta) ? filterMeta[0].value : filterMeta?.value;
+
+  //       if (filterValue !== null && filterValue !== undefined && filterValue !== '') {
+  //         // This adds query parameters to the request, like:
+  //         // &name=some_value
+  //         // &area=another_value
+  //         params = params.set(field, filterValue);
+  //       }
+  //     }
+  //   }
+
+  //   return params;
+  // }
+  // private createHttpParams(event: TableLazyLoadEvent): HttpParams {
+  //   let params = new HttpParams();
+
+  //   // 1. Handle Pagination (Assuming this is still needed)
+  //   const page = Math.floor(event.first ?? 0) / (event.rows ?? 10) + 1;
+  //   const size = event.rows ?? 10;
+  //   params = params.set('pageNumber', page.toString());
+  //   params = params.set('pageSize', size.toString());
+
+  //   // 2. Handle OData Sorting
+  //   if (event.sortField && typeof event.sortField === 'string') {
+  //     const sortDirection = event.sortOrder === 1 ? 'asc' : 'desc';
+  //     // OData standard sort format is 'field direction'
+  //     params = params.set('$orderby', `${event.sortField} ${sortDirection}`);
+  //   }
+
+  //   // 3. Handle OData Filtering (THE MAIN FIX)
+  //   const filterClauses: string[] = [];
+
+  //   if (event.filters) {
+  //     for (const field in event.filters) {
+  //       const filterMeta = event.filters[field] as FilterMetadata | FilterMetadata[];
+        
+  //       // PrimeNG can send a single or an array of filters
+  //       const filters = Array.isArray(filterMeta) ? filterMeta : [filterMeta];
+
+  //       for (const filter of filters) {
+  //         if (filter.value !== null && filter.value !== undefined && filter.value !== '') {
+  //           const clause = this.createODataClause(field, filter);
+  //           if(clause) {
+  //             filterClauses.push(clause);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+    
+  //   // Join all individual clauses with 'and' and add to the '$filter' parameter
+  //   if (filterClauses.length > 0) {
+  //     params = params.set('filter', filterClauses.join(' and '));
+  //   }
+
+  //   return params;
+  // }
+  
+  /**
+   * Helper to create a single OData clause from PrimeNG filter metadata.
+   */
+  // private createODataClause(field: string, filter: FilterMetadata): string | null {
+  //   const value = filter.value;
+  //   const matchMode = filter.matchMode || 'contains'; // Default to 'contains'
+
+  //   // For strings, wrap in single quotes and escape any existing single quotes
+  //   const formatString = (val: string) => `'${val.replace(/'/g, "''")}'`;
+
+  //   switch (matchMode) {
+  //     // String functions
+  //     case 'contains':
+  //       return `contains(tolower(${field}), tolower(${formatString(value)}))`;
+  //     case 'notContains':
+  //       return `not contains(tolower(${field}), tolower(${formatString(value)}))`;
+  //     case 'startsWith':
+  //       return `startswith(tolower(${field}), tolower(${formatString(value)}))`;
+  //     case 'endsWith':
+  //       return `endswith(tolower(${field}), tolower(${formatString(value)}))`;
+
+  //     // Equality
+  //     case 'equals':
+  //     case 'eq':
+  //       return `${field} eq ${typeof value === 'string' ? formatString(value) : value}`;
+  //     case 'notEquals':
+  //     case 'ne':
+  //       return `${field} ne ${typeof value === 'string' ? formatString(value) : value}`;
+
+  //     // Relational
+  //     case 'lt':
+  //       return `${field} lt ${value}`;
+  //     case 'lte':
+  //       return `${field} le ${value}`;
+  //     case 'gt':
+  //       return `${field} gt ${value}`;
+  //     case 'gte':
+  //       return `${field} ge ${value}`;
+      
+  //     // We don't handle other modes by default
+  //     default:
+  //       console.warn(`OData mapping for matchMode '${matchMode}' is not implemented.`);
+  //       return null;
+  //   }
+  // }
 }

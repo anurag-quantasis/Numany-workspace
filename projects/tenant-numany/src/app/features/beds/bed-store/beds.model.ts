@@ -1,12 +1,20 @@
 export interface Bed {
-  id: string; // The unique Bed ID from the backend
-  area: string;
-  section: number;
-  name: string;
+  id: string;
+  bed_Seq?: number;
+  id_Bed: string;
+  id_Area: string;
+  ip_Sec: number;
+  oeip?: boolean;
+  status?: number;
+  patientName?: string;
 }
 
 // A DTO for creating a new bed, without the server-generated 'id'
-export type NewBed = Omit<Bed, 'id'>;
+export interface NewBed {
+  name: string;
+  area: string;
+  section: number;
+}
 
 // The structure your API should return for a paginated list
 export interface PaginatedBedsResponse {

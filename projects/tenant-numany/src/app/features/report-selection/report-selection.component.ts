@@ -12,7 +12,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { CustomInputComponent } from 'shared-ui';
+import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 
 interface ReportOptionsTypes {
   id: string;
@@ -37,7 +37,8 @@ interface ReportDescriptionTypes {
     ButtonModule,
     ReactiveFormsModule,
     CustomInputComponent,
-  ],
+    SharedPanelContainerComponent
+],
   templateUrl: './report-selection.component.html',
   styleUrl: './report-selection.component.css',
 })

@@ -14,3 +14,8 @@
   max-height: unset !important;
   overflow: visible !important;
 }
+
+::ng-deep .custom-pmenu > .p-menubar{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

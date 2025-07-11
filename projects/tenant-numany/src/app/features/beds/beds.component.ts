@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { BedStore } from './bed-store/bed.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ColumnDef, CustomInputComponent, ShortcutDirective, ShortcutService } from 'shared-ui';
+import { ColumnDef, CustomInputComponent, ShortcutDirective, ShortcutService, SharedPanelContainerComponent } from 'shared-ui';
 import { Observable, Subscription } from 'rxjs';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Bed } from './bed-store/beds.model';
@@ -29,7 +29,8 @@ import { Toast } from 'primeng/toast';
     SharedDataTableComponent,
     CustomInputComponent,
     Toast,
-  ],
+    SharedPanelContainerComponent
+],
   templateUrl: './beds.component.html',
   styleUrl: './beds.component.css',
   providers: [BedStore, MessageService, ConfirmationService],
@@ -52,10 +53,10 @@ export class BedsComponent {
   });
 
   readonly columns: ColumnDef<Bed>[] = [
-    { field: 'name', header: 'Bed Id' },
-    { field: 'area', header: 'Area' },
-    { field: 'section', header: 'Section' },
-    { field: 'patientName', header: 'Name' },
+    { field: 'id_Bed', header: 'Bed Id',filter: { type: 'text', placeholder: 'Search by name' }, },
+    { field: 'id_Area', header: 'Area',filter: { type: 'text', placeholder: 'Search by name' }, },
+    { field: 'ip_Sec', header: 'Section',filter: { type: 'text', placeholder: 'Search by name' }, },
+    { field: 'patientName', header: 'Name',filter: { type: 'text', placeholder: 'Search by name' }, },
   ];
 
   ngOnInit(): void {}
@@ -133,7 +134,7 @@ export class BedsComponent {
       acceptButtonProps: {
         label: 'Save',
       },
-      message: `Are you sure you want to delete "${bedToDelete.name}"?`,
+      message: `Are you sure you want to delete "${bedToDelete.id_Area}"?`,
       header: 'Confirm Deletion',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

@@ -1,94 +1,97 @@
-<main class="mx-10 flex flex-col">
-  <h2 class="text-2xl text-center p-3 font-semibold">Report and Label Printer Selection</h2>
-
-  <!-- <h1>All Users and All Computers</h1> -->
-
-  <section>
-    <div class="flex justify-between items-center py-6">
-      <div>
-        <p-select
-          [options]="reportOptions"
-          optionLabel="reportName"
-          optionValue="id"
-          placeholder="Select Report"
-          styleClass="w-100"
-        ></p-select>
+<shared-panel-container>
+  <main class="mx-10 flex flex-col">
+    <h2 class="text-2xl text-center p-3 font-semibold">Report and Label Printer Selection</h2>
+  
+    <!-- <h1>All Users and All Computers</h1> -->
+  
+    <section>
+      <div class="flex justify-between items-center py-6">
+        <div>
+          <p-select
+            [options]="reportOptions"
+            optionLabel="reportName"
+            optionValue="id"
+            placeholder="Select Report"
+            styleClass="w-100"
+          ></p-select>
+        </div>
+        <div class="space-x-3">
+          <p-checkbox [(ngModel)]="isChecked" binary="true"></p-checkbox>
+          <label for="">Report Preview</label>
+        </div>
       </div>
-      <div class="space-x-3">
-        <p-checkbox [(ngModel)]="isChecked" binary="true"></p-checkbox>
-        <label for="">Report Preview</label>
+      <div aria-label="orientation" class="flex justify-center items-center gap-x-4 pb-5">
+        <h1 class="font-semibold text-lg">Orientation:</h1>
+        <span class="flex gap-x-1">
+          <p-radiobutton name="orientation" value="default" [(ngModel)]="selectedOrientation"
+            >></p-radiobutton
+          >
+          <label for="">Printer Default</label>
+        </span>
+        <span class="flex gap-x-1">
+          <p-radiobutton name="orientation" value="portrait" [(ngModel)]="selectedOrientation"
+            >></p-radiobutton
+          >
+          <label for="">Portrait</label>
+        </span>
+        <span class="flex gap-x-1">
+          <p-radiobutton name="orientation" value="landscape" [(ngModel)]="selectedOrientation"
+            >></p-radiobutton
+          >
+          <label for="">Landscape</label>
+        </span>
       </div>
-    </div>
-    <div aria-label="orientation" class="flex justify-center items-center gap-x-4 pb-5">
-      <h1 class="font-semibold text-lg">Orientation:</h1>
-      <span class="flex gap-x-1">
-        <p-radiobutton name="orientation" value="default" [(ngModel)]="selectedOrientation"
-          >></p-radiobutton
-        >
-        <label for="">Printer Default</label>
-      </span>
-      <span class="flex gap-x-1">
-        <p-radiobutton name="orientation" value="portrait" [(ngModel)]="selectedOrientation"
-          >></p-radiobutton
-        >
-        <label for="">Portrait</label>
-      </span>
-      <span class="flex gap-x-1">
-        <p-radiobutton name="orientation" value="landscape" [(ngModel)]="selectedOrientation"
-          >></p-radiobutton
-        >
-        <label for="">Landscape</label>
-      </span>
-    </div>
-  </section>
+    </section>
+  
+    <section aria-label="report format selection">
+      <form action="" [formGroup]="reportForm" class="flex flex-col gap-y-6">
+        <div class="flex flex-col">
+          <label for="">Report Format Selection</label>
+          <p-select
+            [options]="reportsDescription"
+            optionValue="id"
+            placeholder="Select Report Format"
+            styleClass="w-185"
+            formControlName="report"
+          >
+            <ng-template let-report pTemplate="item">
+              <div class="flex justify-between w-full">
+                <span class="font-semibold w-[90%] text-black">{{ report.label }}</span>
+                <span class="font-mono w-[10%] text-gray-600">{{ report.id }}</span>
+              </div>
+            </ng-template>
+            <ng-template let-report pTemplate="selectedItem">
+              <span *ngIf="report">{{ report.label }} - {{ report.id }}</span>
+              <span *ngIf="!report">Select Report Format</span>
+            </ng-template>
+          </p-select>
+        </div>
+        <div class="flex items-center gap-x-8">
+          <app-custom-input
+            label="Report Format File Name"
+            formControlName="reportName"
+            placeholder="File Name"
+            inputStyleClass="w-10"
+          ></app-custom-input>
+          <app-custom-input
+            label="Document Id"
+            type="text"
+            formControlName="documentId"
+            placeholder="Document Id"
+          ></app-custom-input>
+        </div>
+      </form>
+    </section>
+  
+    <section class="flex justify-center items-center gap-2.5 pt-10">
+      <p-button styleClass="h-8" variant="outlined" severity="success">Preview</p-button>
+      <p-button styleClass="h-8" variant="outlined" severity="danger"
+        >Cleanup Temporary Print Files</p-button
+      >
+      <p-button styleClass="h-8" variant="outlined">Update Parameter For Selected Report</p-button>
+      <!-- <p-button styleClass="h-8">Exit</p-button> -->
+      <p-button styleClass="h-8" variant="outlined" severity="info">Advanced</p-button>
+    </section>
+  </main>
 
-  <section aria-label="report format selection">
-    <form action="" [formGroup]="reportForm" class="flex flex-col gap-y-6">
-      <div class="flex flex-col">
-        <label for="">Report Format Selection</label>
-        <p-select
-          [options]="reportsDescription"
-          optionValue="id"
-          placeholder="Select Report Format"
-          styleClass="w-185"
-          formControlName="report"
-        >
-          <ng-template let-report pTemplate="item">
-            <div class="flex justify-between w-full">
-              <span class="font-semibold w-[90%] text-black">{{ report.label }}</span>
-              <span class="font-mono w-[10%] text-gray-600">{{ report.id }}</span>
-            </div>
-          </ng-template>
-          <ng-template let-report pTemplate="selectedItem">
-            <span *ngIf="report">{{ report.label }} - {{ report.id }}</span>
-            <span *ngIf="!report">Select Report Format</span>
-          </ng-template>
-        </p-select>
-      </div>
-      <div class="flex items-center gap-x-8">
-        <app-custom-input
-          label="Report Format File Name"
-          formControlName="reportName"
-          placeholder="File Name"
-          inputStyleClass="w-10"
-        ></app-custom-input>
-        <app-custom-input
-          label="Document Id"
-          type="text"
-          formControlName="documentId"
-          placeholder="Document Id"
-        ></app-custom-input>
-      </div>
-    </form>
-  </section>
-
-  <section class="flex justify-center items-center gap-2.5 pt-10">
-    <p-button styleClass="h-8" variant="outlined" severity="success">Preview</p-button>
-    <p-button styleClass="h-8" variant="outlined" severity="danger"
-      >Cleanup Temporary Print Files</p-button
-    >
-    <p-button styleClass="h-8" variant="outlined">Update Parameter For Selected Report</p-button>
-    <!-- <p-button styleClass="h-8">Exit</p-button> -->
-    <p-button styleClass="h-8" variant="outlined" severity="info">Advanced</p-button>
-  </section>
-</main>
+</shared-panel-container>
