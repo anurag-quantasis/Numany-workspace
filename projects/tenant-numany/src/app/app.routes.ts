@@ -39,8 +39,33 @@ export const routes: Routes = [
     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
       (m) => m.PharmcistInterventionTypeMaintainanceComponent,
     )
-}
+},
+
+{
+  path: 'route-of-codes',
+  loadComponent: () =>
+    import('./features/route-of-administration/route-of-administration.component').then(
+      (m) => m.RouteOfAdministrationComponent,
+    )
+},
+
+  {
+    path: 'vendor-supplier',
+    loadComponent: () =>
+      import('./features/vendor-supplier/vendor-supplier.component').then(
+        (m) => m.VendorSupplierComponent,
+      )
+  },
+
+  {
+    path: 'lab-result-type-maintenance',
+    loadComponent: () =>
+      import('./features/lab-result-type-maintenance/lab-result-type-maintenance.component').then(
+        (m) => m.LabResultTypeMaintenanceComponent,
+      )
+  }
 
     ],
   },
 ];
+ 

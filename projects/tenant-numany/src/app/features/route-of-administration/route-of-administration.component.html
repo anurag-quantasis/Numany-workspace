@@ -1,0 +1,62 @@
+<form [formGroup]="routeForm" class="card p-5 max-w-[450px] ml-5">
+  <h1 class="text-2xl mb-5">Route of Administration</h1>
+  <h2 class="text-[18px] mb-5 font-semibold">Select Route Code to Modify/Delete</h2>
+
+  <div class="mb-8">
+    <p-select
+      formControlName="selectedRoute"
+      [options]="routeCodes"
+      optionLabel="name"
+      optionValue="code"
+      placeholder="Select a Route Code"
+      class="w-full"
+    ></p-select>
+  </div>
+
+  <div class="flex justify-between gap-6 mb-8 w-[400px]">
+    <!-- Route Code -->
+    <div class="flex items-center flex-1 flex-col">
+      <div class="flex w-full items-center">
+        <label for="routeCode" class="w-32 text-[18px] font-semibold">Route Code</label>
+        <input
+          id="routeCode"
+          type="text"
+          pInputText
+          formControlName="routeCode"
+          class="flex-grow border border-gray-300 rounded p-2 text-black"
+          placeholder="Enter Route Code"
+        />
+      </div>
+      <div class="w-full text-red-500 text-sm mt-1" *ngIf="routeForm.get('routeCode')?.touched && routeForm.get('routeCode')?.invalid">
+        <div *ngIf="routeForm.get('routeCode')?.errors?.['required']">Route Code is required.</div>
+        <div *ngIf="routeForm.get('routeCode')?.errors?.['maxlength']">Max 20 characters allowed.</div>
+        <div *ngIf="routeForm.get('routeCode')?.errors?.['notUnique']">Route Code must be unique.</div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="flex items-center flex-1 flex-col">
+      <div class="flex w-full items-center">
+        <label for="description" class="w-32 text-[18px] font-semibold">Description</label>
+        <input
+          id="description"
+          type="text"
+          pInputText
+          formControlName="description"
+          class="flex-grow border border-gray-300 rounded p-2 text-black"
+          placeholder="Enter Description"
+        />
+      </div>
+      <div class="w-full text-red-500 text-sm mt-1" *ngIf="routeForm.get('description')?.touched && routeForm.get('description')?.invalid">
+        <div *ngIf="routeForm.get('description')?.errors?.['required']">Description is required.</div>
+        <div *ngIf="routeForm.get('description')?.errors?.['maxlength']">Max 100 characters allowed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-4">
+    <p-button label="New" variant="outlined" severity="success" (onClick)="onNew()"></p-button>
+    <p-button label="Delete" variant="outlined" severity="danger" (onClick)="onDelete()"></p-button>
+    <p-button label="Update" variant="outlined" severity="info" (onClick)="onUpdate()"></p-button>
+  </div>
+</form>

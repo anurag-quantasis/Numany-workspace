@@ -1,0 +1,159 @@
+<div class="p-4">
+  <p-card class="w-full">
+    <h1 class="text-2xl mt-5 ml-5">Lab Result Type Maintenance</h1>
+    <h2 class="text-[16px] mt-3 ml-5 text-slate-700">SELECT LAB TYPE TO MODIFY</h2>
+
+    <form [formGroup]="labForm" (ngSubmit)="onSubmit()" class="card flex flex-col gap-4 ml-5 mt-5">
+      <!-- Dropdown -->
+      <p-dropdown
+        [options]="labTypes"
+        formControlName="selectedLabType"
+        optionLabel="name"
+        placeholder="Select Lab Type"
+        class="w-[400px]">
+      </p-dropdown>
+
+      <!-- Input Fields Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2 ml-2">
+        <!-- Lab ID -->
+        <div>
+          <!-- <label for="lab-id" class="block mb-1 font-medium">Lab ID</label>
+          <input
+            id="lab-id"
+            type="text"
+            pInputText
+            formControlName="labId"
+            placeholder="Enter Lab ID"
+            class="w-full md:w-[280px]" /> -->
+            <app-custom-input
+              label="Lab ID"
+              formControlName="labId"
+              placeholder="Enter Lab ID"
+              type="text"
+            >
+
+            </app-custom-input>
+        </div>
+
+        <!-- Host ID -->
+        <div>
+          <!-- <label for="host-id" class="block mb-1 font-medium">Host ID</label>
+          <input
+            id="host-id"
+            type="text"
+            pInputText
+            formControlName="hostId"
+            placeholder="Enter Host ID"
+            class="w-full md:w-[280px]" /> -->
+             <app-custom-input
+              label="Host ID"
+              formControlName="hostId"
+              placeholder="Enter Host ID"
+              type="text"
+            >
+
+            </app-custom-input> 
+        </div>
+
+        <!-- Units -->
+        <div>
+          <!-- <label for="units-id" class="block mb-1 font-medium">Units</label>
+          <input
+            id="units-id"
+            type="text"
+            pInputText
+            formControlName="units"
+            placeholder="Enter Units"
+            class="w-full md:w-[280px]" /> -->
+            
+            <app-custom-input
+              label="Units"
+              id="units-id"
+              formControlName="units"
+              placeholder="Enter Units"
+              type="text"
+            >
+
+            </app-custom-input>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="w-[1450px]">
+        <p-divider></p-divider>
+      </div>
+
+      <!-- Textarea -->
+      <div class="flex flex-col gap-2 mt-1 mb-3">
+        <label for="textarea" class="font-medium">Description</label>
+        <textarea
+          id="textarea"
+          pTextarea
+          formControlName="notes"
+          rows="5"
+          cols="60"
+          placeholder="Enter Description..."
+          class="p-inputtext w-full max-w-[600px]">
+        </textarea>
+      </div>
+
+      <!-- Divider -->
+      <div class="w-[1450px]">
+        <p-divider></p-divider>
+      </div>
+
+<div class="flex items-center gap-6 mt-2">
+
+  <div class="flex items-center gap-2 mt-2">
+    <label for="includeReport" class="uppercase font-medium">Include on Report</label>
+    <p-checkbox inputId="includeReport" formControlName="includeOnReport" [binary]="true"></p-checkbox>
+  </div>
+
+  <!-- NORMAL RANGE SECTION -->
+  <div class="flex items-center gap-3 mt-2">
+    <label class="uppercase font-medium">Normal Range</label>
+
+    <!-- LOW -->
+    <div class="flex flex-col items-center">
+      <!-- <label for="low" class="text-xs font-medium uppercase">Low</label>
+      <input
+        id="low"
+        type="text"
+        pInputText
+        formControlName="low"
+        placeholder="0"
+        class="w-[60px] text-center" /> -->
+
+        <app-custom-input
+          label="Low"
+          formControlName="low"
+           type="number"
+        >
+
+        </app-custom-input>
+    </div>
+
+    <!-- HIGH -->
+    <div class="flex flex-col items-center">
+      <label for="high" class="text-xs font-medium uppercase">High</label>
+      <input
+        id="high"
+        type="text"
+        pInputText
+        formControlName="high"
+        placeholder="0"
+        class="w-[60px] text-center" />
+    </div>
+  </div>
+</div>
+ 
+
+      <!-- Buttons -->
+       <div class="flex mb-4 gap-2.5">
+          <p-button label="Update" variant="outlined" severity="info" />
+          <p-button label="New" variant="outlined" severity="success" />
+          <p-button label="Delete" variant="outlined" severity="danger" />
+       </div>
+    </form>
+  </p-card>
+</div>

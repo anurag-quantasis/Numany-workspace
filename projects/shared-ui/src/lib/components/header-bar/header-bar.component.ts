@@ -325,6 +325,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Route Codes',
             shortcut: 'alt.f r',
             shortcutHint: 'R',
+            route: '/route-of-codes',
             command: () => { console.log('Route Codes clicked'); },
           },
           {
@@ -355,6 +356,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Vendor/Supplier',
             shortcut: 'alt.f v',
             shortcutHint: 'v',
+            route: '/vendor-supplier',
             command: () => { console.log('Vendor/Supplier clicked'); },
           },
           {
@@ -379,6 +381,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Lab Result Types',
             // shortcut: 'alt.f l',
             // shortcutHint: 'L',
+            route: '/lab-result-type-maintenance',
             command: () => { console.log('Lab Result Types clicked'); },
           },
           {
