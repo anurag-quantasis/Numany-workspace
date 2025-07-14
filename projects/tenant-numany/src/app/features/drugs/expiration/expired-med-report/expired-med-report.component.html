@@ -1,8 +1,8 @@
 <!-- .../expired-med-report/expired-med-report.component.html -->
-<section class="flex flex-col justify-center items-center gap-y-5 p-4">
-  <h1 class="text-xl font-bold">Drug Expiration Report</h1>
-  <p>Print report of Medications expiring before selected date</p>
-
+<p class="flex justify-start items-center w-full">
+  Print report of Medications expiring before selected date
+</p>
+<section class="flex flex-col justify-center items-center p-4">
   <!-- Use ngIf on the formGroup instance itself -->
   <div [formGroup]="reportDateGroup">
     <p-datePicker inline="true" [showWeek]="true" formControlName="reportDate"></p-datePicker>
