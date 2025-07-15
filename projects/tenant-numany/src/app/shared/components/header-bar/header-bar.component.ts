@@ -10,6 +10,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DynamicDialogModule, DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ExpiredMedReportComponent } from 'projects/tenant-numany/src/app/features/drugs/expiration/expired-med-report/expired-med-report.component';
 import { ModifyDateComponent } from '../../../features/drugs/expiration/modify-date/modify-date.component';
+import { RouteOfAdministrationComponent } from '../../../features/route-of-administration/route-of-administration.component';
+import { PharmcistInterventionTypeComponent } from '../../../features/pharmcist-intervention-type/pharmcist-intervention-type.component';
+import { PharmcistInterventionTypeMaintainanceComponent } from '../../../features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance';
 
 interface CustomMenuItem extends MenuItem {
   shortcut?: string; // e.g., 'Ctrl+S'
@@ -393,6 +396,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Patient/Payor Type',
             // shortcut: 'alt.f p',
             // shortcutHint: 'P',
+            route: '/patient-payor-type-maintenance',
             command: () => {
               console.log('Patient/Payor Type clicked');
             },
@@ -404,15 +408,26 @@ export class HeaderBarComponent implements OnInit {
             command: () => {
               console.log('Pharmacist Intervention Setup clicked');
             },
-            items: [],
+            items: [
+              {
+                label: 'Intervention Types',  
+                route: '/pharmacist-intervention-type'
+              },
+              {
+                label: 'Intervention Data Classes',
+                // route: '/Pharamacist-intervention-data-classes'
+                command: () => {
+                  this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
+                }
+              }
+            ],
           },
           {
             label: 'Physician',
             shortcut: 'alt.f y',
             shortcutHint: 'Y',
-            command: () => {
-              console.log('Physician clicked');
-            },
+            route: '/physician',
+            command: () => { console.log('Physician clicked'); },
           },
           {
             label: 'Printer/Report Selection',
@@ -427,9 +442,8 @@ export class HeaderBarComponent implements OnInit {
             label: 'Route Codes',
             shortcut: 'alt.f r',
             shortcutHint: 'R',
-            command: () => {
-              console.log('Route Codes clicked');
-            },
+            // route: '/route-of-codes',
+            command: () => {this.openDialog(RouteOfAdministrationComponent, 'Route of Administration') },
           },
           {
             label: 'Sig Codes',
@@ -459,6 +473,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Standing Orders',
             shortcut: 'alt.f s',
             shortcutHint: 's',
+            route: '/standing-orders',
             command: () => {
               console.log('Standing Orders clicked');
             },
@@ -467,9 +482,8 @@ export class HeaderBarComponent implements OnInit {
             label: 'Vendor/Supplier',
             shortcut: 'alt.f v',
             shortcutHint: 'v',
-            command: () => {
-              console.log('Vendor/Supplier clicked');
-            },
+            route: '/vendor-supplier',
+            command: () => { console.log('Vendor/Supplier clicked'); },
           },
           {
             label: 'Ward/Bed Area Cost Centers',
@@ -499,9 +513,8 @@ export class HeaderBarComponent implements OnInit {
             label: 'Lab Result Types',
             // shortcut: 'alt.f l',
             // shortcutHint: 'L',
-            command: () => {
-              console.log('Lab Result Types clicked');
-            },
+            route: '/lab-result-type-maintenance',
+            command: () => { console.log('Lab Result Types clicked'); },
           },
           {
             label: 'Import Diagnosis File Update',
@@ -523,9 +536,8 @@ export class HeaderBarComponent implements OnInit {
             label: 'Remote Inventory Location IDs',
             shortcut: 'alt.f r',
             shortcutHint: 'R',
-            command: () => {
-              console.log('Remote Inventory Location IDs clicked');
-            },
+            route: 'remote-inventory-location',
+            command: () => { console.log('Remote Inventory Location IDs clicked'); },
           },
           {
             label: 'Third Party Provider Data',

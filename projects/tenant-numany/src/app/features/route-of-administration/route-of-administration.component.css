@@ -1,0 +1,9 @@
+/* Override PrimeNG p-select input text color */
+:host ::ng-deep .p-select .p-inputtext {
+  color: black !important;
+}
+
+/* Optional: make placeholder text darker */
+:host ::ng-deep .p-select .p-placeholder {
+  color: #555 !important;
+}
