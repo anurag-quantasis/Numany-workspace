@@ -3,6 +3,11 @@ import { LayoutComponent } from './layout/layout/layout.component';
 
 export const routes: Routes = [
   {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/tenant-login/tenant-login.component').then((m) => m.TenantLoginComponent),
+  },
+  {
     path: '',
     component: LayoutComponent,
     children: [
@@ -38,6 +43,10 @@ export const routes: Routes = [
             (m) => m.ReportSelectionComponent,
           ),
       },
+      // {
+      //   path: 'expiration',
+      //   loadComponent: () => import('./features/drugs/expiration/expiration.component').then(m => m.ExpirationComponent)
+      // },
       {
         path: 'item-maintenance',
         children: [

@@ -38,17 +38,13 @@ let nextId = 0;
   ],
   providers: [ValidationPipe], // Provide pipe to be injectable in the class
   template: `
-    <!-- Main wrapper -->
     <div class="flex flex-col gap-1 w-full" [class]="class()">
-      <!-- Label with automatic required indicator -->
-      <label *ngIf="label()" [for]="id()" [class]="labelClass()">
+      <label *ngIf="label()" [for]="id()" [class]="'font-semibold' + labelClass()">
         {{ label() }}
         <span *ngIf="isRequired()" class="text-red-500 font-sans">*</span>
       </label>
 
-      <!-- Switch between PrimeNG components based on type -->
       <ng-container [ngSwitch]="type()">
-        <!-- Case for Number Inputs -->
         <p-inputNumber
           *ngSwitchCase="'number'"
           [inputId]="id()"
@@ -61,10 +57,10 @@ let nextId = 0;
           styleClass="w-full"
           [class.ng-invalid]="isInvalid()"
           [class.ng-dirty]="isInvalid()"
+          [readonly]="readonly()"
         >
         </p-inputNumber>
 
-        <!-- Default Case for Text, Email, Password, etc. -->
         <input
           *ngSwitchDefault
           pInputText
@@ -78,10 +74,10 @@ let nextId = 0;
           class="w-full p-2"
           [class.ng-invalid]="isInvalid()"
           [class.ng-dirty]="isInvalid()"
+          [readonly]="readonly()"
         />
       </ng-container>
 
-      <!-- Inline error message display -->
       <div *ngIf="isInvalid()" class="h-4">
         <small class="text-red-500 whitespace-pre-line">
           {{ ngControl.control?.errors | validation: errorMessages() }}
@@ -109,6 +105,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   id = input<string>(`custom-input-${nextId++}`);
   toastErrors = input<{ [key: string]: ToastErrorConfig }>({});
   useGrouping = input<boolean>(false);
+  readonly = input<boolean>(false); // <-- CHANGED: Now a signal input, and named `readonly`
 
   // --- Injections ---
   public ngControl: NgControl = inject(NgControl, { self: true });
@@ -121,7 +118,7 @@ export class CustomInputComponent implements ControlValueAccessor {
 
   // --- CVA Properties ---
   protected value: any = '';
-  protected disabled = false;
+  protected disabled = false; // This is for CVA's setDisabledState
   onChange: (value: any) => void = () => {};
   onTouched: () => void = () => {};
 
@@ -171,7 +168,12 @@ export class CustomInputComponent implements ControlValueAccessor {
   isRequired = computed(() => {
     this.controlStatus(); // Also create a dependency here.
     const c = this.ngControl.control;
-    return !!(c?.validator && c.validator(new FormControl())?.['required']);
+    // Check if the control has a 'required' validator
+    if (c?.validator) {
+      const validatorResult = c.validator(new FormControl());
+      return validatorResult && validatorResult['required'];
+    }
+    return false;
   });
 
   // --- ControlValueAccessor Implementation ---

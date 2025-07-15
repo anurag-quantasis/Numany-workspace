@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 import { ChargeParameters } from '../charge-algorithm-store/charge-algorithm.model';
 
 interface ApiPaging {
