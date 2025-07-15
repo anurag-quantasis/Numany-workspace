@@ -10,6 +10,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DynamicDialogModule, DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ExpiredMedReportComponent } from 'projects/tenant-numany/src/app/features/drugs/expiration/expired-med-report/expired-med-report.component';
 import { ModifyDateComponent } from '../../../features/drugs/expiration/modify-date/modify-date.component';
+import { RouteOfAdministrationComponent } from '../../../features/route-of-administration/route-of-administration.component';
+import { PharmcistInterventionTypeComponent } from '../../../features/pharmcist-intervention-type/pharmcist-intervention-type.component';
+import { PharmcistInterventionTypeMaintainanceComponent } from '../../../features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance';
 
 interface CustomMenuItem extends MenuItem {
   shortcut?: string; // e.g., 'Ctrl+S'
@@ -393,6 +396,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Patient/Payor Type',
             // shortcut: 'alt.f p',
             // shortcutHint: 'P',
+            route: '/patient-payor-type-maintenance',
             command: () => {
               console.log('Patient/Payor Type clicked');
             },
@@ -404,7 +408,19 @@ export class HeaderBarComponent implements OnInit {
             command: () => {
               console.log('Pharmacist Intervention Setup clicked');
             },
-            items: [],
+            items: [
+              {
+                label: 'Intervention Types',  
+                route: '/pharmacist-intervention-type'
+              },
+              {
+                label: 'Intervention Data Classes',
+                // route: '/Pharamacist-intervention-data-classes'
+                command: () => {
+                  this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
+                }
+              }
+            ],
           },
           {
             label: 'Physician',
@@ -426,8 +442,8 @@ export class HeaderBarComponent implements OnInit {
             label: 'Route Codes',
             shortcut: 'alt.f r',
             shortcutHint: 'R',
-            route: '/route-of-codes',
-            command: () => { console.log('Route Codes clicked'); },
+            // route: '/route-of-codes',
+            command: () => {this.openDialog(RouteOfAdministrationComponent, 'Route of Administration') },
           },
           {
             label: 'Sig Codes',
@@ -457,6 +473,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Standing Orders',
             shortcut: 'alt.f s',
             shortcutHint: 's',
+            route: '/standing-orders',
             command: () => {
               console.log('Standing Orders clicked');
             },

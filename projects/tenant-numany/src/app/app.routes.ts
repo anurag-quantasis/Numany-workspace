@@ -93,14 +93,21 @@ export const routes: Routes = [
       (m) => m.PharmcistInterventionTypeMaintainanceComponent,
     )
 },
+// {
+//    path: 'Pharamacist-intervention-data-classes',
+//    loadComponent: () =>
+//     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
+//       (m) => m.PharmcistInterventionTypeMaintainanceComponent
+//     )
+// },
 
-{
-  path: 'route-of-codes',
-  loadComponent: () =>
-    import('./features/route-of-administration/route-of-administration.component').then(
-      (m) => m.RouteOfAdministrationComponent,
-    )
-},
+// {
+//   path: 'route-of-codes',
+//   loadComponent: () =>
+//     import('./features/route-of-administration/route-of-administration.component').then(
+//       (m) => m.RouteOfAdministrationComponent,
+//     )
+// },
 
   {
     path: 'vendor-supplier',
@@ -122,7 +129,22 @@ export const routes: Routes = [
     path: 'remote-inventory-location',
     loadComponent: () =>
       import('./features/remote-inventory-location/remote-inventory-location.component').then(
-        (m) => m.RemoteInventoryLocationComponent
+        (m) => m.RemoteInventoryLocationComponent,
+      )
+  },
+  {
+    path: 'patient-payor-type-maintenance',
+    loadComponent: () =>
+      import('./features/patient-payor-type-maintenance/patient-payor-type-maintenance.component').then(
+        (m) => m.PatientPayorTypeMaintenanceComponent,
+      )
+  },
+
+  {
+    path: 'standing-orders',
+    loadComponent: () =>
+      import('./features/standing-orders/standing-orders.component').then(
+        (m) => m.StandingOrdersComponent
       )
   }
 

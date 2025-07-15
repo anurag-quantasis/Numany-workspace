@@ -95,9 +95,9 @@
 </form> -->
 
 <form [formGroup]="interventionForm" class="p-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-10 ml-6">
+  <!-- <h1 class="text-3xl font-bold text-gray-800 mb-10 ml-6">
     Pharmacist Intervention Table
-  </h1>
+  </h1> -->
 
   <div class="grid grid-cols-2 gap-x-15 justify-items-center">
     <!-- Intervention Selection -->
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-3 gap-x-15 justify-items-center mt-10">
+  <div class="grid grid-cols-2 gap-x-15 justify-items-center mt-5">
     <div class="w-full">
       <label class="text-gray-800 font-medium text-lg mb-2 block ml-5">ID</label>
       <input
@@ -161,7 +161,7 @@
     </div>
 
     <div class="w-full">
-      <label class="text-gray-800 font-medium text-lg mb-2 block ml-5">Cost Impact</label>
+      <label class="text-gray-800 font-medium text-lg mb-2 mt-5 block ml-5">Cost Impact</label>
       <input
         type="text"
         pInputText
@@ -172,7 +172,7 @@
     </div>
   </div>
 
-  <div class="flex gap-x-4 mt-15 w-full justify-end">
+  <div class="flex gap-x-4 mt-15 w-full justify-center">
     <p-button label="New" variant="outlined"></p-button>
     <p-button label="Delete" variant="outlined" severity="danger"></p-button>
     <p-button label="Update" variant="outlined" severity="success"></p-button>

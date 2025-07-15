@@ -1,0 +1,73 @@
+
+
+<shared-panel-container>
+ <p-card class="p-6">
+  <div class="mb-4 ml-5 mt-2">
+    <h1 class="text-2xl font-semibold">Patient/Payor Type Maintenance</h1>
+    <h2 class="text-lg text-gray-600 mt-2">Print All Records</h2>
+  </div>
+
+  <form [formGroup]="form" class="flex flex-col gap-8 mx-5">
+
+    <!-- Dropdown -->
+    <div class="w-[465px]">
+      <p-select
+        formControlName="selectedOption"
+        [options]="dropdownOptions"
+        optionLabel="name"
+        placeholder="Choose an option"
+        class="w-full">
+      </p-select>
+    </div>
+
+    <!-- ID, Name, Address -->
+    <div class="grid grid-cols-3 gap-10">
+      <app-custom-input formControlName="idpay" label="Payor ID" placeholder="Enter ID" class="w-full" />
+      <app-custom-input formControlName="nampay" label="Name" placeholder="Enter name" class="w-full" />
+      <app-custom-input formControlName="iadpy" label="Address" placeholder="Enter address" class="w-full" />
+    </div>
+
+    <!-- City, State, ZIP -->
+    <div class="grid grid-cols-3 gap-10">
+      <app-custom-input formControlName="ictpy" label="City" placeholder="Enter city" class="w-full" />
+      <app-custom-input formControlName="istpy" label="State" placeholder="Enter state" class="w-full" />
+      <app-custom-input formControlName="izppy" label="Postal/ZIP Code" placeholder="Enter ZIP" class="w-full" />
+    </div>
+
+    <!-- Phone, Note, Cost Basis -->
+    <div class="grid grid-cols-3 gap-10">
+      <app-custom-input formControlName="iphpy" label="Phone" placeholder="Enter phone number" class="w-full" />
+      <app-custom-input formControlName="imspy" label="Note" placeholder="Enter a note" class="w-full" />
+      <app-custom-input formControlName="ipycb" label="Cost Basis" placeholder="Enter AV/AW/CC/PC" class="w-full" />
+    </div>
+
+    <!-- Charge Class, Dropdown -->
+    <div class="grid grid-cols-3 gap-10">
+      <app-custom-input formControlName="iccpy" label="Charge Class" placeholder="Enter charge class" class="w-full" />
+      <div class="w-full mt-7">
+        <p-select
+          formControlName="choiceOption"
+          [options]="choiceOptions"
+          optionLabel="choice"
+          placeholder="Choose a charge option"
+          class="w-full">
+        </p-select>
+      </div>
+      <!-- <div class="flex items-center">
+        <label class="ml-2 text-sm">
+          <input type="checkbox" formControlName="nonemarpay" class="mr-2" />
+          Non-EMAR Type
+        </label>
+      </div> -->
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end gap-4 mb-3">
+      <p-button label="Add" (onClick)="onAdd()" variant="outlined" severity="success" />
+      <p-button label="Delete" (onClick)="onDelete()"  variant="outlined" severity="danger"/>      
+      <p-button label="Update" (onClick)="onUpdate()" variant="outlined" severity="info"/>
+
+    </div>
+  </form>
+</p-card>
+</shared-panel-container>

@@ -1,5 +1,5 @@
 <form [formGroup]="routeForm" class="card p-5 max-w-[450px] ml-5">
-  <h1 class="text-2xl mb-5">Route of Administration</h1>
+  <!-- <h1 class="text-2xl mb-5">Route of Administration</h1> -->
   <h2 class="text-[18px] mb-5 font-semibold">Select Route Code to Modify/Delete</h2>
 
   <div class="mb-8">
@@ -13,7 +13,7 @@
     ></p-select>
   </div>
 
-  <div class="flex justify-between gap-6 mb-8 w-[400px]">
+  <div class="flex flex-col justify-between gap-6 mb-8 w-[400px]">
     <!-- Route Code -->
     <div class="flex items-center flex-1 flex-col">
       <div class="flex w-full items-center">
@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <div class="flex flex-wrap gap-4">
+  <div class="flex flex-wrap gap-4 justify-center">
     <p-button label="New" variant="outlined" severity="success" (onClick)="onNew()"></p-button>
     <p-button label="Delete" variant="outlined" severity="danger" (onClick)="onDelete()"></p-button>
     <p-button label="Update" variant="outlined" severity="info" (onClick)="onUpdate()"></p-button>

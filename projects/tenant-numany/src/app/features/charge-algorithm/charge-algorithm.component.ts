@@ -3,15 +3,15 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 import { ChargeMaintenanceStore } from './charge-algorithm-store/charge-algorithm.store';
 import { ChargeParameters } from './charge-algorithm-store/charge-algorithm.model';
 import { MessageService } from 'primeng/api';
+import { CustomInputComponent } from "shared-ui";
 
 @Component({
   selector: 'tenant-charge-algorithm',
   templateUrl: './charge-algorithm.component.html',
-  imports: [ButtonModule, InputTextModule, ReactiveFormsModule, CommonModule, CustomInputComponent, SharedPanelContainerComponent],
+  imports: [ButtonModule, InputTextModule, ReactiveFormsModule, CommonModule, CustomInputComponent],
   providers: [ChargeMaintenanceStore, MessageService],
 })
 export class ChargeAlgorithmComponent implements OnInit {
