@@ -27,7 +27,7 @@ export class LoginComponent {
   loginForm = this.fb.group({
     // With NonNullableFormBuilder, these controls are now typed as FormControl<string>
     // instead of FormControl<string | null>
-    email: ['', [Validators.required, Validators.email]],
+    user_name: ['', [Validators.required]],
     password: ['', [Validators.required]],
   });
 
@@ -59,5 +59,9 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.store.login(this.loginForm.getRawValue());
     }
+  }
+
+  onNavigate() {
+    this.router.navigate(['/']);
   }
 }

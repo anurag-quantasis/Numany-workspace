@@ -8,12 +8,17 @@ import { MyPreset } from '../styles';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TenantInterceptor } from './core/auth/interceptors/tenant.interceptor';
 import { MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideAnimationsAsync(),
+    MessageService,
+    DialogService,
+    { provide: DynamicDialogConfig, useValue: {} },
+    { provide: DynamicDialogRef, useValue: {} },
     providePrimeNG({
       theme: {
         preset: MyPreset,
@@ -27,6 +32,5 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideHttpClient(withInterceptors([TenantInterceptor])),
-    MessageService,
   ],
 };

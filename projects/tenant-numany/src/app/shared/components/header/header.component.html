@@ -19,7 +19,8 @@
         <i class="pi pi-user"></i>
       </div>
     </div>
-    <p-button label="Logout" severity="secondary">
+    <label for="">{{ authStore.userEmail() }}</label>
+    <p-button label="Logout" severity="secondary" (onClick)="logOut()">
       <i class="pi pi-sign-out"></i>
     </p-button>
   </div>

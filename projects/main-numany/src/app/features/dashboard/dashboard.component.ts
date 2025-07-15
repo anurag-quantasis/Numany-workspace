@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { AuthService } from '../../core/auth/services/auth.service';
 import { AuthStore } from '../../core/auth/auth-store/auth.store';
 
 @Component({
@@ -8,9 +9,9 @@ import { AuthStore } from '../../core/auth/auth-store/auth.store';
   styles: ``,
 })
 export class DashboardComponent implements OnInit {
-  authStore = inject(AuthStore);
+  store = inject(AuthStore);
 
-  ngOnInit(){
-    console.log("AUTH STORE VALUE",this.authStore.token());
+  ngOnInit(): void {
+    console.log('Du,my', this.store);
   }
 }

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExpirationComponent } from './expiration.component';
+import { ModifyDateComponent } from './modify-date.component';
 
-describe('ExpirationComponent', () => {
-  let component: ExpirationComponent;
-  let fixture: ComponentFixture<ExpirationComponent>;
+describe('ModifyDateComponent', () => {
+  let component: ModifyDateComponent;
+  let fixture: ComponentFixture<ModifyDateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExpirationComponent],
+      imports: [ModifyDateComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExpirationComponent);
+    fixture = TestBed.createComponent(ModifyDateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
