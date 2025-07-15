@@ -77,17 +77,18 @@ export const routes: Routes = [
         import('./features/physician/physician.component').then(
           (m) => m.PhysicianComponent,
         )
+        
      },
-     {
-  path: 'pharmacist-intervention-type-maintainance',
-  loadComponent: () =>
-    import('./features/pharmcist-intervention-type/pharmcist-intervention-type.component').then(
+  //    {
+  // path: 'pharmacist-intervention-type-maintainance',
+  // loadComponent: () =>
+  //   import('./features/pharmcist-intervention-type/pharmcist-intervention-type.component').then(
       
-      (m) => m.PharmcistInterventionTypeComponent,
-    )
-    },
+  //     (m) => m.PharmcistInterventionTypeComponent,
+  //   )
+  //   },
 {
-  path: 'pharmacist-intervention-type',
+  path: 'pharmacist-intervention-type-maintainance',
   loadComponent: () =>
     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
       (m) => m.PharmcistInterventionTypeMaintainanceComponent,

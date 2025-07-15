@@ -4,11 +4,10 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { TextareaModule } from 'primeng/textarea';
 import { CheckboxModule } from 'primeng/checkbox';
-import { CustomInputComponent } from 'shared-ui';
+import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 
 @Component({
   selector: 'tenant-lab-result-type-maintenance',
@@ -19,12 +18,12 @@ import { CustomInputComponent } from 'shared-ui';
     DropdownModule,
     InputTextModule,
     ButtonModule,
-    Card,
     DividerModule,
     TextareaModule,
     CheckboxModule,
-    CustomInputComponent
-  ],
+    CustomInputComponent,
+    SharedPanelContainerComponent
+],
   templateUrl: './lab-result-type-maintenance.component.html',
   styleUrls: ['./lab-result-type-maintenance.component.css']
 })

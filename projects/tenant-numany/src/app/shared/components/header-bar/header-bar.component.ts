@@ -405,19 +405,25 @@ export class HeaderBarComponent implements OnInit {
             label: 'Pharmacist Intervention Setup',
             // shortcut: 'alt.f v',
             // shortcutHint: 'V',
+
             command: () => {
               console.log('Pharmacist Intervention Setup clicked');
             },
             items: [
               {
                 label: 'Intervention Types',  
-                route: '/pharmacist-intervention-type'
+                route: '/pharmacist-intervention-type',
+                command: () => {
+                  console.log('PharmcistInterventionTypeComponent')
+                  this.openDialog(PharmcistInterventionTypeComponent, 'Pharmacist Intervention Table')
+                }
               },
               {
                 label: 'Intervention Data Classes',
-                // route: '/Pharamacist-intervention-data-classes'
+                route: '/pharmacist-intervention-type-maintainance',
                 command: () => {
-                  this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
+                  // this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
+                  console.log('Intervention Data Classes clicked')
                 }
               }
             ],
@@ -598,7 +604,7 @@ export class HeaderBarComponent implements OnInit {
   openDialog(component: any, headerText: string) {
     this.ref = this.dialogService.open(component, {
       header: headerText,
-      contentStyle: { 'max-height': '500px', overflow: 'hidden' },
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: false,
       closeOnEscape: true,

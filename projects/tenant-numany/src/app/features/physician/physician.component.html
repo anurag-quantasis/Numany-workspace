@@ -1,8 +1,12 @@
+<shared-panel-container>
 <form [formGroup]="physician">
-  <h1 class="mt-5 ml-14 text-2xl">Doctor File Maintenance</h1>
-  <h1 class="mt-3 ml-14 text-xl">Print</h1>
+  <h1 class="mt-5 ml-5 text-2xl font-semibold">Doctor File Maintenance</h1>
+  <!-- <h1 class="mt-3 ml-14 text-xl">Print</h1> -->
+       <div class="flex items-start justify-between mt-3 ml-5 mb-3 mr-5">
+      <p-button label="Print" icon="pi pi-print" variant="outlined"></p-button>
+    </div>
 
-  <div class="mt-6 ml-14 w-full md:w-[850px]">
+  <div class="mt-6 ml-5 w-full md:w-[360px]">
     <p-dropdown
       [options]="names"
       formControlName="selectedName"
@@ -12,19 +16,31 @@
     ></p-dropdown>
   </div>
 
-  <div class="flex flex-wrap items-center gap-4 mt-6 ml-14">
-    <label class="text-lg font-medium text-gray-700">ID</label>
-    <input
-      type="text"
-      pInputText
-      class="max-w-xs"
-      formControlName="id"
-      placeholder="Enter ID"
-    />
+  <div class="flex flex-wrap items-center gap-4 mt-6 ml-5">
+    <!-- <div class="flex flex-col"> -->
+      <!-- <label class="text-lg font-medium text-gray-700 mb-2">ID</label>
+       <input
+       type="text"
+       pInputText
+       class="w-[360px]"
+       formControlName="id"
+       placeholder="Enter ID"
+    /> -->
 
-    <div class="flex items-center ml-2">
+<div class="flex flex-col w-[360px]">
+  <app-custom-input
+    label="ID"
+    type="text"
+    formControlName="id"
+    placeholder="Enter ID"
+  ></app-custom-input>
+</div>
+
+<!-- </div> -->
+
+    <div class="flex items-center ml-2 mt-7">
       <p-checkbox formControlName="isHidden" [binary]="true" inputId="hideCheckbox"></p-checkbox>
-      <label for="hideCheckbox" class="ml-2 text-gray-700 cursor-pointer">Hide</label>
+      <label for="hideCheckbox" class="ml-2 font-medium cursor-pointer">Hide</label>
     </div>
 
     <!-- <div class="flex items-center ml-2">
@@ -33,10 +49,10 @@
     </div> -->
   </div>
 
-  <div class="mt-10 ml-14 grid grid-cols-3 gap-x-8 gap-y-6 max-w-6xl">
+  <div class="mt-10 ml-5 grid grid-cols-3 gap-x-8 gap-y-6 max-w-6xl">
     <!-- Row 1 -->
     <div class="flex flex-col">
-      <label for="name" class="text-gray-700 font-medium">Name</label>
+      <label for="name" class="text-gray-700 font-medium mb-2">Name</label>
       <input
         type="text"
         id="name"
@@ -48,7 +64,7 @@
     </div>
 
     <div class="flex flex-col">
-      <label for="address" class="text-gray-700 font-medium">Address</label>
+      <label for="address" class="text-gray-700 font-medium mb-2">Address</label>
       <input
         type="text"
         id="address"
@@ -60,7 +76,7 @@
     </div>
 
     <div class="flex flex-col">
-      <label for="city" class="text-gray-700 font-medium">City</label>
+      <label for="city" class="text-gray-700 font-medium mb-2">City</label>
       <input
         type="text"
         id="city"
@@ -73,7 +89,7 @@
 
     <!-- Row 2 -->
     <div class="flex flex-col">
-      <label for="state" class="text-gray-700 font-medium">State</label>
+      <label for="state" class="text-gray-700 font-medium mb-2">State</label>
       <input
         type="text"
         id="state"
@@ -85,7 +101,7 @@
     </div>
 
     <div class="flex flex-col">
-      <label for="zip" class="text-gray-700 font-medium">Zip Code</label>
+      <label for="zip" class="text-gray-700 font-medium mb-2">Zip Code</label>
       <input
         type="text"
         id="zip"
@@ -97,7 +113,7 @@
     </div>
 
     <div class="flex flex-col">
-      <label for="dea-no" class="text-gray-700 font-medium">DEA NO</label>
+      <label for="dea-no" class="text-gray-700 font-medium mb-2">DEA NO</label>
       <input
         type="text"
         id="dea-no"
@@ -110,7 +126,7 @@
 
     <!-- Row 3 -->
     <div class="flex flex-col">
-      <label for="phone" class="text-gray-700 font-medium">PHONE</label>
+      <label for="phone" class="text-gray-700 font-medium mb-2">PHONE</label>
       <input
         type="number"
         id="phone"
@@ -122,7 +138,7 @@
     </div>
 
     <div class="flex flex-col">
-      <label for="license" class="text-gray-700 font-medium">ST License</label>
+      <label for="license" class="text-gray-700 font-medium mb-2">ST License</label>
       <input
         type="text"
         id="license"
@@ -134,7 +150,7 @@
     </div>
 
     <div class="flex flex-col">
-      <label for="upin" class="text-gray-700 font-medium">UPIN</label>
+      <label for="upin" class="text-gray-700 font-medium mb-2">UPIN</label>
       <input
         type="text"
         id="upin"
@@ -147,7 +163,7 @@
 
     <!-- Row 4 -->
     <div class="flex flex-col">
-      <label for="npi" class="text-gray-700 font-medium">NPI</label>
+      <label for="npi" class="text-gray-700 font-medium mb-2">NPI</label>
       <input
         type="text"
         id="npi"
@@ -159,31 +175,31 @@
     </div>
 
     <div class="flex flex-col">
-      <label for="fax" class="text-gray-700 font-medium">Fax</label>
+      <label for="fax" class="text-gray-700 font-medium mb-2">MEDICARE</label>
       <input
         type="text"
-        id="fax"
+        id="medicare"
         pInputText
-        placeholder="Enter Fax"
-        formControlName="fax"
+        placeholder="Enter medicare"
+        formControlName="medicare"
         class="w-full"
       />
     </div>
 
     <div class="flex flex-col">
-      <label for="medicad" class="text-gray-700 font-medium">Medicaid</label>
+      <label for="medicaId" class="text-gray-700 font-medium mb-2">MEDICAID</label>
       <input
         type="text"
-        id="medicad"
+        id="medicaId"
         pInputText
         placeholder="Enter Medicaid"
-        formControlName="medicad"
+        formControlName="medicaId"
         class="w-full"
       />
     </div>
 
     <div class="flex flex-col">
-      <label for="localid" class="text-gray-700 font-medium">Local ID</label>
+      <label for="localid" class="text-gray-700 font-medium mb-2">Local ID</label>
       <input
         type="text"
         id="localid"
@@ -193,16 +209,17 @@
         class="w-full"
       />
     </div>
-    <div class="flex items-center ml-2">
+    <div class="flex items-center ml-2 mt-7">
       <p-checkbox formControlName="isPrescriber" [binary]="true" inputId="prescriberCheckbox"></p-checkbox>
-      <label for="prescriberCheckbox" class="ml-2 text-gray-700 cursor-pointer">e-PRESCRIBER</label>
+      <label for="prescriberCheckbox" class="ml-2 font-medium cursor-pointer">e-PRESCRIBER</label>
     </div>
   </div>
 
   <!-- Buttons -->
-  <div class="flex gap-4 mt-6 ml-14 mb-16 justify-end">
+  <div class="flex gap-4 mt-1 ml-14 mb-1 justify-end">
     <p-button label="Add" severity="success" (click)="onAdd()" outlined type="button"></p-button>
     <p-button label="Update" severity="info" (click)="onUpdate()" outlined type="button"></p-button>
     <p-button label="Delete" severity="danger" (click)="onDelete()" outlined type="button"></p-button>
   </div>
 </form>
+</shared-panel-container>
