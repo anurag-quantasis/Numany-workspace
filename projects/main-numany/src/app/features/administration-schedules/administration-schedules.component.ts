@@ -11,8 +11,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { ScheduleSelectorComponent } from '../../shared/components/schedule-selector/schedule-selector.component';
-import { ScheduleSelection } from '../../shared/components/schedule-selector/schedule-selector.model';
+import { ScheduleSelectorComponent } from '../../../../../tenant-numany/src/app/shared/components/schedule-selector/schedule-selector.component';
+import { ScheduleSelection } from '../../../../../tenant-numany/src/app/shared/components/schedule-selector/schedule-selector.model';
 import { CustomInputComponent } from 'shared-ui';
 
 @Component({
