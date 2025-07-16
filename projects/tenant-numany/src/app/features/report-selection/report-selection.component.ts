@@ -37,8 +37,8 @@ interface ReportDescriptionTypes {
     ButtonModule,
     ReactiveFormsModule,
     CustomInputComponent,
-    SharedPanelContainerComponent
-],
+    SharedPanelContainerComponent,
+  ],
   templateUrl: './report-selection.component.html',
   styleUrl: './report-selection.component.css',
 })

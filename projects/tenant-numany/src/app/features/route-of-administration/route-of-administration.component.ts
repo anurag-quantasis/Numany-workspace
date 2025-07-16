@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
@@ -21,14 +28,8 @@ interface DoseRouteType {
 @Component({
   selector: 'tenant-route-of-administration',
   standalone: true,
-  imports: [
-    CommonModule,
-    SelectModule,
-    InputTextModule,
-    ButtonModule,
-    ReactiveFormsModule
-],
-  templateUrl: './route-of-administration.component.html'
+  imports: [CommonModule, SelectModule, InputTextModule, ButtonModule, ReactiveFormsModule],
+  templateUrl: './route-of-administration.component.html',
 })
 export class RouteOfAdministrationComponent implements OnInit {
   routeForm!: FormGroup;
@@ -36,7 +37,7 @@ export class RouteOfAdministrationComponent implements OnInit {
   routeCodes: RouteCode[] = [
     { name: 'Oral', code: 'OR', description: 'Oral route', doseRouteType: 'A' },
     { name: 'Intravenous', code: 'IV', description: 'Intravenous route', doseRouteType: 'B' },
-    { name: 'Topical', code: 'TP', description: 'Topical route' }
+    { name: 'Topical', code: 'TP', description: 'Topical route' },
   ];
 
   doseRouteTypes: DoseRouteType[] = [
@@ -55,21 +56,21 @@ export class RouteOfAdministrationComponent implements OnInit {
       selectedRoute: [null],
       routeCode: ['', [Validators.required], [this.routeCodeUniqueValidator.bind(this)]],
       description: ['', Validators.required],
-      doseRouteType: ['']
+      doseRouteType: [''],
     });
 
     if (this.isDoseRouteTypeRequired()) {
       this.routeForm.get('doseRouteType')!.setValidators(Validators.required);
     }
 
-    this.routeForm.get('selectedRoute')!.valueChanges.subscribe(code => {
-      this.selectedRouteCode = this.routeCodes.find(rc => rc.code === code);
+    this.routeForm.get('selectedRoute')!.valueChanges.subscribe((code) => {
+      this.selectedRouteCode = this.routeCodes.find((rc) => rc.code === code);
       if (this.selectedRouteCode) {
         // Patch values and disable routeCode input on update
         this.routeForm.patchValue({
           routeCode: this.selectedRouteCode.code,
           description: this.selectedRouteCode.description || '',
-          doseRouteType: this.selectedRouteCode.doseRouteType || ''
+          doseRouteType: this.selectedRouteCode.doseRouteType || '',
         });
         this.routeForm.get('routeCode')!.disable();
       } else {
@@ -77,7 +78,7 @@ export class RouteOfAdministrationComponent implements OnInit {
         this.routeForm.patchValue({
           routeCode: '',
           description: '',
-          doseRouteType: ''
+          doseRouteType: '',
         });
         this.routeForm.get('routeCode')!.enable();
       }
@@ -89,7 +90,7 @@ export class RouteOfAdministrationComponent implements OnInit {
   }
 
   routeCodeUniqueValidator(control: AbstractControl): Promise<ValidationErrors | null> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const val = control.value;
       if (!val) {
         resolve(null); // Required validator will handle empty
@@ -100,7 +101,7 @@ export class RouteOfAdministrationComponent implements OnInit {
         resolve(null);
         return;
       }
-      const exists = this.routeCodes.some(rc => rc.code.toLowerCase() === val.toLowerCase());
+      const exists = this.routeCodes.some((rc) => rc.code.toLowerCase() === val.toLowerCase());
       resolve(exists ? { notUnique: true } : null);
     });
   }
@@ -110,7 +111,7 @@ export class RouteOfAdministrationComponent implements OnInit {
       selectedRoute: null,
       routeCode: '',
       description: '',
-      doseRouteType: ''
+      doseRouteType: '',
     });
     this.selectedRouteCode = undefined;
     this.routeForm.get('routeCode')!.enable();
@@ -122,7 +123,7 @@ export class RouteOfAdministrationComponent implements OnInit {
       alert('Please select a Route Code to delete.');
       return;
     }
-    this.routeCodes = this.routeCodes.filter(rc => rc.code !== selectedCode);
+    this.routeCodes = this.routeCodes.filter((rc) => rc.code !== selectedCode);
     this.onNew();
   }
 
@@ -139,7 +140,7 @@ export class RouteOfAdministrationComponent implements OnInit {
       this.routeCodes.push({ name: routeCode, code: routeCode, description, doseRouteType });
     } else {
       // Updating existing
-      const index = this.routeCodes.findIndex(rc => rc.code === selectedRoute);
+      const index = this.routeCodes.findIndex((rc) => rc.code === selectedRoute);
       if (index > -1) {
         this.routeCodes[index] = { name: routeCode, code: routeCode, description, doseRouteType };
       }

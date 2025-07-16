@@ -32,15 +32,10 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
   dropdownOptions = [
     { name: 'All Records', code: 'ALL' },
     { name: 'Active Records', code: 'ACTIVE' },
-    { name: 'Inactive Records', code: 'INACTIVE' }
+    { name: 'Inactive Records', code: 'INACTIVE' },
   ];
 
-  choiceOptions = [
-    { choice: 'AV' },
-    { choice: 'AW' },
-    { choice: 'CC' },
-    { choice: 'PC' }
-  ];
+  choiceOptions = [{ choice: 'AV' }, { choice: 'AW' }, { choice: 'CC' }, { choice: 'PC' }];
 
   constructor(private fb: FormBuilder) {}
 
@@ -70,7 +65,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
       ipycb: ['', [Validators.maxLength(2), Validators.pattern(/^(AV|AW|CC|PC)?$/)]],
       iccpy: ['', Validators.maxLength(6)],
       nonemarpay: [false],
-      choiceOption: [null]
+      choiceOption: [null],
     });
 
     // Auto-fill idpay and nampay when dropdown changes

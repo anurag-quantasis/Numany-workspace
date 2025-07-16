@@ -1,6 +1,6 @@
-import { HttpParams } from "@angular/common/http";
-import { FilterMetadata } from "primeng/api";
-import { TableLazyLoadEvent } from "primeng/table";
+import { HttpParams } from '@angular/common/http';
+import { FilterMetadata } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 
 export function createHttpParams(event: TableLazyLoadEvent): HttpParams {
   let params = new HttpParams();

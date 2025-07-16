@@ -383,6 +383,12 @@ export class HeaderBarComponent implements OnInit {
                   },
                 ],
               },
+              {
+                label: 'Select Formulary Items',
+                shortcut: 'alt.f f',
+                shortcutHint: 'f',
+                route: '/formulary-items',
+              },
             ],
           },
           {
@@ -444,7 +450,9 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f y',
             shortcutHint: 'Y',
             route: '/physician',
-            command: () => { console.log('Physician clicked'); },
+            command: () => {
+              console.log('Physician clicked');
+            },
           },
           {
             label: 'Printer/Report Selection',
@@ -460,16 +468,27 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f r',
             shortcutHint: 'R',
             // route: '/route-of-codes',
-            command: () => {this.openDialog(RouteOfAdministrationComponent, 'Route of Administration') },
-          },
-          {
-            label: 'Sig Codes',
-            // shortcut: 'alt.f s',
-            // shortcutHint: 'S',
             command: () => {
-              console.log('Sig Codes clicked');
+              this.openDialog(RouteOfAdministrationComponent, 'Route of Administration');
             },
           },
+          {
+            label: 'Alert File Matrix',
+            shortcut: 'alt.f x',
+            shortcutHint: 'x',
+            route: '/alert-file-matrix',
+            command: () => {
+              console.log('Alert File Matrix clicked');
+            },
+          },
+          // {
+          //   label: 'Sig Codes',
+          //   // shortcut: 'alt.f s',
+          //   // shortcutHint: 'S',
+          //   command: () => {
+          //     console.log('Sig Codes clicked');
+          //   },
+          // },
           {
             label: 'Sig Parts',
             // shortcut: 'alt.f t',
@@ -482,6 +501,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Site Parameters',
             shortcut: 'alt.f t',
             shortcutHint: 't',
+            route: 'site-parameters',
             command: () => {
               console.log('SiteParameters clicked');
             },
@@ -500,7 +520,9 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f v',
             shortcutHint: 'v',
             route: '/vendor-supplier',
-            command: () => { console.log('Vendor/Supplier clicked'); },
+            command: () => {
+              console.log('Vendor/Supplier clicked');
+            },
           },
           {
             label: 'Ward/Bed Area Cost Centers',
@@ -532,7 +554,9 @@ export class HeaderBarComponent implements OnInit {
             // shortcut: 'alt.f l',
             // shortcutHint: 'L',
             route: '/lab-result-type-maintenance',
-            command: () => { console.log('Lab Result Types clicked'); },
+            command: () => {
+              console.log('Lab Result Types clicked');
+            },
           },
           {
             label: 'Import Diagnosis File Update',
@@ -546,6 +570,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Alert File Matrix',
             shortcut: 'alt.f x',
             shortcutHint: 'x',
+            route: '/alert-file-matrix',
             command: () => {
               console.log('Alert File Matrix clicked');
             },
@@ -555,7 +580,9 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f r',
             shortcutHint: 'R',
             route: 'remote-inventory-location',
-            command: () => { console.log('Remote Inventory Location IDs clicked'); },
+            command: () => {
+              console.log('Remote Inventory Location IDs clicked');
+            },
           },
           {
             label: 'Third Party Provider Data',

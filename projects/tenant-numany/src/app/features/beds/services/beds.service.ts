@@ -6,10 +6,10 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { ApiService } from '../../../core/services/api.service';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { createHttpParams } from '../../../shared/utils/utils';
+import { DataTableLazyLoadEvent } from 'shared-ui';
 
 // --- API Data Transfer Objects (DTOs) ---
 // These interfaces exactly match the JSON from your backend.
-
 
 interface ApiPaging {
   totalItems: number;
@@ -50,6 +50,42 @@ export class BedService {
         return { status: 'success', data: paginatedData } as const;
       }),
       // This `catchError` handles network/server errors (e.g., 500, 404)
+      catchError((err: HttpErrorResponse) => {
+        const message = 'Could not connect to the server. Please try again later.';
+        return of({ status: 'error', error: message } as const);
+      }),
+    );
+  }
+
+  getBeds2(event: DataTableLazyLoadEvent): Observable<ApiResponse<PaginatedBedsResponse>> {
+    // The logic here is now much simpler!
+    let params = new HttpParams();
+
+    // 1. Handle Pagination
+    const page = Math.floor(event.first ?? 0) / (event.rows ?? 10) + 1;
+    const size = event.rows ?? 10;
+    params = params.set('pageNumber', page.toString());
+    params = params.set('pageSize', size.toString());
+
+    // 2. Handle OData Sorting (pre-formatted)
+    if (event.oDataSort) {
+      params = params.set('$orderby', event.oDataSort);
+    }
+
+    // 3. Handle OData Filtering (pre-formatted)
+    if (event.oDataFilter) {
+      params = params.set('$filter', event.oDataFilter);
+    }
+
+    return this.apiService.get<ApiGetBedsResponse>(this.bedsEndpoint, { params }).pipe(
+      // ... rest of the pipe (map, catchError) remains the same
+      map((apiResponse) => {
+        const paginatedData: PaginatedBedsResponse = {
+          items: apiResponse.data,
+          totalRecords: apiResponse.paging.totalItems,
+        };
+        return { status: 'success', data: paginatedData } as const;
+      }),
       catchError((err: HttpErrorResponse) => {
         const message = 'Could not connect to the server. Please try again later.';
         return of({ status: 'error', error: message } as const);
@@ -201,7 +237,7 @@ export class BedService {
   //   if (event.filters) {
   //     for (const field in event.filters) {
   //       const filterMeta = event.filters[field] as FilterMetadata | FilterMetadata[];
-        
+
   //       // PrimeNG can send a single or an array of filters
   //       const filters = Array.isArray(filterMeta) ? filterMeta : [filterMeta];
 
@@ -215,7 +251,7 @@ export class BedService {
   //       }
   //     }
   //   }
-    
+
   //   // Join all individual clauses with 'and' and add to the '$filter' parameter
   //   if (filterClauses.length > 0) {
   //     params = params.set('filter', filterClauses.join(' and '));
@@ -223,7 +259,7 @@ export class BedService {
 
   //   return params;
   // }
-  
+
   /**
    * Helper to create a single OData clause from PrimeNG filter metadata.
    */
@@ -262,7 +298,7 @@ export class BedService {
   //       return `${field} gt ${value}`;
   //     case 'gte':
   //       return `${field} ge ${value}`;
-      
+
   //     // We don't handle other modes by default
   //     default:
   //       console.warn(`OData mapping for matchMode '${matchMode}' is not implemented.`);

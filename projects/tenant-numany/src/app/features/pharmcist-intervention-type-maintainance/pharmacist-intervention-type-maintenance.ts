@@ -19,7 +19,7 @@ import { ButtonModule } from 'primeng/button';
     CommonModule,
   ],
   templateUrl: './pharmcist-intervention-type-maintainance.component.html',
-  styleUrls: ['./pharmcist-intervention-type-maintainance.component.css']
+  styleUrls: ['./pharmcist-intervention-type-maintainance.component.css'],
 })
 export class PharmcistInterventionTypeMaintainanceComponent {
   // interventionForm: FormGroup;
@@ -136,12 +136,12 @@ export class PharmcistInterventionTypeMaintainanceComponent {
 
   interventionOptions = [
     { name: 'Option 1', code: 'O1' },
-    { name: 'Option 2', code: 'O2' }
+    { name: 'Option 2', code: 'O2' },
   ];
 
   activityOptions = [
     { name: 'Activity A', code: 'A1' },
-    { name: 'Activity B', code: 'A2' }
+    { name: 'Activity B', code: 'A2' },
   ];
 
   constructor(private fb: FormBuilder) {
@@ -151,7 +151,7 @@ export class PharmcistInterventionTypeMaintainanceComponent {
       isHidden: [false],
       interventionId: [''],
       description: [''],
-      costImpact: ['']
+      costImpact: [''],
     });
   }
 }

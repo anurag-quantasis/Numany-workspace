@@ -1,128 +1,189 @@
-<h1 class="text-2xl font-semibold text-center p-5">Administration Schedule File Maintenance</h1>
+<shared-panel-container>
+  <h1 class="text-2xl font-semibold text-center p-5">Administration Schedule File Maintenance</h1>
 
-<main [formGroup]="form" class="p-6 space-y-6 mx-[2rem]">
-  <!-- Section 1: Schedule ID & Schedule Type -->
-  <section class="flex justify-between items-center">
-    <div>
-      <app-custom-input
-        formControlName="scheduleId"
-        type="text"
-        label="Schedule Id"
-        [class]="'!w-90'"
-      />
-      <!-- <span
-        *ngIf="scheduleId?.hasError('required') && (scheduleId?.dirty || scheduleId?.touched)"
-        class="text-sm text-red-500"
-      >
-        Schedule Id is required
-      </span> -->
-    </div>
+  <!-- The main form group binding that connects this whole section to your component's `form` -->
+  <main [formGroup]="form" class="p-6 space-y-6 mx-[2rem]">
+    <!-- Section 1: Schedule ID & Schedule Type -->
+    <section class="flex justify-between items-center">
+      <div>
+        <label for="schedule-select">Schedule ID <span class="text-red-500">*</span></label>
 
-    <div>
-      <h2 class="font-medium text-sm mb-2">Schedule Type</h2>
-      <div class="flex flex-wrap gap-4">
-        <span class="flex items-center gap-1">
-          <p-radiobutton
-            formControlName="selectedSchedule"
-            value="time interval"
-            inputId="schedule-time"
-          ></p-radiobutton>
-          <label class="text-sm" for="schedule-time">Time Interval Schedule</label>
-        </span>
-        <span class="flex items-center gap-1">
-          <p-radiobutton
-            formControlName="selectedSchedule"
-            value="every day"
-            inputId="schedule-every"
-          ></p-radiobutton>
-          <label class="text-sm" for="schedule-every">Fixed Time of Every Day</label>
-        </span>
-        <span class="flex items-center gap-1">
-          <p-radiobutton
-            formControlName="selectedSchedule"
-            value="specific days"
-            inputId="schedule-specific"
-          ></p-radiobutton>
-          <label class="text-sm" for="schedule-specific">Fixed Time of Specific Days</label>
-        </span>
-        <span class="flex items-center gap-1">
-          <p-radiobutton
-            formControlName="selectedSchedule"
-            value="prn info"
-            inputId="schedule-prn"
-          ></p-radiobutton>
-          <label class="text-sm" for="schedule-prn">PRN Info Only</label>
-        </span>
+        <!-- This dropdown will now ONLY show when you are EDITING an existing schedule -->
+        @if (!isNewMode()) {
+          <p-select
+            id="schedule-select"
+            styleClass="w-full"
+            formControlName="selectedId"
+            [options]="scheduleOptions()"
+            optionLabel="name"
+            optionValue="value"
+            placeholder="Select a Schedule to Edit"
+            [showClear]="true"
+            (onChange)="onScheduleSelected($event)"
+          ></p-select>
+        }
+
+        <!-- This input field will ONLY show when you click the "New" button -->
+        @if (isNewMode()) {
+          <div class="flex flex-col">
+            <input
+              pInputText
+              id="new-schedule-id"
+              formControlName="newScheduleId"
+              placeholder="Enter New Schedule ID"
+              class="w-full"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  form.get('newScheduleId')?.invalid && form.get('newScheduleId')?.touched,
+              }"
+            />
+            @if (form.get('newScheduleId')?.invalid && form.get('newScheduleId')?.touched) {
+              <small class="text-red-500 mt-1">A unique ID is required.</small>
+            }
+          </div>
+        }
       </div>
-    </div>
-  </section>
 
-  <!-- Section 2: Description & Doses + Interval -->
-  <section class="flex justify-start items-center gap-x-10">
-    <div>
-      <app-custom-input
-        formControlName="description"
-        type="text"
-        label="Description"
-        [class]="'!w-90'"
-      />
-    </div>
+      <!-- This section remains the same, as the formControlName was already correct -->
+      <div>
+        <h2 class="font-medium text-sm mb-2">Schedule Type</h2>
+        <div class="flex flex-wrap gap-4">
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="time interval"
+              inputId="schedule-time"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-time">Time Interval Schedule</label>
+          </span>
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="every day"
+              inputId="schedule-every"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-every">Fixed Time of Every Day</label>
+          </span>
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="specific days"
+              inputId="schedule-specific"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-specific">Fixed Time of Specific Days</label>
+          </span>
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="prn info"
+              inputId="schedule-prn"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-prn">PRN Info Only</label>
+          </span>
+        </div>
+      </div>
+    </section>
 
-    <span class="flex flex-col items-center gap-y-4">
-      <label for="doses" class="text-sm font-medium"># of doses/24hr</label>
-      <input id="doses" type="text" pInputText formControlName="dosesPerDay" class="w-20 border" />
-    </span>
+    <!-- Section 2: Description & Doses + Interval -->
+    <section class="flex justify-start items-center gap-x-10">
+      <!-- Assuming your app-custom-input component is set up to work with formControlName -->
+      <div>
+        <app-custom-input
+          formControlName="description"
+          type="text"
+          label="Description"
+          [class]="'!w-90'"
+        ></app-custom-input>
+      </div>
 
-    <div>
-      <p class="text-sm font-medium mb-1">Administration Time Interval</p>
-      <main-schedule-selector
-        [showDurationInputs]="true"
-        [showTimeSlots]="false"
-        [showWeekDays]="false"
-        (scheduleChange)="handleSchedule($event, 'timeInterval')"
-      ></main-schedule-selector>
-    </div>
-  </section>
+      <span class="flex flex-col items-center gap-y-4">
+        <label for="doses" class="text-sm font-medium"># of doses/24hr</label>
+        <input
+          id="doses"
+          type="number"
+          pInputText
+          formControlName="dosesPerDay"
+          class="w-20 border"
+        />
+        <small
+          *ngIf="form.get('dosesPerDay')?.touched && form.get('dosesPerDay')?.invalid"
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="form.get('dosesPerDay')?.errors?.['required']">This field is required.</span>
+          <span *ngIf="form.get('dosesPerDay')?.errors?.['pattern']"
+            >Only numbers are allowed.</span
+          >
+          <span *ngIf="form.get('dosesPerDay')?.errors?.['min']">Value must be at least 1.</span>
+        </small>
+      </span>
 
-  <!-- Section 3: Administration Times Grid -->
-  <section>
-    <p class="text-sm font-medium mb-2">Administration Times</p>
-    <main-schedule-selector
-      [showDurationInputs]="false"
-      [showTimeSlots]="true"
-      [showWeekDays]="false"
-      (scheduleChange)="handleSchedule($event, 'adminTimes')"
-    ></main-schedule-selector>
-  </section>
+      <div>
+        <p class="text-sm font-medium mb-1">Administration Time Interval</p>
+        <main-schedule-selector
+          [showDurationInputs]="true"
+          [showTimeSlots]="false"
+          [showWeekDays]="false"
+          [initialValue]="form.get('timeInterval')?.value"
+          (scheduleChange)="handleSchedule($event)"
+        ></main-schedule-selector>
+      </div>
+    </section>
 
-  <!-- Section 4: Weekdays and Action Buttons -->
-  <section class="grid grid-cols-2 gap-6">
-    <div>
-      <p class="text-sm font-medium mb-2">Week Days</p>
+    <!-- Section 3: Administration Times Grid -->
+    <section>
+      <p class="text-sm font-medium mb-2">Administration Times</p>
       <main-schedule-selector
         [showDurationInputs]="false"
-        [showTimeSlots]="false"
-        [showWeekDays]="true"
-        (scheduleChange)="handleSchedule($event, 'weekDays')"
+        [showTimeSlots]="true"
+        [showWeekDays]="false"
+        [initialValue]="form.get('adminTimes')?.value"
+        (scheduleChange)="handleSchedule($event)"
       ></main-schedule-selector>
-    </div>
-    <div class="flex items-end gap-3">
-      <p-button
-        label="Add"
-        (click)="onSubmit()"
-        variant="outlined"
-        styleClass="h-8 w-25"
-      ></p-button>
-      <p-button
-        label="New"
-        variant="outlined"
-        styleClass="h-8 w-25 text-green-500 hover:bg-green-50 border-green-500"
-      ></p-button>
-      <p-button
-        label="Delete"
-        variant="outlined"
-        styleClass="h-8 w-25 text-red-500 border-red-500 hover:bg-red-50"
-      ></p-button>
-    </div>
-  </section>
-</main>
+    </section>
+
+    <!-- Section 4: Weekdays and Action Buttons with wired-up logic -->
+    <section class="grid grid-cols-2 gap-6">
+      <div>
+        <p class="text-sm font-medium mb-2">Week Days</p>
+        <main-schedule-selector
+          [showDurationInputs]="false"
+          [showTimeSlots]="false"
+          [showWeekDays]="true"
+          [initialValue]="form.get('weekDays')?.value"
+          (scheduleChange)="handleSchedule($event)"
+        ></main-schedule-selector>
+      </div>
+      <div class="flex items-end gap-3">
+        <!-- "Save" Button: Handles both Update and Create -->
+        <p-button
+          [label]="isNewMode() ? 'Create' : 'Update'"
+          (click)="onSubmit()"
+          styleClass="h-8 w-25"
+          icon="pi pi-check"
+          [loading]="store.isLoading()"
+          [disabled]="form.invalid"
+        ></p-button>
+
+        <!-- "New" Button: Enters the create mode -->
+        <p-button
+          label="New"
+          (click)="onNewClick()"
+          variant="outlined"
+          styleClass="h-8 w-25 text-green-500 hover:bg-green-50 border-green-500"
+          icon="pi pi-plus"
+          [disabled]="isNewMode()"
+        ></p-button>
+
+        <!-- "Delete" Button: Deletes the selected schedule -->
+        <p-button
+          label="Delete"
+          (click)="onDeleteClick()"
+          variant="outlined"
+          styleClass="h-8 w-25 text-red-500 border-red-500 hover:bg-red-50"
+          icon="pi pi-trash"
+          [disabled]="!store.selectedScheduleId() || isNewMode()"
+        ></p-button>
+      </div>
+    </section>
+  </main>
+</shared-panel-container>

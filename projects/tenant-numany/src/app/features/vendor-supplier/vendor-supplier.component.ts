@@ -26,7 +26,7 @@ import { CustomInputComponent } from 'shared-ui';
     CustomInputComponent
   ],
   templateUrl: './vendor-supplier.component.html',
-  styleUrls: ['./vendor-supplier.component.css']
+  styleUrls: ['./vendor-supplier.component.css'],
 })
 export class VendorSupplierComponent implements OnInit {
   vendorForm!: FormGroup;
@@ -61,7 +61,7 @@ export class VendorSupplierComponent implements OnInit {
   }
 
   vendorExistsValidator(control: AbstractControl): ValidationErrors | null {
-    if (this.editingIndex === null && this.vendors.some(v => v.vendorId === control.value)) {
+    if (this.editingIndex === null && this.vendors.some((v) => v.vendorId === control.value)) {
       return { vendorExists: true };
     }
     return null;

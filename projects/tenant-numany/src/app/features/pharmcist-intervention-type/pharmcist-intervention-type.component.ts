@@ -21,12 +21,12 @@ import { SharedPanelContainerComponent } from "shared-ui";
     SharedPanelContainerComponent
 ],
   templateUrl: './pharmcist-intervention-type.component.html',
-  styleUrls: ['./pharmcist-intervention-type.component.css']
+  styleUrls: ['./pharmcist-intervention-type.component.css'],
 })
 export class PharmcistInterventionTypeComponent {
-onInterventionSelect() {
-throw new Error('Method not implemented.');
-}
+  onInterventionSelect() {
+    throw new Error('Method not implemented.');
+  }
   // interventionForm: FormGroup;
  
   // interventionOptions = [
@@ -89,7 +89,7 @@ throw new Error('Method not implemented.');
       checkbox6: [false],
       checkbox7: [false],
       checkbox8: [false],
-      checkbox9: [false]
+      checkbox9: [false],
     });
   }
  

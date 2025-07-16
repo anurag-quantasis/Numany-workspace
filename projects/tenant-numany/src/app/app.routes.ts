@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout/layout.component';
 
-
 export const routes: Routes = [
   {
     path: 'login',
@@ -71,100 +70,93 @@ export const routes: Routes = [
           },
         ],
       },
-           {
-      path: 'physician',
-      loadComponent: () =>
-        import('./features/physician/physician.component').then(
-          (m) => m.PhysicianComponent,
-        )
-        
-     },
-  //    {
-  // path: 'pharmacist-intervention-type-maintainance',
-  // loadComponent: () =>
-  //   import('./features/pharmcist-intervention-type/pharmcist-intervention-type.component').then(
-      
-  //     (m) => m.PharmcistInterventionTypeComponent,
-  //   )
-  //   },
-{
-  path: 'pharmacist-intervention-type',
-  loadComponent: () =>
-    import('./features/pharmcist-intervention-type/pharmcist-intervention-type.component').then(
-      (m) => m.PharmcistInterventionTypeComponent,
-    )
-},
+      {
+        path: 'formulary-items',
+        loadComponent: () =>
+          import('./features/select-formulary-items/select-formulary-items.component').then(
+            (m) => m.SelectFormularyItemsComponent,
+          ),
+      },
+      {
+        path: 'physician',
+        loadComponent: () =>
+          import('./features/physician/physician.component').then((m) => m.PhysicianComponent),
+      },
+      {
+        path: 'pharmacist-intervention-type-maintainance',
+        loadComponent: () =>
+          import(
+            './features/pharmcist-intervention-type/pharmcist-intervention-type.component'
+          ).then((m) => m.PharmcistInterventionTypeComponent),
+      },
+      {
+        path: 'pharmacist-intervention-type',
+        loadComponent: () =>
+          import(
+            './features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance'
+          ).then((m) => m.PharmcistInterventionTypeMaintainanceComponent),
+      },
+      // {
+      //    path: 'Pharamacist-intervention-data-classes',
+      //    loadComponent: () =>
+      //     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
+      //       (m) => m.PharmcistInterventionTypeMaintainanceComponent
+      //     )
+      // },
 
-{
-  path: 'pharmacist-intervention-type-maintenance',
-  loadComponent: () =>
-    import('./features/pharmacist-intervention-type-maintenance/pharmacist-intervention-type-maintenance.component').then(
-      (m) => m.PharmacistInterventionTypeMaintenanceComponent
-    )
-},
-// {
-//    path: 'Pharamacist-intervention-data-classes',
-//    loadComponent: () =>
-//     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
-//       (m) => m.PharmcistInterventionTypeMaintainanceComponent
-//     )
-// },
+      // {
+      //   path: 'route-of-codes',
+      //   loadComponent: () =>
+      //     import('./features/route-of-administration/route-of-administration.component').then(
+      //       (m) => m.RouteOfAdministrationComponent,
+      //     )
+      // },
 
-// {
-//   path: 'route-of-codes',
-//   loadComponent: () =>
-//     import('./features/route-of-administration/route-of-administration.component').then(
-//       (m) => m.RouteOfAdministrationComponent,
-//     )
-// },
+      {
+        path: 'vendor-supplier',
+        loadComponent: () =>
+          import('./features/vendor-supplier/vendor-supplier.component').then(
+            (m) => m.VendorSupplierComponent,
+          ),
+      },
 
-  {
-    path: 'vendor-supplier',
-    loadComponent: () =>
-      import('./features/vendor-supplier/vendor-supplier.component').then(
-        (m) => m.VendorSupplierComponent,
-      )
-  },
+      {
+        path: 'lab-result-type-maintenance',
+        loadComponent: () =>
+          import(
+            './features/lab-result-type-maintenance/lab-result-type-maintenance.component'
+          ).then((m) => m.LabResultTypeMaintenanceComponent),
+      },
 
-  {
-    path: 'lab-result-type-maintenance',
-    loadComponent: () =>
-      import('./features/lab-result-type-maintenance/lab-result-type-maintenance.component').then(
-        (m) => m.LabResultTypeMaintenanceComponent,
-      )
-  },
+      {
+        path: 'remote-inventory-location',
+        loadComponent: () =>
+          import('./features/remote-inventory-location/remote-inventory-location.component').then(
+            (m) => m.RemoteInventoryLocationComponent,
+          ),
+      },
+      {
+        path: 'patient-payor-type-maintenance',
+        loadComponent: () =>
+          import(
+            './features/patient-payor-type-maintenance/patient-payor-type-maintenance.component'
+          ).then((m) => m.PatientPayorTypeMaintenanceComponent),
+      },
 
-  {
-    path: 'remote-inventory-location',
-    loadComponent: () =>
-      import('./features/remote-inventory-location/remote-inventory-location.component').then(
-        (m) => m.RemoteInventoryLocationComponent,
-      )
-  },
-  {
-    path: 'patient-payor-type-maintenance',
-    loadComponent: () =>
-      import('./features/patient-payor-type-maintenance/patient-payor-type-maintenance.component').then(
-        (m) => m.PatientPayorTypeMaintenanceComponent,
-      )
-  },
-
-  {
-    path: 'standing-orders',
-    loadComponent: () =>
-      import('./features/standing-orders/standing-orders.component').then(
-        (m) => m.StandingOrdersComponent
-      )
-  },
-  {
-    path: 'ward-bed-area-maintenanace',
-    loadComponent: () =>
-      import('./features/ward-bed-area-maintenance/ward-bed-area-maintenance.component').then(
-        (m) => m.WardBedAreaMaintenanceComponent
-      )
-  }
-
+      {
+        path: 'standing-orders',
+        loadComponent: () =>
+          import('./features/standing-orders/standing-orders.component').then(
+            (m) => m.StandingOrdersComponent,
+          ),
+      },
+      {
+        path: 'alert-file-matrix',
+        loadComponent: () =>
+          import('./features/alert-file-maintenance/alert-file-maintenance.component').then(
+            (m) => m.AlertFileMaintenanceComponent,
+          ),
+      },
     ],
   },
 ];
- 

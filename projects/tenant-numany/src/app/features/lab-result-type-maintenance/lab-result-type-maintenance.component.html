@@ -11,7 +11,8 @@
         formControlName="selectedLabType"
         optionLabel="name"
         placeholder="Select Lab Type"
-        class="w-[380px]">
+        class="w-[400px]"
+      >
       </p-dropdown>
 
       <!-- Input Fields Grid -->
@@ -22,7 +23,7 @@
             formControlName="labId"
             placeholder="Enter Lab ID"
             type="text"
-            class="w-[360px]">
+          >
           </app-custom-input>
         </div>
 
@@ -32,7 +33,7 @@
             formControlName="hostId"
             placeholder="Enter Host ID"
             type="text"
-            class="w-[360px]">
+          >
           </app-custom-input>
         </div>
 
@@ -42,7 +43,7 @@
             formControlName="units"
             placeholder="Enter Units"
             type="text"
-            class="w-[360px]">
+          >
           </app-custom-input>
         </div>
       </div>
@@ -62,7 +63,8 @@
           rows="5"
           cols="60"
           placeholder="Enter Description..."
-          class="p-inputtext w-full max-w-[560px]">
+          class="p-inputtext w-full max-w-[600px]"
+        >
         </textarea>
       </div>
 
@@ -75,7 +77,11 @@
       <div class="flex items-center gap-6 mt-1">
         <div class="flex items-center gap-2 mt-2">
           <label for="includeReport" class="uppercase font-medium">Include on Report</label>
-          <p-checkbox inputId="includeReport" formControlName="includeOnReport" [binary]="true"></p-checkbox>
+          <p-checkbox
+            inputId="includeReport"
+            formControlName="includeOnReport"
+            [binary]="true"
+          ></p-checkbox>
         </div>
 
         <div class="flex items-center gap-3 mt-2">
@@ -90,7 +96,8 @@
               pInputText
               formControlName="low"
               placeholder="0"
-              class="w-[60px] text-center" />
+              class="w-[60px] text-center" /> -->
+            <app-custom-input label="Low" formControlName="low" type="number"> </app-custom-input>
           </div>
 
           <!-- High -->
@@ -102,7 +109,8 @@
               pInputText
               formControlName="high"
               placeholder="0"
-              class="w-[60px] text-center" />
+              class="w-[60px] text-center"
+            />
           </div>
         </div>
       </div>
@@ -111,7 +119,12 @@
       <div class="flex mb-4 gap-2.5">
         <p-button label="Update" variant="outlined" severity="info" (click)="onUpdate()"></p-button>
         <p-button label="New" variant="outlined" severity="success" (click)="onNew()"></p-button>
-        <p-button label="Delete" variant="outlined" severity="danger" (click)="onDelete()"></p-button>
+        <p-button
+          label="Delete"
+          variant="outlined"
+          severity="danger"
+          (click)="onDelete()"
+        ></p-button>
       </div>
     </form>
   </div>

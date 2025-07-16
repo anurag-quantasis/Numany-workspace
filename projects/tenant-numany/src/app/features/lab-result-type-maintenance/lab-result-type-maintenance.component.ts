@@ -25,17 +25,12 @@ import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
     SharedPanelContainerComponent
 ],
   templateUrl: './lab-result-type-maintenance.component.html',
-  styleUrls: ['./lab-result-type-maintenance.component.css']
+  styleUrls: ['./lab-result-type-maintenance.component.css'],
 })
 export class LabResultTypeMaintenanceComponent implements OnInit {
   labForm!: FormGroup;
 
-  labTypes = [
-    { name: 'Option1' },
-    { name: 'Option2' },
-    { name: 'Option3' },
-    { name: 'Option4' }
-  ];
+  labTypes = [{ name: 'Option1' }, { name: 'Option2' }, { name: 'Option3' }, { name: 'Option4' }];
 
   constructor(private fb: FormBuilder) {}
 
@@ -48,7 +43,7 @@ export class LabResultTypeMaintenanceComponent implements OnInit {
       notes: ['', [Validators.maxLength(50)]],
       low: ['', Validators.pattern(/^-?\d*\.?\d+$/)],
       high: ['', Validators.pattern(/^-?\d*\.?\d+$/)],
-      includeOnReport: [false]
+      includeOnReport: [false],
     });
   }
 
@@ -72,7 +67,7 @@ export class LabResultTypeMaintenanceComponent implements OnInit {
 
   onNew(): void {
     this.labForm.reset({
-      includeOnReport: false
+      includeOnReport: false,
     });
   }
 

@@ -21,7 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CardModule,
     SharedDataTableComponent,
     ButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
 })
 export class RemoteInventoryLocationComponent {
@@ -44,7 +44,10 @@ export class RemoteInventoryLocationComponent {
     { field: 'expires', header: 'Expires' },
   ];
 
-  constructor(private fb: FormBuilder, public store: RemoteInventoryLocationStore) {
+  constructor(
+    private fb: FormBuilder,
+    public store: RemoteInventoryLocationStore,
+  ) {
     this.remoteInventoryLocation = this.fb.group({
       locationID: [null, [Validators.required, Validators.maxLength(10)]],
       binID: ['', Validators.maxLength(10)],
