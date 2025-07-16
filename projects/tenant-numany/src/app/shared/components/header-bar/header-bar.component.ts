@@ -459,13 +459,22 @@ export class HeaderBarComponent implements OnInit {
             },
           },
           {
-            label: 'Sig Codes',
-            // shortcut: 'alt.f s',
-            // shortcutHint: 'S',
+            label: 'Alert File Matrix',
+            shortcut: 'alt.f x',
+            shortcutHint: 'x',
+            route: '/alert-file-matrix',
             command: () => {
-              console.log('Sig Codes clicked');
+              console.log('Alert File Matrix clicked');
             },
           },
+          // {
+          //   label: 'Sig Codes',
+          //   // shortcut: 'alt.f s',
+          //   // shortcutHint: 'S',
+          //   command: () => {
+          //     console.log('Sig Codes clicked');
+          //   },
+          // },
           {
             label: 'Sig Parts',
             // shortcut: 'alt.f t',
