@@ -25,6 +25,35 @@
         formControlName="wardArea"
         placeholder="Enter ward or area name"
         class="w-full md:w-72 mt-2" />
+        <label for="locationID" class="ml-3 text-[18px] font-semibold">Remote Location ID</label>
+    </div>
+
+    <div class="flex">
+        <div class="flex flex-col font-semibold">
+      <label for="costBasis" class="text-[18px]">Cost Basis</label>
+      <label for="subCostBasis" class="text-[14px]">(AV,AW,CC,PC)</label>
+          </div>
+            <input
+        id="costBase"
+        type="text"
+        pInputText
+        formControlName="costBase"
+        placeholder="Enter Cost Base"
+        class="w-full md:w-72 mt-2 ml-3" />
+    </div>
+
+    <div>
+        <h1 class="text-2xl font-semiBoe">Remote Location ID</h1>
+    <!-- Dropdown: Select Ward/Area -->
+    <div>
+<p-select
+  [options]="optionsOne"
+  formControlName="selectedOptionOne"
+  optionLabel="name"
+  placeholder="Select an option"
+  class="w-full md:w-56 mt-2">
+</p-select>
+    </div>
     </div>
 
   </form>
