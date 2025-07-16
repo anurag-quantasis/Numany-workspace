@@ -1,43 +1,127 @@
 <shared-panel-container [title]="'Department File Maintenance'">
   <main class="flex flex-col w-full gap-y-2">
-    <!-- <h3 class="p-5 text-xl font-semibold" [shortcut]="'alt.p'" [shortcutKeyHint]="'p'">
-      Print All Records
-    </h3> -->
     <form [formGroup]="departmentForm" (ngSubmit)="printForm()">
-      <p-select
-        [options]="departmentOptions"
-        formControlName="department"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Select a Department"
-        class="w-full md:w-56 h-8 my-4 flex justify-center items-center"
-      />
-      <section>
-        <div>
-          <p-fieldset legend="Department Information">
-            <div class="grid grid-cols-4 gap-4">
-          <app-custom-input label="Id" type="text" formControlName="id" />
-        <app-custom-input label="Name" type="text" formControlName="name" />
-        <app-custom-input type="text" label="Address" formControlName="address" />
-        <app-custom-input type="text" label="City" formControlName="city" />
-        <app-custom-input type="text" label="State" formControlName="state" />
-        <app-custom-input type="number" label="Zip" formControlName="zip" />
-        <app-custom-input type="text" label="Phone" formControlName="phone" />
+      <!-- Department Dropdown with Validation -->
+      <div class="my-4">
+        <p-select
+          [options]="departmentOptions"
+          formControlName="department"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Select a Department"
+          class="w-full md:w-56"
+          [ngClass]="{
+            'ng-invalid ng-dirty':
+              departmentForm.controls['department'].invalid &&
+              departmentForm.controls['department'].touched,
+          }"
+        />
+        <div
+          *ngIf="
+            departmentForm.controls['department'].invalid &&
+            (departmentForm.controls['department'].dirty ||
+              departmentForm.controls['department'].touched)
+          "
+          class="p-error text-xs mt-1"
+        >
+          <small *ngIf="departmentForm.controls['department'].errors?.['required']"
+            >Department selection is required.</small
+          >
         </div>
+      </div>
+
+      <section>
+        <p-fieldset legend="Department Information">
+          <div class="grid grid-cols-4 gap-4">
+            <app-custom-input
+              label="Id"
+              type="text"
+              formControlName="id"
+              [errorMessages]="{
+                required: 'ID is required.',
+                maxlength: 'ID cannot exceed 6 characters.',
+              }"
+            />
+            <app-custom-input
+              label="Name"
+              type="text"
+              formControlName="name"
+              [errorMessages]="{
+                required: 'Name is required.',
+                maxlength: 'Name cannot exceed 30 characters.',
+              }"
+            />
+            <app-custom-input
+              type="text"
+              label="Address"
+              formControlName="address"
+              [errorMessages]="{ maxlength: 'Address cannot exceed 80 characters.' }"
+            />
+            <app-custom-input
+              type="text"
+              label="City"
+              formControlName="city"
+              [errorMessages]="{ maxlength: 'City cannot exceed 50 characters.' }"
+            />
+            <app-custom-input type="text" label="State" formControlName="state" />
+            <app-custom-input
+              type="text"
+              label="Zip"
+              formControlName="zip"
+              [errorMessages]="{ maxlength: 'Zip cannot exceed 10 characters.' }"
+            />
+            <app-custom-input
+              type="text"
+              label="Phone"
+              formControlName="phone"
+              [errorMessages]="{ maxlength: 'Phone cannot exceed 20 characters.' }"
+            />
+          </div>
         </p-fieldset>
-       <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4">
-         <app-custom-input type="text" label="Note" formControlName="note" />
-        <app-custom-input type="text" label="Cost Basis" formControlName="cost_basis" />
-        <app-custom-input type="text" label="Markup" formControlName="markup" />
-        <app-custom-input type="text" label="Tax Flag" formControlName="tax_flag" />
-       </div>
+
+        <div
+          class="border border-grey-200 p-4 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
+        >
+          <app-custom-input
+            type="text"
+            label="Note"
+            formControlName="note"
+            [errorMessages]="{ maxlength: 'Note cannot exceed 50 characters.' }"
+          />
+          <app-custom-input type="text" label="Cost Basis" formControlName="cost_basis" />
+          <app-custom-input type="text" label="Markup" formControlName="markup" />
+          <app-custom-input type="text" label="Tax Flag" formControlName="tax_flag" />
         </div>
       </section>
+
+      <!-- Buttons -->
+      <div class="flex justify-end items-center gap-x-4 my-5">
+        <!-- 'type="button"' prevents these from submitting the form -->
+        <p-button
+          (click)="resetForm()"
+          [shortcut]="'alt.a'"
+          icon="pi pi-plus"
+          label="Add"
+          type="button"
+        ></p-button>
+        <!-- 'type="submit"' will trigger the form's (ngSubmit) event -->
+        <p-button
+          [shortcut]="'alt.u'"
+          icon="pi pi-check"
+          label="Update"
+          variant="outlined"
+          severity="info"
+          type="submit"
+        ></p-button>
+        <p-button
+          [shortcut]="'alt.d'"
+          icon="pi pi-trash"
+          label="Delete"
+          variant="outlined"
+          severity="danger"
+          type="button"
+        ></p-button>
+      </div>
     </form>
-    <div class="flex justify-center items-center gap-x-4 my-5">
-      <p-button (click)="resetForm()" [shortcut]="'alt.a'" icon="pi pi-plus" label="Add"></p-button>
-      <p-button [shortcut]="'alt.u'" icon="pi pi-check" label="Update" variant="outlined" severity="info"></p-button>
-      <p-button [shortcut]="'alt.d'" icon="pi pi-trash" label="Delete" variant="outlined" severity="danger"></p-button>
-    </div>
   </main>
 </shared-panel-container>
