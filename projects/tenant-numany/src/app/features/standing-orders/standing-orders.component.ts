@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { SharedPanelContainerComponent } from "shared-ui";
+import { SharedPanelContainerComponent } from 'shared-ui';
 
 @Component({
   selector: 'app-standing-orders',
@@ -13,9 +13,9 @@ import { SharedPanelContainerComponent } from "shared-ui";
     ReactiveFormsModule,
     InputTextModule,
     ButtonModule,
-    SharedPanelContainerComponent
-],
-  templateUrl: './standing-orders.component.html'
+    SharedPanelContainerComponent,
+  ],
+  templateUrl: './standing-orders.component.html',
 })
 export class StandingOrdersComponent implements OnInit {
   form!: FormGroup;

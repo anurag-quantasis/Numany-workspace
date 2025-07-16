@@ -22,8 +22,8 @@ import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
     TextareaModule,
     CheckboxModule,
     CustomInputComponent,
-    SharedPanelContainerComponent
-],
+    SharedPanelContainerComponent,
+  ],
   templateUrl: './lab-result-type-maintenance.component.html',
   styleUrls: ['./lab-result-type-maintenance.component.css'],
 })

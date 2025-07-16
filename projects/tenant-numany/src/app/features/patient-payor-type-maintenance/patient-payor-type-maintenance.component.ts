@@ -1,11 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AsyncValidatorFn, AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AsyncValidatorFn,
+  AbstractControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
-import { Select } from "primeng/select";
+import { Select } from 'primeng/select';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
@@ -26,8 +33,8 @@ import { delay, map } from 'rxjs/operators';
 })
 export class PatientPayorTypeMaintenanceComponent implements OnInit {
   form!: FormGroup;
-  chargeClassLookup = ['GEN01', 'VIP01', 'MED01', 'CC01']; 
-  existingPayorIDs = ['A001', 'B002', 'C003']; 
+  chargeClassLookup = ['GEN01', 'VIP01', 'MED01', 'CC01'];
+  existingPayorIDs = ['A001', 'B002', 'C003'];
 
   dropdownOptions = [
     { name: 'All Records', code: 'ALL' },
@@ -42,25 +49,27 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       selectedOption: [null],
-      idpay: ['', {
-        validators: [
-          Validators.required,
-          Validators.maxLength(4),
-          Validators.pattern(/^[A-Za-z0-9]{1,4}$/)
-        ],
-        asyncValidators: [this.validateUniqueID()],
-        updateOn: 'blur'
-      }],
+      idpay: [
+        '',
+        {
+          validators: [
+            Validators.required,
+            Validators.maxLength(4),
+            Validators.pattern(/^[A-Za-z0-9]{1,4}$/),
+          ],
+          asyncValidators: [this.validateUniqueID()],
+          updateOn: 'blur',
+        },
+      ],
       nampay: ['', [Validators.required, Validators.maxLength(50)]],
       iadpy: ['', Validators.maxLength(80)],
       ictpy: ['', Validators.maxLength(30)],
       istpy: ['', Validators.maxLength(2)],
       izppy: ['', Validators.maxLength(10)],
-      iphpy: ['', [
-        Validators.pattern(/^[0-9]{10}$/),
-        Validators.minLength(10),
-        Validators.maxLength(10)
-      ]],
+      iphpy: [
+        '',
+        [Validators.pattern(/^[0-9]{10}$/), Validators.minLength(10), Validators.maxLength(10)],
+      ],
       imspy: ['', Validators.maxLength(80)],
       ipycb: ['', [Validators.maxLength(2), Validators.pattern(/^(AV|AW|CC|PC)?$/)]],
       iccpy: ['', Validators.maxLength(6)],
@@ -69,11 +78,11 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     });
 
     // Auto-fill idpay and nampay when dropdown changes
-    this.form.get('selectedOption')?.valueChanges.subscribe(selected => {
+    this.form.get('selectedOption')?.valueChanges.subscribe((selected) => {
       if (selected?.name && selected?.code) {
         this.form.patchValue({
           idpay: selected.code.slice(0, 2).toUpperCase(),
-          nampay: selected.name
+          nampay: selected.name,
         });
       }
     });
@@ -83,7 +92,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
       return of(this.existingPayorIDs.includes(control.value)).pipe(
         delay(500),
-        map(isTaken => (isTaken ? { idExists: true } : null))
+        map((isTaken) => (isTaken ? { idExists: true } : null)),
       );
     };
   }

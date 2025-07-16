@@ -4,7 +4,6 @@
     <h2 class="text-[16px] mt-3 ml-5 font-semibold">SELECT LAB TYPE TO MODIFY</h2>
 
     <form [formGroup]="labForm" (ngSubmit)="onSubmit()" class="card flex flex-col gap-4 ml-5 mt-5">
-
       <!-- Dropdown -->
       <p-dropdown
         [options]="labTypes"
@@ -96,7 +95,9 @@
               pInputText
               formControlName="low"
               placeholder="0"
-              class="w-[60px] text-center" /> -->
+              class="w-[60px] text-center"
+            />
+            -->
             <app-custom-input label="Low" formControlName="low" type="number"> </app-custom-input>
           </div>
 

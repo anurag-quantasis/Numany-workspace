@@ -9,16 +9,22 @@
         <!-- Select Vendor -->
         <div class="flex flex-col w-[240px] space-y-2">
           <label for="selectedOption" class="text-gray-700 font-medium">Select Vendor</label>
-          <p-select 
-            [options]="options" 
-            formControlName="selectedOption" 
+          <p-select
+            [options]="options"
+            formControlName="selectedOption"
             optionLabel="name"
             [checkmark]="true"
             [showClear]="true"
             placeholder="Select Vendor"
-            class="w-[240px]">
+            class="w-[240px]"
+          >
           </p-select>
-          <small *ngIf="vendorForm.get('selectedOption')?.touched && vendorForm.get('selectedOption')?.invalid" class="text-red-600">
+          <small
+            *ngIf="
+              vendorForm.get('selectedOption')?.touched && vendorForm.get('selectedOption')?.invalid
+            "
+            class="text-red-600"
+          >
             Vendor selection is required
           </small>
         </div>
@@ -30,7 +36,8 @@
             label="Vendor ID"
             placeholder="Enter vendor ID"
             [disabled]="editingIndex !== null"
-            pTooltip="Unique ID for the vendor">
+            pTooltip="Unique ID for the vendor"
+          >
           </app-custom-input>
         </div>
 
@@ -40,7 +47,8 @@
             formControlName="accountNo"
             label="Account No"
             placeholder="Enter account number"
-            pTooltip="Max 12 characters">
+            pTooltip="Max 12 characters"
+          >
           </app-custom-input>
         </div>
 
@@ -50,7 +58,8 @@
             formControlName="vendorName"
             label="Vendor Name"
             placeholder="Enter vendor name"
-            pTooltip="Full vendor name">
+            pTooltip="Full vendor name"
+          >
           </app-custom-input>
         </div>
       </div>
@@ -65,7 +74,8 @@
             formControlName="vendorMtd"
             label="MTD"
             placeholder="Enter MTD"
-            pTooltip="Month-to-date total">
+            pTooltip="Month-to-date total"
+          >
           </app-custom-input>
         </div>
 
@@ -74,7 +84,8 @@
             formControlName="vendorYtd"
             label="YTD"
             placeholder="Enter YTD"
-            pTooltip="Year-to-date total">
+            pTooltip="Year-to-date total"
+          >
           </app-custom-input>
         </div>
       </div>
@@ -96,7 +107,12 @@
 
       <!-- Action Buttons -->
       <div class="flex flex-wrap gap-4 mt-6 justify-end">
-        <p-button label="Update" variant="outlined" severity="info" (onClick)="onUpdate()"></p-button>
+        <p-button
+          label="Update"
+          variant="outlined"
+          severity="info"
+          (onClick)="onUpdate()"
+        ></p-button>
         <p-button label="Add" variant="outlined" severity="success" (onClick)="onAdd()"></p-button>
         <p-button
           label="Delete"

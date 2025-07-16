@@ -5,8 +5,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { SharedPanelContainerComponent } from "shared-ui";
- 
+import { SharedPanelContainerComponent } from 'shared-ui';
+
 @Component({
   selector: 'main-pharmcist-intervention-type',
   standalone: true,
@@ -18,8 +18,8 @@ import { SharedPanelContainerComponent } from "shared-ui";
     CheckboxModule,
     ButtonModule,
     CommonModule,
-    SharedPanelContainerComponent
-],
+    SharedPanelContainerComponent,
+  ],
   templateUrl: './pharmcist-intervention-type.component.html',
   styleUrls: ['./pharmcist-intervention-type.component.css'],
 })
@@ -28,17 +28,17 @@ export class PharmcistInterventionTypeComponent {
     throw new Error('Method not implemented.');
   }
   // interventionForm: FormGroup;
- 
+
   // interventionOptions = [
   //   { name: 'Option 1', code: 'O1' },
   //   { name: 'Option 2', code: 'O2' }
   // ];
- 
+
   // activityOptions = [
   //   { name: 'Activity A', code: 'A1' },
   //   { name: 'Activity B', code: 'A2' }
   // ];
- 
+
   // constructor(private fb: FormBuilder) {
   //   this.interventionForm = this.fb.group({
   //     selectedIntervention: [''],
@@ -49,16 +49,13 @@ export class PharmcistInterventionTypeComponent {
   //     costImpact: ['']
   //   });
   // }
- 
+
   interventionForm: FormGroup;
- 
-  interventionOptions = [
-    { name: 'Option 1' },
-    { name: 'Option 2' }
-  ];
- 
+
+  interventionOptions = [{ name: 'Option 1' }, { name: 'Option 2' }];
+
   activityOptions: any[] = [];
- 
+
   checkboxList = [
     { label: 'Med Error Severity', controlName: 'checkbox1' },
     { label: 'Med Error Class', controlName: 'checkbox2' },
@@ -70,11 +67,11 @@ export class PharmcistInterventionTypeComponent {
     { label: 'Drug Impact - Financial', controlName: 'checkbox8' },
     { label: 'Intervention OutCome', controlName: 'checkbox9' },
   ];
- 
+
   constructor(private fb: FormBuilder) {
     this.interventionForm = this.fb.group({
       interventionId: [''],
- 
+
       selectedIntervention: [null],
       id: [''],
       description: [''],
@@ -92,18 +89,17 @@ export class PharmcistInterventionTypeComponent {
       checkbox9: [false],
     });
   }
- 
+
   onUpdate() {
     console.log('Update clicked', this.interventionForm.value);
   }
- 
+
   onDelete() {
     console.log('Delete clicked');
   }
- 
+
   onNew() {
     console.log('New clicked');
     this.interventionForm.reset();
   }
 }
- 

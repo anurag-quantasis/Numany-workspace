@@ -14,9 +14,9 @@ import { CheckboxModule } from 'primeng/checkbox';
     SelectModule,
     SharedPanelContainerComponent,
     InputTextModule,
-    CheckboxModule
+    CheckboxModule,
   ],
-  templateUrl: './ward-bed-area-maintenance.component.html'
+  templateUrl: './ward-bed-area-maintenance.component.html',
 })
 export class WardBedAreaMaintenanceComponent implements OnInit {
   wardBedForm!: FormGroup;
@@ -25,15 +25,15 @@ export class WardBedAreaMaintenanceComponent implements OnInit {
     { name: 'Option 1' },
     { name: 'Option 2' },
     { name: 'Option 3' },
-    { name: 'Option 4' }
+    { name: 'Option 4' },
   ];
 
-optionsOne = [
-  { name: 'Option 1' },
-  { name: 'Option 2' },
-  { name: 'Option 3' },
-  { name: 'Option 4' }
-];
+  optionsOne = [
+    { name: 'Option 1' },
+    { name: 'Option 2' },
+    { name: 'Option 3' },
+    { name: 'Option 4' },
+  ];
 
   constructor(private fb: FormBuilder) {}
 
@@ -42,7 +42,7 @@ optionsOne = [
       selectedOption: [null],
       wardArea: [''],
       costBase: [''],
-       selectedOptionOne: [null] 
+      selectedOptionOne: [null],
     });
   }
 }

@@ -418,31 +418,22 @@ export class HeaderBarComponent implements OnInit {
             },
             items: [
               {
-                label: 'Intervention Types',  
-                // route: '/pharmacist-intervention-type-maintenance',
-                // command: () => {
-                //   console.log('pharmacist-intervention-type-maintenance')
-                //   this.openDialog(PharmacistInterventionTypeMaintenanceComponent, 'Pharmacist Intervention Table')
-                // }
-                 route: '/pharmacist-intervention-type',
+                label: 'Intervention Types',
+                route: '/pharmacist-intervention-type',
                 command: () => {
-                  // this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
-                  console.log('Intervention Data Classes clicked')
-                }
+                  console.log('Intervention Data Classes clicked');
+                },
               },
               {
                 label: 'Intervention Data Classes',
-                // route: '/pharmacist-intervention-type',
-                // command: () => {
-                //   // this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
-                //   console.log('Intervention Data Classes clicked')
-                //}
-                                // route: '/pharmacist-intervention-type-maintenance',
-                 command: () => {
-                   console.log('pharmacist-intervention-type-maintenance')
-                   this.openDialog(PharmacistInterventionTypeMaintenanceComponent, 'Pharmacist Intervention Table')
-                 }
-              }
+                command: () => {
+                  console.log('pharmacist-intervention-type-maintenance');
+                  this.openDialog(
+                    PharmacistInterventionTypeMaintenanceComponent,
+                    'Pharmacist Intervention Table',
+                  );
+                },
+              },
             ],
           },
           {

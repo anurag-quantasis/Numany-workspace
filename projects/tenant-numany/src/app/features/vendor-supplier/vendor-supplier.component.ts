@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  FormControl,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { DividerModule } from 'primeng/divider';
@@ -23,7 +30,7 @@ import { CustomInputComponent } from 'shared-ui';
     TextareaModule,
     ButtonModule,
     SharedPanelContainerComponent,
-    CustomInputComponent
+    CustomInputComponent,
   ],
   templateUrl: './vendor-supplier.component.html',
   styleUrls: ['./vendor-supplier.component.css'],
@@ -33,11 +40,7 @@ export class VendorSupplierComponent implements OnInit {
   vendors: any[] = [];
   editingIndex: number | null = null;
 
-  options = [
-    { name: 'Option1' },
-    { name: 'Option2' },
-    { name: 'Option3' }
-  ];
+  options = [{ name: 'Option1' }, { name: 'Option2' }, { name: 'Option3' }];
 
   constructor(private fb: FormBuilder) {}
 
@@ -45,10 +48,11 @@ export class VendorSupplierComponent implements OnInit {
     this.vendorForm = this.fb.group({
       selectedOption: [null, Validators.required],
 
-      vendorId: new FormControl(
-        { value: '', disabled: false },
-        [Validators.required, Validators.maxLength(12), this.vendorExistsValidator.bind(this)]
-      ),
+      vendorId: new FormControl({ value: '', disabled: false }, [
+        Validators.required,
+        Validators.maxLength(12),
+        this.vendorExistsValidator.bind(this),
+      ]),
 
       accountNo: ['', Validators.maxLength(12)],
       vendorName: ['', [Validators.required, Validators.maxLength(50)]],
@@ -56,7 +60,7 @@ export class VendorSupplierComponent implements OnInit {
       vendorMtd: ['', Validators.pattern(/^-?\d*(\.\d+)?$/)],
       vendorYtd: ['', Validators.pattern(/^-?\d*(\.\d+)?$/)],
 
-      remarks: ['', Validators.maxLength(100)]
+      remarks: ['', Validators.maxLength(100)],
     });
   }
 
