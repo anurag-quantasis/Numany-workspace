@@ -1,0 +1,31 @@
+<shared-panel-container>
+  <h1 class="text-xl font-semibold py-2">Alert Classes</h1>
+  <shared-data-table
+    [columns]="alertClassesColumns"
+    [data]="alertClasses"
+    [loading]="alertClassesLoading"
+    [totalRecords]="alertClassesTotalRecords"
+  >
+  </shared-data-table>
+  <div class="flex justify-end items-center gap-4 mt-4">
+    <p-button label="Add New Class" icon="pi pi-plus"></p-button>
+    <p-button label="Update Class" icon="pi pi-pencil" severity="info"></p-button>
+    <p-button label="Delete Class" icon="pi pi-trash" severity="danger"></p-button>
+  </div>
+</shared-panel-container>
+<shared-panel-container>
+  <!-- <hr class="text-gray-300 my-10"> -->
+  <h1 class="text-xl font-semibold py-2">Alert Matrix</h1>
+  <shared-data-table
+    [columns]="alertMatrixColumns"
+    [data]="alertMatrix"
+    [loading]="alertMatrixLoading"
+    [totalRecords]="alertMatrixTotalRecords"
+  >
+  </shared-data-table>
+  <div class="flex justify-end items-center gap-4 mt-4">
+    <p-button label="Add/Modify Message" icon="pi pi-plus"></p-button>
+    <p-button label="Update Matrix Records" icon="pi pi-pencil" severity="info"></p-button>
+    <p-button label="Delete Matrix Records" icon="pi pi-trash" severity="danger"></p-button>
+  </div>
+</shared-panel-container>

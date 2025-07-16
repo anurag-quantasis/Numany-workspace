@@ -1,279 +1,484 @@
-<p-card>
+<shared-panel-container>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mx-4">
-    <!-- SECTION 1: GENERAL INFORMATION -->
-    <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-4">
-      <app-custom-input label="Drug ID" formControlName="drugId"></app-custom-input>
-      <app-custom-input label="Primary Name" formControlName="primaryName"></app-custom-input>
-      <app-custom-input label="Secondary Name" formControlName="secondaryName"></app-custom-input>
-      <app-custom-input label="Unit of Use" formControlName="secondaryName"></app-custom-input>
-      <app-custom-input label="Dose Check Units" formControlName="secondaryName"></app-custom-input>
-      <app-custom-input
-        label="AHES Class"
-        type="number"
-        formControlName="ahesClass"
-      ></app-custom-input>
-      <app-custom-input
-        label="NDC Number"
-        type="number"
-        formControlName="ndcNumber"
-      ></app-custom-input>
-      <app-custom-input label="Metric" type="number" formControlName="ndcNumber"></app-custom-input>
-      <app-custom-input
-        label="Billing"
-        type="number"
-        formControlName="ndcNumber"
-      ></app-custom-input>
-      <div class="field flex flex-col gap-y-1">
-        <label for="listColor" class="font-semibold">List Color</label>
-        <p-dropdown
-          id="listColor"
-          formControlName="listColor"
-          [options]="listColorOptions"
-          placeholder="Select Color"
-        ></p-dropdown>
+    <!-- SECTION 1: GENERAL & CLINICAL INFORMATION -->
+    <p-fieldset legend="General Information" [toggleable]="true" class="mt-4">
+      <div class="p-fluid formgrid grid grid-cols-4 gap-4">
+        <app-custom-input
+          label="Drug ID"
+          formControlName="txtIddrug"
+          [errorMessages]="{
+            required: 'Drug ID is required.',
+            pattern: 'Drug ID cannot start with a space.',
+          }"
+        ></app-custom-input>
+
+        <app-custom-input
+          label="Primary Name"
+          formControlName="txtNamdrg"
+          [errorMessages]="{
+            required: 'Primary Name is required.',
+            pattern: 'Primary Name cannot start with a space.',
+          }"
+        ></app-custom-input>
+
+        <app-custom-input label="Secondary Name" formControlName="txtNamdr2"></app-custom-input>
+        <app-custom-input label="Generic Name" formControlName="txtGenName"></app-custom-input>
+        <app-custom-input
+          label="Supplemental Name"
+          formControlName="txtSUPPNAME"
+        ></app-custom-input>
+        <app-custom-input label="SuppName Drud Id" formControlName="txtDDID"></app-custom-input>
+        <app-custom-input
+          label="NDC Number"
+          type="number"
+          formControlName="txtNdc"
+        ></app-custom-input>
+        <app-custom-input label="GPI" formControlName="txtGPI"></app-custom-input>
+        <app-custom-input
+          label="Alternate Barcode Scan"
+          type="number"
+          formControlName="txtBC_ScanID"
+        ></app-custom-input>
+        <app-custom-input
+          label="Host Generic Code"
+          type="number"
+          formControlName="txtExt_GenCode"
+        ></app-custom-input>
+
+        <div class="field flex flex-col gap-y-1">
+          <label for="medicationType" class="font-semibold">Medication Type</label>
+          <p-dropdown
+            id="medicationType"
+            formControlName="tdbDrgTyp"
+            [options]="medicationTypeOptions"
+            placeholder="Select a Type"
+          ></p-dropdown>
+        </div>
+        <app-custom-input label="Item Status" formControlName="txtItemStatus"></app-custom-input>
       </div>
-      <div class="field flex flex-col">
-        <label class="mb-3 font-semibold">Formulary Status</label>
-        <div class="flex flex-wrap gap-3">
-          <div *ngFor="let option of formularyStatusOptions" class="flex align-items-center">
-            <p-radioButton
-              [name]="'formularyStatus'"
-              [value]="option.value"
-              [inputId]="option.label"
-              formControlName="formularyStatus"
-            ></p-radioButton>
-            <label [for]="option.label" class="pl-1">{{ option.label }}</label>
+    </p-fieldset>
+
+    <p-fieldset legend="Dosing & Administration" [toggleable]="true" class="mt-4">
+      <div class="p-fluid formgrid grid grid-cols-4 gap-4">
+        <app-custom-input
+          label="Strength"
+          type="number"
+          formControlName="txtStrength"
+          [errorMessages]="{ pattern: 'Strength must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Unit"
+          formControlName="txtStrengthUnit"
+          type="number"
+        ></app-custom-input>
+        <app-custom-input label="Dose Form" formControlName="txtDoseForm"></app-custom-input>
+        <app-custom-input
+          label="Volume"
+          formControlName="txtVolume"
+          type="number"
+          [errorMessages]="{ pattern: 'Volume must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input label="Unit of Use" formControlName="txtIsize"></app-custom-input>
+        <app-custom-input
+          label="Dose Check Units"
+          formControlName="txtDoseCheck"
+          type="number"
+          [errorMessages]="{ pattern: 'Dose Check Units must be a valid number.' }"
+        ></app-custom-input>
+
+        <div class="flex flex-col gap-y-1">
+          <label for="routes" class="font-semibold">Route</label>
+          <p-dropdown
+            id="routes"
+            formControlName="tdbcRt"
+            [options]="routesOptions"
+            placeholder="Select Route"
+          ></p-dropdown>
+        </div>
+        <app-custom-input label="Verb" formControlName="txtVerb"></app-custom-input>
+        <app-custom-input
+          label="Auto Stop Days"
+          formControlName="autoStopDays"
+          [errorMessages]="{ required: 'Auto Stop Days is required.' }"
+        ></app-custom-input>
+      </div>
+    </p-fieldset>
+
+    <p-fieldset legend="Clinical & Formulary" [toggleable]="true" class="mt-4">
+      <div class="p-fluid formgrid grid grid-cols-4 gap-4">
+        <app-custom-input
+          label="AHFS Class"
+          type="number"
+          formControlName="txtIflry"
+        ></app-custom-input>
+
+        <div class="field flex flex-col gap-y-1">
+          <label for="listColor" class="font-semibold">List Color</label>
+          <p-dropdown
+            id="listColor"
+            formControlName="tdbcListColor"
+            [options]="listColorOptions"
+            placeholder="Select Color"
+          ></p-dropdown>
+        </div>
+
+        <div class="field flex flex-col">
+          <label class="mb-3 font-semibold"
+            >Formulary Status <span class="text-red-500">*</span></label
+          >
+          <div class="flex flex-wrap gap-3">
+            <div *ngFor="let option of formularyStatusOptions" class="flex align-items-center">
+              <p-radioButton
+                [name]="'optForm'"
+                [value]="option.value"
+                [inputId]="option.label"
+                formControlName="optForm"
+              ></p-radioButton>
+              <label [for]="option.label" class="pl-1">{{ option.label }}</label>
+            </div>
+          </div>
+          <!-- FIXED: Changed f.optForm to f['optForm'] -->
+          <small *ngIf="f['optForm'].invalid && f['optForm'].touched" class="p-error text-xs mt-1">
+            Formulary Status selection is required.
+          </small>
+        </div>
+
+        <div class="field flex flex-col">
+          <label class="mb-3 font-semibold"
+            >Clinical Checks <span class="text-red-500">*</span></label
+          >
+          <div class="flex flex-wrap gap-3">
+            <div *ngFor="let option of clinicalChecksOptions" class="flex align-items-center">
+              <p-radioButton
+                [name]="'optCLNK_Chk'"
+                [value]="option.value"
+                [inputId]="option.label"
+                formControlName="optCLNK_Chk"
+              ></p-radioButton>
+              <label [for]="option.label" class="pl-1">{{ option.label }}</label>
+            </div>
+          </div>
+          <!-- FIXED: Changed f.optCLNK_Chk to f['optCLNK_Chk'] -->
+          <small
+            *ngIf="f['optCLNK_Chk'].invalid && f['optCLNK_Chk'].touched"
+            class="p-error text-xs mt-1"
+          >
+            Clinical Checks selection is required.
+          </small>
+        </div>
+
+        <div class="flex flex-col gap-y-2 justify-center">
+          <span class="flex gap-x-2">
+            <p-checkbox binary="true" inputId="skipEmar" formControlName="cbNoEMarChg"></p-checkbox>
+            <label for="skipEmar">Skip eMAR Chg</label>
+          </span>
+          <span class="flex gap-x-2">
+            <p-checkbox binary="true" inputId="requireEmar" formControlName="cbSecVal"></p-checkbox>
+            <label for="requireEmar">Require 2nd Validation on EMAR</label>
+          </span>
+        </div>
+
+        <div class="flex flex-col" formArrayName="cbVS">
+          <p class="mb-3 text-md font-semibold">Vital Signs Rqrd on eMAR</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-2">
+            <div class="flex gap-x-1.5">
+              <p-checkbox [formControlName]="0" [binary]="true" inputId="vsPulse"></p-checkbox
+              ><label for="vsPulse">Pulse</label>
+            </div>
+            <div class="flex gap-x-1.5">
+              <p-checkbox [formControlName]="1" [binary]="true" inputId="vsTemp"></p-checkbox
+              ><label for="vsTemp">Temp</label>
+            </div>
+            <div class="flex gap-x-1.5">
+              <p-checkbox [formControlName]="2" [binary]="true" inputId="vsBp"></p-checkbox
+              ><label for="vsBp">BP</label>
+            </div>
+            <div class="flex gap-x-1.5">
+              <p-checkbox [formControlName]="3" [binary]="true" inputId="vsResp"></p-checkbox
+              ><label for="vsResp">Resp</label>
+            </div>
+            <div class="flex gap-x-1.5">
+              <p-checkbox [formControlName]="4" [binary]="true" inputId="vsMisc"></p-checkbox
+              ><label for="vsMisc">Misc</label>
+            </div>
           </div>
         </div>
       </div>
-      <div class="field flex flex-col">
-        <label class="mb-3 font-semibold">Clinical Checks</label>
-        <div class="flex flex-wrap gap-3">
-          <div *ngFor="let option of clinicalChecksOptions" class="flex align-items-center">
-            <p-radioButton
-              [name]="'clinicalChecks'"
-              [value]="option.value"
-              [inputId]="option.label"
-              formControlName="clinicalChecks"
-            ></p-radioButton>
-            <label [for]="option.label" class="pl-1">{{ option.label }}</label>
-          </div>
+    </p-fieldset>
+
+    <p-fieldset legend="Cost & Billing" [toggleable]="true" class="mt-4">
+      <div class="p-fluid formgrid grid grid-cols-4 gap-4">
+        <app-custom-input label="Metric" type="number" formControlName="metric"></app-custom-input>
+        <app-custom-input
+          label="Billing"
+          type="number"
+          formControlName="txtIchcod"
+        ></app-custom-input>
+        <app-custom-input
+          label="Average Cost/Unit"
+          formControlName="txtAvcost"
+          type="number"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Average Wholesale Cost"
+          formControlName="txtAwpr"
+          type="number"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Contract Cost/Unit"
+          formControlName="txtCcost"
+          type="number"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Patient Charge/Unit"
+          formControlName="txtPcost"
+          type="number"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Alt Patient Charge/Unit"
+          formControlName="txtPCOSNH"
+          type="number"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Proposed Charge"
+          formControlName="txtPCOSTP"
+          type="number"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="OP Rx Cost Basis"
+          formControlName="txtOPCostBasis"
+        ></app-custom-input>
+
+        <div class="field flex flex-col gap-y-1">
+          <label for="chargeClass" class="font-semibold"
+            >Charge Class <span class="text-red-500">*</span></label
+          >
+          <!-- FIXED: Changed f.tdbChapar to f['tdbChapar'] -->
+          <p-dropdown
+            id="chargeClass"
+            formControlName="tdbChapar"
+            [options]="chargeClassOptions"
+            placeholder="Select a Class"
+            [ngClass]="{ 'ng-invalid ng-dirty': f['tdbChapar'].invalid && f['tdbChapar'].touched }"
+          ></p-dropdown>
+          <!-- FIXED: Changed f.tdbChapar to f['tdbChapar'] -->
+          <small
+            *ngIf="f['tdbChapar'].invalid && f['tdbChapar'].touched"
+            class="text-error-500 text-xs"
+          >
+            Charge Class is required.
+          </small>
+        </div>
+
+        <div class="field flex flex-col gap-y-1">
+          <label for="alternateChargeClass" class="font-semibold">Alternate Charge Class</label>
+          <p-dropdown
+            id="alternateChargeClass"
+            formControlName="tdbChapar_Alt"
+            [options]="altChargeClassOptions"
+            placeholder="Select a Class"
+          ></p-dropdown>
+        </div>
+
+        <div class="field flex flex-col gap-y-1">
+          <label for="taxApplicability" class="font-semibold">Tax Applicability</label>
+          <p-dropdown
+            id="taxApplicability"
+            formControlName="tdbTax"
+            [options]="taxApplicabilityOptions"
+            placeholder="Select a tax"
+          ></p-dropdown>
         </div>
       </div>
-      <app-custom-input label="Generic Name" formControlName="genericName"></app-custom-input>
-      <app-custom-input
-        label="Strength"
-        type="number"
-        formControlName="strength"
-      ></app-custom-input>
-      <app-custom-input label="Unit" formControlName="unit"></app-custom-input>
-      <app-custom-input label="Dose Form" formControlName="doseForm"></app-custom-input>
-      <app-custom-input label="Volume" formControlName="doseForm"></app-custom-input>
-      <app-custom-input label="GPI" formControlName="doseForm"></app-custom-input>
-      <app-custom-input
-        label="Supplemental Name"
-        formControlName="supplementalName"
-      ></app-custom-input>
+    </p-fieldset>
+
+    <div class="flex justify-center items-center gap-4 my-4">
+      <p-button
+        label="Scan Test"
+        severity="secondary"
+        variant="outlined"
+        icon="pi pi-camera"
+        type="button"
+      ></p-button>
+      <p-button
+        label="Display Clinical Info"
+        severity="info"
+        variant="outlined"
+        icon="pi pi-info-circle"
+        type="button"
+      ></p-button>
+      <p-button
+        label="ReCalculate Charge"
+        severity="secondary"
+        variant="outlined"
+        icon="pi pi-replay"
+        type="button"
+      ></p-button>
+      <p-button
+        label="ReCalculate Alt Charge"
+        severity="secondary"
+        variant="outlined"
+        icon="pi pi-replay"
+        type="button"
+      ></p-button>
+      <p-button label="Apply" icon="pi pi-check" type="submit"></p-button>
     </div>
     <hr class="mt-3 text-gray-300" />
-    <!-- SECTION 2: CODES & IDS -->
-    <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-6">
-      <app-custom-input label="GPI" type="number" formControlName="gpi"></app-custom-input>
 
-      <app-custom-input
-        label="Host Generic Code"
-        type="number"
-        formControlName="hostGenericCode"
-      ></app-custom-input>
-      <app-custom-input
-        label="Alternate Barcode Scan"
-        type="number"
-        formControlName="alternateBarcodeScan"
-      ></app-custom-input>
-      <app-custom-input
-        label="SuppName Drug ID"
-        type="number"
-        formControlName="suppNameDrugId"
-      ></app-custom-input>
-      <app-custom-input label="Vendor Drug ID" formControlName="vendorDrugId"></app-custom-input>
-      <app-custom-input label="Billing Code" formControlName="billingCode"></app-custom-input>
-      <app-custom-input
-        label="J-Code Units"
-        type="number"
-        formControlName="jcodeUnits"
-      ></app-custom-input>
-    </div>
-
-    <!-- SECTION 3: CONFIGURATION -->
-    <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-6">
-      <div class="field flex flex-col gap-y-1">
-        <label for="medicationType" class="font-semibold">Medication Type</label>
-        <p-dropdown
-          id="medicationType"
-          formControlName="medicationType"
-          [options]="medicationTypeOptions"
-          placeholder="Select a Type"
-        ></p-dropdown>
-      </div>
-      <div class="field flex flex-col gap-y-1">
-        <label for="drugControlClass" class="font-semibold">Drug Control Class</label>
-        <p-dropdown
-          id="drugControlClass"
-          formControlName="drugControlClass"
-          [options]="drugControlClassOptions"
-          placeholder="Select a Class"
-        ></p-dropdown>
-      </div>
-      <div class="field flex flex-col gap-y-1">
-        <label for="expirationDate" class="font-semibold">Expiration Date</label>
-        <p-calendar
-          id="expirationDate"
-          formControlName="expirationDate"
-          [showIcon]="true"
-          dateFormat="mm/dd/yy"
-        ></p-calendar>
-      </div>
-
-      <!-- Checkbox section -->
-      <!-- <div class="grid grid-cols-2 gap-2">
-        <div class="flex gap-x-2">
-          <p-checkbox
-            formControlName="displayClinicalInfo"
-            [binary]="true"
-            inputId="dispClinInfo"
-          ></p-checkbox>
-          <label for="dispClinInfo">Display Clinical Info</label>
-        </div>
-        <div class="field-checkbox flex gap-x-2">
-          <p-checkbox
-            formControlName="reCalculateCharge"
-            [binary]="true"
-            inputId="recalcCharge"
-          ></p-checkbox>
-          <label for="recalcCharge">Re-calculate Charge</label>
-        </div>
-        <div class="field-checkbox flex gap-x-2">
-          <p-checkbox formControlName="skipEmar" [binary]="true" inputId="skipEmar"></p-checkbox>
-          <label for="skipEmar">Skip E-MAR</label>
-        </div>
-        <div class="field-checkbox flex gap-x-2">
-          <p-checkbox
-            formControlName="requireSecondValidation"
-            [binary]="true"
-            inputId="reqSecondVal"
-          ></p-checkbox>
-          <label for="reqSecondVal">Require 2nd Validation</label>
-        </div>
-      </div> -->
-
-      <!-- Vital Signs -->
-      <div class="flex flex-col" formGroupName="vitalSigns">
-        <p class="py-3 text-lg font-semibold">Vital Signs Rqrd on eMAR</p>
-        <div class="flex gap-x-4">
-          <div class="flex gap-x-1.5">
-            <p-checkbox formControlName="pulse" [binary]="true" inputId="vsPulse"></p-checkbox>
-            <label for="vsPulse">Pulse</label>
-          </div>
-          <div class="flex gap-x-1.5">
-            <p-checkbox formControlName="temp" [binary]="true" inputId="vsTemp"></p-checkbox>
-            <label for="vsTemp">Temp</label>
-          </div>
-          <div class="flex gap-x-1.5">
-            <p-checkbox formControlName="bp" [binary]="true" inputId="vsBp"></p-checkbox>
-            <label for="vsBp">BP</label>
-          </div>
-          <div class="flex gap-x-1.5">
-            <p-checkbox formControlName="resp" [binary]="true" inputId="vsResp"></p-checkbox>
-            <label for="vsResp">Resp</label>
-          </div>
-          <div class="flex gap-x-1.5">
-            <p-checkbox formControlName="misc" [binary]="true" inputId="vsMisc"></p-checkbox>
-            <label for="vsMisc">Misc</label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECTION 4: USAGE & STOCK -->
-    <div class="formgrid mt-6 grid grid-cols-3 gap-4">
-      <div formGroupName="currentUsage">
-        <app-custom-input label="YTD Usage" formControlName="ytdUsage"></app-custom-input>
-        <app-custom-input label="Stock Level" formControlName="stockLevel"></app-custom-input>
-        <app-custom-input label="MTD Dispensed" formControlName="mtdDispensed"></app-custom-input>
-        <!-- <app-custom-input label="Reorder Level" formControlName="reorderLevel"></app-custom-input>
-        <app-custom-input label="MTD Orders" formControlName="mtdOrders"></app-custom-input>
+    <p-fieldset legend="Inventory & Ordering" [toggleable]="true" class="mt-4">
+      <div formGroupName="currentUsage" class="p-fluid formgrid grid grid-cols-4 gap-4">
         <app-custom-input
-          label="Emergency Reorder"
-          formControlName="emergencyReorder"
-        ></app-custom-input> -->
+          label="Manufracturer"
+          type="number"
+          formControlName="txtManuf"
+        ></app-custom-input>
+        <app-custom-input
+          label="Stock Level"
+          type="number"
+          formControlName="txtNstock"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Reorder Level"
+          type="number"
+          formControlName="txtLow"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Emergency ReOrder"
+          type="number"
+          formControlName="txtEmerROL"
+          [errorMessages]="{ pattern: 'Must be a valid number.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="ReOrder Qty"
+          type="number"
+          formControlName="txtROQty"
+          [errorMessages]="{ required: 'ReOrder Qty is required.' }"
+        ></app-custom-input>
+        <app-custom-input
+          label="Units per Vendor Unit"
+          type="number"
+          formControlName="txtIdvucv"
+        ></app-custom-input>
+        <app-custom-input
+          label="Location"
+          type="number"
+          formControlName="txtLocn"
+        ></app-custom-input>
+        <app-custom-input label="Vendor Drug ID" formControlName="txtIdvid"></app-custom-input>
+        <app-custom-input label="Billing Code" formControlName="txtIchcod"></app-custom-input>
+        <app-custom-input
+          label="J-Code Units"
+          type="number"
+          formControlName="txtJCODE"
+          [errorMessages]="{
+            required: 'J-Code is required.',
+            pattern: 'J-Code must be a number.',
+          }"
+        ></app-custom-input>
       </div>
-      <div>
-        <app-custom-input label="Supplier" formControlName="supplier"></app-custom-input>
-        <app-custom-input label="Manufacturer" formControlName="manufacturer"></app-custom-input>
-        <app-custom-input label="Locator" formControlName="locator"></app-custom-input>
+    </p-fieldset>
+
+    <p-fieldset legend="Configuration & Control" [toggleable]="true" class="mt-4">
+      <div class="p-fluid formgrid grid grid-cols-3 gap-4">
+        <div class="field flex flex-col gap-y-1">
+          <label for="drugControlClass" class="font-semibold">Drug Control Class</label>
+          <p-dropdown
+            id="drugControlClass"
+            formControlName="txtIdrcc"
+            [options]="drugControlClassOptions"
+            placeholder="Select a Class"
+          ></p-dropdown>
+        </div>
+        <div class="field flex flex-col gap-y-1">
+          <label for="expirationDate" class="font-semibold">Expiration Date</label>
+          <p-calendar
+            id="expirationDate"
+            formControlName="txtKxdate"
+            [showIcon]="true"
+            dateFormat="mm/dd/yy"
+          ></p-calendar>
+        </div>
       </div>
+    </p-fieldset>
+
+    <div class="flex justify-end gap-4 mt-4">
+      <p-button label="Order History" type="button"></p-button>
+      <p-button label="View/Modify Remote" type="button"></p-button>
     </div>
     <hr class="text-gray-300 mt-3" />
-    <section class="w-full flex gap-x-4 mb-2">
-      <div formGroupName="usageLast12Months" class="w-[50%] border-r border-gray-300">
-        <p class="py-3 text-lg font-semibold">Usage for Last 12 Months</p>
-        <div class="grid grid-cols-6 gap-4 mt-4 pr-3">
-          <app-custom-input label="Jan" formControlName="jan"></app-custom-input>
-          <app-custom-input label="Feb" formControlName="feb"></app-custom-input>
-          <app-custom-input label="Mar" formControlName="mar"></app-custom-input>
-          <app-custom-input label="Apr" formControlName="apr"></app-custom-input>
-          <app-custom-input label="May" formControlName="may"></app-custom-input>
-          <app-custom-input label="Jun" formControlName="jun"></app-custom-input>
-          <app-custom-input label="Jul" formControlName="jul"></app-custom-input>
-          <app-custom-input label="Aug" formControlName="aug"></app-custom-input>
-          <app-custom-input label="Sep" formControlName="sep"></app-custom-input>
-          <app-custom-input label="Oct" formControlName="oct"></app-custom-input>
-          <app-custom-input label="Nov" formControlName="nov"></app-custom-input>
-          <app-custom-input label="Dec" formControlName="dec"></app-custom-input>
-        </div>
-        <div class="flex gap-x-4 mt-3">
-          <p-button styleClass="w-20 h-8" variant="outlined">New</p-button>
-          <p-button styleClass="w-30 h-8" variant="outlined">New Similar</p-button>
-          <p-button styleClass="w-20 h-8" variant="outlined" severity="danger">Delete</p-button>
-        </div>
-      </div>
-      <div class="w-[50%]">
-        <p class="py-3 text-lg font-semibold">Notes</p>
-        <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-4">
-          <div class="flex flex-col gap-y-1">
-            <label for="adminNote" class="font-semibold">Admin Note</label>
-            <textarea
-              id="adminNote"
-              pInputTextarea
-              formControlName="adminNote"
-              rows="3"
-              class="w-full"
-            ></textarea>
-          </div>
-          <div class="flex flex-col gap-y-1">
-            <label for="miscNote" class="font-semibold">Misc Note</label>
-            <textarea
-              id="miscNote"
-              pInputTextarea
-              formControlName="miscNote"
-              rows="3"
-              class="w-full"
-            ></textarea>
-          </div>
-          <div class="flex flex-col gap-y-1">
-            <label for="noteForOrderEntry" class="font-semibold">Note for Order Entry</label>
-            <textarea
-              id="noteForOrderEntry"
-              pInputTextarea
-              formControlName="noteForOrderEntry"
-              rows="3"
-              class="w-full"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- SECTION 5: NOTES -->
+    <p-fieldset legend="Usage for Last 12 Months" [toggleable]="true">
+      <div formArrayName="txtInvadd" class="grid grid-cols-6 gap-4">
+        <div *ngFor="let ctrl of txtInvadd.controls; let i = index" class="field flex flex-col">
+          <label>{{
+            ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i]
+          }}</label>
+          <input
+            pInputText
+            [formControlName]="i"
+            type="number"
+            class="w-full"
+            [ngClass]="{ 'ng-invalid ng-dirty': ctrl.invalid && ctrl.touched }"
+          />
+          <small *ngIf="ctrl.invalid && ctrl.touched" class="p-error text-xs">
+            Must be a number.
+          </small>
+        </div>
+      </div>
+      <div class="flex justify-end gap-x-4 mt-3 pr-3">
+        <p-button styleClass="w-20 h-8" variant="outlined" type="button">New</p-button>
+        <p-button styleClass="w-30 h-8" variant="outlined" type="button">New Similar</p-button>
+        <p-button styleClass="w-20 h-8" variant="outlined" severity="danger" type="button"
+          >Delete</p-button
+        >
+      </div>
+    </p-fieldset>
+
+    <p-fieldset legend="Notes" [toggleable]="true" class="mt-4">
+      <div class="p-fluid formgrid grid grid-cols-3 gap-4 mt-4">
+        <div class="flex flex-col gap-y-1">
+          <label for="adminNote" class="font-semibold">Admin Note</label>
+          <textarea
+            id="adminNote"
+            pInputTextarea
+            formControlName="adminNote"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+        <div class="flex flex-col gap-y-1">
+          <label for="miscNote" class="font-semibold">Misc Note</label>
+          <textarea
+            id="miscNote"
+            pInputTextarea
+            formControlName="miscNote"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+        <div class="flex flex-col gap-y-1">
+          <label for="noteForOrderEntry" class="font-semibold">Note for Order Entry</label>
+          <textarea
+            id="noteForOrderEntry"
+            pInputTextarea
+            formControlName="noteForOrderEntry"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+      </div>
+    </p-fieldset>
+
+    <!-- <div class="flex justify-end mt-6 mb-4">
+        <p-button type="submit" label="Save Item Maintenance" icon="pi pi-save" styleClass="p-button-lg"></p-button>
+    </div> -->
   </form>
-</p-card>
+</shared-panel-container>

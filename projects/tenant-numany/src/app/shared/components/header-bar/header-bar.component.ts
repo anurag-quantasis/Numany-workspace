@@ -382,6 +382,12 @@ export class HeaderBarComponent implements OnInit {
                   },
                 ],
               },
+              {
+                label: 'Select Formulary Items',
+                shortcut: 'alt.f f',
+                shortcutHint: 'f',
+                route: '/formulary-items',
+              },
             ],
           },
           {
@@ -540,6 +546,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Alert File Matrix',
             shortcut: 'alt.f x',
             shortcutHint: 'x',
+            route: '/alert-file-matrix',
             command: () => {
               console.log('Alert File Matrix clicked');
             },
@@ -612,7 +619,7 @@ export class HeaderBarComponent implements OnInit {
   openDialog(component: any, headerText: string) {
     this.ref = this.dialogService.open(component, {
       header: headerText,
-      contentStyle: { 'max-height': '500px', overflow: 'hidden' },
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: false,
       closeOnEscape: true,

@@ -71,6 +71,13 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'formulary-items',
+        loadComponent: () =>
+          import('./features/select-formulary-items/select-formulary-items.component').then(
+            (m) => m.SelectFormularyItemsComponent,
+          ),
+      },
+      {
         path: 'physician',
         loadComponent: () =>
           import('./features/physician/physician.component').then((m) => m.PhysicianComponent),
@@ -135,6 +142,7 @@ export const routes: Routes = [
             './features/patient-payor-type-maintenance/patient-payor-type-maintenance.component'
           ).then((m) => m.PatientPayorTypeMaintenanceComponent),
       },
+
       {
         path: 'standing-orders',
         loadComponent: () =>
@@ -143,10 +151,10 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'site-parameters',
+        path: 'alert-file-matrix',
         loadComponent: () =>
-          import('./features/site-parameters/site-parameters.component').then(
-            (m) => m.SiteParametersComponent,
+          import('./features/alert-file-maintenance/alert-file-maintenance.component').then(
+            (m) => m.AlertFileMaintenanceComponent,
           ),
       },
     ],

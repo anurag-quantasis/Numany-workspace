@@ -12,7 +12,7 @@ import {
   NewSchedulePayload,
   Schedule,
 } from './administration-schedules-store/administration-schedules.model';
-import { CustomInputComponent } from 'shared-ui';
+import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 import { ScheduleSelectorComponent } from '../../shared/components/schedule-selector/schedule-selector.component';
 
 interface WeekdaySelection {
@@ -37,6 +37,7 @@ interface WeekdaySelection {
     InputTextModule,
     ScheduleSelectorComponent,
     CustomInputComponent,
+    SharedPanelContainerComponent,
   ],
   templateUrl: './administration-schedules.component.html',
   providers: [AdministrationScheduleStore],

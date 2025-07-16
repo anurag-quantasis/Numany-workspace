@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // --- Angular & Custom Component Imports ---
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 import { MessageService } from 'primeng/api';
 import { TextareaModule } from 'primeng/textarea';
+import { InputTextModule } from 'primeng/inputtext';
+import { Divider } from 'primeng/divider';
 
 @Component({
   selector: 'app-item-maintenance-form',
@@ -35,6 +37,7 @@ import { TextareaModule } from 'primeng/textarea';
     CustomInputComponent,
     TextareaModule,
     SharedPanelContainerComponent,
+    InputTextModule,
   ],
   providers: [MessageService],
   templateUrl: './item-maintenance-form.component.html',
@@ -42,13 +45,32 @@ import { TextareaModule } from 'primeng/textarea';
 export class ItemMaintenanceFormComponent {
   id = input.required<string>();
   isEditMode = computed(() => this.id() !== 'new');
-
-  // 2. 'isNew' is now a computed signal derived from the 'id' input.
-  // It will automatically update if the 'id' signal ever changes.
   isNew = computed(() => this.id() === 'new');
   form: FormGroup;
 
   // --- Options for Dropdowns and Radios ---
+  routesOptions = [
+    { label: 'bucl', value: 'bucl' },
+    { label: 'dent', value: 'dent' },
+    { label: 'epid', value: 'epid' },
+    { label: 'iatc', value: 'iatc' },
+    { label: 'idrm', value: 'idrm' },
+    { label: 'im', value: 'im' },
+  ];
+
+  chargeClassOptions = [
+    { label: 'ORALS SOLIDS', value: 'ORALS SOLIDS' },
+    { label: 'PB IV SOLNS', value: 'PB IV SOLNS' },
+    { label: `OTC'S/ TOPICALS/ ETC`, value: `OTC'S/ TOPICALS/ ETC` },
+    { label: 'SUPPOSITORIES', value: 'SUPPOSITORIES' },
+  ];
+
+  altChargeClassOptions = [
+    { label: 'ABC Class', value: 'ABC Class' },
+    { label: 'CMK 100% + 2.50 fee', value: 'CMK 100% + 2.50 fee' },
+    { label: 'Equipement Rental', value: 'Equipement Rental' },
+  ];
+
   listColorOptions = [
     { label: 'Red', value: 'red' },
     { label: 'Blue', value: 'blue' },
@@ -88,84 +110,89 @@ export class ItemMaintenanceFormComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      // The FormGroup remains exactly as you provided it.
-      drugId: ['', Validators.required],
-      primaryName: ['', Validators.required],
-      secondaryName: ['', Validators.required],
-      unitOfUse: ['', Validators.required],
-      doseCheckUnits: ['', Validators.required],
-      poRoute: ['PO', Validators.required],
-      ahesClass: ['', Validators.required],
-      ndcNumber: ['', Validators.required],
-      metric: ['', Validators.required],
-      billing: ['', Validators.required],
-      listColor: ['', Validators.required],
-      formularyStatus: ['Yes', Validators.required],
-      clinicalChecks: ['On', Validators.required],
-      genericName: ['', Validators.required],
-      strength: ['', Validators.required],
-      unit: ['', Validators.required],
-      doseForm: ['', Validators.required],
-      volume: ['', Validators.required],
-      gpi: ['', Validators.required],
-      hostGenericCode: ['', Validators.required],
-      alternateBarcodeScan: ['', Validators.required],
-      suppNameDrugId: ['', Validators.required],
+      txtIddrug: ['', [Validators.required, Validators.pattern(/^[^\s].*/)]],
+      txtNamdrg: ['', [Validators.required, Validators.pattern(/^[^\s].*/)]],
+      txtNamdr2: [''],
+      txtIsize: [''],
+      txtDoseCheck: ['', Validators.pattern(/^\d+$/)],
+      tdbcRt: [''],
+      txtIflry: [''],
+      txtNdc: [''],
+      metric: [''],
+      txtIchcod: [''],
+      tdbcListColor: [''],
+      optForm: ['Yes', Validators.required],
+      optCLNK_Chk: ['On', Validators.required],
+      txtGenName: [''],
+      txtStrength: ['', Validators.pattern(/^\d+$/)],
+      txtStrengthUnit: [''],
+      txtDoseForm: [''],
+      txtVolume: ['', Validators.pattern(/^\d+$/)],
+      txtGPI: [''],
+      txtVerb: [''],
+      txtExt_GenCode: [''],
+      txtBC_ScanID: [''],
+      txtDDID: [''],
+      txtAvcost: ['', Validators.pattern(/^\d+$/)],
+      txtAwpr: ['', Validators.pattern(/^\d+$/)],
+      txtCcost: ['', Validators.pattern(/^\d+$/)],
+      txtPcost: ['', Validators.pattern(/^\d+$/)],
+      txtPCOSNH: ['', Validators.pattern(/^\d+$/)],
+      txtPCOSTP: ['', Validators.pattern(/^\d+$/)],
+      txtOPCostBasis: [''],
+      txtItemStatus: [''],
       scanTest: ['', Validators.required],
-      supplementalName: ['', Validators.required],
-      medicationType: ['Unit-dose Med', Validators.required],
-      chargeClass: ['', Validators.required],
+      txtSUPPNAME: [''],
+      tdbDrgTyp: [''],
+      tdbChapar: ['', Validators.required],
+      tdbChapar_Alt: [''],
       autoStopDays: [5, Validators.required],
-      taxApplicability: ['Primary Tax', Validators.required],
-      chargeUnit: [10, Validators.required],
-      displayClinicalInfo: [false, Validators.required],
-      reCalculateCharge: [false, Validators.required],
-      skipEmar: [false, Validators.required],
-      requireSecondValidation: [false, Validators.required],
-      vitalSigns: this.fb.group({
-        pulse: [false],
-        temp: [false],
-        bp: [false],
-        resp: [false],
-        misc: [false],
-      }),
-      usageLast12Months: this.fb.group({
-        jan: [''],
-        feb: [''],
-        mar: [''],
-        apr: [''],
-        may: [''],
-        jun: [''],
-        jul: [''],
-        aug: [''],
-        sep: [''],
-        oct: [''],
-        nov: [''],
-        dec: [''],
-      }),
+      tdbTax: [''],
+      cbNoEMarChg: [false],
+      cbSecVal: [false],
+      cbVS: this.fb.array([false, false, false, false, false]),
+      txtInvadd: this.fb.array(
+        Array(12)
+          .fill(null)
+          .map(() => this.fb.control('', Validators.pattern(/^\d+$/))),
+      ),
       currentUsage: this.fb.group({
         ytdUsage: [''],
         mtdDispensed: [''],
         mtdOrders: [''],
-        stockLevel: [''],
-        reorderLevel: [''],
-        emergencyReorder: [''],
-        reorderQty: [''],
-        vendorUnits: [''],
+        txtNstock: ['', Validators.pattern(/^\d+$/)],
+        txtLow: ['', Validators.pattern(/^\d+$/)],
+        txtEmerROL: ['', Validators.pattern(/^\d+$/)],
+        txtROQty: ['', Validators.required],
+        txtIdvucv: [''],
+        txtIdvid: [''],
+        txtIchcod: [''],
+        txtJCODE: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+        txtManuf: [''],
+        txtLocn: [''],
       }),
       orderHistory: [''],
-      billingCode: [''],
-      jcodeUnits: [''],
-      vendorDrugId: [''],
       supplier: [''],
-      manufacturer: [''],
-      locator: [''],
-      drugControlClass: [''],
-      expirationDate: [''],
+      txtIdrcc: [''],
+      txtKxdate: [''],
       adminNote: [''],
       miscNote: [''],
       noteForOrderEntry: [''],
     });
+  }
+
+  // Getter for easy access to form controls in the template
+  get f() {
+    return this.form.controls;
+  }
+
+  // Getter for easy access to the nested form group
+  get currentUsageControls() {
+    return (this.form.get('currentUsage') as FormGroup).controls;
+  }
+
+  get txtInvadd() {
+    return this.form.get('txtInvadd') as FormArray;
   }
 
   onSubmit() {
