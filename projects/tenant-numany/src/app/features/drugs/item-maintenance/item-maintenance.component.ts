@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { SharedDataTableComponent, ColumnDef } from 'shared-ui';
+import { SharedDataTableComponent, ColumnDef, SharedPanelContainerComponent } from 'shared-ui';
 import { RouterLink } from '@angular/router';
 
 interface DrugItem {
@@ -18,7 +18,7 @@ interface DrugItem {
 @Component({
   selector: 'tenant-item-maintenance',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SharedDataTableComponent],
+  imports: [CommonModule, ReactiveFormsModule, SharedDataTableComponent, SharedPanelContainerComponent,],
   templateUrl: './item-maintenance.component.html',
   styleUrl: './item-maintenance.component.css',
 })
