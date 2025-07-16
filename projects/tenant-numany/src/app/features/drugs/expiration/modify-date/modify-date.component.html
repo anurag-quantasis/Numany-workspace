@@ -4,14 +4,14 @@
     [formGroup]="modifyDateGroup"
     class="flex flex-col justify-between gap-y-2.5"
   >
-    <span class="flex justify-between">
-      <label for="">Drug Id</label>
+    <span class="flex justify-between items-center">
+      <label for="" class="ml-6.5 font-semibold text-[#334155]">Drug Id</label>
       <input pInputText type="text" />
     </span>
-    <span class="flex justify-between items-center">
+    <span class="flex justify-between items-center gap-x-2.5">
       <span class="flex gap-x-1.5">
         <p-checkbox [binary]="true" formControlName="expirationDate"></p-checkbox>
-        <label for="">Expiration Date </label>
+        <label for="" class="font-semibold text-[#334155]">Expiration Date </label>
       </span>
       <p-datepicker
         formControlName="modifyDate"
@@ -26,7 +26,7 @@
     <span class="flex justify-between items-center">
       <span class="flex gap-x-1.5">
         <p-checkbox [binary]="true" formControlName="stockLevel"></p-checkbox>
-        <label for="">Stock Level </label>
+        <label for="" class="font-semibold text-[#334155]">Stock Level </label>
       </span>
       <p-datepicker formControlName="modifyDate"></p-datepicker>
     </span>

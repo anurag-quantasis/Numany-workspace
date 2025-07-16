@@ -1,5 +1,5 @@
 <shared-panel-container>
-  <div class="p-4 bg-white rounded-lg shadow-md">
+  <div class="p-4 bg-white rounded-lg border border-gray-300">
     <p-table
       #dt
       [value]="products"
@@ -62,7 +62,7 @@
       <!-- Empty State -->
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="5" class="p-4 text-center text-gray-500">No products found.</td>
+          <td colspan="6" class="p-4 text-center text-gray-500">No products found.</td>
         </tr>
       </ng-template>
     </p-table>
