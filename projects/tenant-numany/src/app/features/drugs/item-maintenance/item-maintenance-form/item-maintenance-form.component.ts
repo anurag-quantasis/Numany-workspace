@@ -34,8 +34,8 @@ import { TextareaModule } from 'primeng/textarea';
     CalendarModule,
     CustomInputComponent,
     TextareaModule,
-    SharedPanelContainerComponent
-],
+    SharedPanelContainerComponent,
+  ],
   providers: [MessageService],
   templateUrl: './item-maintenance-form.component.html',
 })

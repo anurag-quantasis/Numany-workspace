@@ -8,9 +8,8 @@ describe('RemoteInventoryLocationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RemoteInventoryLocationComponent]
-    })
-    .compileComponents();
+      imports: [RemoteInventoryLocationComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RemoteInventoryLocationComponent);
     component = fixture.componentInstance;

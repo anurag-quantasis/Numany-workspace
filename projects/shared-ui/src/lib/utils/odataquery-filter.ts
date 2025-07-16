@@ -1,11 +1,14 @@
-import { HttpParams } from "@angular/common/http";
-import { FilterMetadata } from "primeng/api";
-import { TableLazyLoadEvent } from "primeng/table";
+import { HttpParams } from '@angular/common/http';
+import { FilterMetadata } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 
 /**
-   * Creates the OData sort and filter strings from a PrimeNG event.
-   */
-export function createODataParams(event: TableLazyLoadEvent): { oDataFilter?: string; oDataSort?: string } {
+ * Creates the OData sort and filter strings from a PrimeNG event.
+ */
+export function createODataParams(event: TableLazyLoadEvent): {
+  oDataFilter?: string;
+  oDataSort?: string;
+} {
   // 1. Handle Sorting
   let oDataSort: string | undefined;
   if (event.sortField && typeof event.sortField === 'string') {

@@ -8,9 +8,8 @@ describe('RouteOfAdministrationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouteOfAdministrationComponent]
-    })
-    .compileComponents();
+      imports: [RouteOfAdministrationComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RouteOfAdministrationComponent);
     component = fixture.componentInstance;

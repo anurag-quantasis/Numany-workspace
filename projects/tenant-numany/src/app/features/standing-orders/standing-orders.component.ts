@@ -7,13 +7,8 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-standing-orders',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ButtonModule
-  ],
-  templateUrl: './standing-orders.component.html'
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule],
+  templateUrl: './standing-orders.component.html',
 })
 export class StandingOrdersComponent implements OnInit {
   form!: FormGroup;

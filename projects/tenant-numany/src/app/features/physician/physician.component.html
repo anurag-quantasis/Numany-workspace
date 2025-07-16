@@ -14,13 +14,7 @@
 
   <div class="flex flex-wrap items-center gap-4 mt-6 ml-14">
     <label class="text-lg font-medium text-gray-700">ID</label>
-    <input
-      type="text"
-      pInputText
-      class="max-w-xs"
-      formControlName="id"
-      placeholder="Enter ID"
-    />
+    <input type="text" pInputText class="max-w-xs" formControlName="id" placeholder="Enter ID" />
 
     <div class="flex items-center ml-2">
       <p-checkbox formControlName="isHidden" [binary]="true" inputId="hideCheckbox"></p-checkbox>
@@ -194,7 +188,11 @@
       />
     </div>
     <div class="flex items-center ml-2">
-      <p-checkbox formControlName="isPrescriber" [binary]="true" inputId="prescriberCheckbox"></p-checkbox>
+      <p-checkbox
+        formControlName="isPrescriber"
+        [binary]="true"
+        inputId="prescriberCheckbox"
+      ></p-checkbox>
       <label for="prescriberCheckbox" class="ml-2 text-gray-700 cursor-pointer">e-PRESCRIBER</label>
     </div>
   </div>
@@ -203,6 +201,12 @@
   <div class="flex gap-4 mt-6 ml-14 mb-16 justify-end">
     <p-button label="Add" severity="success" (click)="onAdd()" outlined type="button"></p-button>
     <p-button label="Update" severity="info" (click)="onUpdate()" outlined type="button"></p-button>
-    <p-button label="Delete" severity="danger" (click)="onDelete()" outlined type="button"></p-button>
+    <p-button
+      label="Delete"
+      severity="danger"
+      (click)="onDelete()"
+      outlined
+      type="button"
+    ></p-button>
   </div>
 </form>

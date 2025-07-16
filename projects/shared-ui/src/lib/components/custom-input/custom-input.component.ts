@@ -38,7 +38,7 @@ let nextId = 0;
     InputTextModule,
     InputNumberModule,
     Fluid,
-    CheckboxModule
+    CheckboxModule,
   ],
   providers: [ValidationPipe], // Provide pipe to be injectable in the class
   template: `
@@ -222,8 +222,9 @@ export class CustomInputComponent implements ControlValueAccessor {
 
   // --- Reactive State Checks using TRUE Computed Signals ---
   // These will automatically re-evaluate when `controlStatus` changes.
-  isControlFirstLayout = computed(() => this.type() === 'checkbox' && this.layout() === 'horizontal');
-
+  isControlFirstLayout = computed(
+    () => this.type() === 'checkbox' && this.layout() === 'horizontal',
+  );
 
   isInvalid = computed(() => {
     this.controlStatus(); // Create a dependency on our trigger signal.

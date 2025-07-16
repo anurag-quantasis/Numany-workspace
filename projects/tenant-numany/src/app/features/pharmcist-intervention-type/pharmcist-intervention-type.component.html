@@ -81,9 +81,6 @@
   </div>
 </form> -->
 
-
-
-
 <h1 class="mt-6 ml-10 text-2xl">Pharmacist Intervention Table Maintenance</h1>
 <h2 class="ml-10 mt-3 text-lg text-gray-700">Select Intervention Type to Modify</h2>
 
@@ -101,9 +98,7 @@
     </div>
   </div>
 
-        <h3 class="text-xl font-medium text-gray-600 mb-5">
-        Select Intervention Data to Add/Modify
-      </h3>
+  <h3 class="text-xl font-medium text-gray-600 mb-5">Select Intervention Data to Add/Modify</h3>
   <div class="flex mt-2 mb-5">
     <div class="flex mt-8 mb-5 items-center gap-x-4">
       <label class="text-lg font-medium text-gray-700 w-10">ID</label>
@@ -117,10 +112,7 @@
     </div>
 
     <div class="w-full flex items-center gap-x-2 ml-5 mt-2.5">
-      <label
-        for="descriptionInput"
-        class="text-xl font-medium text-gray-700 w-32"
-      >
+      <label for="descriptionInput" class="text-xl font-medium text-gray-700 w-32">
         Description
       </label>
 
@@ -141,9 +133,7 @@
   </div>
 
   <div class="mb-6">
-    <h1 class="text-lg font-semibold text-gray-800 mb-3">
-      Include on Intervention Entry Form
-    </h1>
+    <h1 class="text-lg font-semibold text-gray-800 mb-3">Include on Intervention Entry Form</h1>
 
     <div class="grid grid-cols-3 gap-4 w-230">
       <div *ngFor="let checkbox of checkboxList">
@@ -152,10 +142,7 @@
           [binary]="true"
           inputId="{{ checkbox.controlName }}"
         ></p-checkbox>
-        <label
-          [for]="checkbox.controlName"
-          class="ml-2 text-gray-700 cursor-pointer"
-        >
+        <label [for]="checkbox.controlName" class="ml-2 text-gray-700 cursor-pointer">
           {{ checkbox.label }}
         </label>
       </div>

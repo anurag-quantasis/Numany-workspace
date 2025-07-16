@@ -30,7 +30,7 @@ export interface FilterConfig<T> {
   optionLabel?: string; // For select/multi-select
   optionValue?: string; // For select/multi-select
   // The key for providing a fully custom filter template from the parent
-  customFilterKey?: string; 
+  customFilterKey?: string;
 }
 
 export interface ColumnDef<T> {
@@ -81,7 +81,7 @@ export class ColumnTemplateDirective {
 export class CustomTemplateDirective {
   // Distinguishes between a filter template and a body cell template
   type = input<'filter' | 'body'>('body', { alias: 'customTemplate' });
-  
+
   // The unique key that links this template to a ColumnDef
   key = input.required<string>();
 
@@ -105,7 +105,7 @@ export class CustomTemplateDirective {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './shared-datatable.component.html',
-  styleUrl: './shared-datatable.component.css'
+  styleUrl: './shared-datatable.component.css',
 })
 export class SharedDataTableComponent<T extends { id: any }> implements AfterContentInit {
   // --- Required Inputs ---
@@ -149,13 +149,12 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
   /** Emits when a row selection changes. */
   selectionChange = output<T | T[] | null>();
 
-
   // --- Derived State ---
   protected colspan: Signal<number> = computed(() => {
     const selectionCol = this.selectionMode() === 'multiple' ? 1 : 0;
-    
-    const indexCol = this.showOrder() ? 1 : 0; 
-    
+
+    const indexCol = this.showOrder() ? 1 : 0;
+
     return this.columns().length + selectionCol + indexCol;
   });
 
@@ -164,10 +163,10 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
    * This is true only if at least one column has a filter configuration.
    */
   protected isAnyColumnFilterable: Signal<boolean> = computed(() =>
-    this.columns().some(col => !!col.filter)
+    this.columns().some((col) => !!col.filter),
   );
 
-   @ContentChildren(CustomTemplateDirective)
+  @ContentChildren(CustomTemplateDirective)
   private customTemplates!: QueryList<CustomTemplateDirective>;
 
   protected customFilterTemplateMap = new Map<string, TemplateRef<any>>();
@@ -176,28 +175,26 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
   ngAfterContentInit(): void {
     // The QueryList gives us the instances of the directive.
     for (const directiveInstance of this.customTemplates) {
-      
       // --- FIX: Read the signal's value by calling it as a function ---
-      if (directiveInstance.type() === 'filter') { // Changed d.type to d.type()
-        
+      if (directiveInstance.type() === 'filter') {
+        // Changed d.type to d.type()
+
         // --- FIX: Read the signal's value by calling it as a function ---
         this.customFilterTemplateMap.set(
           directiveInstance.key(), // Changed d.key to d.key()
-          directiveInstance.templateRef
+          directiveInstance.templateRef,
         );
-
       } else {
-
         // --- FIX: Read the signal's value by calling it as a function ---
         this.customBodyTemplateMap.set(
           directiveInstance.key(), // Changed d.key to d.key()
-          directiveInstance.templateRef
+          directiveInstance.templateRef,
         );
       }
     }
   }
 
-   // --- METHODS ---
+  // --- METHODS ---
   /**
    * Type-safe method to handle filter events from the template.
    * This avoids logic and type-casting ($any) in the HTML.
@@ -224,12 +221,12 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
   protected placeholderRowCount = computed(() => {
     const min = this.minRows() ?? this.rows(); // Default to page size if not set
     const dataLength = this.data().length;
-    
+
     // Only add placeholders if the data count is less than the minimum
     if (dataLength > 0 && dataLength < min) {
       return min - dataLength;
     }
-    
+
     // If there's no data, the "emptymessage" template will show, so we don't need placeholders.
     // If data is full, we don't need placeholders.
     return 0;
@@ -259,6 +256,4 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
 
     this.lazyLoad.emit(customEvent);
   }
-
 }
- 
