@@ -465,6 +465,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Site Parameters',
             shortcut: 'alt.f t',
             shortcutHint: 't',
+            route: 'site-parameters',
             command: () => {
               console.log('SiteParameters clicked');
             },

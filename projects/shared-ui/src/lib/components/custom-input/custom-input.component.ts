@@ -15,6 +15,8 @@ import { ValidationPipe } from '../../pipes/validation.pipe';
 import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { Fluid } from 'primeng/fluid';
+import { CheckboxModule } from 'primeng/checkbox';
 
 // Type definition for cleaner, declarative toast configuration.
 export type ToastErrorConfig = {
@@ -35,16 +37,77 @@ let nextId = 0;
     ValidationPipe,
     InputTextModule,
     InputNumberModule,
+    Fluid,
+    CheckboxModule
   ],
   providers: [ValidationPipe], // Provide pipe to be injectable in the class
   template: `
-    <div class="flex flex-col gap-1 w-full" [class]="class()">
-      <label *ngIf="label()" [for]="id()" [class]="'font-semibold' + labelClass()">
+    <div
+      class="flex gap-2 w-full"
+      [class.flex-col]="layout() === 'vertical'"
+      [class.flex-row]="layout() === 'horizontal'"
+      [class.items-center]="layout() === 'horizontal'"
+      [class]="class()"
+    >
+      <!-- 
+        Conditional rendering to control the ORDER of the label and the input.
+        - By default (or for non-checkbox-first layouts), we render Label then Controls.
+        - If it's a layout where the checkbox should come first, we reverse the order.
+      -->
+      <ng-container *ngIf="!isControlFirstLayout()">
+        <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="controlsTemplate"></ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="isControlFirstLayout()">
+        <ng-container *ngTemplateOutlet="controlsTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="labelTemplate"></ng-container>
+      </ng-container>
+
+      <!-- The error message is now outside the ordering logic, but inside the main container -->
+      <div *ngIf="isInvalid()" class="h-4">
+        <small class="text-red-500 whitespace-pre-line">
+          {{ ngControl.control?.errors | validation: errorMessages() }}
+        </small>
+      </div>
+    </div>
+
+    <!-- 
+      TEMPLATE DEFINITIONS 
+      These are defined once and reused via ngTemplateOutlet above.
+    -->
+
+    <!-- The Label Template: Defined once, used where needed. -->
+    <ng-template #labelTemplate>
+      <label
+        *ngIf="label()"
+        [for]="id()"
+        [class]="'font-semibold text-[#334155]' + labelClass()"
+        [class.text-gray-400]="disabled"
+        class="block"
+      >
         {{ label() }}
         <span *ngIf="isRequired()" class="text-red-500 font-sans">*</span>
       </label>
+    </ng-template>
 
+    <!-- The Controls Template: Contains the logic for switching between actual input elements. -->
+    <ng-template #controlsTemplate>
       <ng-container [ngSwitch]="type()">
+        <!-- CHECKBOX -->
+        <p-checkbox
+          *ngSwitchCase="'checkbox'"
+          [inputId]="id()"
+          [(ngModel)]="value"
+          (ngModelChange)="onChange($event)"
+          (onBlur)="onBlur()"
+          [disabled]="disabled"
+          [binary]="binary()"
+          [class.ng-invalid]="isInvalid()"
+          [class.ng-dirty]="isInvalid()"
+        />
+
+        <!-- NUMBER -->
         <p-inputNumber
           *ngSwitchCase="'number'"
           [inputId]="id()"
@@ -58,9 +121,11 @@ let nextId = 0;
           [class.ng-invalid]="isInvalid()"
           [class.ng-dirty]="isInvalid()"
           [readonly]="readonly()"
+          [fluid]="fluid()"
         >
         </p-inputNumber>
 
+        <!-- DEFAULT (text, email, password) -->
         <input
           *ngSwitchDefault
           pInputText
@@ -75,15 +140,10 @@ let nextId = 0;
           [class.ng-invalid]="isInvalid()"
           [class.ng-dirty]="isInvalid()"
           [readonly]="readonly()"
+          [fluid]="fluid()"
         />
       </ng-container>
-
-      <div *ngIf="isInvalid()" class="h-4">
-        <small class="text-red-500 whitespace-pre-line">
-          {{ ngControl.control?.errors | validation: errorMessages() }}
-        </small>
-      </div>
-    </div>
+    </ng-template>
   `,
   styles: [
     `
@@ -98,14 +158,17 @@ export class CustomInputComponent implements ControlValueAccessor {
   // --- Modern Signal-Based Inputs ---
   label = input<string>('');
   placeholder = input<string>('');
-  type = input<'text' | 'number' | 'email' | 'password'>('text');
+  type = input<'text' | 'number' | 'email' | 'password' | 'checkbox'>('text');
   errorMessages = input<{ [key: string]: string }>({});
   class = input<string>('');
   labelClass = input<string>('');
   id = input<string>(`custom-input-${nextId++}`);
   toastErrors = input<{ [key: string]: ToastErrorConfig }>({});
   useGrouping = input<boolean>(false);
-  readonly = input<boolean>(false); // <-- CHANGED: Now a signal input, and named `readonly`
+  readonly = input<boolean>(false);
+  fluid = input<boolean>(false);
+  binary = input<boolean>(true);
+  layout = input<'vertical' | 'horizontal'>('vertical');
 
   // --- Injections ---
   public ngControl: NgControl = inject(NgControl, { self: true });
@@ -159,6 +222,9 @@ export class CustomInputComponent implements ControlValueAccessor {
 
   // --- Reactive State Checks using TRUE Computed Signals ---
   // These will automatically re-evaluate when `controlStatus` changes.
+  isControlFirstLayout = computed(() => this.type() === 'checkbox' && this.layout() === 'horizontal');
+
+
   isInvalid = computed(() => {
     this.controlStatus(); // Create a dependency on our trigger signal.
     const c = this.ngControl.control;

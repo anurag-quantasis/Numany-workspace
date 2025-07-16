@@ -29,6 +29,8 @@ export class ValidationPipe implements PipeTransform {
         return 'Please enter a valid email address.';
       case 'minlength':
         return `Minimum length must be ${errorValue.requiredLength}.`;
+      case 'maxlength':
+        return `Maximum length must be ${errorValue.requiredLength}.`;
       case 'min':
         return `The minimum value is ${errorValue.min}.`;
       case 'max':

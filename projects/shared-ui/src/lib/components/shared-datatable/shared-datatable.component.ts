@@ -13,6 +13,12 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { createODataParams } from '../../utils/odataquery-filter';
+
+export interface DataTableLazyLoadEvent extends TableLazyLoadEvent {
+  oDataFilter?: string;
+  oDataSort?: string;
+}
 
 export type FilterType = 'text' | 'numeric' | 'boolean' | 'select' | 'multi-select' | 'custom';
 
@@ -138,7 +144,8 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
 
   // --- Outputs ---
   /** Emits when lazy loading is triggered (pagination, sorting). */
-  lazyLoad = output<TableLazyLoadEvent>();
+  // lazyLoad = output<TableLazyLoadEvent>();
+  lazyLoad = output<DataTableLazyLoadEvent>();
   /** Emits when a row selection changes. */
   selectionChange = output<T | T[] | null>();
 
@@ -235,5 +242,23 @@ export class SharedDataTableComponent<T extends { id: any }> implements AfterCon
     // Creates an array of a specific length, e.g., [undefined, undefined, undefined]
     return Array(this.placeholderRowCount());
   });
+
+  /**
+   * Intercepts the raw PrimeNG lazy load event, transforms it into
+   * our custom event with OData strings, and emits it.
+   * This method is called from the template.
+   */
+  protected onPrimeLazyLoad(event: TableLazyLoadEvent): void {
+    const odataParams = createODataParams(event);
+
+    const customEvent: DataTableLazyLoadEvent = {
+      ...event, // Keep all original properties (first, rows, etc.)
+      oDataFilter: odataParams.oDataFilter,
+      oDataSort: odataParams.oDataSort,
+    };
+
+    this.lazyLoad.emit(customEvent);
+  }
+
 }
  

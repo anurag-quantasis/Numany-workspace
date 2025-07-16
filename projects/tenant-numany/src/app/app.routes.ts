@@ -71,84 +71,89 @@ export const routes: Routes = [
           },
         ],
       },
-           {
-      path: 'physician',
-      loadComponent: () =>
-        import('./features/physician/physician.component').then(
-          (m) => m.PhysicianComponent,
-        )
-     },
-     {
-  path: 'pharmacist-intervention-type-maintainance',
-  loadComponent: () =>
-    import('./features/pharmcist-intervention-type/pharmcist-intervention-type.component').then(
-      
-      (m) => m.PharmcistInterventionTypeComponent,
-    )
-    },
-{
-  path: 'pharmacist-intervention-type',
-  loadComponent: () =>
-    import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
-      (m) => m.PharmcistInterventionTypeMaintainanceComponent,
-    )
-},
-// {
-//    path: 'Pharamacist-intervention-data-classes',
-//    loadComponent: () =>
-//     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
-//       (m) => m.PharmcistInterventionTypeMaintainanceComponent
-//     )
-// },
+      {
+        path: 'physician',
+        loadComponent: () =>
+          import('./features/physician/physician.component').then(
+            (m) => m.PhysicianComponent,
+          )
+      },
+      {
+        path: 'pharmacist-intervention-type-maintainance',
+        loadComponent: () =>
+          import('./features/pharmcist-intervention-type/pharmcist-intervention-type.component').then(
 
-// {
-//   path: 'route-of-codes',
-//   loadComponent: () =>
-//     import('./features/route-of-administration/route-of-administration.component').then(
-//       (m) => m.RouteOfAdministrationComponent,
-//     )
-// },
+            (m) => m.PharmcistInterventionTypeComponent,
+          )
+      },
+      {
+        path: 'pharmacist-intervention-type',
+        loadComponent: () =>
+          import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
+            (m) => m.PharmcistInterventionTypeMaintainanceComponent,
+          )
+      },
+      // {
+      //    path: 'Pharamacist-intervention-data-classes',
+      //    loadComponent: () =>
+      //     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
+      //       (m) => m.PharmcistInterventionTypeMaintainanceComponent
+      //     )
+      // },
 
-  {
-    path: 'vendor-supplier',
-    loadComponent: () =>
-      import('./features/vendor-supplier/vendor-supplier.component').then(
-        (m) => m.VendorSupplierComponent,
-      )
-  },
+      // {
+      //   path: 'route-of-codes',
+      //   loadComponent: () =>
+      //     import('./features/route-of-administration/route-of-administration.component').then(
+      //       (m) => m.RouteOfAdministrationComponent,
+      //     )
+      // },
 
-  {
-    path: 'lab-result-type-maintenance',
-    loadComponent: () =>
-      import('./features/lab-result-type-maintenance/lab-result-type-maintenance.component').then(
-        (m) => m.LabResultTypeMaintenanceComponent,
-      )
-  },
+      {
+        path: 'vendor-supplier',
+        loadComponent: () =>
+          import('./features/vendor-supplier/vendor-supplier.component').then(
+            (m) => m.VendorSupplierComponent,
+          )
+      },
 
-  {
-    path: 'remote-inventory-location',
-    loadComponent: () =>
-      import('./features/remote-inventory-location/remote-inventory-location.component').then(
-        (m) => m.RemoteInventoryLocationComponent,
-      )
-  },
-  {
-    path: 'patient-payor-type-maintenance',
-    loadComponent: () =>
-      import('./features/patient-payor-type-maintenance/patient-payor-type-maintenance.component').then(
-        (m) => m.PatientPayorTypeMaintenanceComponent,
-      )
-  },
+      {
+        path: 'lab-result-type-maintenance',
+        loadComponent: () =>
+          import('./features/lab-result-type-maintenance/lab-result-type-maintenance.component').then(
+            (m) => m.LabResultTypeMaintenanceComponent,
+          )
+      },
 
-  {
-    path: 'standing-orders',
-    loadComponent: () =>
-      import('./features/standing-orders/standing-orders.component').then(
-        (m) => m.StandingOrdersComponent
-      )
-  }
+      {
+        path: 'remote-inventory-location',
+        loadComponent: () =>
+          import('./features/remote-inventory-location/remote-inventory-location.component').then(
+            (m) => m.RemoteInventoryLocationComponent,
+          )
+      },
+      {
+        path: 'patient-payor-type-maintenance',
+        loadComponent: () =>
+          import('./features/patient-payor-type-maintenance/patient-payor-type-maintenance.component').then(
+            (m) => m.PatientPayorTypeMaintenanceComponent,
+          )
+      },
+      {
+        path: 'standing-orders',
+        loadComponent: () =>
+          import('./features/standing-orders/standing-orders.component').then(
+            (m) => m.StandingOrdersComponent
+          )
+      },
+      {
+        path: 'site-parameters',
+        loadComponent: () =>
+          import('./features/site-parameters/site-parameters.component').then(
+            (m) => m.SiteParametersComponent
+          )
+      },
 
     ],
   },
 ];
- 

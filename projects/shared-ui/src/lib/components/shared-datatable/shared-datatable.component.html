@@ -1,5 +1,5 @@
 <div class="border border-gray-300 rounded-xl">
-  <p-table #dt [value]="data()" [lazy]="true" (onLazyLoad)="lazyLoad.emit($event)" [paginator]="true" [rows]="rows()"
+  <p-table #dt [value]="data()" [lazy]="true" (onLazyLoad)="onPrimeLazyLoad($event)" [paginator]="true" [rows]="rows()"
     [first]="first()" [totalRecords]="totalRecords()" [loading]="loading()" [rowsPerPageOptions]="rowsPerPageOptions()"
     [dataKey]="dataKey()" [selectionMode]="selectionMode()" [selection]="selection()"
     (selectionChange)="selectionChange.emit($event)" styleClass="rounded-table-container" stripedRows
