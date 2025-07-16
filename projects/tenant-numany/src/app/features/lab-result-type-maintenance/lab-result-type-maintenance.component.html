@@ -1,59 +1,54 @@
-<shared-panel-container>
-  <div class="p-4">
-    <h1 class="text-2xl mt-5 ml-5 font-semibold">Lab Result Type Maintenance</h1>
-    <h2 class="text-[16px] mt-3 ml-5 font-semibold">SELECT LAB TYPE TO MODIFY</h2>
+<shared-panel-container [title]="'Lab Result Type Maintenance'">
+  <form [formGroup]="labForm" (ngSubmit)="onSubmit()" class="card flex flex-col gap-4 mt-5">
+    <p-fieldset legend="Select Lab Type To Modify">
+      <!-- First Row: Lab Type Dropdown + Lab ID + Host ID + Units -->
+      <div class="flex flex-wrap gap-4 items-end">
+        <!-- Lab Type Dropdown -->
+        <div class="flex flex-col w-[220px]">
+          <label for="selectedLabType" class="font-medium mb-1">Lab Type</label>
+          <p-select
+            inputId="selectedLabType"
+            [options]="labTypes"
+            formControlName="selectedLabType"
+            optionLabel="name"
+            placeholder="Select Lab Type"
+            class="w-full">
+          </p-select>
+        </div>
 
-    <form [formGroup]="labForm" (ngSubmit)="onSubmit()" class="card flex flex-col gap-4 ml-5 mt-5">
-      <!-- Dropdown -->
-      <p-dropdown
-        [options]="labTypes"
-        formControlName="selectedLabType"
-        optionLabel="name"
-        placeholder="Select Lab Type"
-        class="w-[400px]"
-      >
-      </p-dropdown>
-
-      <!-- Input Fields Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2 ml-2">
-        <div>
+        <!-- Lab ID -->
+        <div class="w-[220px]">
           <app-custom-input
             label="Lab ID"
             formControlName="labId"
             placeholder="Enter Lab ID"
-            type="text"
-          >
+            type="text">
           </app-custom-input>
         </div>
 
-        <div>
+        <!-- Host ID -->
+        <div class="w-[220px]">
           <app-custom-input
             label="Host ID"
             formControlName="hostId"
             placeholder="Enter Host ID"
-            type="text"
-          >
+            type="text">
           </app-custom-input>
         </div>
 
-        <div>
+        <!-- Units -->
+        <div class="w-[220px]">
           <app-custom-input
             label="Units"
             formControlName="units"
             placeholder="Enter Units"
-            type="text"
-          >
+            type="text">
           </app-custom-input>
         </div>
       </div>
 
-      <!-- Divider -->
-      <div class="w-full">
-        <p-divider></p-divider>
-      </div>
-
       <!-- Description Textarea -->
-      <div class="flex flex-col gap-2 mt-1 mb-3">
+      <div class="flex flex-col gap-2 mt-3.5 mb-3">
         <label for="textarea" class="font-medium">Description</label>
         <textarea
           id="textarea"
@@ -62,71 +57,57 @@
           rows="5"
           cols="60"
           placeholder="Enter Description..."
-          class="p-inputtext w-full max-w-[600px]"
-        >
+          class="p-inputtext w-full max-w-[600px]">
         </textarea>
       </div>
+    </p-fieldset>
 
-      <!-- Divider -->
-      <div class="w-full">
-        <p-divider></p-divider>
-      </div>
-
-      <!-- Checkbox and Normal Range -->
-      <div class="flex items-center gap-6 mt-1">
-        <div class="flex items-center gap-2 mt-2">
-          <label for="includeReport" class="uppercase font-medium">Include on Report</label>
+    <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4">
+      <div class="flex flex-col items-start gap-3 mt-1">
+        <!-- Include on Report -->
+        <div class="flex items-center gap-2">
           <p-checkbox
             inputId="includeReport"
             formControlName="includeOnReport"
-            [binary]="true"
-          ></p-checkbox>
+            [binary]="true">
+          </p-checkbox>
+          <label for="includeReport" class="font-semibold text-[#334155]">Include on Report</label>
         </div>
 
-        <div class="flex items-center gap-3 mt-2">
-          <label class="uppercase font-medium">Normal Range</label>
+        <!-- Normal Range -->
+        <div class="flex flex-col items-start gap-2">
+          <label class="font-semibold text-[#334155]">Normal Range</label>
 
-          <!-- Low -->
-          <div class="flex flex-col items-center">
-            <label for="low" class="text-xs font-medium uppercase mt-1">Low</label>
-            <input
-              id="low"
-              type="text"
-              pInputText
-              formControlName="low"
-              placeholder="0"
-              class="w-[60px] text-center"
-            />
-            -->
-            <app-custom-input label="Low" formControlName="low" type="number"> </app-custom-input>
-          </div>
+          <div class="flex flex-row items-end gap-6">
+            <!-- Low -->
+            <div class="w-[220px]">
+              <app-custom-input
+                label="Low"
+                formControlName="low"
+                placeholder="0"
+                type="text">
+              </app-custom-input>
+            </div>
 
-          <!-- High -->
-          <div class="flex flex-col items-center">
-            <label for="high" class="text-xs font-medium uppercase mt-1">High</label>
-            <input
-              id="high"
-              type="text"
-              pInputText
-              formControlName="high"
-              placeholder="0"
-              class="w-[60px] text-center"
-            />
+            <!-- High -->
+            <div class="w-[220px]">
+              <app-custom-input
+                label="High"
+                formControlName="high"
+                placeholder="0"
+                type="text">
+              </app-custom-input>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Buttons -->
-      <div class="flex mb-4 gap-2.5">
-        <p-button label="Update" variant="outlined" severity="info" (click)="onUpdate()"></p-button>
-        <p-button label="New" variant="outlined" severity="success" (click)="onNew()"></p-button>
-        <p-button
-          label="Delete"
-          variant="outlined"
-          severity="danger"
-          (click)="onDelete()"
-        ></p-button>
-      </div>
-    </form>
-  </div>
+    <!-- Buttons -->
+    <div class="flex mb-2 gap-2.5 mt-2 justify-end">
+      <p-button label="Update" variant="outlined" severity="info" (click)="onUpdate()"></p-button>
+      <p-button label="New" variant="outlined" severity="success" (click)="onNew()"></p-button>
+      <p-button label="Delete" variant="outlined" severity="danger" (click)="onDelete()"></p-button>
+    </div>
+  </form>
 </shared-panel-container>
