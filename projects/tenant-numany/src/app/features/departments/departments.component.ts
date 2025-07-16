@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { ShortcutDirective, ShortcutKeyHintDirective, SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
+import { ShortcutDirective, SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
 import { Fieldset } from "primeng/fieldset";
 
 @Component({
@@ -31,7 +31,7 @@ export class DepartmentsComponent implements OnInit {
     { id: 5, name: 'WASTED MEDS', value: 'wasted meds' },
   ];
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.departmentForm = this.fb.group({
@@ -41,7 +41,7 @@ export class DepartmentsComponent implements OnInit {
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      zip: ['', Validators.required],
+      zip: [null, Validators.required],
       phone: ['', Validators.required],
       note: ['', Validators.required],
       cost_basis: ['', Validators.required],
