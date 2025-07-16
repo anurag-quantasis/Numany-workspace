@@ -3,11 +3,8 @@ import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import {
-  ShortcutDirective,
-  ShortcutKeyHintDirective,
-  SharedPanelContainerComponent,
-} from 'shared-ui';
+import { ShortcutDirective, ShortcutKeyHintDirective, SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
+import { Fieldset } from "primeng/fieldset";
 
 @Component({
   selector: 'tenant-departments',
@@ -17,9 +14,10 @@ import {
     ReactiveFormsModule,
     ButtonModule,
     ShortcutDirective,
-    ShortcutKeyHintDirective,
     SharedPanelContainerComponent,
-  ],
+    CustomInputComponent,
+    Fieldset
+],
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.css',
 })
