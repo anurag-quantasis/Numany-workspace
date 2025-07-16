@@ -8,9 +8,8 @@ describe('PharmcistInterventionTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PharmcistInterventionTypeComponent]
-    })
-    .compileComponents();
+      imports: [PharmcistInterventionTypeComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PharmcistInterventionTypeComponent);
     component = fixture.componentInstance;

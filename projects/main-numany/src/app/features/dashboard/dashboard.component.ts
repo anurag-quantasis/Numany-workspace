@@ -10,7 +10,7 @@ import { AuthStore } from '../../core/auth/auth-store/auth.store';
 export class DashboardComponent implements OnInit {
   authStore = inject(AuthStore);
 
-  ngOnInit(){
-    console.log("AUTH STORE VALUE",this.authStore.token());
+  ngOnInit() {
+    console.log('AUTH STORE VALUE', this.authStore.token());
   }
 }

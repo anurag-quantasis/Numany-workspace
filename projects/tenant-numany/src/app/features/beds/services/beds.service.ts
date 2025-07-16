@@ -10,7 +10,6 @@ import { createHttpParams } from '../../../shared/utils/utils';
 // --- API Data Transfer Objects (DTOs) ---
 // These interfaces exactly match the JSON from your backend.
 
-
 interface ApiPaging {
   totalItems: number;
   pageNumber: number;
@@ -201,7 +200,7 @@ export class BedService {
   //   if (event.filters) {
   //     for (const field in event.filters) {
   //       const filterMeta = event.filters[field] as FilterMetadata | FilterMetadata[];
-        
+
   //       // PrimeNG can send a single or an array of filters
   //       const filters = Array.isArray(filterMeta) ? filterMeta : [filterMeta];
 
@@ -215,7 +214,7 @@ export class BedService {
   //       }
   //     }
   //   }
-    
+
   //   // Join all individual clauses with 'and' and add to the '$filter' parameter
   //   if (filterClauses.length > 0) {
   //     params = params.set('filter', filterClauses.join(' and '));
@@ -223,7 +222,7 @@ export class BedService {
 
   //   return params;
   // }
-  
+
   /**
    * Helper to create a single OData clause from PrimeNG filter metadata.
    */
@@ -262,7 +261,7 @@ export class BedService {
   //       return `${field} gt ${value}`;
   //     case 'gte':
   //       return `${field} ge ${value}`;
-      
+
   //     // We don't handle other modes by default
   //     default:
   //       console.warn(`OData mapping for matchMode '${matchMode}' is not implemented.`);

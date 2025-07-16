@@ -382,6 +382,12 @@ export class HeaderBarComponent implements OnInit {
                   },
                 ],
               },
+              {
+                label: 'Select Formulary Items',
+                shortcut: 'alt.f f',
+                shortcutHint: 'f',
+                route: '/formulary-items',
+              },
             ],
           },
           {
@@ -410,16 +416,19 @@ export class HeaderBarComponent implements OnInit {
             },
             items: [
               {
-                label: 'Intervention Types',  
-                route: '/pharmacist-intervention-type'
+                label: 'Intervention Types',
+                route: '/pharmacist-intervention-type',
               },
               {
                 label: 'Intervention Data Classes',
                 // route: '/Pharamacist-intervention-data-classes'
                 command: () => {
-                  this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
-                }
-              }
+                  this.openDialog(
+                    PharmcistInterventionTypeMaintainanceComponent,
+                    'Pharmacist Intervention Table',
+                  );
+                },
+              },
             ],
           },
           {
@@ -427,7 +436,9 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f y',
             shortcutHint: 'Y',
             route: '/physician',
-            command: () => { console.log('Physician clicked'); },
+            command: () => {
+              console.log('Physician clicked');
+            },
           },
           {
             label: 'Printer/Report Selection',
@@ -443,7 +454,9 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f r',
             shortcutHint: 'R',
             // route: '/route-of-codes',
-            command: () => {this.openDialog(RouteOfAdministrationComponent, 'Route of Administration') },
+            command: () => {
+              this.openDialog(RouteOfAdministrationComponent, 'Route of Administration');
+            },
           },
           {
             label: 'Sig Codes',
@@ -483,7 +496,9 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f v',
             shortcutHint: 'v',
             route: '/vendor-supplier',
-            command: () => { console.log('Vendor/Supplier clicked'); },
+            command: () => {
+              console.log('Vendor/Supplier clicked');
+            },
           },
           {
             label: 'Ward/Bed Area Cost Centers',
@@ -514,7 +529,9 @@ export class HeaderBarComponent implements OnInit {
             // shortcut: 'alt.f l',
             // shortcutHint: 'L',
             route: '/lab-result-type-maintenance',
-            command: () => { console.log('Lab Result Types clicked'); },
+            command: () => {
+              console.log('Lab Result Types clicked');
+            },
           },
           {
             label: 'Import Diagnosis File Update',
@@ -528,6 +545,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Alert File Matrix',
             shortcut: 'alt.f x',
             shortcutHint: 'x',
+            route: '/alert-file-matrix',
             command: () => {
               console.log('Alert File Matrix clicked');
             },
@@ -537,7 +555,9 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f r',
             shortcutHint: 'R',
             route: 'remote-inventory-location',
-            command: () => { console.log('Remote Inventory Location IDs clicked'); },
+            command: () => {
+              console.log('Remote Inventory Location IDs clicked');
+            },
           },
           {
             label: 'Third Party Provider Data',
@@ -598,7 +618,7 @@ export class HeaderBarComponent implements OnInit {
   openDialog(component: any, headerText: string) {
     this.ref = this.dialogService.open(component, {
       header: headerText,
-      contentStyle: { 'max-height': '500px', overflow: 'hidden' },
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: false,
       closeOnEscape: true,

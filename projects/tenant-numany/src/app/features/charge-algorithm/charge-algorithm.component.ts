@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ChargeMaintenanceStore } from './charge-algorithm-store/charge-algorithm.store';
 import { ChargeParameters } from './charge-algorithm-store/charge-algorithm.model';
 import { MessageService } from 'primeng/api';
-import { CustomInputComponent } from "shared-ui";
+import { CustomInputComponent } from 'shared-ui';
 
 @Component({
   selector: 'tenant-charge-algorithm',

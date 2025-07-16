@@ -1,20 +1,15 @@
 import { Component, input } from '@angular/core';
 
-
 @Component({
   selector: 'shared-panel-container',
   imports: [],
   template: `
-    <div
-      novalidate
-      [class]="class()"
-    >
-      
+    <div novalidate [class]="class()">
       <div class="bg-white dark:bg-[#18181B] rounded-sm p-8">
         @if (title()) {
-        <div class="mb-4">
-          <h2 class="text-2xl font-semibold text-grey-600">{{ title() }}</h2>
-        </div>
+          <div class="mb-4">
+            <h2 class="text-2xl font-semibold text-grey-600">{{ title() }}</h2>
+          </div>
         }
         <ng-content></ng-content>
       </div>
@@ -25,10 +20,8 @@ import { Component, input } from '@angular/core';
     </div>
   `,
 })
-export class SharedPanelContainerComponent {  
+export class SharedPanelContainerComponent {
   // Optional inputs for customization
   title = input<string>('');
   class = input<string>('px-[6rem] py-[1rem]');
-
-  
 }

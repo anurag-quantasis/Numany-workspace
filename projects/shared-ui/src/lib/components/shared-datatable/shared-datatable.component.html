@@ -1,16 +1,31 @@
 <div class="border border-gray-300 rounded-xl">
-  <p-table #dt [value]="data()" [lazy]="true" (onLazyLoad)="lazyLoad.emit($event)" [paginator]="true" [rows]="rows()"
-    [first]="first()" [totalRecords]="totalRecords()" [loading]="loading()" [rowsPerPageOptions]="rowsPerPageOptions()"
-    [dataKey]="dataKey()" [selectionMode]="selectionMode()" [selection]="selection()"
-    (selectionChange)="selectionChange.emit($event)" styleClass="rounded-table-container" stripedRows
-    [showGridlines]="showGridLne()" paginatorStyleClass="rounded-b-xl">
+  <p-table
+    #dt
+    [value]="data()"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoad.emit($event)"
+    [paginator]="true"
+    [rows]="rows()"
+    [first]="first()"
+    [totalRecords]="totalRecords()"
+    [loading]="loading()"
+    [rowsPerPageOptions]="rowsPerPageOptions()"
+    [dataKey]="dataKey()"
+    [selectionMode]="selectionMode()"
+    [selection]="selection()"
+    (selectionChange)="selectionChange.emit($event)"
+    styleClass="rounded-table-container"
+    stripedRows
+    [showGridlines]="showGridLne()"
+    paginatorStyleClass="rounded-b-xl"
+  >
     <!-- Caption for table actions remains the same -->
     @if (tableActions()) {
-    <ng-template class="rounded-t-xl" pTemplate="caption">
-      <div class="">
-        <ng-content select="[tableActions]"></ng-content>
-      </div>
-    </ng-template>
+      <ng-template class="rounded-t-xl" pTemplate="caption">
+        <div class="">
+          <ng-content select="[tableActions]"></ng-content>
+        </div>
+      </ng-template>
     }
 
     <!-- Dynamic Header Generation using new Control Flow -->
@@ -19,45 +34,53 @@
     <ng-template pTemplate="header">
       <!-- Header Titles Row -->
       <tr>
-        @if (selectionMode() === 'multiple') { <th style="width: 3rem"><p-tableHeaderCheckbox /></th> }
+        @if (selectionMode() === 'multiple') {
+          <th style="width: 3rem"><p-tableHeaderCheckbox /></th>
+        }
         @if (showOrder()) {
-        <th style="width: 5rem">#</th>
+          <th style="width: 5rem">#</th>
         }
         @for (col of columns(); track col.field) {
-        <th [style]="col.style">{{ col.header }}</th>
+          <th [style]="col.style">{{ col.header }}</th>
         }
       </tr>
 
       <!-- Advanced Filter Row -->
       @if (isAnyColumnFilterable()) {
-      <tr>
-        @if (selectionMode() === 'multiple') { <th></th> }
-        @if (showOrder()) {
-        <th style="width: 5rem">#</th>
-        } <!-- Spacer for # column -->
-        @for (col of columns(); track col.field) {
-        <th>
-          @if (col.filter; as filterConfig) {
-          <!-- Use @switch to render the correct filter based on config -->
-          @switch (filterConfig.type) {
-
-          @case ('text') {
-          <!-- This is correct. It renders an inline text input. -->
-          <p-columnFilter type="text" [field]="col.field"  [placeholder]="filterConfig.placeholder"
-            filterOn="input" />
+        <tr>
+          @if (selectionMode() === 'multiple') {
+            <th></th>
           }
-
-          @case ('boolean') {
-          <!-- FIX: Added display="row" to render an inline dropdown (Yes/No). -->
-          <p-columnFilter type="boolean" [field]="col.field" display="row" />
+          @if (showOrder()) {
+            <th style="width: 5rem">#</th>
           }
+          <!-- Spacer for # column -->
+          @for (col of columns(); track col.field) {
+            <th>
+              @if (col.filter; as filterConfig) {
+                <!-- Use @switch to render the correct filter based on config -->
+                @switch (filterConfig.type) {
+                  @case ('text') {
+                    <!-- This is correct. It renders an inline text input. -->
+                    <p-columnFilter
+                      type="text"
+                      [field]="col.field"
+                      [placeholder]="filterConfig.placeholder"
+                      filterOn="input"
+                    />
+                  }
 
-          @case ('select') {
-          <!-- 
+                  @case ('boolean') {
+                    <!-- FIX: Added display="row" to render an inline dropdown (Yes/No). -->
+                    <p-columnFilter type="boolean" [field]="col.field" display="row" />
+                  }
+
+                  @case ('select') {
+                    <!-- 
                   FIX: Replaced the complex template with the simple, built-in row display.
                   p-columnFilter will render the dropdown for you.
                 -->
-          <!-- <p-columnFilter
+                    <!-- <p-columnFilter
                   type="select"
                   [field]="col.field"
                   display="row"
@@ -67,22 +90,30 @@
                   [placeholder]="filterConfig.placeholder || 'Select'"
                   [matchMode]="filterConfig.matchMode || 'equals'"
                 /> -->
-          }
+                  }
 
-          @case ('custom') {
-          <!-- This approach remains the same for fully custom UIs. -->
-          <p-columnFilter [field]="col.field" [matchMode]="filterConfig.matchMode || 'in'" [showMenu]="false">
-            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-              <ng-container
-                *ngTemplateOutlet="customFilterTemplateMap.get(filterConfig.customFilterKey!)!; context: {$implicit: value, filterCallback: filter}"></ng-container>
-            </ng-template>
-          </p-columnFilter>
+                  @case ('custom') {
+                    <!-- This approach remains the same for fully custom UIs. -->
+                    <p-columnFilter
+                      [field]="col.field"
+                      [matchMode]="filterConfig.matchMode || 'in'"
+                      [showMenu]="false"
+                    >
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <ng-container
+                          *ngTemplateOutlet="
+                            customFilterTemplateMap.get(filterConfig.customFilterKey!)!;
+                            context: { $implicit: value, filterCallback: filter }
+                          "
+                        ></ng-container>
+                      </ng-template>
+                    </p-columnFilter>
+                  }
+                }
+              }
+            </th>
           }
-          }
-          }
-        </th>
-        }
-      </tr>
+        </tr>
       }
     </ng-template>
 
@@ -90,19 +121,25 @@
     <!-- NOTE: We CANNOT use @for here because p-table controls the row iteration -->
     <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
       <tr [pSelectableRow]="item">
-        @if (selectionMode() === 'multiple') { <td><p-tableCheckbox [value]="item" /></td> }
+        @if (selectionMode() === 'multiple') {
+          <td><p-tableCheckbox [value]="item" /></td>
+        }
         @if (showOrder()) {
-        <td>{{ first() + rowIndex + 1 }}</td>
+          <td>{{ first() + rowIndex + 1 }}</td>
         }
         @for (col of columns(); track col.field) {
-        <td>
-          @if (col.customBodyKey && customBodyTemplateMap.has(col.customBodyKey)) {
-          <ng-container
-            *ngTemplateOutlet="customBodyTemplateMap.get(col.customBodyKey)!; context: { $implicit: item }"></ng-container>
-          } @else {
-          <span>{{ getNestedValue(item, col.field) }}</span>
-          }
-        </td>
+          <td>
+            @if (col.customBodyKey && customBodyTemplateMap.has(col.customBodyKey)) {
+              <ng-container
+                *ngTemplateOutlet="
+                  customBodyTemplateMap.get(col.customBodyKey)!;
+                  context: { $implicit: item }
+                "
+              ></ng-container>
+            } @else {
+              <span>{{ getNestedValue(item, col.field) }}</span>
+            }
+          </td>
         }
       </tr>
     </ng-template>
@@ -110,9 +147,7 @@
     <ng-template pTemplate="footer">
       @for (_ of placeholderRowsArray(); track $index) {
         <tr class="">
-          <td class="border-0 h-[50px]" [attr.colspan]="colspan()">
-             
-          </td>
+          <td class="border-0 h-[50px]" [attr.colspan]="colspan()"></td>
         </tr>
       }
     </ng-template>

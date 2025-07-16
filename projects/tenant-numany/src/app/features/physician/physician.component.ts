@@ -34,10 +34,10 @@ interface Physician {
     DropdownModule,
     InputTextModule,
     CheckboxModule,
-    ButtonModule
+    ButtonModule,
   ],
   templateUrl: './physician.component.html',
-  styleUrls: ['./physician.component.css']
+  styleUrls: ['./physician.component.css'],
 })
 export class PhysicianComponent implements OnInit {
   physician!: FormGroup;
@@ -69,7 +69,7 @@ export class PhysicianComponent implements OnInit {
       npi: [''],
       fax: [''],
       medicad: [''],
-      localid: ['']
+      localid: [''],
     });
   }
 
@@ -81,8 +81,9 @@ export class PhysicianComponent implements OnInit {
       return;
     }
     // Simple id generation if empty or duplicate
-    const newId = formValue.id || (this.doctors.length ? Math.max(...this.doctors.map(d => +d.id)) + 1 : 1);
-    const exists = this.doctors.find(d => d.id == newId);
+    const newId =
+      formValue.id || (this.doctors.length ? Math.max(...this.doctors.map((d) => +d.id)) + 1 : 1);
+    const exists = this.doctors.find((d) => d.id == newId);
     if (exists) {
       alert(`Physician with ID ${newId} already exists. Use update instead.`);
       return;
@@ -104,7 +105,7 @@ export class PhysicianComponent implements OnInit {
       medicad: formValue.medicad,
       localid: formValue.localid,
       isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber
+      isPrescriber: formValue.isPrescriber,
     };
 
     this.doctors.push(newPhysician);
@@ -121,7 +122,7 @@ export class PhysicianComponent implements OnInit {
       return;
     }
 
-    const index = this.doctors.findIndex(d => d.id == id);
+    const index = this.doctors.findIndex((d) => d.id == id);
     if (index === -1) {
       alert(`Physician with ID ${id} not found.`);
       return;
@@ -143,7 +144,7 @@ export class PhysicianComponent implements OnInit {
       medicad: formValue.medicad,
       localid: formValue.localid,
       isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber
+      isPrescriber: formValue.isPrescriber,
     };
 
     alert('Physician updated successfully!');
@@ -158,7 +159,7 @@ export class PhysicianComponent implements OnInit {
       return;
     }
 
-    const index = this.doctors.findIndex(d => d.id == id);
+    const index = this.doctors.findIndex((d) => d.id == id);
     if (index === -1) {
       alert(`Physician with ID ${id} not found.`);
       return;

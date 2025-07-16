@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { DividerModule } from 'primeng/divider';
@@ -21,36 +27,37 @@ import { ButtonModule } from 'primeng/button';
     InputTextModule,
     CardModule,
     TextareaModule,
-    ButtonModule
+    ButtonModule,
   ],
   templateUrl: './vendor-supplier.component.html',
-  styleUrls: ['./vendor-supplier.component.css']
+  styleUrls: ['./vendor-supplier.component.css'],
 })
 export class VendorSupplierComponent implements OnInit {
   vendorForm!: FormGroup;
   vendors: any[] = [];
   editingIndex: number | null = null;
 
-  cities = [
-    { name: 'Option1' }, { name: 'Option2' }, { name: 'Option3' }
-  ];
+  cities = [{ name: 'Option1' }, { name: 'Option2' }, { name: 'Option3' }];
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.vendorForm = this.fb.group({
       selectedCity: [null, Validators.required],
-      vendorId: ['', [Validators.required, Validators.maxLength(12), this.vendorExistsValidator.bind(this)]],
+      vendorId: [
+        '',
+        [Validators.required, Validators.maxLength(12), this.vendorExistsValidator.bind(this)],
+      ],
       accountNo: ['', Validators.maxLength(12)],
       vendorName: ['', [Validators.required, Validators.maxLength(50)]],
       vendorMtd: ['', Validators.pattern(/^-?\\d*(\\.\\d+)?$/)],
       vendorYtd: ['', Validators.pattern(/^-?\\d*(\\.\\d+)?$/)],
-      remarks: ['', Validators.maxLength(100)]
+      remarks: ['', Validators.maxLength(100)],
     });
   }
 
   vendorExistsValidator(control: AbstractControl): ValidationErrors | null {
-    if (this.editingIndex === null && this.vendors.some(v => v.vendorId === control.value)) {
+    if (this.editingIndex === null && this.vendors.some((v) => v.vendorId === control.value)) {
       return { vendorExists: true };
     }
     return null;

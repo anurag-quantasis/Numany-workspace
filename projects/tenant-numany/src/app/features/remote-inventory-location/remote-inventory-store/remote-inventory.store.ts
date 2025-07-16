@@ -39,7 +39,7 @@ export class RemoteInventoryLocationStore {
     if (!selected) return;
     if (!confirm(`Delete item ${selected.medName}?`)) return;
 
-    const updated = this._inventory().filter(i => i.id !== selected.id);
+    const updated = this._inventory().filter((i) => i.id !== selected.id);
     this._inventory.set(updated);
     this._total.set(updated.length);
     this._selectedItem.set(null);

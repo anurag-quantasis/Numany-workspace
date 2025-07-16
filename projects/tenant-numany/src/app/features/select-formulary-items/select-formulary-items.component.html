@@ -1,0 +1,70 @@
+<shared-panel-container>
+  <div class="p-4 bg-white rounded-lg shadow-md">
+    <p-table
+      #dt
+      [value]="products"
+      dataKey="id"
+      [(selection)]="selectedProducts"
+      (selectionChange)="onSelectionChange($event)"
+      styleClass="p-datatable-striped"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[5, 10, 25]"
+      [globalFilterFields]="globalFilterFields"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    >
+      <!-- Table Header: Title and Global Search -->
+      <ng-template pTemplate="caption">
+        <div class="flex items-center justify-between p-2">
+          <h2 class="text-xl font-semibold text-gray-800">Formulary/Non-Formulary Selection</h2>
+          <span class="relative">
+            <i class="pi pi-search absolute top-2/4 -mt-2 left-3 text-gray-400"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="onGlobalFilter($event)"
+              placeholder="Global Search"
+              class="pl-10 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <!-- Column Headers -->
+      <ng-template pTemplate="header">
+        <tr class="bg-gray-100">
+          <th style="width: 4rem" class="p-3 text-left">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th class="p-3 text-left font-semibold text-gray-700">Primary Name</th>
+          <th class="p-3 text-left font-semibold text-gray-700">Unit</th>
+          <th class="p-3 text-left font-semibold text-gray-700">Secondary Name</th>
+          <th class="p-3 text-left font-semibold text-gray-700">Pack Size</th>
+          <th class="p-3 text-left font-semibold text-gray-700">NDC/DIN</th>
+        </tr>
+      </ng-template>
+
+      <!-- Body Rows -->
+      <ng-template pTemplate="body" let-product>
+        <tr class="border-b border-gray-200 hover:bg-gray-50">
+          <td class="p-3">
+            <p-tableCheckbox [value]="product"></p-tableCheckbox>
+          </td>
+          <td class="p-3 text-gray-600">{{ product.PrimarySecondaryName }}</td>
+          <td class="p-3 font-medium text-gray-800">{{ product.unit }}</td>
+          <td class="p-3 text-gray-600">{{ product.SecondaryName }}</td>
+          <td class="p-3 text-gray-600">{{ product.PackSize }}</td>
+          <td class="p-3 text-gray-600">{{ product.NDCDIN }}</td>
+        </tr>
+      </ng-template>
+
+      <!-- Empty State -->
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="p-4 text-center text-gray-500">No products found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</shared-panel-container>
