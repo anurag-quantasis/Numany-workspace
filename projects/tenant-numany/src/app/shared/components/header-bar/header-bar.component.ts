@@ -13,6 +13,7 @@ import { ModifyDateComponent } from '../../../features/drugs/expiration/modify-d
 import { RouteOfAdministrationComponent } from '../../../features/route-of-administration/route-of-administration.component';
 import { PharmcistInterventionTypeComponent } from '../../../features/pharmcist-intervention-type/pharmcist-intervention-type.component';
 import { PharmcistInterventionTypeMaintainanceComponent } from '../../../features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance';
+import { PharmacistInterventionTypeMaintenanceComponent } from '../../../features/pharmacist-intervention-type-maintenance/pharmacist-intervention-type-maintenance.component';
 
 interface CustomMenuItem extends MenuItem {
   shortcut?: string; // e.g., 'Ctrl+S'
@@ -412,19 +413,29 @@ export class HeaderBarComponent implements OnInit {
             items: [
               {
                 label: 'Intervention Types',  
-                route: '/pharmacist-intervention-type',
-                command: () => {
-                  console.log('PharmcistInterventionTypeComponent')
-                  this.openDialog(PharmcistInterventionTypeComponent, 'Pharmacist Intervention Table')
-                }
-              },
-              {
-                label: 'Intervention Data Classes',
-                route: '/pharmacist-intervention-type-maintainance',
+                // route: '/pharmacist-intervention-type-maintenance',
+                // command: () => {
+                //   console.log('pharmacist-intervention-type-maintenance')
+                //   this.openDialog(PharmacistInterventionTypeMaintenanceComponent, 'Pharmacist Intervention Table')
+                // }
+                 route: '/pharmacist-intervention-type',
                 command: () => {
                   // this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
                   console.log('Intervention Data Classes clicked')
                 }
+              },
+              {
+                label: 'Intervention Data Classes',
+                // route: '/pharmacist-intervention-type',
+                // command: () => {
+                //   // this.openDialog(PharmcistInterventionTypeMaintainanceComponent, 'Pharmacist Intervention Table')
+                //   console.log('Intervention Data Classes clicked')
+                //}
+                                // route: '/pharmacist-intervention-type-maintenance',
+                 command: () => {
+                   console.log('pharmacist-intervention-type-maintenance')
+                   this.openDialog(PharmacistInterventionTypeMaintenanceComponent, 'Pharmacist Intervention Table')
+                 }
               }
             ],
           },
@@ -495,6 +506,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Ward/Bed Area Cost Centers',
             shortcut: 'alt.f w',
             shortcutHint: 'w',
+            route: 'ward-bed-area-maintenanace',
             command: () => {
               console.log('Ward/Bed Area Cost Centers');
             },

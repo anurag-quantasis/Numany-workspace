@@ -1,0 +1,31 @@
+<shared-panel-container>
+  <h1 class="font-semibold text-2xl">Ward/Bed Area Maintenance</h1>
+
+  <form [formGroup]="wardBedForm" class="card flex flex-col justify-start mt-4 space-y-4">
+    
+    <!-- Dropdown: Select Ward/Area -->
+    <div>
+      <label for="ward-area" class="font-semibold text-[18px] mr-3">Select Ward/Area</label>
+      <p-select
+        [options]="options"
+        formControlName="selectedOption"
+        optionLabel="name"
+        placeholder="Select an option"
+        class="w-full md:w-56 mt-2">
+      </p-select>
+    </div>
+
+    <!-- Text Box: Ward/Area -->
+    <div>
+      <label for="wardName" class="font-medium text-[16px] mr-3">Ward/Area</label>
+      <input
+        id="wardName"
+        type="text"
+        pInputText
+        formControlName="wardArea"
+        placeholder="Enter ward or area name"
+        class="w-full md:w-72 mt-2" />
+    </div>
+
+  </form>
+</shared-panel-container>
