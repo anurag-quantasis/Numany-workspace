@@ -5,15 +5,17 @@ import {
   Validators,
   AbstractControl,
   ValidationErrors,
+  FormControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CardModule } from 'primeng/card';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
+import { SharedPanelContainerComponent } from 'shared-ui';
+import { CustomInputComponent } from 'shared-ui';
 
 @Component({
   selector: 'tenant-vendor-supplier',
@@ -22,12 +24,13 @@ import { ButtonModule } from 'primeng/button';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    DropdownModule,
+    SelectModule,
     DividerModule,
     InputTextModule,
-    CardModule,
     TextareaModule,
     ButtonModule,
+    SharedPanelContainerComponent,
+    CustomInputComponent,
   ],
   templateUrl: './vendor-supplier.component.html',
   styleUrls: ['./vendor-supplier.component.css'],
@@ -37,21 +40,26 @@ export class VendorSupplierComponent implements OnInit {
   vendors: any[] = [];
   editingIndex: number | null = null;
 
-  cities = [{ name: 'Option1' }, { name: 'Option2' }, { name: 'Option3' }];
+  options = [{ name: 'Option1' }, { name: 'Option2' }, { name: 'Option3' }];
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.vendorForm = this.fb.group({
-      selectedCity: [null, Validators.required],
-      vendorId: [
-        '',
-        [Validators.required, Validators.maxLength(12), this.vendorExistsValidator.bind(this)],
-      ],
+      selectedOption: [null, Validators.required],
+
+      vendorId: new FormControl({ value: '', disabled: false }, [
+        Validators.required,
+        Validators.maxLength(12),
+        this.vendorExistsValidator.bind(this),
+      ]),
+
       accountNo: ['', Validators.maxLength(12)],
       vendorName: ['', [Validators.required, Validators.maxLength(50)]],
-      vendorMtd: ['', Validators.pattern(/^-?\\d*(\\.\\d+)?$/)],
-      vendorYtd: ['', Validators.pattern(/^-?\\d*(\\.\\d+)?$/)],
+
+      vendorMtd: ['', Validators.pattern(/^-?\d*(\.\d+)?$/)],
+      vendorYtd: ['', Validators.pattern(/^-?\d*(\.\d+)?$/)],
+
       remarks: ['', Validators.maxLength(100)],
     });
   }
@@ -65,9 +73,11 @@ export class VendorSupplierComponent implements OnInit {
 
   onAdd(): void {
     if (this.vendorForm.valid) {
-      this.vendors.push({ ...this.vendorForm.value });
+      this.vendors.push({ ...this.vendorForm.getRawValue() });
       console.log('Vendor added:', this.vendorForm.value);
       this.vendorForm.reset();
+      this.vendorForm.get('vendorId')?.enable();
+      this.editingIndex = null;
     } else {
       this.vendorForm.markAllAsTouched();
     }
@@ -75,9 +85,10 @@ export class VendorSupplierComponent implements OnInit {
 
   onUpdate(): void {
     if (this.vendorForm.valid && this.editingIndex !== null) {
-      this.vendors[this.editingIndex] = { ...this.vendorForm.value };
+      this.vendors[this.editingIndex] = { ...this.vendorForm.getRawValue() };
       console.log('Vendor updated:', this.vendorForm.value);
       this.vendorForm.reset();
+      this.vendorForm.get('vendorId')?.enable();
       this.editingIndex = null;
     } else {
       this.vendorForm.markAllAsTouched();
@@ -90,6 +101,7 @@ export class VendorSupplierComponent implements OnInit {
       if (confirmDelete) {
         this.vendors.splice(this.editingIndex, 1);
         this.vendorForm.reset();
+        this.vendorForm.get('vendorId')?.enable();
         this.editingIndex = null;
         console.log('Vendor deleted');
       }
@@ -98,6 +110,7 @@ export class VendorSupplierComponent implements OnInit {
 
   onRefresh(): void {
     this.vendorForm.reset();
+    this.vendorForm.get('vendorId')?.enable();
     this.editingIndex = null;
     console.log('Form reset');
   }
@@ -105,5 +118,6 @@ export class VendorSupplierComponent implements OnInit {
   onEditVendor(index: number): void {
     this.editingIndex = index;
     this.vendorForm.patchValue(this.vendors[index]);
+    this.vendorForm.get('vendorId')?.disable(); // Prevent editing vendorId
   }
 }

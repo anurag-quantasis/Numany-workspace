@@ -1,103 +1,97 @@
-<div class="p-4">
-  <p-card>
-    <h1 class="mt-5 ml-7 text-2xl">tblVendor</h1>
-    <h1 class="mt-3 ml-7 text-slate-600">Select Vendor</h1>
+<shared-panel-container>
+  <div class="p-4">
+    <h1 class="mt-5 ml-2 text-2xl font-semibold">tblVendor</h1>
+    <h1 class="mt-3 ml-2 text-slate-800">Select Vendor</h1>
 
-    <form [formGroup]="vendorForm" class="card mt-4 ml-2 p-4">
-      <!-- Dropdown -->
-      <div class="flex flex-col w-[400px] space-y-2">
-        <label for="selectedCity" class="text-gray-700 font-medium">Select Vendor</label>
-        <p-dropdown
-          [options]="cities"
-          formControlName="selectedCity"
-          optionLabel="name"
-          [checkmark]="true"
-          [showClear]="true"
-          placeholder="Select Vendor"
-        >
-        </p-dropdown>
-        <small
-          *ngIf="vendorForm.get('selectedCity')?.touched && vendorForm.get('selectedCity')?.invalid"
-          class="text-red-600"
-          >Vendor selection is required</small
-        >
-      </div>
-
-      <!-- Divider -->
-      <p-divider class="mt-4 w-full"></p-divider>
-
-      <!-- Input Fields Group 1 -->
-      <div class="flex flex-wrap gap-x-10 mt-4">
-        <!-- Vendor ID -->
-        <div class="flex flex-col w-[300px] space-y-2">
-          <label for="vendorId" class="text-gray-700 font-medium">Vendor ID</label>
-          <input
-            id="vendorId"
-            pInputText
-            formControlName="vendorId"
-            [disabled]="editingIndex !== null"
-            class="w-full"
-          />
+    <form [formGroup]="vendorForm" class="card mt-2 ml-2 p-4 space-y-4">
+      <!-- Row 1: Select Vendor, Vendor ID, Account No, Vendor Name -->
+      <div class="flex flex-nowrap gap-x-6 overflow-x-auto">
+        <!-- Select Vendor -->
+        <div class="flex flex-col w-[240px] space-y-2">
+          <label for="selectedOption" class="text-gray-700 font-medium">Select Vendor</label>
+          <p-select
+            [options]="options"
+            formControlName="selectedOption"
+            optionLabel="name"
+            [checkmark]="true"
+            [showClear]="true"
+            placeholder="Select Vendor"
+            class="w-[240px]"
+          >
+          </p-select>
           <small
             *ngIf="
-              vendorForm.get('vendorId')?.touched &&
-              vendorForm.get('vendorId')?.errors?.['required']
+              vendorForm.get('selectedOption')?.touched && vendorForm.get('selectedOption')?.invalid
             "
             class="text-red-600"
-            >Vendor ID is required</small
           >
-          <small *ngIf="vendorForm.get('vendorId')?.errors?.['vendorExists']" class="text-red-600"
-            >Vendor ID already exists</small
-          >
+            Vendor selection is required
+          </small>
         </div>
 
-        <!-- Account Number -->
-        <div class="flex flex-col w-[300px] space-y-2">
-          <label for="accountNo" class="text-gray-700 font-medium">Account No</label>
-          <input id="accountNo" pInputText formControlName="accountNo" class="w-full" />
-          <small *ngIf="vendorForm.get('accountNo')?.errors?.['maxlength']" class="text-red-600"
-            >Max 12 characters</small
+        <!-- Vendor ID -->
+        <div class="w-[240px]">
+          <app-custom-input
+            formControlName="vendorId"
+            label="Vendor ID"
+            placeholder="Enter vendor ID"
+            [disabled]="editingIndex !== null"
+            pTooltip="Unique ID for the vendor"
           >
+          </app-custom-input>
+        </div>
+
+        <!-- Account No -->
+        <div class="w-[240px]">
+          <app-custom-input
+            formControlName="accountNo"
+            label="Account No"
+            placeholder="Enter account number"
+            pTooltip="Max 12 characters"
+          >
+          </app-custom-input>
         </div>
 
         <!-- Vendor Name -->
-        <div class="flex flex-col w-[300px] space-y-2">
-          <label for="vendorName" class="text-gray-700 font-medium">Vendor Name</label>
-          <input id="vendorName" pInputText formControlName="vendorName" class="w-full" />
-          <small
-            *ngIf="
-              vendorForm.get('vendorName')?.touched &&
-              vendorForm.get('vendorName')?.errors?.['required']
-            "
-            class="text-red-600"
-            >Vendor name is required</small
+        <div class="w-[240px]">
+          <app-custom-input
+            formControlName="vendorName"
+            label="Vendor Name"
+            placeholder="Enter vendor name"
+            pTooltip="Full vendor name"
           >
+          </app-custom-input>
         </div>
       </div>
 
-      <!-- Input Fields Group 2 -->
-      <div class="flex flex-wrap gap-x-10 mt-4">
-        <!-- MTD -->
-        <div class="flex flex-col w-[300px] space-y-2">
-          <label for="vendorMtd" class="text-gray-700 font-medium">MTD</label>
-          <input id="vendorMtd" pInputText formControlName="vendorMtd" class="w-full" />
-          <small *ngIf="vendorForm.get('vendorMtd')?.errors?.['pattern']" class="text-red-600"
-            >Only numeric values allowed</small
+      <!-- Divider -->
+      <p-divider class="w-full"></p-divider>
+
+      <!-- Row 2: MTD and YTD -->
+      <div class="flex flex-nowrap gap-x-6">
+        <div class="w-[240px]">
+          <app-custom-input
+            formControlName="vendorMtd"
+            label="MTD"
+            placeholder="Enter MTD"
+            pTooltip="Month-to-date total"
           >
+          </app-custom-input>
         </div>
 
-        <!-- YTD -->
-        <div class="flex flex-col w-[300px] space-y-2">
-          <label for="vendorYtd" class="text-gray-700 font-medium">YTD</label>
-          <input id="vendorYtd" pInputText formControlName="vendorYtd" class="w-full" />
-          <small *ngIf="vendorForm.get('vendorYtd')?.errors?.['pattern']" class="text-red-600"
-            >Only numeric values allowed</small
+        <div class="w-[240px]">
+          <app-custom-input
+            formControlName="vendorYtd"
+            label="YTD"
+            placeholder="Enter YTD"
+            pTooltip="Year-to-date total"
           >
+          </app-custom-input>
         </div>
       </div>
 
-      <!-- Remarks / Note -->
-      <div class="flex flex-col w-[400px] mt-6 space-y-2">
+      <!-- Row 3: Remarks -->
+      <div class="flex flex-col w-[500px] space-y-2">
         <label for="remarks" class="text-gray-700 font-medium">Note</label>
         <textarea
           id="remarks"
@@ -112,7 +106,7 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex flex-wrap gap-4 mt-10">
+      <div class="flex flex-wrap gap-4 mt-6 justify-end">
         <p-button
           label="Update"
           variant="outlined"
@@ -134,5 +128,5 @@
         ></p-button>
       </div>
     </form>
-  </p-card>
-</div>
+  </div>
+</shared-panel-container>

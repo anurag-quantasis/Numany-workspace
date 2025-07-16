@@ -5,6 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
+import { SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
 
 interface Physician {
   id: number | string;
@@ -35,6 +36,8 @@ interface Physician {
     InputTextModule,
     CheckboxModule,
     ButtonModule,
+    SharedPanelContainerComponent,
+    CustomInputComponent,
   ],
   templateUrl: './physician.component.html',
   styleUrls: ['./physician.component.css'],
@@ -67,8 +70,8 @@ export class PhysicianComponent implements OnInit {
       license: [''],
       UPIN: [''],
       npi: [''],
-      fax: [''],
-      medicad: [''],
+      medicare: [''],
+      medicaId: [''],
       localid: [''],
     });
   }

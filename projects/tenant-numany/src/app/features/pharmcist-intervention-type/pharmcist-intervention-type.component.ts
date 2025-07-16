@@ -5,6 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { SharedPanelContainerComponent } from 'shared-ui';
 
 @Component({
   selector: 'main-pharmcist-intervention-type',
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     CheckboxModule,
     ButtonModule,
     CommonModule,
+    SharedPanelContainerComponent,
   ],
   templateUrl: './pharmcist-intervention-type.component.html',
   styleUrls: ['./pharmcist-intervention-type.component.css'],

@@ -1,12 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AsyncValidatorFn,
+  AbstractControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { Card } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 import { Select } from 'primeng/select';
+import { Observable, of } from 'rxjs';
+import { delay, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-patient-payor-type-maintenance',
@@ -16,7 +24,6 @@ import { Select } from 'primeng/select';
     ReactiveFormsModule,
     DropdownModule,
     InputTextModule,
-    Card,
     CustomInputComponent,
     ButtonModule,
     Select,
@@ -26,6 +33,8 @@ import { Select } from 'primeng/select';
 })
 export class PatientPayorTypeMaintenanceComponent implements OnInit {
   form!: FormGroup;
+  chargeClassLookup = ['GEN01', 'VIP01', 'MED01', 'CC01'];
+  existingPayorIDs = ['A001', 'B002', 'C003'];
 
   dropdownOptions = [
     { name: 'All Records', code: 'ALL' },
@@ -40,52 +49,99 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       selectedOption: [null],
-      idpay: ['', [Validators.required, Validators.maxLength(4)]],
+      idpay: [
+        '',
+        {
+          validators: [
+            Validators.required,
+            Validators.maxLength(4),
+            Validators.pattern(/^[A-Za-z0-9]{1,4}$/),
+          ],
+          asyncValidators: [this.validateUniqueID()],
+          updateOn: 'blur',
+        },
+      ],
       nampay: ['', [Validators.required, Validators.maxLength(50)]],
       iadpy: ['', Validators.maxLength(80)],
       ictpy: ['', Validators.maxLength(30)],
       istpy: ['', Validators.maxLength(2)],
       izppy: ['', Validators.maxLength(10)],
-      iphpy: ['', Validators.maxLength(14)],
+      iphpy: [
+        '',
+        [Validators.pattern(/^[0-9]{10}$/), Validators.minLength(10), Validators.maxLength(10)],
+      ],
       imspy: ['', Validators.maxLength(80)],
       ipycb: ['', [Validators.maxLength(2), Validators.pattern(/^(AV|AW|CC|PC)?$/)]],
       iccpy: ['', Validators.maxLength(6)],
       nonemarpay: [false],
       choiceOption: [null],
     });
+
+    // Auto-fill idpay and nampay when dropdown changes
+    this.form.get('selectedOption')?.valueChanges.subscribe((selected) => {
+      if (selected?.name && selected?.code) {
+        this.form.patchValue({
+          idpay: selected.code.slice(0, 2).toUpperCase(),
+          nampay: selected.name,
+        });
+      }
+    });
+  }
+
+  validateUniqueID(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return of(this.existingPayorIDs.includes(control.value)).pipe(
+        delay(500),
+        map((isTaken) => (isTaken ? { idExists: true } : null)),
+      );
+    };
   }
 
   onAdd(): void {
-    if (this.form.valid) {
-      console.log('✅ Simulated Add:', this.form.value);
-      alert('Payor added successfully (simulated)');
-      this.form.reset();
-    } else {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
-      alert('❌ Please fill all required fields correctly.');
+      alert('Please fill all required fields correctly.');
+      return;
     }
+
+    const chargeClass = this.form.get('iccpy')?.value;
+    if (chargeClass && !this.chargeClassLookup.includes(chargeClass)) {
+      alert('Invalid charge class. Please select a valid one.');
+      return;
+    }
+
+    console.log('Payor Added:', this.form.value);
+    alert('Payor added successfully (simulated)');
+    this.form.reset();
   }
 
   onUpdate(): void {
-    if (this.form.valid) {
-      console.log('✅ Simulated Update:', this.form.value);
-      alert('Payor updated successfully (simulated)');
-    } else {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
-      alert('❌ Please fix form errors before updating.');
+      alert('Please fix form errors before updating.');
+      return;
     }
+
+    const chargeClass = this.form.get('iccpy')?.value;
+    if (chargeClass && !this.chargeClassLookup.includes(chargeClass)) {
+      alert('Invalid charge class. Please select a valid one.');
+      return;
+    }
+
+    console.log('Payor Updated:', this.form.value);
+    alert('Payor updated successfully (simulated)');
   }
 
   onDelete(): void {
     const id = this.form.get('idpay')?.value;
     if (!id) {
-      alert('❌ Enter a valid Payor ID to delete.');
+      alert('Enter a valid Payor ID to delete.');
       return;
     }
 
     const confirmDelete = confirm(`Are you sure you want to delete Payor ID: ${id}?`);
     if (confirmDelete) {
-      console.log('🗑️ Simulated Delete for ID:', id);
+      console.log('Payor Deleted:', id);
       alert('Payor deleted successfully (simulated)');
       this.form.reset();
     }

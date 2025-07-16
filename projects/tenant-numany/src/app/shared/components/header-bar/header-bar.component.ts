@@ -13,6 +13,7 @@ import { ModifyDateComponent } from '../../../features/drugs/expiration/modify-d
 import { RouteOfAdministrationComponent } from '../../../features/route-of-administration/route-of-administration.component';
 import { PharmcistInterventionTypeComponent } from '../../../features/pharmcist-intervention-type/pharmcist-intervention-type.component';
 import { PharmcistInterventionTypeMaintainanceComponent } from '../../../features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance';
+import { PharmacistInterventionTypeMaintenanceComponent } from '../../../features/pharmacist-intervention-type-maintenance/pharmacist-intervention-type-maintenance.component';
 
 interface CustomMenuItem extends MenuItem {
   shortcut?: string; // e.g., 'Ctrl+S'
@@ -411,6 +412,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Pharmacist Intervention Setup',
             // shortcut: 'alt.f v',
             // shortcutHint: 'V',
+
             command: () => {
               console.log('Pharmacist Intervention Setup clicked');
             },
@@ -418,13 +420,16 @@ export class HeaderBarComponent implements OnInit {
               {
                 label: 'Intervention Types',
                 route: '/pharmacist-intervention-type',
+                command: () => {
+                  console.log('Intervention Data Classes clicked');
+                },
               },
               {
                 label: 'Intervention Data Classes',
-                // route: '/Pharamacist-intervention-data-classes'
                 command: () => {
+                  console.log('pharmacist-intervention-type-maintenance');
                   this.openDialog(
-                    PharmcistInterventionTypeMaintainanceComponent,
+                    PharmacistInterventionTypeMaintenanceComponent,
                     'Pharmacist Intervention Table',
                   );
                 },
@@ -514,6 +519,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Ward/Bed Area Cost Centers',
             shortcut: 'alt.f w',
             shortcutHint: 'w',
+            route: 'ward-bed-area-maintenanace',
             command: () => {
               console.log('Ward/Bed Area Cost Centers');
             },

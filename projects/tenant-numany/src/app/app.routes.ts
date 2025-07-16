@@ -93,25 +93,9 @@ export const routes: Routes = [
         path: 'pharmacist-intervention-type',
         loadComponent: () =>
           import(
-            './features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance'
-          ).then((m) => m.PharmcistInterventionTypeMaintainanceComponent),
+            './features/pharmcist-intervention-type/pharmcist-intervention-type.component'
+          ).then((m) => m.PharmcistInterventionTypeComponent),
       },
-      // {
-      //    path: 'Pharamacist-intervention-data-classes',
-      //    loadComponent: () =>
-      //     import('./features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance').then(
-      //       (m) => m.PharmcistInterventionTypeMaintainanceComponent
-      //     )
-      // },
-
-      // {
-      //   path: 'route-of-codes',
-      //   loadComponent: () =>
-      //     import('./features/route-of-administration/route-of-administration.component').then(
-      //       (m) => m.RouteOfAdministrationComponent,
-      //     )
-      // },
-
       {
         path: 'vendor-supplier',
         loadComponent: () =>
@@ -155,6 +139,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/alert-file-maintenance/alert-file-maintenance.component').then(
             (m) => m.AlertFileMaintenanceComponent,
+          ),
+      },
+      {
+        path: 'ward-bed-area-maintenanace',
+        loadComponent: () =>
+          import('./features/ward-bed-area-maintenance/ward-bed-area-maintenance.component').then(
+            (m) => m.WardBedAreaMaintenanceComponent,
           ),
       },
     ],
