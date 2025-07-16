@@ -98,7 +98,7 @@ export class SiteParametersComponent implements OnInit {
 
       // Medication Batch Fill Parameters
       fillDays: [
-        0,
+        null,
         [
           Validators.required,
           Validators.pattern(/^[0-9]+$/),
@@ -142,21 +142,21 @@ export class SiteParametersComponent implements OnInit {
         // Include Interdepartmental use in MTD drug usage: boolean
       ],
       primaryTax: [
-        0,
+        null,
         [
           Validators.pattern(/^[0-9]+$/),
           // Primary Tax %: numeric, integer only
         ],
       ],
       secondaryTax: [
-        0,
+        null,
         [
           Validators.pattern(/^[0-9]+$/),
           // Secondary Tax %: numeric, integer only
         ],
       ],
       primaryTaxdiscounted: [
-        0,
+        null,
         [
           Validators.pattern(/^[0-9]+$/),
           // Primary Tax % (Discounted): numeric, integer only
@@ -200,26 +200,26 @@ export class SiteParametersComponent implements OnInit {
       isMetric: [false],
       fiscalYearStart: [1, [Validators.required, Validators.min(1), Validators.max(12)]],
       timeDateFormat: ['', [Validators.maxLength(50)]],
-      dischargeDays: [0, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      dischargeDays: [null, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       ucoInterval: [
-        0,
+        null,
         [Validators.required, Validators.maxLength(2), Validators.pattern(/^[0-9]*$/)],
       ],
-      passwordExpirationDays: [0, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      passwordExpirationDays: [null, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       isDebugMode: [false],
       defaultToDoseStrength: [false],
       confirmValidation: [false],
       isRxOpEnabled: [{ value: false }],
       emarEnabled: [{ value: false, disabled: true }],
-      nextRxNumber: [0, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      nextRxNumber: [null, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       hideSupplierName: [false],
-      hideDcOrdersDays: [0, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      hideDcOrdersDays: [null, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       updateInventoryOnAdmin: [{ value: false, disabled: true }],
       language: ['1', Validators.required],
 
       // Daily Charge Defaults
       isJCodeUnitCharge: [false],
-      marDays: [0, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      marDays: [null, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       allowDailyChargeByDateRange: [false],
       includeAllTransactions: [false],
       bedProcessing: ['O', Validators.required],

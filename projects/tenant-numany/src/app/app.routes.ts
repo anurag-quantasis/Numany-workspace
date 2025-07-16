@@ -51,8 +51,6 @@ export const routes: Routes = [
         path: 'item-maintenance',
         children: [
           {
-            // This route matches '/item-maintenance'
-            // It will show the list of items.
             path: '',
             loadComponent: () =>
               import('./features/drugs/item-maintenance/item-maintenance.component').then(
@@ -60,8 +58,6 @@ export const routes: Routes = [
               ),
           },
           {
-            // This route matches '/item-maintenance/new' or '/item-maintenance/123'
-            // The ':id' is a route parameter that will hold 'new' or the actual item ID.
             path: ':id',
             loadComponent: () =>
               import(
@@ -81,6 +77,11 @@ export const routes: Routes = [
         path: 'physician',
         loadComponent: () =>
           import('./features/physician/physician.component').then((m) => m.PhysicianComponent),
+      },
+      {
+        path: 'site-parameters',
+        loadComponent: () =>
+          import('./features/site-parameters/site-parameters.component').then((m) => m.SiteParametersComponent),
       },
       {
         path: 'pharmacist-intervention-type-maintainance',
