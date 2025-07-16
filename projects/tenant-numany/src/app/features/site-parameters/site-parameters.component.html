@@ -84,13 +84,13 @@
         
         <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4">
           <div class="col-span-3">
-            <app-custom-input formControlName="chgBulk" label='Allow Med & IV Fill by Range' type="checkbox"
+            <app-custom-input formControlName="allowFillRange" label='Allow Med & IV Fill by Range' type="checkbox"
               layout="horizontal">
             </app-custom-input>
             
           </div>
           <div class="col-span-3">
-            <app-custom-input formControlName="chgBulk" label='Charge "BULK" orders at Order Entry' type="checkbox"
+            <app-custom-input formControlName="printDcLabel" label='Print DC Label' type="checkbox"
               layout="horizontal">
             </app-custom-input>
           </div>
@@ -122,9 +122,63 @@
         </p-fieldset>
       </div>
 
-      <p-fieldset legend="Drug Usage & Cost Parameters">
+      <div class="grid md:grid-cols-2 gap-4">
+        <p-fieldset legend="Drug Usage & Cost Parameters">
+          <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
+            <div class="col-span-4">
+              <app-custom-input formControlName="incMtdIdpt" [label]="'Include Interdepartmental use in MTD drug usage'" type="checkbox"
+                layout="horizontal">
+              </app-custom-input>
+            </div>
+            <div class="col-span-4">
+              <app-custom-input formControlName="incYtdIdpt" label="Include Interdepartmental use in YTD drug usage" type="checkbox"
+                layout="horizontal">
+              </app-custom-input>
+            </div>
+            <div class="col-span-4">
+              <app-custom-input formControlName="averInvCost" [label]="'Update Average Unit Cost to last received unit cost when posting invoices'" type="checkbox"
+                layout="horizontal">
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input type="number" label="Primary Tax %" formControlName="primaryTax">
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input type="number" label="SecondaryTax %" formControlName="secondaryTax">
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input type="number" label="Primary Tax % (Discounted)" formControlName="primaryTaxdiscounted">
+              </app-custom-input>
+            </div>
+          </div>
+        </p-fieldset>
+        <p-fieldset legend="Clinical Settings">
+          <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
+            <div class="col-span-2">
+              <app-custom-input formControlName="isClinicalCheckingOn" type="checkbox" label="Clinical Checking On"
+                layout="horizontal">
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input formControlName="isDoseCheckingOn" type="checkbox" label="Dose Checking On" layout="horizontal">
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <p-radioButton name="primaryCodingSystem" formControlName="primaryCodingSystem" value="1" inputId="icd9"
+                label="ICD9">
+              </p-radioButton>
+              <label for="icd9" class="ml-2 mr-4 text-[#334155] font-semibold">ICD9</label>
         
-      </p-fieldset>
+              <p-radioButton name="primaryCodingSystem" formControlName="primaryCodingSystem" value="2" inputId="icd10"
+                label="ICD10">
+              </p-radioButton>
+              <label for="icd10" class="ml-2 text-[#334155] font-semibold">ICD10</label>
+            </div>
+          </div>
+        </p-fieldset>
+      </div>
 
 
       <p-fieldset legend="System Settings">

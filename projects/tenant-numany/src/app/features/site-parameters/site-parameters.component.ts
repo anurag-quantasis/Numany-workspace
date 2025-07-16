@@ -120,18 +120,44 @@ export class SiteParametersComponent implements OnInit {
       incMtdIdpt: [false
         // Include Interdepartmental use in MTD drug usage: boolean
       ],
-      ptax: [0, [
+      primaryTax: [0, [
         Validators.pattern(/^[0-9]+$/)
         // Primary Tax %: numeric, integer only
       ]],
-      stax: [0, [
+      secondaryTax: [0, [
         Validators.pattern(/^[0-9]+$/)
         // Secondary Tax %: numeric, integer only
       ]],
-      ptaxd: [0, [
+      primaryTaxdiscounted: [0, [
         Validators.pattern(/^[0-9]+$/)
         // Primary Tax % (Discounted): numeric, integer only
       ]],
+
+      // Clinical Settings
+      clinicalSystemType: ['0', [
+        Validators.required
+        // ClinicalSysType: "0"=Medispan Solution, "1"=First DataBank, "2"=Medispan Clinical
+      ]],
+      primaryCodingSystem: ['1', [
+        Validators.required
+        // PrimaryCodingSystem: "1"=ICD9, "2"=ICD10
+      ]],
+      isClinicalCheckingOn: [false
+        // Clinical Checking On: Boolean, maps to MSFLAG
+      ],
+      isDoseCheckingOn: [false
+        // Dose Checking On: Boolean, maps to MSPDC logic
+      ],
+      allowClinicalTechModify: [false
+        // Allow All ClinicalTechs Modify/DC access: Boolean, encoded in "Med Printer" field (first char)
+      ],
+      allowClinicalTechUcoView: [false
+        // Allow ClinicalTechs ViewOnly UCO List: Boolean, encoded in "Med Printer" field (second char)
+      ],
+
+
+
+
 
       // System Settings
       systemType: ['USA', [Validators.maxLength(3), Validators.pattern(/^(USA|CAN)$/)]],
@@ -160,14 +186,6 @@ export class SiteParametersComponent implements OnInit {
       bedProcessing: ['O', Validators.required],
       transactionProcessing: ['O', Validators.required],
       postDateProcessing: ['O', Validators.required],
-
-      // Clinical Settings
-      clinicalSystemType: ['0', Validators.required],
-      primaryCodingSystem: ['1', Validators.required],
-      isClinicalCheckingOn: [false],
-      isDoseCheckingOn: [false],
-      allowClinicalTechModify: [false],
-      allowClinicalTechUcoView: [false]
     });
   }
 
