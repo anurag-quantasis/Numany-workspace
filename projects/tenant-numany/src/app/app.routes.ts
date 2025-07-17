@@ -157,6 +157,13 @@ export const routes: Routes = [
             (m) => m.AlertFileMaintenanceComponent,
           ),
       },
+      {
+        path: 'database-users',
+        loadComponent: () =>
+          import('./features/database-users/database-users.component').then(
+            (m) => m.DatabaseUsersComponent,
+          ),
+      },
     ],
   },
 ];

@@ -512,6 +512,7 @@ export class HeaderBarComponent implements OnInit {
             label: 'Database Users',
             shortcut: 'alt.f u',
             shortcutHint: 'u',
+            route: '/database-users',
             command: () => {
               console.log('Ward/Bed Area Cost Centers');
             },
