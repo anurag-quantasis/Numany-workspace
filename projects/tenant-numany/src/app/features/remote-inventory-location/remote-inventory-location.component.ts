@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { DividerModule } from 'primeng/divider';
 import { CardModule } from 'primeng/card';
-import { SharedDataTableComponent, ColumnDef } from 'shared-ui';
+import { SharedDataTableComponent, ColumnDef, SharedPanelContainerComponent } from 'shared-ui';
 import { InventoryItem } from './remote-inventory-store/remote-inventory.model';
 import { RemoteInventoryLocationStore } from './remote-inventory-store/remote-inventory.store';
 import { ButtonModule } from 'primeng/button';
@@ -22,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedDataTableComponent,
     ButtonModule,
     ReactiveFormsModule,
-  ],
+    SharedPanelContainerComponent
+],
 })
 export class RemoteInventoryLocationComponent {
   remoteInventoryLocation: FormGroup;
