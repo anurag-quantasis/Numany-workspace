@@ -8,7 +8,21 @@
 
   <form [formGroup]="form" class="flex flex-col gap-8 mx-5">
     <!-- Filter Dropdown -->
-    <div class="w-[220px]">
+    <!-- <div class="w-[410px]">
+      <p-select
+        formControlName="selectedOption"
+        [options]="dropdownOptions"
+        optionLabel="name"
+        placeholder="Choose an option"
+        class="w-full"
+      ></p-select>
+    </div> -->
+
+    <!-- Main Fields -->
+    <div class="border border-grey-200 p-4.5 mt-1 rounded-md">
+
+    <!-- Filter Dropdown -->
+    <div class="w-[390px] mt-2 mb-4">
       <p-select
         formControlName="selectedOption"
         [options]="dropdownOptions"
@@ -18,8 +32,6 @@
       ></p-select>
     </div>
 
-    <!-- Main Fields -->
-    <div class="border border-grey-200 p-4.5 mt-1 rounded-md">
       <!-- Type, Name, Address, City -->
       <div class="grid grid-cols-4 gap-6">
         <app-custom-input
@@ -101,7 +113,7 @@
             [options]="chargeClassLookup"
             optionLabel="label"
             placeholder="Select Charge Class"
-            class="w-full"
+            class="w-[390px]"
           ></p-select>
         </div>
       </div>
@@ -109,9 +121,9 @@
 
     <!-- Buttons -->
     <div class="flex justify-end gap-4 mb-1">
-      <p-button label="Add" (onClick)="onAdd()" variant="outlined" severity="success"></p-button>
-      <p-button label="Delete" (onClick)="onDelete()" variant="outlined" severity="danger"></p-button>
-      <p-button label="Update" (onClick)="onUpdate()" variant="outlined" severity="info"></p-button>
+      <p-button label="Add" (onClick)="onAdd()" variant="outlined" severity="success" icon="pi pi-plus"></p-button>
+      <p-button label="Delete" (onClick)="onDelete()" variant="outlined" severity="danger" icon="pi pi-trash"></p-button>
+      <p-button label="Update" (onClick)="onUpdate()" variant="outlined" severity="info" icon="pi pi-check"></p-button>
     </div>
   </form>
 </shared-panel-container>

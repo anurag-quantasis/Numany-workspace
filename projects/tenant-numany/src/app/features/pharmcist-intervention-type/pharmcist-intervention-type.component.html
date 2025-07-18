@@ -3,27 +3,25 @@
   <h2 class="mt-3 text-lg text-gray-700">Select Intervention Type to Modify</h2>
 
   <div [formGroup]="interventionForm" class="mt-5 pr-5 text-left w-full">
-    <div class="grid grid-cols-2 gap-x-20 justify-items-start w-full">
-<p-dropdown
-  formControlName="selectedIntervention"
-  [options]="interventionOptions"
-  optionLabel="name"
-  placeholder="Select Intervention"
-  class="w-full mb-3"
->
-  <ng-template let-option pTemplate="item">
-    <div class="flex justify-between w-full">
-      <span>{{ option.name }}</span>
-      <span class="text-gray-500 ml-4">{{ option.id }}</span>
-    </div>
-  </ng-template>
-</p-dropdown>
-
-
-    </div>
-
     <div class="border border-grey-200 p-4 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4">
-      <div class="flex gap-10">
+      <div class="grid grid-cols-2 gap-x-20 justify-items-start w-full col-span-4">
+        <p-dropdown
+          formControlName="selectedIntervention"
+          [options]="interventionOptions"
+          optionLabel="name"
+          placeholder="Select Intervention"
+          class="w-[475px] mb-3"
+        >
+          <ng-template let-option pTemplate="item">
+            <div class="flex justify-between w-full">
+              <span>{{ option.name }}</span>
+              <span class="text-gray-500 ml-4">{{ option.id }}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="flex gap-10 col-span-4">
         <div class="flex flex-col items-start gap-4 mb-6">
           <label class="text-lg font-medium text-gray-700 w-10">ID</label>
           <input
@@ -42,11 +40,11 @@
             pInputText
             formControlName="Description"
             placeholder="Enter activity description"
-            class="w-[450px]"
+            class="w-[475px] ml2"
           />
         </div>
 
-        <div class="flex items-center ml-3 mt-3">
+        <div class="flex items-center mt-3.5">
           <p-checkbox formControlName="PI_Hide" [binary]="true"></p-checkbox>
           <label class="ml-2 text-gray-700 cursor-pointer">Hide</label>
         </div>
