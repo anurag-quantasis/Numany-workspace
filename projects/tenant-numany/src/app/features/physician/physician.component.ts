@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
 
 interface Physician {
-  id: number | string;
+  id: string;
   name: string;
   address: string;
   city: string;
@@ -19,15 +19,15 @@ interface Physician {
   license: string;
   UPIN: string;
   npi: string;
-  fax: string;
-  medicad: string;
+  medicare: string;
+  medicaId: string;
   localid: string;
   isHidden: boolean;
   isPrescriber: boolean;
 }
 
 @Component({
-  selector: 'main-physician',
+  selector: 'tenant-physician',
   standalone: true,
   imports: [
     CommonModule,
@@ -40,16 +40,15 @@ interface Physician {
     CustomInputComponent,
   ],
   templateUrl: './physician.component.html',
-  styleUrls: ['./physician.component.css'],
+  styleUrls: ['./physician.component.css']
 })
 export class PhysicianComponent implements OnInit {
   physician!: FormGroup;
-  // Store doctors locally
   doctors: Physician[] = [];
 
   names = [
-    { name: 'Dr. Smith', id: 1 },
-    { name: 'Dr. Jones', id: 2 },
+    { name: 'Dr. Smith', id: '1' },
+    { name: 'Dr. Jones', id: '2' }
   ];
 
   constructor(private fb: FormBuilder) {}
@@ -57,119 +56,95 @@ export class PhysicianComponent implements OnInit {
   ngOnInit(): void {
     this.physician = this.fb.group({
       selectedName: [null],
-      id: [''],
+      id: ['', [Validators.required, Validators.maxLength(10)]],
       isHidden: [false],
       isPrescriber: [false],
-      name: [''],
-      address: [''],
-      city: [''],
-      state: [''],
-      zip: [''],
-      DEA: [''],
-      phone: [''],
-      license: [''],
-      UPIN: [''],
-      npi: [''],
-      medicare: [''],
-      medicaId: [''],
-      localid: [''],
+      name: ['', [Validators.required, Validators.maxLength(30)]],
+      address: ['', Validators.maxLength(50)],
+      city: ['', Validators.maxLength(50)],
+      state: ['', Validators.maxLength(2)],
+      zip: ['', Validators.maxLength(20)],
+      DEA: ['', Validators.maxLength(50)],
+      phone: ['', Validators.maxLength(14)],
+      license: ['', Validators.maxLength(20)],
+      UPIN: ['', Validators.maxLength(20)],
+      npi: ['', Validators.maxLength(20)],
+      medicare: ['', Validators.maxLength(20)],
+      medicaId: ['', Validators.maxLength(20)],
+      localid: ['', Validators.maxLength(20)]
     });
   }
 
-  // Add a new physician to the list
   onAdd(): void {
     const formValue = this.physician.value;
-    if (!formValue.name) {
-      alert('Name is required to add a physician.');
+
+    if (!formValue.id || !formValue.name) {
+      alert('Doctor ID and Name are required.');
       return;
     }
-    // Simple id generation if empty or duplicate
-    const newId =
-      formValue.id || (this.doctors.length ? Math.max(...this.doctors.map((d) => +d.id)) + 1 : 1);
-    const exists = this.doctors.find((d) => d.id == newId);
+
+    const exists = this.doctors.find((d) => d.id === formValue.id);
     if (exists) {
-      alert(`Physician with ID ${newId} already exists. Use update instead.`);
+      alert(`Physician with ID ${formValue.id} already exists. Use Update instead.`);
       return;
     }
 
-    const newPhysician: Physician = {
-      id: newId,
-      name: formValue.name,
-      address: formValue.address,
-      city: formValue.city,
-      state: formValue.state,
-      zip: formValue.zip,
-      DEA: formValue.DEA,
-      phone: formValue.phone,
-      license: formValue.license,
-      UPIN: formValue.UPIN,
-      npi: formValue.npi,
-      fax: formValue.fax,
-      medicad: formValue.medicad,
-      localid: formValue.localid,
-      isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber,
-    };
-
-    this.doctors.push(newPhysician);
+    const newDoctor: Physician = { ...formValue };
+    this.doctors.push(newDoctor);
     alert('Physician added successfully!');
     this.physician.reset();
   }
 
-  // Update existing physician by id
   onUpdate(): void {
     const formValue = this.physician.value;
-    const id = formValue.id;
-    if (!id) {
-      alert('ID is required to update a physician.');
+    const doctor = this.doctors.find((d) => d.id === formValue.id);
+
+    if (!doctor) {
+      alert(`Physician with ID ${formValue.id} not found.`);
       return;
     }
 
-    const index = this.doctors.findIndex((d) => d.id == id);
-    if (index === -1) {
-      alert(`Physician with ID ${id} not found.`);
-      return;
-    }
-
-    this.doctors[index] = {
-      id: id,
-      name: formValue.name,
-      address: formValue.address,
-      city: formValue.city,
-      state: formValue.state,
-      zip: formValue.zip,
-      DEA: formValue.DEA,
-      phone: formValue.phone,
-      license: formValue.license,
-      UPIN: formValue.UPIN,
-      npi: formValue.npi,
-      fax: formValue.fax,
-      medicad: formValue.medicad,
-      localid: formValue.localid,
-      isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber,
-    };
-
+    Object.assign(doctor, formValue);
     alert('Physician updated successfully!');
     this.physician.reset();
   }
 
-  // Delete physician by id
   onDelete(): void {
     const id = this.physician.value.id;
+
     if (!id) {
       alert('ID is required to delete a physician.');
       return;
     }
 
-    const index = this.doctors.findIndex((d) => d.id == id);
+    const index = this.doctors.findIndex((d) => d.id === id);
     if (index === -1) {
       alert(`Physician with ID ${id} not found.`);
       return;
     }
 
-    this.doctors.splice(index, 1);
-    alert('Physician deleted successfully!');
-    this.physician.reset();
+    // Simulate backend reference check
+    if (this.isPhysicianReferenced(id)) {
+      alert('Cannot delete physician. This doctor is referenced in patient or order records.');
+      return;
+    }
+
+    const visibleDoctors = this.doctors.filter((d) => !d.isHidden);
+    if (visibleDoctors.length === 1 && !this.doctors[index].isHidden) {
+      alert('Cannot delete the last visible physician.');
+      return;
+    }
+
+    if (confirm('Are you sure you want to delete this physician?')) {
+      this.doctors.splice(index, 1);
+      alert('Physician deleted successfully.');
+      this.physician.reset();
+    }
+  }
+
+  isPhysicianReferenced(id: string): boolean {
+    // Replace this logic with actual service/database call
+    const referencedDoctorIds = ['1', '2']; // mock
+    return referencedDoctorIds.includes(id);
   }
 }

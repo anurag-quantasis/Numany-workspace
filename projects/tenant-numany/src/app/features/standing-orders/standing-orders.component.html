@@ -5,10 +5,11 @@
 
   <main class="mx-20">
     <form [formGroup]="form" class="flex flex-col justify-start items-center gap-x-5">
-      <div>
+      <!-- <div>
         <h1 class="mb-5 text-[24px]">Standing Order Name</h1>
-      </div>
+      </div> -->
 
+ <p-fieldset legend="Standing Order Name">     
       <section class="grid grid-cols-5 gap-5">
         <ng-container *ngFor="let i of [].constructor(25); let idx = index">
           <input
@@ -20,6 +21,7 @@
           />
         </ng-container>
       </section>
+          </p-fieldset>
     </form>
 
     <section>
@@ -94,6 +96,8 @@
           Cancel
         </p-button>
       </div>
+
+
     </section>
   </main>
 </shared-panel-container>

@@ -9,13 +9,13 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
-import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { SharedPanelContainerComponent } from 'shared-ui';
 import { CustomInputComponent } from 'shared-ui';
+import { Fieldset } from "primeng/fieldset";
 
 @Component({
   selector: 'tenant-vendor-supplier',
@@ -25,13 +25,13 @@ import { CustomInputComponent } from 'shared-ui';
     ReactiveFormsModule,
     FormsModule,
     SelectModule,
-    DividerModule,
     InputTextModule,
     TextareaModule,
     ButtonModule,
     SharedPanelContainerComponent,
     CustomInputComponent,
-  ],
+    Fieldset
+],
   templateUrl: './vendor-supplier.component.html',
   styleUrls: ['./vendor-supplier.component.css'],
 })

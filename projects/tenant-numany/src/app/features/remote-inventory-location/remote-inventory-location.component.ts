@@ -11,7 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-remote-inventory-location',
+  selector: 'tenant-remote-inventory-location',
   standalone: true,
   templateUrl: './remote-inventory-location.component.html',
   imports: [

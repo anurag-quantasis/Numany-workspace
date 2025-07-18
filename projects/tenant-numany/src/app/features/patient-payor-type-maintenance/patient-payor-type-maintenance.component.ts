@@ -6,6 +6,7 @@ import {
   AsyncValidatorFn,
   AbstractControl,
   ReactiveFormsModule,
+  RequiredValidator,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
@@ -13,11 +14,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 import { Select } from 'primeng/select';
+import { Checkbox } from 'primeng/checkbox';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-patient-payor-type-maintenance',
+  selector: 'tenant-patient-payor-type-maintenance',
   standalone: true,
   imports: [
     CommonModule,
@@ -27,14 +29,12 @@ import { delay, map } from 'rxjs/operators';
     CustomInputComponent,
     ButtonModule,
     Select,
-    SharedPanelContainerComponent,
-  ],
+    SharedPanelContainerComponent
+],
   templateUrl: './patient-payor-type-maintenance.component.html',
 })
 export class PatientPayorTypeMaintenanceComponent implements OnInit {
   form!: FormGroup;
-  chargeClassLookup = ['GEN01', 'VIP01', 'MED01', 'CC01'];
-  existingPayorIDs = ['A001', 'B002', 'C003'];
 
   dropdownOptions = [
     { name: 'All Records', code: 'ALL' },
@@ -42,7 +42,14 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     { name: 'Inactive Records', code: 'INACTIVE' },
   ];
 
-  choiceOptions = [{ choice: 'AV' }, { choice: 'AW' }, { choice: 'CC' }, { choice: 'PC' }];
+  chargeClassLookup = [
+    { label: 'GEN01', value: 'GEN01' },
+    { label: 'VIP01', value: 'VIP01' },
+    { label: 'MED01', value: 'MED01' },
+    { label: 'CC01', value: 'CC01' }
+  ];
+
+  existingPayorIDs = ['A001', 'B002', 'C003'];
 
   constructor(private fb: FormBuilder) {}
 
@@ -68,20 +75,20 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
       izppy: ['', Validators.maxLength(10)],
       iphpy: [
         '',
-        [Validators.pattern(/^[0-9]{10}$/), Validators.minLength(10), Validators.maxLength(10)],
+        [Validators.pattern(/^[0-9]{10}$/), Validators.minLength(14), Validators.maxLength(14)],
       ],
       imspy: ['', Validators.maxLength(80)],
       ipycb: ['', [Validators.maxLength(2), Validators.pattern(/^(AV|AW|CC|PC)?$/)]],
-      iccpy: ['', Validators.maxLength(6)],
-      nonemarpay: [false],
-      choiceOption: [null],
+      iccpy: ['', Validators.maxLength(6) ],
+
+      medErrorSeverity: [''],
+      medErrorClass: [''],
     });
 
-    // Auto-fill idpay and nampay when dropdown changes
     this.form.get('selectedOption')?.valueChanges.subscribe((selected) => {
       if (selected?.name && selected?.code) {
         this.form.patchValue({
-          idpay: selected.code.slice(0, 2).toUpperCase(),
+          idpay: selected.code.slice(0, 4).toUpperCase(),
           nampay: selected.name,
         });
       }
@@ -105,7 +112,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     }
 
     const chargeClass = this.form.get('iccpy')?.value;
-    if (chargeClass && !this.chargeClassLookup.includes(chargeClass)) {
+    if (!this.chargeClassLookup.find(c => c.value === chargeClass)) {
       alert('Invalid charge class. Please select a valid one.');
       return;
     }
@@ -123,7 +130,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     }
 
     const chargeClass = this.form.get('iccpy')?.value;
-    if (chargeClass && !this.chargeClassLookup.includes(chargeClass)) {
+    if (!this.chargeClassLookup.find(c => c.value === chargeClass)) {
       alert('Invalid charge class. Please select a valid one.');
       return;
     }
