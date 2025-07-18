@@ -5,6 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
+import { CustomInputComponent } from "shared-ui";
 
 @Component({
   selector: 'tenant-pharmacist-intervention-type-maintenance',
@@ -17,7 +18,8 @@ import { ButtonModule } from 'primeng/button';
     CheckboxModule,
     ButtonModule,
     CommonModule,
-  ],
+    CustomInputComponent
+],
   templateUrl: './pharmacist-intervention-type-maintenance.component.html',
   styleUrl: './pharmacist-intervention-type-maintenance.component.css',
 })
