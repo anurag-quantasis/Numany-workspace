@@ -1,30 +1,154 @@
 <shared-panel-container>
   <h1 class="text-xl font-semibold py-2">Alert Classes</h1>
-  <shared-data-table
-    [columns]="alertClassesColumns"
-    [data]="alertClasses"
-    [loading]="alertClassesLoading"
-    [totalRecords]="alertClassesTotalRecords"
-  >
-  </shared-data-table>
-  <div class="flex justify-end items-center gap-4 mt-4">
-    <p-button label="Add New Class" icon="pi pi-plus"></p-button>
-    <p-button
-      label="Update Class"
-      icon="pi pi-pencil"
-      severity="info"
-      variant="outlined"
-    ></p-button>
-    <p-button
-      label="Delete Class"
-      icon="pi pi-trash"
-      severity="danger"
-      variant="outlined"
-    ></p-button>
+
+  <!-- Flex container for table and side buttons -->
+  <div class="flex gap-4">
+    <!-- Table takes up remaining space -->
+    <div class="flex-grow overflow-x-auto">
+      <!-- PrimeNG Editable Table with Reactive Forms -->
+      <form [formGroup]="alertClassesForm">
+        <p-table
+          [value]="classes.controls"
+          [loading]="alertClassesLoading"
+          editMode="cell"
+          formArrayName="classes"
+          styleClass="p-datatable-gridlines"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          (onCellEditComplete)="onCellEditComplete($event)"
+          [scrollable]="true"
+          scrollHeight="14rem"
+          selectionMode="single"
+          [(selection)]="selectedClass"
+          dataKey="value.id"
+          showGridlines
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <!-- Added min-width to each header -->
+              <th style="min-width: 50px">Class Name</th>
+              <th style="min-width: 150px">Msg Name</th>
+              <th style="min-width: 250px">Message</th>
+              <th style="min-width: 120px">Check Type</th>
+              <th style="min-width: 120px">Check Field</th>
+              <th style="min-width: 120px">Criteria</th>
+              <th style="min-width: 100px">Value 1</th>
+              <th style="min-width: 100px">Value 2</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-classGroup let-i="rowIndex">
+            <tr [formGroupName]="i" [pSelectableRow]="classGroup">
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" formControlName="class_name" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('class_name')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" formControlName="msg_name" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('msg_name')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" formControlName="message" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('message')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="number" formControlName="check_type" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('check_type')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" formControlName="check_field" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('check_field')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" formControlName="criteria" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('criteria')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="number" formControlName="value_1" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('value_1')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="number" formControlName="value_2" class="w-full" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ classGroup.get('value_2')?.value }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </form>
+      <div class="flex my-4 justify-between items-center gap-4">
+        <div class="flex justify-center items-center gap-x-4">
+          <label for="" class="font-medium">Add Meds by AHFS Class</label>
+          <p-select appendTo="body" [options]="ahfsClassOptions"></p-select>
+        </div>
+        <div class="flex justify-center items-center gap-4">
+          <p-button label="Add New Class" icon="pi pi-plus" (click)="addNewClass()"></p-button>
+          <p-button
+            label="Update Class"
+            icon="pi pi-save"
+            severity="info"
+            variant="outlined"
+          ></p-button>
+          <p-button
+            label="Delete Class"
+            icon="pi pi-trash"
+            severity="danger"
+            [disabled]="!selectedClass"
+            (click)="deleteSelectedClass()"
+            variant="outlined"
+          ></p-button>
+        </div>
+      </div>
+    </div>
   </div>
-</shared-panel-container>
-<shared-panel-container>
-  <!-- <hr class="text-gray-300 my-10"> -->
+
+  <!-- <hr class="text-gray-300 my-10" /> -->
+
   <h1 class="text-xl font-semibold py-2">Alert Matrix</h1>
   <shared-data-table
     [columns]="alertMatrixColumns"

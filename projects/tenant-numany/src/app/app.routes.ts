@@ -81,7 +81,9 @@ export const routes: Routes = [
       {
         path: 'site-parameters',
         loadComponent: () =>
-          import('./features/site-parameters/site-parameters.component').then((m) => m.SiteParametersComponent),
+          import('./features/site-parameters/site-parameters.component').then(
+            (m) => m.SiteParametersComponent,
+          ),
       },
       {
         path: 'pharmacist-intervention-type-maintainance',

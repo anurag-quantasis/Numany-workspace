@@ -1,0 +1,94 @@
+<div class="p-4 border-round shadow-2 bg-white">
+  <h2 class="text-xl font-semibold mt-0 mb-4">Manage Inventory Locations</h2>
+
+  <!-- The form wraps the table and the submit button -->
+  <form [formGroup]="inventoryForm" (ngSubmit)="saveInventory()">
+    <p-table
+      [value]="locations.controls"
+      formArrayName="locations"
+      styleClass="p-datatable-gridlines"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 25%">Location ID</th>
+          <th style="width: 20%">BIN</th>
+          <th style="width: 15%">Qty Load</th>
+          <th style="width: 20%">Last Uploaded</th>
+          <th style="width: 15%">Expires</th>
+          <th style="width: 5rem">Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-locationGroup let-i="rowIndex">
+        <!-- Each row is bound to its FormGroup within the FormArray -->
+        <tr [formGroupName]="i">
+          <td>
+            <!-- Location ID Dropdown -->
+            <p-dropdown
+              [options]="locationOptions"
+              formControlName="locationId"
+              optionLabel="name"
+              optionValue="code"
+              placeholder="Select a Location"
+              styleClass="w-full"
+              [showClear]="true"
+              appendTo="body"
+            ></p-dropdown>
+          </td>
+          <td>
+            <!-- BIN Text Input -->
+            <input pInputText formControlName="bin" class="w-full" />
+          </td>
+          <td>
+            <!-- Qty Load Numeric Input -->
+            <input pInputText type="number" formControlName="qtyLoad" class="w-full" />
+          </td>
+          <td>
+            <!-- Last Uploaded Date Input -->
+            <input pInputText type="date" formControlName="lastUploaded" class="w-full" />
+          </td>
+          <td>
+            <!-- Expires Date Input -->
+            <input pInputText type="date" formControlName="expires" class="w-full" />
+          </td>
+          <td class="text-center">
+            <!-- Delete Button -->
+            <p-button
+              icon="pi pi-trash"
+              pTooltip="Delete Row"
+              tooltipPosition="top"
+              severity="danger"
+              [text]="true"
+              (click)="deleteLocation(i)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Message to show when the table is empty -->
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center p-4">
+            No locations added. Click 'Add Location' to begin.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- Action buttons below the table -->
+    <div class="flex justify-end mt-4 gap-4">
+      <p-button
+        label="Add Location"
+        icon="pi pi-plus"
+        (click)="addLocation()"
+        [outlined]="true"
+      ></p-button>
+      <p-button
+        label="Update Inventory"
+        icon="pi pi-save"
+        type="submit"
+        [disabled]="locations.length === 0"
+      ></p-button>
+    </div>
+  </form>
+</div>

@@ -14,6 +14,7 @@ import { RouteOfAdministrationComponent } from '../../../features/route-of-admin
 import { PharmcistInterventionTypeComponent } from '../../../features/pharmcist-intervention-type/pharmcist-intervention-type.component';
 import { PharmcistInterventionTypeMaintainanceComponent } from '../../../features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance';
 import { PharmacistInterventionTypeMaintenanceComponent } from '../../../features/pharmacist-intervention-type-maintenance/pharmacist-intervention-type-maintenance.component';
+import { UiDialogService } from '../../../core/services/ui-dialog.service';
 
 interface CustomMenuItem extends MenuItem {
   shortcut?: string; // e.g., 'Ctrl+S'
@@ -31,6 +32,7 @@ interface CustomMenuItem extends MenuItem {
     BadgeModule,
     InputTextModule,
     ShortcutDirective,
+    DynamicDialogModule,
   ],
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.css',
@@ -38,7 +40,7 @@ interface CustomMenuItem extends MenuItem {
 export class HeaderBarComponent implements OnInit {
   items: CustomMenuItem[] = [];
   ref: DynamicDialogRef | undefined;
-  private dialogService = inject(DialogService);
+  private uiDialogService = inject(UiDialogService);
   ngOnInit() {
     this.items = [
       // UCO List
@@ -370,7 +372,10 @@ export class HeaderBarComponent implements OnInit {
                     shortcut: 'alt.f x',
                     shortcutHint: 'x',
                     command: () => {
-                      this.openDialog(ExpiredMedReportComponent, 'Drug Expiration Report');
+                      this.uiDialogService.open(
+                        ExpiredMedReportComponent,
+                        'Drug Expiration Report',
+                      );
                     },
                   },
                   {
@@ -378,7 +383,7 @@ export class HeaderBarComponent implements OnInit {
                     shortcut: 'alt.f m',
                     shortcutHint: 'm',
                     command: () => {
-                      this.openDialog(ModifyDateComponent, 'Update Expiration Date');
+                      this.uiDialogService.open(ModifyDateComponent, 'Update Expiration Date');
                     },
                   },
                 ],
@@ -428,7 +433,7 @@ export class HeaderBarComponent implements OnInit {
                 label: 'Intervention Data Classes',
                 command: () => {
                   console.log('pharmacist-intervention-type-maintenance');
-                  this.openDialog(
+                  this.uiDialogService.open(
                     PharmacistInterventionTypeMaintenanceComponent,
                     'Pharmacist Intervention Table',
                   );
@@ -460,7 +465,7 @@ export class HeaderBarComponent implements OnInit {
             shortcutHint: 'R',
             // route: '/route-of-codes',
             command: () => {
-              this.openDialog(RouteOfAdministrationComponent, 'Route of Administration');
+              this.uiDialogService.open(RouteOfAdministrationComponent, 'Route of Administration');
             },
           },
           {
@@ -631,27 +636,29 @@ export class HeaderBarComponent implements OnInit {
     ];
   }
 
-  openDialog(component: any, headerText: string) {
-    this.ref = this.dialogService.open(component, {
-      header: headerText,
-      contentStyle: { 'max-height': '500px', overflow: 'auto' },
-      baseZIndex: 10000,
-      maximizable: false,
-      closeOnEscape: true,
-      closable: true,
-      dismissableMask: true,
-      focusTrap: true,
-      modal: true,
-    });
+  // openDialog(component: any, headerText: string) {
+  //   this.ref = this.dialogService.open(component, {
+  //     header: headerText,
+  //     contentStyle: { 'max-height': '500px', overflow: 'auto' },
+  //     baseZIndex: 10000,
+  //     maximizable: false,
+  //     closeOnEscape: true,
+  //     closable: true,
+  //     dismissableMask: true,
+  //     focusTrap: true,
+  //     modal: true,
+  //   });
 
-    // Optional: Subscribe to the dialog closing event to get data back
-    this.ref.onClose.subscribe((data: any) => {
-      if (data) {
-        console.log('Dialog closed with data:', data);
-        // e.g., show a toast message: this.messageService.add(...)
-      }
-    });
-  }
+  //   // Optional: Subscribe to the dialog closing event to get data back
+  //  if (this.ref) {
+  //   this.ref.onClose.subscribe((data: any) => {
+  //     if (data) {
+  //       console.log('Dialog closed with data:', data);
+  //       // e.g., show a toast message: this.messageService.add(...)
+  //     }
+  //   });
+  // }
+  // }
 
   // This handler is crucial to preserve the original 'command' functionality
   handleItemClick(event: MouseEvent, item: CustomMenuItem) {

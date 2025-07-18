@@ -16,28 +16,42 @@
         <div>
           <p-fieldset legend="Department Information">
             <div class="grid grid-cols-4 gap-4">
-          <app-custom-input label="Id" type="text" formControlName="id" />
-        <app-custom-input label="Name" type="text" formControlName="name" />
-        <app-custom-input type="text" label="Address" formControlName="address" />
-        <app-custom-input type="text" label="City" formControlName="city" />
-        <app-custom-input type="text" label="State" formControlName="state" />
-        <app-custom-input type="number" label="Zip" formControlName="zip" />
-        <app-custom-input type="text" label="Phone" formControlName="phone" />
-        </div>
-        </p-fieldset>
-       <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4">
-         <app-custom-input type="text" label="Note" formControlName="note" />
-        <app-custom-input type="text" label="Cost Basis" formControlName="cost_basis" />
-        <app-custom-input type="text" label="Markup" formControlName="markup" />
-        <app-custom-input type="text" label="Tax Flag" formControlName="tax_flag" />
-       </div>
+              <app-custom-input label="Id" type="text" formControlName="id" />
+              <app-custom-input label="Name" type="text" formControlName="name" />
+              <app-custom-input type="text" label="Address" formControlName="address" />
+              <app-custom-input type="text" label="City" formControlName="city" />
+              <app-custom-input type="text" label="State" formControlName="state" />
+              <app-custom-input type="number" label="Zip" formControlName="zip" />
+              <app-custom-input type="text" label="Phone" formControlName="phone" />
+            </div>
+          </p-fieldset>
+          <div
+            class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
+          >
+            <app-custom-input type="text" label="Note" formControlName="note" />
+            <app-custom-input type="text" label="Cost Basis" formControlName="cost_basis" />
+            <app-custom-input type="text" label="Markup" formControlName="markup" />
+            <app-custom-input type="text" label="Tax Flag" formControlName="tax_flag" />
+          </div>
         </div>
       </section>
     </form>
     <div class="flex justify-center items-center gap-x-4 my-5">
       <p-button (click)="resetForm()" [shortcut]="'alt.a'" icon="pi pi-plus" label="Add"></p-button>
-      <p-button [shortcut]="'alt.u'" icon="pi pi-check" label="Update" variant="outlined" severity="info"></p-button>
-      <p-button [shortcut]="'alt.d'" icon="pi pi-trash" label="Delete" variant="outlined" severity="danger"></p-button>
+      <p-button
+        [shortcut]="'alt.u'"
+        icon="pi pi-check"
+        label="Update"
+        variant="outlined"
+        severity="info"
+      ></p-button>
+      <p-button
+        [shortcut]="'alt.d'"
+        icon="pi pi-trash"
+        label="Delete"
+        variant="outlined"
+        severity="danger"
+      ></p-button>
     </div>
   </main>
 </shared-panel-container>
