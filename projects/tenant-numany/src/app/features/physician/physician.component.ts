@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
@@ -6,25 +6,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
-
-interface Physician {
-  id: number | string;
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  DEA: string;
-  phone: string;
-  license: string;
-  UPIN: string;
-  npi: string;
-  fax: string;
-  medicad: string;
-  localid: string;
-  isHidden: boolean;
-  isPrescriber: boolean;
-}
+import { PhysicianStore } from './physician-store/physician.store';
+import { Physician } from './physician-store/physician.model';
 
 @Component({
   selector: 'main-physician',
@@ -41,135 +24,131 @@ interface Physician {
   ],
   templateUrl: './physician.component.html',
   styleUrls: ['./physician.component.css'],
+  providers: [PhysicianStore],
 })
 export class PhysicianComponent implements OnInit {
+  readonly store = inject(PhysicianStore);
+  private fb = inject(FormBuilder);
   physician!: FormGroup;
   // Store doctors locally
   doctors: Physician[] = [];
+  isAddMode = signal(false);
 
-  names = [
-    { name: 'Dr. Smith', id: 1 },
-    { name: 'Dr. Jones', id: 2 },
-  ];
-
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.physician = this.fb.group({
-      selectedName: [null],
-      id: [''],
-      isHidden: [false],
-      isPrescriber: [false],
-      name: [''],
-      address: [''],
-      city: [''],
-      state: [''],
-      zip: [''],
-      DEA: [''],
-      phone: [''],
-      license: [''],
-      UPIN: [''],
-      npi: [''],
-      medicare: [''],
-      medicaId: [''],
-      localid: [''],
+  constructor() {
+    effect(() => {
+      const selectedId = this.physician?.get('selectedName')?.value;
+      if (selectedId && !this.isAddMode()) {
+        this.isAddMode.set(false); // A selection was made, so we are not in "Add" mode
+        const physicianData = this.store.physician().find((p) => p.id_doc === selectedId);
+        if (physicianData) {
+          this.physician.patchValue(physicianData);
+        }
+      }
+    });
+    effect(() => {
+      const physicians = this.store.physician();
+      const selectedId = this.physician?.get('selectedName')?.value;
+      if (selectedId && !physicians.some((p) => p.id_doc === selectedId)) {
+        this.resetForm(false); // Reset without entering add mode
+      }
     });
   }
 
-  // Add a new physician to the list
-  onAdd(): void {
-    const formValue = this.physician.value;
-    if (!formValue.name) {
-      alert('Name is required to add a physician.');
-      return;
-    }
-    // Simple id generation if empty or duplicate
-    const newId =
-      formValue.id || (this.doctors.length ? Math.max(...this.doctors.map((d) => +d.id)) + 1 : 1);
-    const exists = this.doctors.find((d) => d.id == newId);
-    if (exists) {
-      alert(`Physician with ID ${newId} already exists. Use update instead.`);
-      return;
-    }
+  ngOnInit(): void {
+    this.initializeForm();
+    this.store.loadPhysician(); // Load the initial list of physicians
 
-    const newPhysician: Physician = {
-      id: newId,
-      name: formValue.name,
-      address: formValue.address,
-      city: formValue.city,
-      state: formValue.state,
-      zip: formValue.zip,
-      DEA: formValue.DEA,
-      phone: formValue.phone,
-      license: formValue.license,
-      UPIN: formValue.UPIN,
-      npi: formValue.npi,
-      fax: formValue.fax,
-      medicad: formValue.medicad,
-      localid: formValue.localid,
-      isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber,
-    };
-
-    this.doctors.push(newPhysician);
-    alert('Physician added successfully!');
-    this.physician.reset();
+    // Listen to changes in the dropdown selection
+    this.physician.get('selectedName')?.valueChanges.subscribe((id) => {
+      if (!id) {
+        this.resetForm(false);
+      }
+    });
   }
 
-  // Update existing physician by id
+  private initializeForm(): void {
+    this.physician = this.fb.group({
+      selectedName: [null], // This control drives the selection
+      id_doc: [{ value: '', disabled: true }], // ID should often be non-editable
+      hide_dr: [false],
+      e_rx_yn: [false],
+      nam_doc: [''],
+      adr_doc: [''],
+      cty_doc: [''],
+      st_doc: [''],
+      zip_doc: [''],
+      dea_no: [''],
+      phone: [''],
+      st_lic: [''],
+      up_in: [''],
+      npi: [''],
+      m_care_dr: [''],
+      m_caid_dr: [''],
+      local_id: [''],
+    });
+  }
+
+  private resetForm(enterAddMode: boolean): void {
+    this.physician.reset({
+      id_doc: '',
+      hide_dr: false,
+      e_rx_yn: false,
+    });
+    // This part is crucial for setting the mode
+    this.isAddMode.set(enterAddMode);
+
+    if (enterAddMode) {
+      this.physician.get('id_doc')?.enable();
+    } else {
+      this.physician.get('id_doc')?.disable();
+    }
+  }
+  // --- Event Handlers ---
+
+  enterAddMode(): void {
+    this.resetForm(true);
+  }
+
+  cancelAddMode(): void {
+    this.resetForm(false);
+  }
+
   onUpdate(): void {
-    const formValue = this.physician.value;
-    const id = formValue.id;
-    if (!id) {
-      alert('ID is required to update a physician.');
+    // MODIFIED: Destructure the raw value to separate the UI-only control from the data payload
+    const { selectedName, ...physicianPayload } = this.physician.getRawValue();
+
+    if (!physicianPayload.id_doc) {
+      alert('Please select a physician to update.');
       return;
     }
-
-    const index = this.doctors.findIndex((d) => d.id == id);
-    if (index === -1) {
-      alert(`Physician with ID ${id} not found.`);
-      return;
-    }
-
-    this.doctors[index] = {
-      id: id,
-      name: formValue.name,
-      address: formValue.address,
-      city: formValue.city,
-      state: formValue.state,
-      zip: formValue.zip,
-      DEA: formValue.DEA,
-      phone: formValue.phone,
-      license: formValue.license,
-      UPIN: formValue.UPIN,
-      npi: formValue.npi,
-      fax: formValue.fax,
-      medicad: formValue.medicad,
-      localid: formValue.localid,
-      isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber,
-    };
-
-    alert('Physician updated successfully!');
-    this.physician.reset();
+    // The store receives a clean object without the 'selectedName' property
+    this.store.updatePhysician(physicianPayload as Physician);
   }
 
-  // Delete physician by id
   onDelete(): void {
-    const id = this.physician.value.id;
-    if (!id) {
-      alert('ID is required to delete a physician.');
+    const physicianId = this.physician.get('id_doc')?.value;
+    if (!physicianId) {
+      alert('Please select a physician to delete.');
+      return;
+    }
+    if (confirm('Are you sure you want to delete this physician?')) {
+      this.store.deletePhysician(physicianId);
+    }
+  }
+
+  onSave(): void {
+    if (this.physician.invalid) {
+      alert('Please fill out all required fields.');
       return;
     }
 
-    const index = this.doctors.findIndex((d) => d.id == id);
-    if (index === -1) {
-      alert(`Physician with ID ${id} not found.`);
-      return;
-    }
+    // MODIFIED: Use the same destructuring technique to create a clean payload
+    const { selectedName, ...physicianPayload } = this.physician.getRawValue();
 
-    this.doctors.splice(index, 1);
-    alert('Physician deleted successfully!');
-    this.physician.reset();
+    // Call the store method with the clean payload
+    this.store.addNewPhysician(physicianPayload as Physician);
+
+    // After successfully initiating the save, exit add mode
+    this.cancelAddMode();
   }
 }

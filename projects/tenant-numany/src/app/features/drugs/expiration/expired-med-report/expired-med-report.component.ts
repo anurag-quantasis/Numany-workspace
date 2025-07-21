@@ -5,13 +5,13 @@ import { Component, inject, OnInit } from '@angular/core'; // <-- Import inject,
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DatePickerModule as CalendarModule } from 'primeng/datepicker'; // Renaming for clarity
+import { DatePickerModule } from 'primeng/datepicker'; // Renaming for clarity
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog'; // <-- Import Config too
 
 @Component({
   selector: 'tenant-expired-med-report',
   standalone: true, // Make sure this is standalone
-  imports: [CommonModule, ReactiveFormsModule, CalendarModule, CheckboxModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, DatePickerModule, CheckboxModule, ButtonModule],
   templateUrl: './expired-med-report.component.html',
   styleUrl: './expired-med-report.component.css',
 })
