@@ -1,6 +1,4 @@
-<div class="p-4 border-round shadow-2 bg-white">
-  <h2 class="text-xl font-semibold mt-0 mb-4">Manage Inventory Locations</h2>
-
+<div class="border-round shadow-2 bg-white">
   <!-- The form wraps the table and the submit button -->
   <form [formGroup]="inventoryForm" (ngSubmit)="saveInventory()">
     <p-table
@@ -77,14 +75,9 @@
 
     <!-- Action buttons below the table -->
     <div class="flex justify-end mt-4 gap-4">
+      <p-button label="Add" icon="pi pi-plus" (click)="addLocation()" [outlined]="true"></p-button>
       <p-button
-        label="Add Location"
-        icon="pi pi-plus"
-        (click)="addLocation()"
-        [outlined]="true"
-      ></p-button>
-      <p-button
-        label="Update Inventory"
+        label="Update"
         icon="pi pi-save"
         type="submit"
         [disabled]="locations.length === 0"

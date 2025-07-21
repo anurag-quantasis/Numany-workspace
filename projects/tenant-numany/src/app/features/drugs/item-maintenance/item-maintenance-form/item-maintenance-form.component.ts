@@ -218,10 +218,10 @@ export class ItemMaintenanceFormComponent {
   }
 
   openListAlert() {
-    this.uiDialogService.open(ListAlertComponent, '');
+    this.uiDialogService.open(ListAlertComponent, 'Alert Matrix');
   }
   openRemoteLocations() {
-    this.uiDialogService.open(RemoteLocationComponent, '');
+    this.uiDialogService.open(RemoteLocationComponent, 'Remote Locations');
   }
   openOrderHistory() {
     this.uiDialogService.open(OrderHistoryComponent, 'Order History');

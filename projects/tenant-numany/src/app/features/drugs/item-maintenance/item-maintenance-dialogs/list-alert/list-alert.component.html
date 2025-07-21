@@ -1,10 +1,11 @@
 <div class="max-w-7xl">
-  <h1 class="text-xl font-semibold py-2">Alert Matrix</h1>
   <shared-data-table
     [columns]="alertMatrixColumns"
     [data]="alertMatrix"
     [loading]="alertMatrixLoading"
     [totalRecords]="alertMatrixTotalRecords"
+    [rows]="3"
+    [minRows]="0"
   >
   </shared-data-table>
   <div class="flex justify-end items-center gap-4 mt-4">

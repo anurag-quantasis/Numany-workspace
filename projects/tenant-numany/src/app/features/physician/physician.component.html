@@ -8,11 +8,14 @@
 
     <div class="mt-6 ml-5 w-full md:w-[360px]">
       <p-dropdown
-        [options]="names"
+        [options]="store.physician()"
+        optionLabel="nam_doc"
+        optionValue="id_doc"
         formControlName="selectedName"
         optionLabel="name"
         placeholder="Select Name"
         class="w-full"
+        [disabled]="isAddMode()"
       ></p-dropdown>
     </div>
 
@@ -31,7 +34,7 @@
         <app-custom-input
           label="ID"
           type="text"
-          formControlName="id"
+          formControlName="id_doc"
           placeholder="Enter ID"
         ></app-custom-input>
       </div>
@@ -39,7 +42,7 @@
       <!-- </div> -->
 
       <div class="flex items-center ml-2 mt-7">
-        <p-checkbox formControlName="isHidden" [binary]="true" inputId="hideCheckbox"></p-checkbox>
+        <p-checkbox formControlName="hide_dr" [binary]="true" inputId="hideCheckbox"></p-checkbox>
         <label for="hideCheckbox" class="ml-2 font-medium cursor-pointer">Hide</label>
       </div>
 
@@ -58,7 +61,7 @@
           id="name"
           pInputText
           placeholder="Enter Name"
-          formControlName="name"
+          formControlName="nam_doc"
           class="w-full"
         />
       </div>
@@ -70,7 +73,7 @@
           id="address"
           pInputText
           placeholder="Enter Address"
-          formControlName="address"
+          formControlName="adr_doc"
           class="w-full"
         />
       </div>
@@ -82,7 +85,7 @@
           id="city"
           pInputText
           placeholder="Enter City"
-          formControlName="city"
+          formControlName="cty_doc"
           class="w-full"
         />
       </div>
@@ -95,7 +98,7 @@
           id="state"
           pInputText
           placeholder="Enter State"
-          formControlName="state"
+          formControlName="st_doc"
           class="w-full"
         />
       </div>
@@ -107,7 +110,7 @@
           id="zip"
           pInputText
           placeholder="Enter Zip Code"
-          formControlName="zip"
+          formControlName="zip_doc"
           class="w-full"
         />
       </div>
@@ -119,7 +122,7 @@
           id="dea-no"
           pInputText
           placeholder="Enter DEA NO"
-          formControlName="DEA"
+          formControlName="dea_no"
           class="w-full"
         />
       </div>
@@ -128,7 +131,7 @@
       <div class="flex flex-col">
         <label for="phone" class="text-gray-700 font-medium mb-2">PHONE</label>
         <input
-          type="number"
+          type="text"
           id="phone"
           pInputText
           placeholder="Enter Phone No"
@@ -144,7 +147,7 @@
           id="license"
           pInputText
           placeholder="Enter License Number"
-          formControlName="license"
+          formControlName="st_lic"
           class="w-full"
         />
       </div>
@@ -156,7 +159,7 @@
           id="upin"
           pInputText
           placeholder="Enter UPIN"
-          formControlName="UPIN"
+          formControlName="up_in"
           class="w-full"
         />
       </div>
@@ -181,7 +184,7 @@
           id="medicare"
           pInputText
           placeholder="Enter medicare"
-          formControlName="medicare"
+          formControlName="m_care_dr"
           class="w-full"
         />
       </div>
@@ -193,7 +196,7 @@
           id="medicaId"
           pInputText
           placeholder="Enter Medicaid"
-          formControlName="medicaId"
+          formControlName="m_caid_dr"
           class="w-full"
         />
       </div>
@@ -205,13 +208,13 @@
           id="localid"
           pInputText
           placeholder="Enter Local ID"
-          formControlName="localid"
+          formControlName="local_id"
           class="w-full"
         />
       </div>
       <div class="flex items-center ml-2 mt-7">
         <p-checkbox
-          formControlName="isPrescriber"
+          formControlName="e_rx_yn"
           [binary]="true"
           inputId="prescriberCheckbox"
         ></p-checkbox>
@@ -220,22 +223,53 @@
     </div>
 
     <!-- Buttons -->
-    <div class="flex gap-4 mt-1 ml-14 mb-1 justify-end">
-      <p-button label="Add" severity="success" (click)="onAdd()" outlined type="button"></p-button>
-      <p-button
-        label="Update"
-        severity="info"
-        (click)="onUpdate()"
-        outlined
-        type="button"
-      ></p-button>
-      <p-button
-        label="Delete"
-        severity="danger"
-        (click)="onDelete()"
-        outlined
-        type="button"
-      ></p-button>
+    <div class="flex gap-4 mt-8 mb-4 justify-end mr-5">
+      <!-- Show these buttons in NORMAL mode -->
+      @if (!isAddMode()) {
+        <p-button
+          label="Add"
+          icon="pi pi-plus"
+          severity="success"
+          (click)="enterAddMode()"
+          outlined
+          type="button"
+        >
+        </p-button>
+        <p-button
+          label="Update"
+          icon="pi pi-pencil"
+          severity="info"
+          (click)="onUpdate()"
+          [disabled]="!physician.get('selectedName')?.value"
+          outlined
+          type="button"
+        >
+        </p-button>
+        <p-button
+          label="Delete"
+          icon="pi pi-trash"
+          severity="danger"
+          (click)="onDelete()"
+          [disabled]="!physician.get('selectedName')?.value"
+          outlined
+          type="button"
+        >
+        </p-button>
+      }
+
+      <!-- Show these buttons in ADD mode -->
+      @if (isAddMode()) {
+        <p-button label="Save" icon="pi pi-check" (click)="onSave()" type="button"> </p-button>
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          severity="danger"
+          (click)="cancelAddMode()"
+          outlined
+          type="button"
+        >
+        </p-button>
+      }
     </div>
   </form>
 </shared-panel-container>
