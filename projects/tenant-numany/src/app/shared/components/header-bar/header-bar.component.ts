@@ -651,7 +651,7 @@ export class HeaderBarComponent implements OnInit {
         // e.g., show a toast message: this.messageService.add(...)
       }
     });
-  }
+  } 
 
   // This handler is crucial to preserve the original 'command' functionality
   handleItemClick(event: MouseEvent, item: CustomMenuItem) {
