@@ -26,7 +26,8 @@ import { SelectModule } from 'primeng/select';
     SharedPanelContainerComponent,
     // CustomInputComponent,
     SelectModule,
-    Fieldset
+    Fieldset,
+    CustomInputComponent
 ],
   templateUrl: './pharmcist-intervention-type.component.html',
   styleUrls: ['./pharmcist-intervention-type.component.css'],

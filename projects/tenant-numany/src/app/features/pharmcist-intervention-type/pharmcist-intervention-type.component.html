@@ -1,16 +1,18 @@
 <shared-panel-container>
-  <h1 class="mt-3 text-2xl">Pharmacist Intervention Type</h1>
-  <h2 class="mt-3 text-lg text-gray-700">Select Intervention Type to Modify</h2>
+  <h1 class="text-2xl font-semibold mb-4">Pharmacist Intervention Type</h1>
 
-  <div [formGroup]="interventionForm" class="mt-5 pr-5 text-left w-full">
-    <div class="border border-grey-200 p-4 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4">
-      <div class="grid grid-cols-2 gap-x-20 justify-items-start w-full col-span-4">
-        <p-dropdown
+  <div [formGroup]="interventionForm" class="w-full">
+    <!-- Selection Area -->
+    <div class="border border-gray-300 rounded-md p-4 grid md:grid-cols-4 sm:grid-cols-2 gap-4">
+      <h2 class="text-lg text-gray-700 col-span-4">Select Intervention Type to Modify</h2>
+
+      <div class="col-span-4">
+        <p-select
           formControlName="selectedIntervention"
           [options]="interventionOptions"
           optionLabel="name"
           placeholder="Select Intervention"
-          class="w-[475px] mb-3"
+          class="w-[410px]"
         >
           <ng-template let-option pTemplate="item">
             <div class="flex justify-between w-full">
@@ -18,91 +20,87 @@
               <span class="text-gray-500 ml-4">{{ option.id }}</span>
             </div>
           </ng-template>
-        </p-dropdown>
+        </p-select>
       </div>
 
-      <div class="flex gap-10 col-span-4">
-        <div class="flex flex-col items-start gap-4 mb-6">
-          <label class="text-lg font-medium text-gray-700 w-10">ID</label>
-          <input
-            type="text"
-            pInputText
-            class="w-[220px]"
-            formControlName="PI_ID"
-            placeholder="Enter ID"
-          />
-        </div>
+<!-- ID, Description, Hide -->
+<div class="col-span-4 grid grid-cols-[auto_auto_1fr] gap-4 items-start">
+  <app-custom-input
+    formControlName="PI_ID"
+    label="ID"
+    placeholder="Enter ID"
+    pTooltip="Unique ID for the intervention type"
+  ></app-custom-input>
 
-        <div class="flex flex-col items-start gap-4 mb-6">
-          <label class="text-lg font-medium text-gray-700 w-32">Description</label>
-          <input
-            type="text"
-            pInputText
-            formControlName="Description"
-            placeholder="Enter activity description"
-            class="w-[475px] ml2"
-          />
-        </div>
+  <app-custom-input
+    formControlName="Description"
+    label="Description"
+    placeholder="Enter activity description"
+    pTooltip="Description of the intervention type"
+  ></app-custom-input>
 
-        <div class="flex items-center mt-3.5">
-          <p-checkbox formControlName="PI_Hide" [binary]="true"></p-checkbox>
-          <label class="ml-2 text-gray-700 cursor-pointer">Hide</label>
-        </div>
-      </div>
+  <div class="flex items-center gap-3 mt-10">
+    <p-checkbox inputId="hideCheckbox" formControlName="PI_Hide" [binary]="true"></p-checkbox>
+    <label for="hideCheckbox" class="text-gray-700 cursor-pointer">Hide</label>
+  </div>
+</div>
+
     </div>
 
-    <div class="mt-3">
+    <!-- Entry Form Fieldset -->
+    <div class="mt-5">
       <p-fieldset legend="Include on Intervention Entry Form">
-        <div class="grid grid-cols-3 gap-4 w-full mb-6">
-          <div class="flex items-center">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-[14px]">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="SL_ME" [binary]="true" inputId="medErrorSeverity"></p-checkbox>
-            <label for="medErrorSeverity" class="ml-2 text-gray-700 cursor-pointer">Med Error Severity Level</label>
+            <label for="medErrorSeverity" class="text-gray-700 cursor-pointer">Med Error Severity Level</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="CL_ME" [binary]="true" inputId="medErrorClass"></p-checkbox>
-            <label for="medErrorClass" class="ml-2 text-gray-700 cursor-pointer">Med Error Class</label>
+            <label for="medErrorClass" class="text-gray-700 cursor-pointer">Med Error Class</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="SC_ME" [binary]="true" inputId="medErrorSubclass"></p-checkbox>
-            <label for="medErrorSubclass" class="ml-2 text-gray-700 cursor-pointer">Med Error Subclass</label>
+            <label for="medErrorSubclass" class="text-gray-700 cursor-pointer">Med Error Subclass</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="PC_ME" [binary]="true" inputId="probableCause"></p-checkbox>
-            <label for="probableCause" class="ml-2 text-gray-700 cursor-pointer">Probable Cause</label>
+            <label for="probableCause" class="text-gray-700 cursor-pointer">Probable Cause</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="SL_ADR" [binary]="true" inputId="adrSeverity"></p-checkbox>
-            <label for="adrSeverity" class="ml-2 text-gray-700 cursor-pointer">ADR Severity Level</label>
+            <label for="adrSeverity" class="text-gray-700 cursor-pointer">ADR Severity Level</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="ADRType" [binary]="true" inputId="adrCertainty"></p-checkbox>
-            <label for="adrCertainty" class="ml-2 text-gray-700 cursor-pointer">ADR Certainty Level</label>
+            <label for="adrCertainty" class="text-gray-700 cursor-pointer">ADR Certainty Level</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="Acuity" [binary]="true" inputId="acuity"></p-checkbox>
-            <label for="acuity" class="ml-2 text-gray-700 cursor-pointer">Acuity</label>
+            <label for="acuity" class="text-gray-700 cursor-pointer">Acuity</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="FI" [binary]="true" inputId="drugImpactFinancial"></p-checkbox>
-            <label for="drugImpactFinancial" class="ml-2 text-gray-700 cursor-pointer">Drug Impact - Financial</label>
+            <label for="drugImpactFinancial" class="text-gray-700 cursor-pointer">Drug Impact - Financial</label>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-3">
             <p-checkbox formControlName="OC" [binary]="true" inputId="interventionOutcome"></p-checkbox>
-            <label for="interventionOutcome" class="ml-2 text-gray-700 cursor-pointer">Intervention Outcome</label>
+            <label for="interventionOutcome" class="text-gray-700 cursor-pointer">Intervention Outcome</label>
           </div>
         </div>
       </p-fieldset>
     </div>
 
-    <div class="flex gap-x-4 mt-5 justify-end">
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-4 mt-5">
       <p-button label="New" variant="outlined" severity="success" (click)="onNew()" icon="pi pi-plus"></p-button>
       <p-button label="Delete" variant="outlined" severity="danger" (click)="onDelete()" icon="pi pi-trash"></p-button>
       <p-button label="Update" variant="outlined" severity="info" (click)="onUpdate()" icon="pi pi-check"></p-button>
