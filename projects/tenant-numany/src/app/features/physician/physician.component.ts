@@ -1,30 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
-
-interface Physician {
-  id: string;
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  DEA: string;
-  phone: string;
-  license: string;
-  UPIN: string;
-  npi: string;
-  medicare: string;
-  medicaId: string;
-  localid: string;
-  isHidden: boolean;
-  isPrescriber: boolean;
-}
+import { PhysicianStore } from './physician-store/physician.store';
+import { Physician } from './physician-store/physician.model';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'tenant-physician',
@@ -38,113 +23,146 @@ interface Physician {
     ButtonModule,
     SharedPanelContainerComponent,
     CustomInputComponent,
+    ConfirmDialog,
   ],
   templateUrl: './physician.component.html',
-  styleUrls: ['./physician.component.css']
+  styleUrls: ['./physician.component.css'],
+  providers: [PhysicianStore, ConfirmationService],
 })
 export class PhysicianComponent implements OnInit {
+  readonly store = inject(PhysicianStore);
+  private fb = inject(FormBuilder);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly messageService = inject(MessageService);
   physician!: FormGroup;
-  doctors: Physician[] = [];
+  isAddMode = signal(false);
 
-  names = [
-    { name: 'Dr. Smith', id: '1' },
-    { name: 'Dr. Jones', id: '2' }
-  ];
-
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.physician = this.fb.group({
-      selectedName: [null],
-      id: ['', [Validators.required, Validators.maxLength(10)]],
-      isHidden: [false],
-      isPrescriber: [false],
-      name: ['', [Validators.required, Validators.maxLength(30)]],
-      address: ['', Validators.maxLength(50)],
-      city: ['', Validators.maxLength(50)],
-      state: ['', Validators.maxLength(2)],
-      zip: ['', Validators.maxLength(20)],
-      DEA: ['', Validators.maxLength(50)],
-      phone: ['', Validators.maxLength(14)],
-      license: ['', Validators.maxLength(20)],
-      UPIN: ['', Validators.maxLength(20)],
-      npi: ['', Validators.maxLength(20)],
-      medicare: ['', Validators.maxLength(20)],
-      medicaId: ['', Validators.maxLength(20)],
-      localid: ['', Validators.maxLength(20)]
+  constructor() {
+    this.initializeForm();
+    effect(() => {
+      const physicians = this.store.physician();
+      const selectedId = this.physician.get('selectedName')?.value;
+      if (selectedId && !physicians.some((p) => p.id_doc === selectedId)) {
+        this.resetForm(false);
+      }
     });
   }
 
-  onAdd(): void {
-    const formValue = this.physician.value;
+  ngOnInit(): void {
+    this.store.loadPhysician();
+    this.physician.get('selectedName')?.valueChanges.subscribe((selectedId) => {
+      if (selectedId && !this.isAddMode()) {
+        const physicianData = this.store.physician().find((p) => p.id_doc === selectedId);
+        if (physicianData) {
+          this.physician.patchValue(physicianData, { emitEvent: false });
+        }
+      } else if (!selectedId) {
+        this.resetForm(false);
+      }
+    });
+  }
 
-    if (!formValue.id || !formValue.name) {
-      alert('Doctor ID and Name are required.');
-      return;
-    }
+  private initializeForm(): void {
+    this.physician = this.fb.group({
+      selectedName: [null],
+      id_doc: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(10)]],
+      hide_dr: [false],
+      e_rx_yn: [false],
+      nam_doc: ['', [Validators.required, Validators.maxLength(30)]],
+      adr_doc: ['', Validators.maxLength(50)],
+      cty_doc: ['', Validators.maxLength(50)],
+      st_doc: ['', Validators.maxLength(2)],
+      zip_doc: ['', Validators.maxLength(20)],
+      dea_no: ['', Validators.maxLength(50)],
+      phone: ['', Validators.maxLength(14)],
+      st_lic: ['', Validators.maxLength(20)],
+      up_in: ['', Validators.maxLength(20)],
+      npi: ['', Validators.maxLength(20)],
+      m_care_dr: ['', Validators.maxLength(20)],
+      m_caid_dr: ['', Validators.maxLength(20)],
+      local_id: ['', Validators.maxLength(20)],
+    });
+  }
 
-    const exists = this.doctors.find((d) => d.id === formValue.id);
-    if (exists) {
-      alert(`Physician with ID ${formValue.id} already exists. Use Update instead.`);
-      return;
-    }
+  private resetForm(enterAddMode: boolean): void {
+    this.physician.reset({
+      id_doc: { value: '', disabled: !enterAddMode },
+      hide_dr: false,
+      e_rx_yn: false,
+    });
+    this.physician.get('selectedName')?.setValue(null, { emitEvent: false });
 
-    const newDoctor: Physician = { ...formValue };
-    this.doctors.push(newDoctor);
-    alert('Physician added successfully!');
-    this.physician.reset();
+    this.isAddMode.set(enterAddMode);
+  }
+
+  enterAddMode(): void {
+    this.resetForm(true);
+  }
+
+  cancelAddMode(): void {
+    this.resetForm(false);
   }
 
   onUpdate(): void {
-    const formValue = this.physician.value;
-    const doctor = this.doctors.find((d) => d.id === formValue.id);
-
-    if (!doctor) {
-      alert(`Physician with ID ${formValue.id} not found.`);
+    const { selectedName, ...physicianPayload } = this.physician.getRawValue();
+    if (!physicianPayload.id_doc) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please select a physician to update.',
+      });
       return;
     }
-
-    Object.assign(doctor, formValue);
-    alert('Physician updated successfully!');
-    this.physician.reset();
+    this.store.updatePhysician(physicianPayload as Physician);
   }
 
   onDelete(): void {
-    const id = this.physician.value.id;
+    const physicianId = this.physician.get('id_doc')?.value;
+    const physicianName = this.physician.get('nam_doc')?.value;
 
-    if (!id) {
-      alert('ID is required to delete a physician.');
+    if (!physicianId) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please select a physician to delete.',
+      });
       return;
     }
-
-    const index = this.doctors.findIndex((d) => d.id === id);
-    if (index === -1) {
-      alert(`Physician with ID ${id} not found.`);
-      return;
-    }
-
-    // Simulate backend reference check
-    if (this.isPhysicianReferenced(id)) {
-      alert('Cannot delete physician. This doctor is referenced in patient or order records.');
-      return;
-    }
-
-    const visibleDoctors = this.doctors.filter((d) => !d.isHidden);
-    if (visibleDoctors.length === 1 && !this.doctors[index].isHidden) {
-      alert('Cannot delete the last visible physician.');
-      return;
-    }
-
-    if (confirm('Are you sure you want to delete this physician?')) {
-      this.doctors.splice(index, 1);
-      alert('Physician deleted successfully.');
-      this.physician.reset();
-    }
+    this.confirmationService.confirm({
+      key: 'delete-physician-confirmation',
+      closable: true,
+      closeOnEscape: true,
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+      },
+      message: `Are you sure you want to delete ${physicianName}`,
+      header: 'Confirm Deletion',
+      icon: 'pi pi-trash',
+      accept: () => {
+        this.store.deletePhysician(physicianId);
+      },
+    });
   }
 
-  isPhysicianReferenced(id: string): boolean {
-    // Replace this logic with actual service/database call
-    const referencedDoctorIds = ['1', '2']; // mock
-    return referencedDoctorIds.includes(id);
+  onSave(): void {
+    if (this.physician.invalid) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please fill out all required fields.',
+      });
+      return;
+    }
+    const { selectedName, ...physicianPayload } = this.physician.getRawValue();
+    this.store.addNewPhysician(physicianPayload as Physician);
+    this.cancelAddMode();
   }
 }

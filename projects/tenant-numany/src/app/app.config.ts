@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, provideAppInitializer  } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -9,6 +9,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TenantInterceptor } from './core/auth/interceptors/tenant.interceptor';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { initializeTenant } from './core/auth/initializer/tenant.initializer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,8 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     MessageService,
     DialogService,
-    { provide: DynamicDialogConfig, useValue: {} },
-    { provide: DynamicDialogRef, useValue: {} },
     providePrimeNG({
       theme: {
         preset: MyPreset,
@@ -32,5 +31,6 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideHttpClient(withInterceptors([TenantInterceptor])),
+     provideAppInitializer(initializeTenant),
   ],
 };

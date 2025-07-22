@@ -1,57 +1,185 @@
-<shared-panel-container>
-  <form [formGroup]="physician">
-    <h1 class="mt-5 text-2xl font-semibold">Doctor File Maintenance</h1>
+<shared-panel-container [title]="'Doctor File Maintenance'">
+  <form [formGroup]="physician" class="mx-5">
+    <p-button label="Print" icon="pi pi-print" variant="outlined" styleClass="my-4"></p-button>
 
-    <div class="flex items-start justify-between mt-3 mb-3 mr-5">
-      <p-button label="Print" icon="pi pi-print" variant="outlined"></p-button>
-    </div>
-
-    <div class="mt-6 mb-3 w-full flex gap-2">
+    <div class="w-full flex items-center gap-4 py-2">
       <p-dropdown
-        [options]="names"
+        [options]="store.physician()"
+        optionLabel="nam_doc"
+        optionValue="id_doc"
         formControlName="selectedName"
-        optionLabel="name"
         placeholder="Select Name"
-        class="w-[220px]"
+        class="w-[49%]"
+        [disabled]="isAddMode()"
       ></p-dropdown>
-
-      <div class="flex items-start ml-2 mt-2">
-        <p-checkbox formControlName="isHidden" [binary]="true" inputId="hideCheckbox"></p-checkbox>
+      <div class="flex justify-center items-center">
+        <p-checkbox formControlName="hide_dr" [binary]="true" inputId="hideCheckbox"></p-checkbox>
         <label for="hideCheckbox" class="ml-2 font-medium cursor-pointer">Hide</label>
       </div>
     </div>
-
-    <div class="border border-grey-200 p-4.5 mt-5 rounded-md gap-4">
-      <div class="grid grid-cols-4 gap-4">
-        <app-custom-input label="ID" formControlName="id" placeholder="Enter ID" type="text"></app-custom-input>
-        <app-custom-input label="Name" formControlName="name" placeholder="Enter Name" type="text"></app-custom-input>
-        <app-custom-input label="Address" formControlName="address" placeholder="Enter Address" type="text"></app-custom-input>
-        <app-custom-input label="City" formControlName="city" placeholder="Enter City" type="text"></app-custom-input>
-
-        <app-custom-input label="State" formControlName="state" placeholder="Enter State" type="text"></app-custom-input>
-        <app-custom-input label="Zip Code" formControlName="zip" placeholder="Enter Zip Code" type="text"></app-custom-input>
-        <app-custom-input label="DEA NO" formControlName="DEA" placeholder="Enter DEA No" type="text"></app-custom-input>
-        <app-custom-input label="Phone" formControlName="phone" placeholder="Enter Phone No" type="text"></app-custom-input>
-
-        <app-custom-input label="ST License" formControlName="license" placeholder="Enter License No" type="text"></app-custom-input>
-        <app-custom-input label="UPIN" formControlName="UPIN" placeholder="Enter UPIN" type="text"></app-custom-input>
-        <app-custom-input label="NPI" formControlName="npi" placeholder="Enter NPI" type="text"></app-custom-input>
-        <app-custom-input label="Medicare" formControlName="medicare" placeholder="Enter Medicare" type="text"></app-custom-input>
-
-        <app-custom-input label="Medicaid" formControlName="medicaId" placeholder="Enter Medicaid" type="text"></app-custom-input>
-        <app-custom-input label="Local ID" formControlName="localid" placeholder="Enter Local ID" type="text"></app-custom-input>
-
-        <div class="flex items-center mt-7">
-          <p-checkbox formControlName="isPrescriber" [binary]="true" inputId="prescriberCheckbox"></p-checkbox>
-          <label for="prescriberCheckbox" class="ml-2 font-medium cursor-pointer">e-PRESCRIBER</label>
-        </div>
+    <div class="grid grid-cols-4 gap-4 my-6">
+      <app-custom-input
+        label="ID"
+        type="text"
+        formControlName="id_doc"
+        placeholder="Enter ID"
+      ></app-custom-input>
+      <app-custom-input
+        label="Name"
+        type="text"
+        placeholder="Enter Name"
+        formControlName="nam_doc"
+      ></app-custom-input>
+      <app-custom-input
+        label="Address"
+        type="text"
+        placeholder="Enter Address"
+        formControlName="adr_doc"
+      ></app-custom-input>
+      <app-custom-input
+        label="City"
+        type="text"
+        placeholder="Enter City"
+        formControlName="cty_doc"
+      ></app-custom-input>
+      <app-custom-input
+        label="State"
+        type="text"
+        placeholder="Enter State"
+        formControlName="st_doc"
+      ></app-custom-input>
+      <app-custom-input
+        label="Zip Code"
+        type="text"
+        placeholder="Enter Zip Code"
+        formControlName="zip_doc"
+      ></app-custom-input>
+      <app-custom-input
+        label="DEA NO"
+        type="text"
+        placeholder="Enter DEA NO"
+        formControlName="dea_no"
+      ></app-custom-input>
+      <app-custom-input
+        label="Phone"
+        type="text"
+        placeholder="Enter Phone no"
+        formControlName="phone"
+      ></app-custom-input>
+      <app-custom-input
+        label="ST License"
+        type="text"
+        placeholder="Enter Name"
+        formControlName="st_lic"
+      ></app-custom-input>
+      <app-custom-input
+        label="UPIN"
+        type="text"
+        placeholder="Enter UPIN"
+        formControlName="up_in"
+      ></app-custom-input>
+      <app-custom-input
+        label="NPI"
+        type="text"
+        placeholder="Enter NPI"
+        formControlName="npi"
+      ></app-custom-input>
+      <app-custom-input
+        label="Medicare"
+        type="text"
+        placeholder="Enter medicare"
+        formControlName="m_care_dr"
+      ></app-custom-input>
+      <app-custom-input
+        label="Medicad"
+        type="text"
+        placeholder="Enter Medicad"
+        formControlName="m_caid_dr"
+      ></app-custom-input>
+      <app-custom-input
+        label="Local ID"
+        type="text"
+        placeholder="Enter Local Id"
+        formControlName="local_id"
+      ></app-custom-input>
+      <div class="flex items-center gap-4">
+        <p-checkbox
+          formControlName="e_rx_yn"
+          [binary]="true"
+          inputId="prescriberCheckbox"
+        ></p-checkbox>
+        <label for="prescriberCheckbox" class="font-medium cursor-pointer">e-PRESCRIBER</label>
       </div>
     </div>
-
-    <div class="flex gap-4 mt-5 ml-14 justify-end">
-      <p-button label="Add" severity="success" (click)="onAdd()" outlined type="button" icon="pi pi-plus"></p-button>
-      <p-button label="Update" severity="info" (click)="onUpdate()" outlined type="button" icon="pi pi-check"></p-button>
-      <p-button label="Delete" severity="danger" (click)="onDelete()" outlined type="button" icon="pi pi-trash"></p-button>
+    <div class="flex gap-4 justify-end">
+      @if (!isAddMode()) {
+        <p-button
+          label="Add"
+          icon="pi pi-plus"
+          severity="success"
+          (click)="enterAddMode()"
+          outlined
+          type="button"
+        >
+        </p-button>
+        <p-button
+          label="Update"
+          icon="pi pi-pencil"
+          severity="info"
+          (click)="onUpdate()"
+          [disabled]="!physician.get('selectedName')?.value"
+          outlined
+          type="button"
+        >
+        </p-button>
+        <p-button
+          label="Delete"
+          icon="pi pi-trash"
+          severity="danger"
+          (click)="onDelete()"
+          [disabled]="!physician.get('selectedName')?.value"
+          outlined
+          type="button"
+        >
+        </p-button>
+      }
+      @if (isAddMode()) {
+        <p-button label="Save" icon="pi pi-check" (click)="onSave()" type="button"> </p-button>
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          severity="danger"
+          (click)="cancelAddMode()"
+          outlined
+          type="button"
+        >
+        </p-button>
+      }
     </div>
   </form>
+  <div>
+    <p-confirmDialog #cd key="delete-physician-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
 </shared-panel-container>

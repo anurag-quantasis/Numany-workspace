@@ -1,17 +1,19 @@
 <shared-panel-container [title]="'WinPharm Site Parameters'">
   <main>
-    <form [formGroup]="siteParametersForm">
+    <form [formGroup]="siteParametersForm" (ngSubmit)="onSubmit()">
       <p-fieldset legend="Facility Information">
         <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
-          <app-custom-input label="Hospital Name" type="text" formControlName="hospitalName">
+          
+          <app-custom-input [submitted]="submitted" label="Hospital Name" type="text" formControlName="hospitalName">
           </app-custom-input>
 
-          <app-custom-input label="Address" type="text" formControlName="addressLine1">
+          <app-custom-input [submitted]="submitted" label="Address" type="text" formControlName="addressLine1">
           </app-custom-input>
 
           <app-custom-input
             label="Phone Number"
             type="text"
+            [submitted]="submitted"
             formControlName="phoneNumber"
             [errorMessages]="{
               required: 'The section code is required.',
@@ -20,11 +22,12 @@
           >
           </app-custom-input>
 
-          <app-custom-input label="City" type="text" formControlName="city"> </app-custom-input>
+          <app-custom-input label="City" type="text" formControlName="city" [submitted]="submitted"> </app-custom-input>
 
-          <app-custom-input label="State" type="text" formControlName="state"> </app-custom-input>
+          <!-- <app-custom-input label="State" type="text" formControlName="state"> </app-custom-input> -->
+           <shared-state-selector label="City" formControlName="city"></shared-state-selector>
 
-          <app-custom-input label="Zip Code" type="text" formControlName="zipCode">
+          <app-custom-input label="Zip Code" type="text" formControlName="zipCode" [submitted]="submitted">
           </app-custom-input>
         </div>
         <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 mt-4">
@@ -34,6 +37,7 @@
             label="EMAR Enabled"
             type="checkbox"
             layout="horizontal"
+            [submitted]="submitted"
           >
           </app-custom-input>
 
@@ -42,6 +46,7 @@
             label="RX Op Options Enabled"
             type="checkbox"
             layout="horizontal"
+            [submitted]="submitted"
           >
           </app-custom-input>
         </div>
@@ -59,6 +64,7 @@
                 label="Print labels at Order Entry"
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -69,6 +75,7 @@
                 label="Charge in IV Fill"
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -79,6 +86,7 @@
                 label="Charge at Order Entry"
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -92,6 +100,7 @@
                 label="Print Labels at Order Entry"
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -102,6 +111,7 @@
                 label="Charge at Order Entry"
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -112,6 +122,7 @@
                 label='Charge "BULK" orders at Order Entry'
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -128,6 +139,7 @@
               label="Allow Med & IV Fill by Range"
               type="checkbox"
               layout="horizontal"
+              [submitted]="submitted"
             >
             </app-custom-input>
           </div>
@@ -137,11 +149,12 @@
               label="Print DC Label"
               type="checkbox"
               layout="horizontal"
+              [submitted]="submitted"
             >
             </app-custom-input>
           </div>
           <div class="col-span-2">
-            <app-custom-input label="Auto Time Stop" type="text" formControlName="autoStopTime">
+            <app-custom-input label="Auto Time Stop" type="text" formControlName="autoStopTime" [submitted]="submitted">
             </app-custom-input>
           </div>
         </div>
@@ -153,6 +166,7 @@
                 label="No. of days to Default Fill Thru"
                 type="text"
                 formControlName="fillDays"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -161,6 +175,7 @@
                 label="Default Fill End Time"
                 type="text"
                 formControlName="fillEndTime"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -170,6 +185,7 @@
                 type="checkbox"
                 layout="horizontal"
                 formControlName="allowOneTxnPerDose"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -179,6 +195,7 @@
                 type="checkbox"
                 layout="horizontal"
                 formControlName="fillCharging"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -195,6 +212,7 @@
                 [label]="'Include Interdepartmental use in MTD drug usage'"
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -204,6 +222,7 @@
                 label="Include Interdepartmental use in YTD drug usage"
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -215,15 +234,16 @@
                 "
                 type="checkbox"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
             <div class="col-span-2">
-              <app-custom-input type="number" label="Primary Tax %" formControlName="primaryTax">
+              <app-custom-input type="number" label="Primary Tax %" formControlName="primaryTax" [submitted]="submitted">
               </app-custom-input>
             </div>
             <div class="col-span-2">
-              <app-custom-input type="number" label="SecondaryTax %" formControlName="secondaryTax">
+              <app-custom-input type="number" label="SecondaryTax %" formControlName="secondaryTax" [submitted]="submitted">
               </app-custom-input>
             </div>
             <div class="col-span-2">
@@ -231,6 +251,7 @@
                 type="number"
                 label="Primary Tax % (Discounted)"
                 formControlName="primaryTaxdiscounted"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -244,6 +265,7 @@
                 type="checkbox"
                 label="Clinical Checking On"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -253,6 +275,7 @@
                 type="checkbox"
                 label="Dose Checking On"
                 layout="horizontal"
+                [submitted]="submitted"
               >
               </app-custom-input>
             </div>
@@ -265,7 +288,9 @@
                 label="ICD9"
               >
               </p-radioButton>
-              <label for="icd9" class="ml-2 mr-4 text-[#334155] font-semibold">ICD9</label>
+              <label for="icd9" title="ICD9" class="ml-2 mr-4 text-[#334155] font-semibold"
+                >ICD9</label
+              >
 
               <p-radioButton
                 name="primaryCodingSystem"
@@ -330,24 +355,28 @@
             label="Fiscal Year Start (1-12)"
             type="number"
             formControlName="fiscalYearStart"
+            [submitted]="submitted"
           />
-          <app-custom-input label="Time/Date Format" type="text" formControlName="timeDateFormat" />
+          <app-custom-input label="Time/Date Format" type="text" formControlName="timeDateFormat" [submitted]="submitted"/>
           <app-custom-input
             label="Discharge Orders after (days)"
             type="number"
             formControlName="dischargeDays"
+            [submitted]="submitted"
           />
-          <app-custom-input label="UCO Interval" type="number" formControlName="ucoInterval" />
+          <app-custom-input label="UCO Interval" type="number" formControlName="ucoInterval" [submitted]="submitted"/>
           <app-custom-input
             label="Password Expiration (days)"
             type="number"
             formControlName="passwordExpirationDays"
+            [submitted]="submitted"
           />
-          <app-custom-input label="Next Rx Number" type="number" formControlName="nextRxNumber" />
+          <app-custom-input label="Next Rx Number" type="number" formControlName="nextRxNumber" [submitted]="submitted"/>
           <app-custom-input
             label="Hide DC Orders after (days)"
             type="number"
             formControlName="hideDcOrdersDays"
+            [submitted]="submitted"
           />
 
           <!-- Checkboxes -->
@@ -439,6 +468,7 @@
               type="number"
               formControlName="marDays"
               class="mt-2"
+              [submitted]="submitted"
             />
           </div>
 
@@ -487,6 +517,9 @@
           </div>
         </div>
       </p-fieldset>
+      <div class="mt-4">
+        <p-button type="submit" class="">Submit</p-button>
+      </div>
     </form>
   </main>
 </shared-panel-container>

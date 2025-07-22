@@ -6,9 +6,9 @@ import { Component, input } from '@angular/core';
   template: `
     <div novalidate [class]="class()">
       <div class="bg-white dark:bg-[#18181B] rounded-sm p-8">
-        @if (title()) {
+        @if (titleLabel()) {
           <div class="mb-4">
-            <h2 class="text-2xl font-semibold text-grey-600">{{ title() }}</h2>
+            <h2 class="text-2xl font-semibold text-grey-600">{{ titleLabel() }}</h2>
           </div>
         }
         <ng-content></ng-content>
@@ -22,6 +22,6 @@ import { Component, input } from '@angular/core';
 })
 export class SharedPanelContainerComponent {
   // Optional inputs for customization
-  title = input<string>('');
+  titleLabel = input<string>('');
   class = input<string>('px-[6rem] py-[1rem]');
 }
