@@ -1,14 +1,18 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { SharedPanelContainerComponent } from 'shared-ui';
+import { Fieldset } from "primeng/fieldset";
+import { SharedPanelContainerComponent } from "shared-ui";
+import { CustomInputComponent } from 'shared-ui';
+import { SelectModule } from 'primeng/select';
+
 
 @Component({
-  selector: 'main-pharmcist-intervention-type',
+  selector: 'tenant-pharmcist-intervention-type',
   standalone: true,
   imports: [
     FormsModule,
@@ -18,80 +22,73 @@ import { SharedPanelContainerComponent } from 'shared-ui';
     CheckboxModule,
     ButtonModule,
     CommonModule,
+    // Fieldset,
     SharedPanelContainerComponent,
-  ],
+    // CustomInputComponent,
+    SelectModule,
+    Fieldset,
+    CustomInputComponent
+],
   templateUrl: './pharmcist-intervention-type.component.html',
   styleUrls: ['./pharmcist-intervention-type.component.css'],
 })
 export class PharmcistInterventionTypeComponent {
-  onInterventionSelect() {
-    throw new Error('Method not implemented.');
-  }
-  // interventionForm: FormGroup;
-
-  // interventionOptions = [
-  //   { name: 'Option 1', code: 'O1' },
-  //   { name: 'Option 2', code: 'O2' }
-  // ];
-
-  // activityOptions = [
-  //   { name: 'Activity A', code: 'A1' },
-  //   { name: 'Activity B', code: 'A2' }
-  // ];
-
-  // constructor(private fb: FormBuilder) {
-  //   this.interventionForm = this.fb.group({
-  //     selectedIntervention: [''],
-  //     selectedActivity: [''],
-  //     isHidden: [false],
-  //     interventionId: [''],
-  //     description: [''],
-  //     costImpact: ['']
-  //   });
-  // }
-
   interventionForm: FormGroup;
 
-  interventionOptions = [{ name: 'Option 1' }, { name: 'Option 2' }];
+interventionOptions = [
+  { id: 'ADR', name: 'Adverse Drug Reaction' },
+  { id: 'Allergy', name: 'Allergy to a medication' },
+  { id: 'BPMH', name: 'BEST POSSIBLE MEDICATION HISTOF' },
+  { id: 'CR', name: 'Chart Review' }
+];
+
+
+  // interventionOptions = [
+  //   { desc: 'Adverse Drug Reaction', id: 'ADR' },
+  //   { desc: 'Allergy to a medication', id: 'Allergy' },
+  //   { desc: 'BEST POSSIBLE MEDICATION HISTOF', id: 'BPMH' },
+  //   { desc: 'Chart Review', id: 'CR' }
+  // ];
+
+  selectedIntervention: any;
 
   activityOptions: any[] = [];
 
-  checkboxList = [
-    { label: 'Med Error Severity', controlName: 'checkbox1' },
-    { label: 'Med Error Class', controlName: 'checkbox2' },
-    { label: 'Med Error Subclass', controlName: 'checkbox3' },
-    { label: 'Probable Cause', controlName: 'checkbox4' },
-    { label: 'ADR Severity', controlName: 'checkbox5' },
-    { label: 'ADR Certainity', controlName: 'checkbox6' },
-    { label: 'Acuity', controlName: 'checkbox7' },
-    { label: 'Drug Impact - Financial', controlName: 'checkbox8' },
-    { label: 'Intervention OutCome', controlName: 'checkbox9' },
-  ];
 
   constructor(private fb: FormBuilder) {
     this.interventionForm = this.fb.group({
-      interventionId: [''],
+      selectedIntervention: [null, Validators.required],
+      selectedActivity: [null], // Optional
 
-      selectedIntervention: [null],
-      id: [''],
-      description: [''],
+      PI_ID: ['', [Validators.required, Validators.maxLength(10)]],
+      Description: ['', [Validators.required, Validators.maxLength(50)]],
       costImpact: [''],
-      selectedActivity: [''],
-      isHidden: [false],
-      checkbox1: [false],
-      checkbox2: [false],
-      checkbox3: [false],
-      checkbox4: [false],
-      checkbox5: [false],
-      checkbox6: [false],
-      checkbox7: [false],
-      checkbox8: [false],
-      checkbox9: [false],
+      PI_Hide: [false],
+
+      // Checkbox controls
+      SL_ME: [false],
+      CL_ME: [false],
+      SC_ME: [false],
+      PC_ME: [false],
+      SL_ADR: [false],
+      ADRType: [false],
+      Acuity: [false],
+      FI: [false],
+      OC: [false],
     });
   }
 
+  onInterventionSelect() {
+    console.log('Intervention selected:', this.interventionForm.get('selectedIntervention')?.value);
+  }
+
   onUpdate() {
-    console.log('Update clicked', this.interventionForm.value);
+    if (this.interventionForm.valid) {
+      console.log('Update clicked', this.interventionForm.value);
+    } else {
+      this.interventionForm.markAllAsTouched();
+      console.warn('Form is invalid');
+    }
   }
 
   onDelete() {

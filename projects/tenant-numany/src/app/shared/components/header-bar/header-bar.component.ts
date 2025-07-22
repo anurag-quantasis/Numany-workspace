@@ -71,6 +71,10 @@ export class HeaderBarComponent implements OnInit {
         shortcut: 'alt.p',
         shortcutLabel: 'alt+p',
         shortcutHint: 'p',
+        route: '/patients',
+        command: () => {
+          console.log('Patients clicked');
+        }
       },
       // Report
       {
@@ -298,6 +302,7 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.e z',
             shortcutLabel: 'Z',
             shortcutHint: 'Z',
+            route: 'patients',
             command: () => {
               console.log('Zero Units Charged on TEST Patients clicked');
             },

@@ -1,62 +1,93 @@
 <shared-panel-container>
   <h1 class="font-semibold text-2xl">Ward/Bed Area Maintenance</h1>
 
-  <form [formGroup]="wardBedForm" class="card flex flex-col justify-start mt-4 space-y-4">
-    <!-- Dropdown: Select Ward/Area -->
-    <div>
-      <label for="ward-area" class="font-semibold text-[18px] mr-3">Select Ward/Area</label>
-      <p-select
-        [options]="options"
-        formControlName="selectedOption"
-        optionLabel="name"
-        placeholder="Select an option"
-        class="w-full md:w-56 mt-2"
-      >
-      </p-select>
-    </div>
+  <form [formGroup]="wardBedForm" class="flex flex-col justify-start mt-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Left Column: Ward/Area Section -->
+      <div class="border border-grey-200 p-4 mt-5 rounded-md md:col-span-2">
+        <div class="space-y-4">
 
-    <!-- Text Box: Ward/Area -->
-    <div>
-      <label for="wardName" class="font-medium text-[16px] mr-3">Ward/Area</label>
-      <input
-        id="wardName"
-        type="text"
-        pInputText
-        formControlName="wardArea"
-        placeholder="Enter ward or area name"
-        class="w-full md:w-72 mt-2"
-      />
-      <label for="locationID" class="ml-3 text-[18px] font-semibold">Remote Location ID</label>
-    </div>
+          <div class="flex gap-4">
+            <div class="flex flex-col flex-1 mt-2">
+              <label class="font-medium text-[16px]">Select Ward/Area</label>
+              <p-select
+                [options]="options"
+                formControlName="selectedOption"
+                optionLabel="name"
+                placeholder="Select an option"
+                class="w-full mt-4"
+              ></p-select>
+            </div>
 
-    <div class="flex">
-      <div class="flex flex-col font-semibold">
-        <label for="costBasis" class="text-[18px]">Cost Basis</label>
-        <label for="subCostBasis" class="text-[14px]">(AV,AW,CC,PC)</label>
+            <div class="flex flex-col flex-1 mt-2">
+              <label class="font-medium text-[16px]">Ward/Area</label>
+              <app-custom-input
+                formControlName="wardArea"
+                placeholder="Enter ward or area name"
+                class="w-full mt-2"
+              ></app-custom-input>
+            </div>
+          </div>
+
+          <!-- Cost Basis -->
+          <div class="flex gap-4">
+            <div class="flex flex-col flex-1 mt-2">
+              <label class="font-semibold text-[16px]">Cost Basis</label>
+              <label class="text-[14px]">(AV, AW, CC, PC)</label>
+              <app-custom-input
+                formControlName="costBase"
+                placeholder="Enter Cost Base"
+                class="w-full mt-2"
+              ></app-custom-input>
+            </div>
+            <div class="flex-1 hidden md:block"></div>
+          </div>
+        </div>
       </div>
-      <input
-        id="costBase"
-        type="text"
-        pInputText
-        formControlName="costBase"
-        placeholder="Enter Cost Base"
-        class="w-full md:w-72 mt-2 ml-3"
-      />
-    </div>
 
-    <div>
-      <h1 class="text-2xl font-semiBoe">Remote Location ID</h1>
-      <!-- Dropdown: Select Ward/Area -->
+      <!-- Right Column: Remote Location Section -->
       <div>
-        <p-select
-          [options]="optionsOne"
-          formControlName="selectedOptionOne"
-          optionLabel="name"
-          placeholder="Select an option"
-          class="w-full md:w-56 mt-2"
-        >
-        </p-select>
+        <p-fieldset legend="Remote Location ID">
+          <div class="space-y-4">
+            <!-- Dropdown -->
+            <div class="flex flex-col mt-2">
+              <label class="font-medium text-[16px]">Remote Location</label>
+              <p-select
+                [options]="optionsOne"
+                formControlName="selectedOptionOne"
+                optionLabel="name"
+                placeholder="Select a location"
+                class="w-full mt-2 border border-gray-300 rounded-md p-1"
+              ></p-select>
+            </div>
+
+            <!-- Checkboxes -->
+            <div class="space-y-3 pt-2">
+              <div class="flex items-center gap-2">
+                <p-checkbox formControlName="prnMeds" [binary]="true"></p-checkbox>
+                <label>PRN Meds from Remote</label>
+              </div>
+              <div class="flex items-center gap-2">
+                <p-checkbox formControlName="scheduledMeds" [binary]="true"></p-checkbox>
+                <label>Scheduled Meds from Remote</label>
+              </div>
+              <div class="flex items-center gap-2">
+                <p-checkbox formControlName="ivMeds" [binary]="true"></p-checkbox>
+                <label>IVs w/o Additives from Remote</label>
+              </div>
+            </div>
+          </div>
+        </p-fieldset>
       </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="mt-6 flex justify-end gap-3">
+      <p-button label="Add" variant="outlined" severity="success" icon="pi pi-plus"></p-button>
+      <p-button label="Update" variant="outlined" severity="info" icon="pi pi-check"></p-button>
+      <p-button label="Delete" variant="outlined" severity="danger" icon="pi pi-trash"></p-button>
+      <p-button label="Refresh" variant="outlined" severity="secondary" icon="pi pi-refresh"></p-button>
+      <p-button label="Show STATS" variant="outlined" severity="help" icon="pi pi-chart-line"></p-button>
     </div>
   </form>
 </shared-panel-container>

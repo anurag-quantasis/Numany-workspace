@@ -7,7 +7,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-  selector: 'main-pharmcist-intervention-type',
+  selector: 'tenant-pharmcist-intervention-type',
   standalone: true,
   imports: [
     FormsModule,

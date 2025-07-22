@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SharedPanelContainerComponent } from 'shared-ui';
+import { Fieldset } from "primeng/fieldset";
 
 @Component({
-  selector: 'app-standing-orders',
+  selector: 'tenant-standing-orders',
   standalone: true,
   imports: [
     CommonModule,
@@ -14,7 +15,8 @@ import { SharedPanelContainerComponent } from 'shared-ui';
     InputTextModule,
     ButtonModule,
     SharedPanelContainerComponent,
-  ],
+    Fieldset
+],
   templateUrl: './standing-orders.component.html',
 })
 export class StandingOrdersComponent implements OnInit {
