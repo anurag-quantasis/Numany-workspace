@@ -7,6 +7,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/tenant-login/tenant-login.component').then((m) => m.TenantLoginComponent),
   },
+
+  {
+    path: 'patients',
+    loadComponent: () =>
+      import('./features/patients/patients/patients.component').then((m) => m.PatientsComponent),
+  },
+
   {
     path: '',
     component: LayoutComponent,
