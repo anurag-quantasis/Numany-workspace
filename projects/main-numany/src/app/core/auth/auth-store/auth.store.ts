@@ -30,13 +30,13 @@ export const AuthStore = signalStore(
   withState(initialState),
 
   // --- Permission Feature from permission utils ---
-  // withPermissions(),
+  withPermissions(),
 
   // 2. Define computed signals for derived state
-  // withComputed(({ token, user }) => ({
-  //   isAuthenticated: computed(() => !!token() && !!user()),
-  //   // You can add more computed signals like `userName`, `userRoles`, etc.
-  // })),
+  withComputed(({ token, user }) => ({
+    isAuthenticated: computed(() => !!token() && !!user()),
+    // You can add more computed signals like `userName`, `userRoles`, etc.
+  })),
 
   // 3. Define methods to update the state and trigger side effects
   withMethods(

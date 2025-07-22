@@ -3,7 +3,7 @@ import { delay, Observable, of, throwError } from 'rxjs';
 import { User, FeatureCodes, FeatureCode } from '../permissions/role';
 import { CookieService } from '../../services/cookie.service';
 import { ConfigService } from '../../services/config.service';
-import { ApiService } from '../../services/api.service';
+import { MainApiService } from '../../services/api.service';
 
 // our mock users in a map.
 const MOCK_USERS: Record<string, User> = {
@@ -56,7 +56,7 @@ export class AuthService {
   private cookieService = inject(CookieService);
   // INJECT the ConfigService
   private configService = inject(ConfigService);
-  apiService = inject(ApiService);
+  apiService = inject(MainApiService);
   // DYNAMICALLY get the token key from the ConfigService
   private readonly tokenKey = this.configService.getAuthSettings().accessTokenKey;
 

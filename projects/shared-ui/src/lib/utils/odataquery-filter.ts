@@ -85,3 +85,48 @@ export function createODataClause(field: string, filter: FilterMetadata): string
       return null;
   }
 }
+
+export function createHttpParams(event: TableLazyLoadEvent): HttpParams {
+  let params = new HttpParams();
+
+  // 1. Handle Pagination (Assuming this is still needed)
+  const page = Math.floor(event.first ?? 0) / (event.rows ?? 10) + 1;
+  const size = event.rows ?? 10;
+  params = params.set('pageNumber', page.toString());
+  params = params.set('pageSize', size.toString());
+
+  // 2. Handle OData Sorting
+  if (event.sortField && typeof event.sortField === 'string') {
+    const sortDirection = event.sortOrder === 1 ? 'asc' : 'desc';
+    // OData standard sort format is 'field direction'
+    params = params.set('$orderby', `${event.sortField} ${sortDirection}`);
+  }
+
+  // 3. Handle OData Filtering (THE MAIN FIX)
+  const filterClauses: string[] = [];
+
+  if (event.filters) {
+    for (const field in event.filters) {
+      const filterMeta = event.filters[field] as FilterMetadata | FilterMetadata[];
+
+      // PrimeNG can send a single or an array of filters
+      const filters = Array.isArray(filterMeta) ? filterMeta : [filterMeta];
+
+      for (const filter of filters) {
+        if (filter.value !== null && filter.value !== undefined && filter.value !== '') {
+          const clause = createODataClause(field, filter);
+          if (clause) {
+            filterClauses.push(clause);
+          }
+        }
+      }
+    }
+  }
+
+  // Join all individual clauses with 'and' and add to the '$filter' parameter
+  if (filterClauses.length > 0) {
+    params = params.set('filter', filterClauses.join(' and '));
+  }
+
+  return params;
+}
