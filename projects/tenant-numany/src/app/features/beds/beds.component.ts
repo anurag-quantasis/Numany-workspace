@@ -20,6 +20,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BedService } from './services/beds.service';
 import { SharedDataTableComponent } from 'shared-ui';
 import { Toast } from 'primeng/toast';
+import { ToasterComponent } from '../../shared/components/toaster/toaster.component';
 
 @Component({
   selector: 'tenant-beds',
@@ -34,8 +35,8 @@ import { Toast } from 'primeng/toast';
     ShortcutDirective,
     SharedDataTableComponent,
     CustomInputComponent,
-    Toast,
     SharedPanelContainerComponent,
+    ToasterComponent,
   ],
   templateUrl: './beds.component.html',
   styleUrl: './beds.component.css',
