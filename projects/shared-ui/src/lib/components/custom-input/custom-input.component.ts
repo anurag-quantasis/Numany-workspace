@@ -169,6 +169,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   fluid = input<boolean>(false);
   binary = input<boolean>(true);
   layout = input<'vertical' | 'horizontal'>('vertical');
+  submitted = input<boolean>(false);
 
   // --- Injections ---
   public ngControl: NgControl = inject(NgControl, { self: true });
@@ -229,7 +230,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   isInvalid = computed(() => {
     this.controlStatus(); // Create a dependency on our trigger signal.
     const c = this.ngControl.control;
-    return !!(c && c.invalid && (c.touched || c.dirty));
+     return !!(c && c.invalid && (c.touched || c.dirty || this.submitted()));
   });
 
   isRequired = computed(() => {
