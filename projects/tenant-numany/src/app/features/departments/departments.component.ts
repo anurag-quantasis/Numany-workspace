@@ -4,7 +4,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ShortcutDirective, SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
-import { Fieldset } from "primeng/fieldset";
+import { Fieldset } from 'primeng/fieldset';
 
 @Component({
   selector: 'tenant-departments',
@@ -16,8 +16,8 @@ import { Fieldset } from "primeng/fieldset";
     ShortcutDirective,
     SharedPanelContainerComponent,
     CustomInputComponent,
-    Fieldset
-],
+    Fieldset,
+  ],
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.css',
 })

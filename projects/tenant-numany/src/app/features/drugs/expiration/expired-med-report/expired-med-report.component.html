@@ -5,7 +5,7 @@
 <section class="flex flex-col justify-center items-center p-4">
   <!-- Use ngIf on the formGroup instance itself -->
   <div [formGroup]="reportDateGroup">
-    <p-datePicker inline="true" [showWeek]="true" formControlName="reportDate"></p-datePicker>
+    <p-datepicker inline="true" [showWeek]="true" formControlName="reportDate"></p-datepicker>
     <div class="flex items-center gap-x-2.5 mt-4">
       <p-checkbox formControlName="ischecked" [binary]="true" inputId="nonformulary"></p-checkbox>
       <label for="nonformulary">Include Non-formulary Items</label>

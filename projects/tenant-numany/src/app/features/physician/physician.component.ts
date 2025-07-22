@@ -1,33 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
-
-interface Physician {
-  id: number | string;
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  DEA: string;
-  phone: string;
-  license: string;
-  UPIN: string;
-  npi: string;
-  fax: string;
-  medicad: string;
-  localid: string;
-  isHidden: boolean;
-  isPrescriber: boolean;
-}
+import { PhysicianStore } from './physician-store/physician.store';
+import { Physician } from './physician-store/physician.model';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
-  selector: 'main-physician',
+  selector: 'tenant-physician',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,138 +23,146 @@ interface Physician {
     ButtonModule,
     SharedPanelContainerComponent,
     CustomInputComponent,
+    ConfirmDialog,
   ],
   templateUrl: './physician.component.html',
   styleUrls: ['./physician.component.css'],
+  providers: [PhysicianStore, ConfirmationService],
 })
 export class PhysicianComponent implements OnInit {
+  readonly store = inject(PhysicianStore);
+  private fb = inject(FormBuilder);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly messageService = inject(MessageService);
   physician!: FormGroup;
-  // Store doctors locally
-  doctors: Physician[] = [];
+  isAddMode = signal(false);
 
-  names = [
-    { name: 'Dr. Smith', id: 1 },
-    { name: 'Dr. Jones', id: 2 },
-  ];
-
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.physician = this.fb.group({
-      selectedName: [null],
-      id: [''],
-      isHidden: [false],
-      isPrescriber: [false],
-      name: [''],
-      address: [''],
-      city: [''],
-      state: [''],
-      zip: [''],
-      DEA: [''],
-      phone: [''],
-      license: [''],
-      UPIN: [''],
-      npi: [''],
-      medicare: [''],
-      medicaId: [''],
-      localid: [''],
+  constructor() {
+    this.initializeForm();
+    effect(() => {
+      const physicians = this.store.physician();
+      const selectedId = this.physician.get('selectedName')?.value;
+      if (selectedId && !physicians.some((p) => p.id_doc === selectedId)) {
+        this.resetForm(false);
+      }
     });
   }
 
-  // Add a new physician to the list
-  onAdd(): void {
-    const formValue = this.physician.value;
-    if (!formValue.name) {
-      alert('Name is required to add a physician.');
-      return;
-    }
-    // Simple id generation if empty or duplicate
-    const newId =
-      formValue.id || (this.doctors.length ? Math.max(...this.doctors.map((d) => +d.id)) + 1 : 1);
-    const exists = this.doctors.find((d) => d.id == newId);
-    if (exists) {
-      alert(`Physician with ID ${newId} already exists. Use update instead.`);
-      return;
-    }
-
-    const newPhysician: Physician = {
-      id: newId,
-      name: formValue.name,
-      address: formValue.address,
-      city: formValue.city,
-      state: formValue.state,
-      zip: formValue.zip,
-      DEA: formValue.DEA,
-      phone: formValue.phone,
-      license: formValue.license,
-      UPIN: formValue.UPIN,
-      npi: formValue.npi,
-      fax: formValue.fax,
-      medicad: formValue.medicad,
-      localid: formValue.localid,
-      isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber,
-    };
-
-    this.doctors.push(newPhysician);
-    alert('Physician added successfully!');
-    this.physician.reset();
+  ngOnInit(): void {
+    this.store.loadPhysician();
+    this.physician.get('selectedName')?.valueChanges.subscribe((selectedId) => {
+      if (selectedId && !this.isAddMode()) {
+        const physicianData = this.store.physician().find((p) => p.id_doc === selectedId);
+        if (physicianData) {
+          this.physician.patchValue(physicianData, { emitEvent: false });
+        }
+      } else if (!selectedId) {
+        this.resetForm(false);
+      }
+    });
   }
 
-  // Update existing physician by id
+  private initializeForm(): void {
+    this.physician = this.fb.group({
+      selectedName: [null],
+      id_doc: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(10)]],
+      hide_dr: [false],
+      e_rx_yn: [false],
+      nam_doc: ['', [Validators.required, Validators.maxLength(30)]],
+      adr_doc: ['', Validators.maxLength(50)],
+      cty_doc: ['', Validators.maxLength(50)],
+      st_doc: ['', Validators.maxLength(2)],
+      zip_doc: ['', Validators.maxLength(20)],
+      dea_no: ['', Validators.maxLength(50)],
+      phone: ['', Validators.maxLength(14)],
+      st_lic: ['', Validators.maxLength(20)],
+      up_in: ['', Validators.maxLength(20)],
+      npi: ['', Validators.maxLength(20)],
+      m_care_dr: ['', Validators.maxLength(20)],
+      m_caid_dr: ['', Validators.maxLength(20)],
+      local_id: ['', Validators.maxLength(20)],
+    });
+  }
+
+  private resetForm(enterAddMode: boolean): void {
+    this.physician.reset({
+      id_doc: { value: '', disabled: !enterAddMode },
+      hide_dr: false,
+      e_rx_yn: false,
+    });
+    this.physician.get('selectedName')?.setValue(null, { emitEvent: false });
+
+    this.isAddMode.set(enterAddMode);
+  }
+
+  enterAddMode(): void {
+    this.resetForm(true);
+  }
+
+  cancelAddMode(): void {
+    this.resetForm(false);
+  }
+
   onUpdate(): void {
-    const formValue = this.physician.value;
-    const id = formValue.id;
-    if (!id) {
-      alert('ID is required to update a physician.');
+    const { selectedName, ...physicianPayload } = this.physician.getRawValue();
+    if (!physicianPayload.id_doc) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please select a physician to update.',
+      });
       return;
     }
-
-    const index = this.doctors.findIndex((d) => d.id == id);
-    if (index === -1) {
-      alert(`Physician with ID ${id} not found.`);
-      return;
-    }
-
-    this.doctors[index] = {
-      id: id,
-      name: formValue.name,
-      address: formValue.address,
-      city: formValue.city,
-      state: formValue.state,
-      zip: formValue.zip,
-      DEA: formValue.DEA,
-      phone: formValue.phone,
-      license: formValue.license,
-      UPIN: formValue.UPIN,
-      npi: formValue.npi,
-      fax: formValue.fax,
-      medicad: formValue.medicad,
-      localid: formValue.localid,
-      isHidden: formValue.isHidden,
-      isPrescriber: formValue.isPrescriber,
-    };
-
-    alert('Physician updated successfully!');
-    this.physician.reset();
+    this.store.updatePhysician(physicianPayload as Physician);
   }
 
-  // Delete physician by id
   onDelete(): void {
-    const id = this.physician.value.id;
-    if (!id) {
-      alert('ID is required to delete a physician.');
+    const physicianId = this.physician.get('id_doc')?.value;
+    const physicianName = this.physician.get('nam_doc')?.value;
+
+    if (!physicianId) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please select a physician to delete.',
+      });
       return;
     }
+    this.confirmationService.confirm({
+      key: 'delete-physician-confirmation',
+      closable: true,
+      closeOnEscape: true,
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+      },
+      message: `Are you sure you want to delete ${physicianName}`,
+      header: 'Confirm Deletion',
+      icon: 'pi pi-trash',
+      accept: () => {
+        this.store.deletePhysician(physicianId);
+      },
+    });
+  }
 
-    const index = this.doctors.findIndex((d) => d.id == id);
-    if (index === -1) {
-      alert(`Physician with ID ${id} not found.`);
+  onSave(): void {
+    if (this.physician.invalid) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please fill out all required fields.',
+      });
       return;
     }
-
-    this.doctors.splice(index, 1);
-    alert('Physician deleted successfully!');
-    this.physician.reset();
+    const { selectedName, ...physicianPayload } = this.physician.getRawValue();
+    this.store.addNewPhysician(physicianPayload as Physician);
+    this.cancelAddMode();
   }
 }

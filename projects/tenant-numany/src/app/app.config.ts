@@ -18,8 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     MessageService,
     DialogService,
-    { provide: DynamicDialogConfig, useValue: {} },
-    { provide: DynamicDialogRef, useValue: {} },
     providePrimeNG({
       theme: {
         preset: MyPreset,

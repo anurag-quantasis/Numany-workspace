@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // --- Angular & Custom Component Imports ---
@@ -19,6 +19,11 @@ import { MessageService } from 'primeng/api';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { Divider } from 'primeng/divider';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UiDialogService } from 'projects/tenant-numany/src/app/core/services/ui-dialog.service';
+import { ListAlertComponent } from '../item-maintenance-dialogs/list-alert/list-alert.component';
+import { RemoteLocationComponent } from '../item-maintenance-dialogs/remote-locations/remote-locations.component';
+import { OrderHistoryComponent } from '../item-maintenance-dialogs/order-history/order-history.component';
 
 @Component({
   selector: 'app-item-maintenance-form',
@@ -47,6 +52,9 @@ export class ItemMaintenanceFormComponent {
   isEditMode = computed(() => this.id() !== 'new');
   isNew = computed(() => this.id() === 'new');
   form: FormGroup;
+
+  ref: DynamicDialogRef | undefined;
+  private uiDialogService = inject(UiDialogService);
 
   // --- Options for Dropdowns and Radios ---
   routesOptions = [
@@ -207,5 +215,15 @@ export class ItemMaintenanceFormComponent {
 
   get currentDrugId(): string {
     return this.form.get('drugId')?.value ?? '';
+  }
+
+  openListAlert() {
+    this.uiDialogService.open(ListAlertComponent, 'Alert Matrix');
+  }
+  openRemoteLocations() {
+    this.uiDialogService.open(RemoteLocationComponent, 'Remote Locations');
+  }
+  openOrderHistory() {
+    this.uiDialogService.open(OrderHistoryComponent, 'Order History');
   }
 }

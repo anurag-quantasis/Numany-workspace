@@ -18,7 +18,12 @@ interface DrugItem {
 @Component({
   selector: 'tenant-item-maintenance',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SharedDataTableComponent, SharedPanelContainerComponent,],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SharedDataTableComponent,
+    SharedPanelContainerComponent,
+  ],
   templateUrl: './item-maintenance.component.html',
   styleUrl: './item-maintenance.component.css',
 })
