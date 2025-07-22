@@ -15,8 +15,7 @@
         optionLabel="name"
         placeholder="Choose an option"
         class="w-full"
-      >
-      </p-select>
+      ></p-select>
     </div>
 
     <!-- Type, Name, Address, City -->
@@ -64,9 +63,9 @@
 
     <!-- Buttons -->
     <div class="flex justify-end gap-4 mb-1">
-      <p-button label="Add" (onClick)="onAdd()" variant="outlined" severity="success" />
-      <p-button label="Delete" (onClick)="onDelete()" variant="outlined" severity="danger" />
-      <p-button label="Update" (onClick)="onUpdate()" variant="outlined" severity="info" />
+      <p-button label="Add" (onClick)="onAdd()" variant="outlined" severity="success" icon="pi pi-plus"></p-button>
+      <p-button label="Delete" (onClick)="onDelete()" variant="outlined" severity="danger" icon="pi pi-trash"></p-button>
+      <p-button label="Update" (onClick)="onUpdate()" variant="outlined" severity="info" icon="pi pi-check"></p-button>
     </div>
   </form>
 </shared-panel-container>

@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { DividerDesignTokens } from '@primeng/themes/types/divider';
 
 interface RouteCode {
   name: string;

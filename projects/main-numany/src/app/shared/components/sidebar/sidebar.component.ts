@@ -103,9 +103,9 @@ export class SidebarComponent {
     // },
     {
       id: '1',
-      routeLink: '',
+      routeLink: 'tenants',
       icon: 'pi pi-users',
-      label: 'UCO LIST',
+      label: 'Tenants',
       // permission: { resource: 'patients', action: 'view' },
     },
     {

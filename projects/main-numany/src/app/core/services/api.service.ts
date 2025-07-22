@@ -10,7 +10,7 @@ import { ConfigService } from './config.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class MainApiService {
   private http = inject(HttpClient);
   private configService = inject(ConfigService);
   private baseUrl = this.configService.getAPIUrl();
