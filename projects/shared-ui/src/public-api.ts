@@ -23,7 +23,7 @@ export * from './lib/directives/shortcut-key-hint.directive';
 export * from './lib/utils/custom-validation';
 
 // // Shared Types
-export * from './lib/utils/type'
+export * from './lib/utils/type';
 
 // // Shared Data Constants
-export * from './lib/utils/constant'
+export * from './lib/utils/constant';

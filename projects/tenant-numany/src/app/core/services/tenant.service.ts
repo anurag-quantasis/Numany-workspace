@@ -1,9 +1,9 @@
-import { Injectable, signal } from "@angular/core";
-
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
-}) export class TenantService {
+  providedIn: 'root',
+})
+export class TenantService {
   // The '#' makes it a true private class field.
   #tenantId = signal<string | null>(null);
 

@@ -8,9 +8,8 @@ describe('SharedStateSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedStateSelectorComponent]
-    })
-    .compileComponents();
+      imports: [SharedStateSelectorComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SharedStateSelectorComponent);
     component = fixture.componentInstance;

@@ -22,8 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedDataTableComponent,
     ButtonModule,
     ReactiveFormsModule,
-    SharedPanelContainerComponent
-],
+    SharedPanelContainerComponent,
+  ],
 })
 export class RemoteInventoryLocationComponent {
   remoteInventoryLocation: FormGroup;
