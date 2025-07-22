@@ -1,15 +1,14 @@
-<shared-panel-container>
-  <div class="mb-4 ml-5 mt-2">
-    <h1 class="text-2xl font-semibold">Patient/Payor Type Maintenance</h1>
+<shared-panel-container [title]="'Patient/Payor Type Maintenance'">
+  <p-button
+    label="Print All Records"
+    icon="pi pi-print"
+    variant="outlined"
+    styleClass="my-2"
+  ></p-button>
 
-    <div class="flex items-start justify-between mt-3 ml-0 mb-3 mr-5">
-      <p-button label="Print All Records" icon="pi pi-print" variant="outlined"></p-button>
-    </div>
-  </div>
-
-  <form [formGroup]="form" class="flex flex-col gap-8 mx-5">
+  <form [formGroup]="form" class="flex flex-col">
     <!-- Filter Dropdown -->
-    <div class="w-[290px]">
+    <div class="w-[50%] pr-2 py-2">
       <p-select
         formControlName="selectedOption"
         [options]="dropdownOptions"
@@ -21,79 +20,37 @@
     </div>
 
     <!-- Type, Name, Address, City -->
-    <div class="grid grid-cols-4 gap-6">
+    <div class="grid grid-cols-4 gap-4 mt-4">
       <app-custom-input
         formControlName="idpay"
         label="Patient/Payor Type"
         placeholder="Enter Patient/Payor Type"
-        class="w-[250px]"
         pTooltip="Unique 4-digit ID for Payor"
       />
       <app-custom-input
         formControlName="nampay"
         label="Name"
         placeholder="Enter name"
-        class="w-[250px]"
         pTooltip="Payor full name"
       />
-      <app-custom-input
-        formControlName="iadpy"
-        label="Address"
-        placeholder="Enter address"
-        class="w-[250px]"
-      />
-      <app-custom-input
-        formControlName="ictpy"
-        label="City"
-        placeholder="Enter city"
-        class="w-[250px]"
-      />
-    </div>
-
-    <!-- State, ZIP, Phone, Note -->
-    <div class="grid grid-cols-4 gap-6">
-      <app-custom-input
-        formControlName="istpy"
-        label="State"
-        placeholder="Enter state"
-        class="w-[250px]"
-      />
-      <app-custom-input
-        formControlName="izppy"
-        label="Postal/ZIP Code"
-        placeholder="Enter ZIP"
-        class="w-[250px]"
-      />
-      <app-custom-input
-        formControlName="iphpy"
-        label="Phone"
-        placeholder="Enter phone number"
-        class="w-[250px]"
-      />
-      <app-custom-input
-        formControlName="imspy"
-        label="Note"
-        placeholder="Enter a note"
-        class="w-[250px]"
-      />
-    </div>
-
-    <!-- Charge Cost Basis, , Cost Basis, Other -->
-    <div class="grid grid-cols-4 gap-6">
+      <app-custom-input formControlName="iadpy" label="Address" placeholder="Enter address" />
+      <app-custom-input formControlName="ictpy" label="City" placeholder="Enter city" />
+      <app-custom-input formControlName="istpy" label="State" placeholder="Enter state" />
+      <app-custom-input formControlName="izppy" label="Postal/ZIP Code" placeholder="Enter ZIP" />
+      <app-custom-input formControlName="iphpy" label="Phone" placeholder="Enter phone number" />
+      <app-custom-input formControlName="imspy" label="Note" placeholder="Enter a note" />
       <app-custom-input
         formControlName="ipycb"
         label="Charge Cost Basis"
         placeholder="AV, AW, CC or PC"
-        class="w-[250px]"
       />
       <app-custom-input
         formControlName="iccpy"
         label="Charge Class"
         placeholder="Enter charge class"
-        class="w-[250px]"
         pTooltip="Must match predefined class"
       />
-      <div class="mt-7 w-[280px]">
+      <div class="mt-8">
         <p-select
           formControlName="selectedOption"
           [options]="dropdownOptions"

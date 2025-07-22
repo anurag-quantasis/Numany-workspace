@@ -7,8 +7,8 @@ import { Physician, PhysicianPayload, PhysicianResponse } from '../physician-sto
 export class PhysicianService {
   private apiService = inject(ApiService);
 
-  getPhysician(): Observable<Physician[]> {
-    return this.apiService.get<Physician[]>('/doctors');
+  getPhysician(): Observable<PhysicianResponse> {
+    return this.apiService.get<PhysicianResponse>('/doctors');
   }
 
   addPhysician(physicianPayload: PhysicianPayload): Observable<PhysicianResponse> {

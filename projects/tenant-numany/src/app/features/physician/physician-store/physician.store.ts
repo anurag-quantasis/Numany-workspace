@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { PhysicianService } from '../services/physician.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-import { Physician } from './physician.model';
+import { Physician, PhysicianResponse } from './physician.model';
 
 export const PhysicianStore = signalStore(
   withState(initialState),
@@ -15,11 +15,15 @@ export const PhysicianStore = signalStore(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
         switchMap(() =>
+          // The service now correctly returns an Observable<PhysicianApiResponse>
           physicianService.getPhysician().pipe(
             tap({
-              next: (physician) => {
-                const safePhysician = Array.isArray(physician) ? physician : [];
-                patchState(store, { physician: safePhysician, isLoading: false, error: null });
+              // The 'response' parameter is now correctly typed
+              next: (response: PhysicianResponse) => {
+                // FIX: Extract the 'data' array from the response object
+                const physiciansArray =
+                  response.data && Array.isArray(response.data) ? response.data : [];
+                patchState(store, { physician: physiciansArray, isLoading: false, error: null });
               },
               error: (e) => patchState(store, { error: e.message, isLoading: false }),
             }),

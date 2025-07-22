@@ -62,7 +62,7 @@ export const BedStore = signalStore(
             tap((response) => {
               if (response.status === 'success') {
                 messageService.add({
-                  key: 'custom-toast2',
+                  key: 'custom-toast',
                   severity: 'success',
                   summary: 'Success',
                   detail: 'Bed created successfully.',
@@ -71,7 +71,7 @@ export const BedStore = signalStore(
               } else {
                 patchState(store, { error: response.error, isLoading: false });
                 messageService.add({
-                  key: 'custom-toast2',
+                  key: 'custom-toast',
                   severity: 'error',
                   summary: 'Creation Failed',
                   detail: response.error,
@@ -102,7 +102,7 @@ export const BedStore = signalStore(
               } else {
                 patchState(store, { error: response.error, isLoading: false });
                 messageService.add({
-                  key: 'custom-toast2',
+                  key: 'custom-toast',
                   severity: 'error',
                   summary: 'Deletion Failed',
                   detail: response.error,
