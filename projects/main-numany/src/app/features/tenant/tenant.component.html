@@ -5,7 +5,7 @@
     [totalRecords]="10"
     [loading]="store.isLoading()"
     [rows]="10"
-    
+    (selectionChange)="handleSelectionChange($any($event))"
     (lazyLoad)="store.loadTenants($event)"
     
     [tableActions]="true"

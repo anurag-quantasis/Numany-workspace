@@ -131,28 +131,31 @@ export class BedService {
     //    Your API example shows it expects `id`, `id_Bed`, `id_Area`, and `ip_Sec`.
     const apiPayload = {
       bed: {
-        id: bedToUpdate.id,
+        bed_Seq: bedToUpdate.bed_Seq,
         id_Bed: bedToUpdate.id_Bed,
         id_Area: bedToUpdate.id_Area,
         ip_Sec: Number(bedToUpdate.ip_Sec), // Ensure it's a number
       },
     };
 
-    // The endpoint includes the bed's ID.
-    const updateUrl = `${this.singleBedEndpoint}/${bedToUpdate.id}`;
+    console.log("API",apiPayload);
 
-    return this.apiService.put<ApiMutationResponse>(updateUrl, apiPayload).pipe(
-      map((apiResponse) => {
+    // The endpoint includes the bed's ID.
+    const updateUrl = `${this.singleBedEndpoint}/${bedToUpdate.bed_Seq}`;
+
+    return this.apiService.put(updateUrl, apiPayload).pipe(
+      map((apiResponse:any) => {
         // 2. Check for business logic errors.
-        if (!apiResponse.data) {
-          return {
-            status: 'error',
-            error: apiResponse.message || 'An unknown error occurred.',
-          } as const;
+        if (apiResponse.isUpdated) {
+          return { status: 'success', data: apiResponse } as const;
         }
 
+        return {
+          status: 'error',
+          error: apiResponse.message || 'An unknown error occurred.',
+        } as const;
+
         // 3. On success, return the full `Bed` object from the API directly.
-        return { status: 'success', data: apiResponse.data } as const;
       }),
       catchError((err: HttpErrorResponse) => {
         const message = err.error?.message || 'The update request failed.';
@@ -161,7 +164,7 @@ export class BedService {
     );
   }
 
-  deleteBed(bedId: string): Observable<ApiResponse<void>> {
+  deleteBed(bedId: number): Observable<ApiResponse<void>> {
     return this.apiService.delete<ApiMutationResponse>(`${this.singleBedEndpoint}/${bedId}`).pipe(
       map((apiResponse) => {
         if (apiResponse.message && apiResponse.data === null) {
