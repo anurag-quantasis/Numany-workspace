@@ -1,101 +1,110 @@
-<shared-panel-container>
-  <h1 class="mt-5 text-2xl font-semibold">tblVendor</h1>
-
-  <form [formGroup]="vendorForm" class="card mt-2 space-y-4">
-    <p-fieldset legend="Select Vendor">
-      <!-- Row 1 -->
-      <div class="flex flex-wrap gap-4">
-        <!-- Select Vendor -->
-        <div class="flex flex-col w-full md:w-[220px] space-y-2">
-          <p-select
-            [options]="options"
-            formControlName="selectedOption"
-            optionLabel="name"
-            [checkmark]="true"
-            [showClear]="true"
-            placeholder="Select Vendor"
-            class="w-full mt-8"
-          ></p-select>
-          <small *ngIf="vendorForm.get('selectedOption')?.touched && vendorForm.get('selectedOption')?.invalid" class="text-red-600">
-            Vendor selection is required
-          </small>
-        </div>
-
-        <!-- Vendor ID -->
-        <div class="w-full md:w-[220px]">
-          <app-custom-input
-            formControlName="vendorId"
-            label="Vendor ID"
-            placeholder="Enter vendor ID"
-            [disabled]="editingIndex !== null"
-            pTooltip="Unique ID for the vendor"
-          ></app-custom-input>
-        </div>
-
-        <!-- Account No -->
-        <div class="w-full md:w-[220px]">
-          <app-custom-input
-            formControlName="accountNo"
-            label="Account No"
-            placeholder="Enter account number"
-            pTooltip="Max 12 characters"
-          ></app-custom-input>
-        </div>
-
-        <!-- Vendor Name -->
-        <div class="w-full md:w-[220px]">
-          <app-custom-input
-            formControlName="vendorName"
-            label="Vendor Name"
-            placeholder="Enter vendor name"
-            pTooltip="Full vendor name"
-          ></app-custom-input>
-        </div>
-      </div>
-
-      <!-- Row 2 -->
-      <div class="flex flex-wrap gap-4">
-        <div class="w-full md:w-[220px] mt-3">
-          <app-custom-input
-            formControlName="vendorMtd"
-            label="MTD"
-            placeholder="Enter MTD"
-            pTooltip="Month-to-date total"
-          ></app-custom-input>
-        </div>
-
-        <div class="w-full md:w-[220px] mt-3">
-          <app-custom-input
-            formControlName="vendorYtd"
-            label="YTD"
-            placeholder="Enter YTD"
-            pTooltip="Year-to-date total"
-          ></app-custom-input>
-        </div>
-      </div>
-
-      <!-- Row 3 -->
-      <div class="flex flex-col w-full md:w-[500px] mt-3 space-y-2">
-        <label for="remarks" class="text-gray-700 font-medium">Note</label>
-        <textarea
-          id="remarks"
-          rows="5"
-          pTextarea
-          formControlName="remarks"
-          class="w-full p-inputtext"
-        ></textarea>
-        <small *ngIf="vendorForm.get('remarks')?.errors?.['maxlength']" class="text-red-600">
-          Max 100 characters
+<shared-panel-container titleLabel="Vendor">
+  <form [formGroup]="vendorForm" class="mt-2">
+    <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid grid-cols-4 gap-4">
+      <div class="flex flex-col w-full gap-y-2.5">
+        <label for="" class="font-semibold text-[#334155]">Select Vendor</label>
+        <p-select
+          [options]="store.vendor()"
+          formControlName="selectedOption"
+          optionLabel="nam_vend"
+          [checkmark]="true"
+          [showClear]="true"
+          placeholder="Select vendor to edit"
+          class="w-full"
+        ></p-select>
+        <small
+          *ngIf="
+            vendorForm.get('selectedOption')?.touched && vendorForm.get('selectedOption')?.invalid
+          "
+          class="text-red-600"
+        >
+          Vendor selection is required
         </small>
       </div>
-    </p-fieldset>
+
+      <!-- Vendor Details -->
+      <app-custom-input
+        formControlName="id_vend"
+        label="Vendor ID"
+        placeholder="Enter vendor ID"
+        pTooltip="Unique ID for the vendor. Disabled when editing."
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="acct_no"
+        label="Account No"
+        placeholder="Enter account number"
+        pTooltip="Max 12 characters"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="nam_vend"
+        label="Vendor Name"
+        placeholder="Enter vendor name"
+        pTooltip="Full vendor name"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="vm_td"
+        label="MTD"
+        placeholder="Enter MTD"
+        pTooltip="Month-to-date total"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="vy_td"
+        label="YTD"
+        placeholder="Enter YTD"
+        pTooltip="Year-to-date total"
+      ></app-custom-input>
+
+      <app-custom-input
+        label="Note"
+        formControlName="note"
+        placeholder="Enter Note"
+        class="col-span-2"
+      ></app-custom-input>
+    </div>
 
     <!-- Action Buttons -->
-    <div class="flex flex-wrap gap-4 mt-6 justify-end">
-      <p-button label="Update" variant="outlined" severity="info" (onClick)="onUpdate()" icon="pi pi-check"></p-button>
-      <p-button label="Add" variant="outlined" severity="success" (onClick)="onAdd()" icon="pi pi-plus"></p-button>
-      <p-button label="Delete" variant="outlined" severity="danger" (onClick)="onDelete()" icon="pi pi-trash"></p-button>
-      <p-button label="Refresh" variant="outlined" severity="secondary" (onClick)="onRefresh()" icon="pi pi-refresh"></p-button>
+    <div class="flex flex-wrap gap-4 mt-4 justify-end">
+      <!-- Standard Buttons -->
+      <ng-container *ngIf="!isAdding">
+        <p-button label="Add" (onClick)="onAdd()" icon="pi pi-plus"></p-button>
+        <p-button
+          label="Update"
+          variant="outlined"
+          severity="info"
+          (onClick)="onUpdate()"
+          icon="pi pi-check"
+          [disabled]="!vendorForm.get('selectedOption')?.value"
+        ></p-button>
+        <p-button
+          label="Delete"
+          variant="outlined"
+          severity="danger"
+          (onClick)="onDelete()"
+          icon="pi pi-trash"
+          [disabled]="!vendorForm.get('selectedOption')?.value"
+        ></p-button>
+      </ng-container>
+
+      <!-- Buttons for Add Mode -->
+      <ng-container *ngIf="isAdding">
+        <p-button
+          label="Save"
+          (onClick)="onSave()"
+          icon="pi pi-save"
+          [disabled]="vendorForm.invalid"
+        ></p-button>
+        <p-button
+          label="Cancel"
+          variant="outlined"
+          severity="secondary"
+          (onClick)="onCancel()"
+          icon="pi pi-times"
+        ></p-button>
+      </ng-container>
     </div>
   </form>
 </shared-panel-container>

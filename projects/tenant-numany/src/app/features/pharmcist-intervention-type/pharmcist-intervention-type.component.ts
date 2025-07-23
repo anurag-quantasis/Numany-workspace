@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { Fieldset } from "primeng/fieldset";
-import { SharedPanelContainerComponent } from "shared-ui";
+import { Fieldset } from 'primeng/fieldset';
+import { SharedPanelContainerComponent } from 'shared-ui';
 import { CustomInputComponent } from 'shared-ui';
 import { SelectModule } from 'primeng/select';
-
 
 @Component({
   selector: 'tenant-pharmcist-intervention-type',
@@ -27,21 +32,20 @@ import { SelectModule } from 'primeng/select';
     // CustomInputComponent,
     SelectModule,
     Fieldset,
-    CustomInputComponent
-],
+    CustomInputComponent,
+  ],
   templateUrl: './pharmcist-intervention-type.component.html',
   styleUrls: ['./pharmcist-intervention-type.component.css'],
 })
 export class PharmcistInterventionTypeComponent {
   interventionForm: FormGroup;
 
-interventionOptions = [
-  { id: 'ADR', name: 'Adverse Drug Reaction' },
-  { id: 'Allergy', name: 'Allergy to a medication' },
-  { id: 'BPMH', name: 'BEST POSSIBLE MEDICATION HISTOF' },
-  { id: 'CR', name: 'Chart Review' }
-];
-
+  interventionOptions = [
+    { id: 'ADR', name: 'Adverse Drug Reaction' },
+    { id: 'Allergy', name: 'Allergy to a medication' },
+    { id: 'BPMH', name: 'BEST POSSIBLE MEDICATION HISTOF' },
+    { id: 'CR', name: 'Chart Review' },
+  ];
 
   // interventionOptions = [
   //   { desc: 'Adverse Drug Reaction', id: 'ADR' },
@@ -53,7 +57,6 @@ interventionOptions = [
   selectedIntervention: any;
 
   activityOptions: any[] = [];
-
 
   constructor(private fb: FormBuilder) {
     this.interventionForm = this.fb.group({

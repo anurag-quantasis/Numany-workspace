@@ -12,7 +12,8 @@
             formControlName="selectedLabType"
             optionLabel="name"
             placeholder="Select Lab Type"
-            class="w-full">
+            class="w-full"
+          >
           </p-select>
         </div>
 
@@ -22,7 +23,8 @@
             label="Lab ID"
             formControlName="labId"
             placeholder="Enter Lab ID"
-            type="text">
+            type="text"
+          >
           </app-custom-input>
         </div>
 
@@ -32,7 +34,8 @@
             label="Host ID"
             formControlName="hostId"
             placeholder="Enter Host ID"
-            type="text">
+            type="text"
+          >
           </app-custom-input>
         </div>
 
@@ -42,7 +45,8 @@
             label="Units"
             formControlName="units"
             placeholder="Enter Units"
-            type="text">
+            type="text"
+          >
           </app-custom-input>
         </div>
       </div>
@@ -57,19 +61,19 @@
           rows="5"
           cols="60"
           placeholder="Enter Description..."
-          class="p-inputtext w-full max-w-[600px]">
+          class="p-inputtext w-full max-w-[600px]"
+        >
         </textarea>
       </div>
     </p-fieldset>
 
-    <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4">
+    <div
+      class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
+    >
       <div class="flex flex-col items-start gap-3 mt-1">
         <!-- Include on Report -->
         <div class="flex items-center gap-2">
-          <p-checkbox
-            inputId="includeReport"
-            formControlName="includeOnReport"
-            [binary]="true">
+          <p-checkbox inputId="includeReport" formControlName="includeOnReport" [binary]="true">
           </p-checkbox>
           <label for="includeReport" class="font-semibold text-[#334155]">Include on Report</label>
         </div>
@@ -81,21 +85,13 @@
           <div class="flex flex-row items-end gap-6">
             <!-- Low -->
             <div class="w-[220px]">
-              <app-custom-input
-                label="Low"
-                formControlName="low"
-                placeholder="0"
-                type="text">
+              <app-custom-input label="Low" formControlName="low" placeholder="0" type="text">
               </app-custom-input>
             </div>
 
             <!-- High -->
             <div class="w-[220px]">
-              <app-custom-input
-                label="High"
-                formControlName="high"
-                placeholder="0"
-                type="text">
+              <app-custom-input label="High" formControlName="high" placeholder="0" type="text">
               </app-custom-input>
             </div>
           </div>

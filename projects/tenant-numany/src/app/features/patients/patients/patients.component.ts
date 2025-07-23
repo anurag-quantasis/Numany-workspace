@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'tenant-patients',
   imports: [],
   templateUrl: './patients.component.html',
-  styleUrl: './patients.component.css'
+  styleUrl: './patients.component.css',
 })
-export class PatientsComponent {
-
-}
+export class PatientsComponent {}

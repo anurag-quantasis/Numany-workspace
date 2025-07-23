@@ -13,17 +13,14 @@ export class GlobalWarmingPotentialFormHelper {
       id: new FormControl(
         {
           value: data?.id,
-          disabled: !(
-            data?.id !== undefined || data?.id !== ''
-          ),
+          disabled: !(data?.id !== undefined || data?.id !== ''),
         },
-        []
+        [],
       ),
       co2: new FormControl(data?.co2 ?? '', [Validators.required]),
       ch4: new FormControl(data?.ch4 ?? '', [Validators.required]),
       n2o: new FormControl(data?.n2o ?? '', [Validators.required]),
       status: new FormControl(data?.status || 1, [Validators.required]),
-
     });
   }
 }
