@@ -7,7 +7,8 @@ import { TenantService } from '../../services/tenant.service';
  * This function is passed directly to `provideAppInitializer` and runs in an
  * injection context, so `inject()` can be used.
  */
-export function initializeTenant(): void { // The signature is now simpler: () => void
+export function initializeTenant(): void {
+  // The signature is now simpler: () => void
   const tenantService = inject(TenantService);
   const hostname = window.location.hostname;
 
@@ -18,16 +19,16 @@ export function initializeTenant(): void { // The signature is now simpler: () =
       tenantService.setTenantId(tenantId);
       console.log(
         `%c[Tenant Initializer (Dev)] Tenant ID set from hostname: "${tenantId}"`,
-        'color: blue; font-weight: bold;'
+        'color: blue; font-weight: bold;',
       );
     } else {
       const defaultDevTenant = 'dev-tenant';
       tenantService.setTenantId(defaultDevTenant);
       console.warn(
-        `[Tenant Initializer (Dev)] Hostname does not end in .localhost. Using default: "${defaultDevTenant}".`
+        `[Tenant Initializer (Dev)] Hostname does not end in .localhost. Using default: "${defaultDevTenant}".`,
       );
       console.info(
-        `Tip: After editing your hosts file, access via a URL like: http://tenant1.localhost:4200`
+        `Tip: After editing your hosts file, access via a URL like: http://tenant1.localhost:4200`,
       );
     }
   } else {

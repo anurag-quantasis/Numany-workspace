@@ -29,8 +29,8 @@ import { delay, map } from 'rxjs/operators';
     CustomInputComponent,
     ButtonModule,
     Select,
-    SharedPanelContainerComponent
-],
+    SharedPanelContainerComponent,
+  ],
   templateUrl: './patient-payor-type-maintenance.component.html',
 })
 export class PatientPayorTypeMaintenanceComponent implements OnInit {
@@ -46,7 +46,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     { label: 'GEN01', value: 'GEN01' },
     { label: 'VIP01', value: 'VIP01' },
     { label: 'MED01', value: 'MED01' },
-    { label: 'CC01', value: 'CC01' }
+    { label: 'CC01', value: 'CC01' },
   ];
 
   existingPayorIDs = ['A001', 'B002', 'C003'];
@@ -79,7 +79,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
       ],
       imspy: ['', Validators.maxLength(80)],
       ipycb: ['', [Validators.maxLength(2), Validators.pattern(/^(AV|AW|CC|PC)?$/)]],
-      iccpy: ['', Validators.maxLength(6) ],
+      iccpy: ['', Validators.maxLength(6)],
 
       medErrorSeverity: [''],
       medErrorClass: [''],
@@ -112,7 +112,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     }
 
     const chargeClass = this.form.get('iccpy')?.value;
-    if (!this.chargeClassLookup.find(c => c.value === chargeClass)) {
+    if (!this.chargeClassLookup.find((c) => c.value === chargeClass)) {
       alert('Invalid charge class. Please select a valid one.');
       return;
     }
@@ -130,7 +130,7 @@ export class PatientPayorTypeMaintenanceComponent implements OnInit {
     }
 
     const chargeClass = this.form.get('iccpy')?.value;
-    if (!this.chargeClassLookup.find(c => c.value === chargeClass)) {
+    if (!this.chargeClassLookup.find((c) => c.value === chargeClass)) {
       alert('Invalid charge class. Please select a valid one.');
       return;
     }

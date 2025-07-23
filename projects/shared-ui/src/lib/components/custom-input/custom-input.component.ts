@@ -230,7 +230,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   isInvalid = computed(() => {
     this.controlStatus(); // Create a dependency on our trigger signal.
     const c = this.ngControl.control;
-     return !!(c && c.invalid && (c.touched || c.dirty || this.submitted()));
+    return !!(c && c.invalid && (c.touched || c.dirty || this.submitted()));
   });
 
   isRequired = computed(() => {

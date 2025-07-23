@@ -7,20 +7,35 @@
     [rows]="10"
     (selectionChange)="handleSelectionChange($any($event))"
     (lazyLoad)="store.loadTenants($event)"
-    
     [tableActions]="true"
     selectionMode="single"
   >
-  <div tableActions class="flex justify-end align-items-center gap-4">
-    <p-button label="Add Tenant" icon="pi pi-plus" shortcut="alt.i" variant="outlined" (click)="showTenatForm()"></p-button>
-    <p-button label="Edit Tenant" icon="pi pi-pencil" shortcut="alt.i" variant="outlined" severity="info"></p-button>
-  </div>
-</shared-data-table>
-
+    <div tableActions class="flex justify-end align-items-center gap-4">
+      <p-button
+        label="Add Tenant"
+        icon="pi pi-plus"
+        shortcut="alt.i"
+        variant="outlined"
+        (click)="showTenatForm()"
+      ></p-button>
+      <p-button
+        label="Edit Tenant"
+        icon="pi pi-pencil"
+        shortcut="alt.i"
+        variant="outlined"
+        severity="info"
+      ></p-button>
+    </div>
+  </shared-data-table>
 </shared-panel-container>
 
 <!-- Add Bed Dialog -->
-<p-dialog header="Add a New Tenant" [(visible)]="isAddDialogVisible" [modal]="true" [baseZIndex]="1000">
+<p-dialog
+  header="Add a New Tenant"
+  [(visible)]="isAddDialogVisible"
+  [modal]="true"
+  [baseZIndex]="1000"
+>
   <form
     class="grid grid-cols-1 md:grid-cols-2 gap-x-6"
     [formGroup]="tenantForm"
@@ -80,7 +95,6 @@
       ></app-custom-input>
     </div>
 
-
     <div class="min-h-24 col-span-2">
       <app-custom-input
         label="Address"
@@ -92,7 +106,7 @@
 
     <div class="flex flex-col gap-2">
       <label for="expiryDate" class="font-semibold">Expiry Date</label>
-      <p-datepicker id="expiryDate" formControlName="expiryDate" appendTo="body"/>
+      <p-datepicker id="expiryDate" formControlName="expiryDate" appendTo="body" />
     </div>
 
     <div class="flex justify-end col-span-2 gap-2 mt-4">
@@ -106,7 +120,6 @@
         type="submit"
         label="Save"
         shortcut="alt.s"
-        
         [loading]="store.isLoading()"
       ></p-button>
     </div>

@@ -10,7 +10,6 @@ export const TenantInterceptor: HttpInterceptorFn = (
   // You might get this from a service, environment file, or a constants file.
   const tenantService = inject(TenantService);
 
-
   const tenantId = tenantService.tenantId();
   if (tenantId) {
     // Clone the request to add the new headers, as requests are immutable.
@@ -20,7 +19,7 @@ export const TenantInterceptor: HttpInterceptorFn = (
         // I'm keeping this header from your example, as it's useful for ngrok.
         .set('ngrok-skip-browser-warning', 'true'),
     });
-    
+
     // Pass the cloned request to the next handler in the chain.
     return next(clonedReq);
   }

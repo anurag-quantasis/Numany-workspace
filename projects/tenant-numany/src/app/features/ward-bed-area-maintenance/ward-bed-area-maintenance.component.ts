@@ -5,7 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SharedPanelContainerComponent } from 'shared-ui';
 import { ButtonModule } from 'primeng/button';
-import { Fieldset } from "primeng/fieldset";
+import { Fieldset } from 'primeng/fieldset';
 import { CustomInputComponent } from 'shared-ui';
 
 @Component({
@@ -20,8 +20,8 @@ import { CustomInputComponent } from 'shared-ui';
     SharedPanelContainerComponent,
     ButtonModule,
     Fieldset,
-    CustomInputComponent
-],
+    CustomInputComponent,
+  ],
   templateUrl: './ward-bed-area-maintenance.component.html',
 })
 export class WardBedAreaMaintenanceComponent implements OnInit {

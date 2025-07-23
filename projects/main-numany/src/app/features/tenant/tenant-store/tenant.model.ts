@@ -1,4 +1,3 @@
-
 // Represents the main Tenant object used throughout the app.
 export interface Tenant {
   id: string; // Make 'id' required for existing tenants.

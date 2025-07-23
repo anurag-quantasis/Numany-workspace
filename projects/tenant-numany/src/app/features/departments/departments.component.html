@@ -1,27 +1,38 @@
 <shared-panel-container [title]="'Department File Maintenance'">
   <main class="flex flex-col w-full gap-y-2">
-    <!-- <h3 class="p-5 text-xl font-semibold" [shortcut]="'alt.p'" [shortcutKeyHint]="'p'">
-      Print All Records
-    </h3> -->
-    <form [formGroup]="departmentForm" (ngSubmit)="printForm()">
+    <!-- Display loading indicator from the store -->
+    @if (store.isLoading()) {
+      <p class="p-4 text-blue-600">Loading...</p>
+    }
+    <!-- Display error message from the store -->
+    @if (store.error(); as error) {
+      <div class="p-4 my-2 text-red-700 bg-red-100 border-l-4 border-red-500" role="alert">
+        <p class="font-bold">Error</p>
+        <p>{{ error }}</p>
+      </div>
+    }
+
+    <form [formGroup]="departmentForm">
+      <!-- The dropdown is now populated from the store's department signal -->
       <p-select
-        [options]="departmentOptions"
+        [options]="store.department()"
         formControlName="department"
         optionLabel="name"
         optionValue="id"
-        placeholder="Select a Department"
+        placeholder="Select a Department to Edit"
         class="w-full md:w-56 h-8 my-4 flex justify-center items-center"
       />
       <section>
         <div>
           <p-fieldset legend="Department Information">
             <div class="grid grid-cols-4 gap-4">
+              <!-- The 'id' field is automatically disabled/enabled by the component logic -->
               <app-custom-input label="Id" type="text" formControlName="id" />
               <app-custom-input label="Name" type="text" formControlName="name" />
               <app-custom-input type="text" label="Address" formControlName="address" />
               <app-custom-input type="text" label="City" formControlName="city" />
               <app-custom-input type="text" label="State" formControlName="state" />
-              <app-custom-input type="number" label="Zip" formControlName="zip" />
+              <app-custom-input type="text" label="Zip" formControlName="zip" />
               <app-custom-input type="text" label="Phone" formControlName="phone" />
             </div>
           </p-fieldset>
@@ -30,28 +41,59 @@
           >
             <app-custom-input type="text" label="Note" formControlName="note" />
             <app-custom-input type="text" label="Cost Basis" formControlName="cost_basis" />
-            <app-custom-input type="text" label="Markup" formControlName="markup" />
+            <app-custom-input type="number" label="Markup" formControlName="markup" />
             <app-custom-input type="text" label="Tax Flag" formControlName="tax_flag" />
           </div>
         </div>
       </section>
     </form>
-    <div class="flex justify-center items-center gap-x-4 my-5">
-      <p-button (click)="resetForm()" [shortcut]="'alt.a'" icon="pi pi-plus" label="Add"></p-button>
-      <p-button
-        [shortcut]="'alt.u'"
-        icon="pi pi-check"
-        label="Update"
-        variant="outlined"
-        severity="info"
-      ></p-button>
-      <p-button
-        [shortcut]="'alt.d'"
-        icon="pi pi-trash"
-        label="Delete"
-        variant="outlined"
-        severity="danger"
-      ></p-button>
+
+    <div class="flex justify-end items-center gap-x-4 my-5">
+      <!-- Standard Mode Buttons: Add, Update, Delete -->
+      @if (!isAddMode()) {
+        <p-button
+          (click)="enterAddMode()"
+          [shortcut]="'alt.a'"
+          icon="pi pi-plus"
+          label="Add"
+        ></p-button>
+        <p-button
+          (click)="updateSelectedDepartment()"
+          [disabled]="!departmentForm.get('id')?.value"
+          [shortcut]="'alt.u'"
+          icon="pi pi-check"
+          label="Update"
+          variant="outlined"
+          severity="info"
+        ></p-button>
+        <p-button
+          (click)="deleteSelectedDepartment()"
+          [disabled]="!departmentForm.get('id')?.value"
+          [shortcut]="'alt.d'"
+          icon="pi pi-trash"
+          label="Delete"
+          variant="outlined"
+          severity="danger"
+        ></p-button>
+      }
+
+      <!-- Add Mode Buttons: Save, Cancel -->
+      @if (isAddMode()) {
+        <p-button
+          (click)="saveNewDepartment()"
+          [disabled]="departmentForm.invalid"
+          icon="pi pi-save"
+          label="Save"
+          severity="success"
+        ></p-button>
+        <p-button
+          (click)="cancelAddMode()"
+          icon="pi pi-times"
+          label="Cancel"
+          variant="outlined"
+          severity="secondary"
+        ></p-button>
+      }
     </div>
   </main>
 </shared-panel-container>

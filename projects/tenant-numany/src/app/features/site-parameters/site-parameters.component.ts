@@ -4,7 +4,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { SharedPanelContainerComponent, CustomInputComponent, SharedStateSelectorComponent } from 'shared-ui';
+import {
+  SharedPanelContainerComponent,
+  CustomInputComponent,
+  SharedStateSelectorComponent,
+} from 'shared-ui';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 
@@ -20,7 +24,7 @@ import { InputText } from 'primeng/inputtext';
     RadioButtonModule,
     ButtonModule,
     SharedStateSelectorComponent,
-],
+  ],
   templateUrl: './site-parameters.component.html',
   styleUrl: './site-parameters.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -233,14 +237,14 @@ export class SiteParametersComponent implements OnInit {
 
   myForm = this.fb.group({
     engineDesigner: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s.-]+$/)]], // Allow dots and hyphens
-    
+
     // Use our new custom validators and a pattern for digits only
-    hour: ['', [Validators.required, Validators.pattern(/^\d{1,2}$/),]],
-    
+    hour: ['', [Validators.required, Validators.pattern(/^\d{1,2}$/)]],
+
     minute: ['', [Validators.required, Validators.pattern(/^\d{1,2}$/)]],
   });
 
-   // Helper getters make the template cleaner
+  // Helper getters make the template cleaner
   get controls() {
     return this.myForm.controls;
   }

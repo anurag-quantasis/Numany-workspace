@@ -24,7 +24,7 @@ export * from './lib/utils/custom-validation';
 export * from './lib/utils/odataquery-filter';
 
 // // Shared Types
-export * from './lib/utils/type'
+export * from './lib/utils/type';
 
 // // Shared Data Constants
-export * from './lib/utils/constant'
+export * from './lib/utils/constant';

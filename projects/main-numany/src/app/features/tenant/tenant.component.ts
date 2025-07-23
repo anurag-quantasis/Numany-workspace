@@ -1,6 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { SharedPanelContainerComponent, SharedDataTableComponent, ColumnDef, CustomInputComponent } from 'shared-ui';
-import { Button } from "primeng/button";
+import {
+  SharedPanelContainerComponent,
+  SharedDataTableComponent,
+  ColumnDef,
+  CustomInputComponent,
+} from 'shared-ui';
+import { Button } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { TenantStore } from './tenant-store/tenant.store';
 import { NewTenant, Tenant } from './tenant-store/tenant.model';
@@ -12,10 +17,18 @@ import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'main-tenant',
-  imports: [SharedPanelContainerComponent, SharedDataTableComponent, Button, DialogModule, CustomInputComponent, ReactiveFormsModule, DatePicker],
+  imports: [
+    SharedPanelContainerComponent,
+    SharedDataTableComponent,
+    Button,
+    DialogModule,
+    CustomInputComponent,
+    ReactiveFormsModule,
+    DatePicker,
+  ],
   templateUrl: './tenant.component.html',
   styleUrl: './tenant.component.css',
-  providers: [TenantStore]
+  providers: [TenantStore],
 })
 export class TenantComponent {
   private readonly messageService = inject(MessageService);
@@ -24,7 +37,6 @@ export class TenantComponent {
   isAddDialogVisible = false;
   isSubmitted: boolean = false;
 
-
   tenantForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -32,30 +44,30 @@ export class TenantComponent {
     emailId: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     address: ['', [Validators.required]],
-    expiryDate: [new Date(), [Validators.required]]
+    expiryDate: [new Date(), [Validators.required]],
   });
 
-   readonly columns: ColumnDef<Tenant>[] = [
-     { field: 'id', header: 'Id' }, // Add date filtering if needed
-    { field: 'name', header: 'Name',  },
-    { field: 'description', header: 'Description',  },
-    { field: 'description', header: 'Description',  },
+  readonly columns: ColumnDef<Tenant>[] = [
+    { field: 'id', header: 'Id' }, // Add date filtering if needed
+    { field: 'name', header: 'Name' },
+    { field: 'description', header: 'Description' },
+    { field: 'description', header: 'Description' },
   ];
 
-  showTenatForm(){
+  showTenatForm() {
     this.tenantForm.reset();
     this.isAddDialogVisible = true;
   }
 
-  saveNewTenant(){
+  saveNewTenant() {
     this.isSubmitted = true;
-    if(this.tenantForm.valid){
-      console.log("Form Valid", this.tenantForm.value);
+    if (this.tenantForm.valid) {
+      console.log('Form Valid', this.tenantForm.value);
       const tenantPayload = this.tenantForm.getRawValue() as NewTenant;
-    this.store.addTenant(tenantPayload);
+      this.store.addTenant(tenantPayload);
     } else {
-      this.tenantForm.markAllAsTouched()
-      console.log("Form Invalid", this.tenantForm.invalid);
+      this.tenantForm.markAllAsTouched();
+      console.log('Form Invalid', this.tenantForm.invalid);
     }
   }
 

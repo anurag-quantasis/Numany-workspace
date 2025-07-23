@@ -7,8 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
-import { Select } from "primeng/select";
-import { Fieldset } from "primeng/fieldset";
+import { Select } from 'primeng/select';
+import { Fieldset } from 'primeng/fieldset';
 
 @Component({
   selector: 'tenant-lab-result-type-maintenance',
@@ -24,8 +24,8 @@ import { Fieldset } from "primeng/fieldset";
     CustomInputComponent,
     SharedPanelContainerComponent,
     Select,
-    Fieldset
-],
+    Fieldset,
+  ],
   templateUrl: './lab-result-type-maintenance.component.html',
   styleUrls: ['./lab-result-type-maintenance.component.css'],
 })

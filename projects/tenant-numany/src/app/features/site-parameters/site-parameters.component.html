@@ -3,11 +3,20 @@
     <form [formGroup]="siteParametersForm" (ngSubmit)="onSubmit()">
       <p-fieldset legend="Facility Information">
         <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
-          
-          <app-custom-input [submitted]="submitted" label="Hospital Name" type="text" formControlName="hospitalName">
+          <app-custom-input
+            [submitted]="submitted"
+            label="Hospital Name"
+            type="text"
+            formControlName="hospitalName"
+          >
           </app-custom-input>
 
-          <app-custom-input [submitted]="submitted" label="Address" type="text" formControlName="addressLine1">
+          <app-custom-input
+            [submitted]="submitted"
+            label="Address"
+            type="text"
+            formControlName="addressLine1"
+          >
           </app-custom-input>
 
           <app-custom-input
@@ -22,12 +31,18 @@
           >
           </app-custom-input>
 
-          <app-custom-input label="City" type="text" formControlName="city" [submitted]="submitted"> </app-custom-input>
+          <app-custom-input label="City" type="text" formControlName="city" [submitted]="submitted">
+          </app-custom-input>
 
           <!-- <app-custom-input label="State" type="text" formControlName="state"> </app-custom-input> -->
-           <shared-state-selector label="City" formControlName="city"></shared-state-selector>
+          <shared-state-selector label="City" formControlName="city"></shared-state-selector>
 
-          <app-custom-input label="Zip Code" type="text" formControlName="zipCode" [submitted]="submitted">
+          <app-custom-input
+            label="Zip Code"
+            type="text"
+            formControlName="zipCode"
+            [submitted]="submitted"
+          >
           </app-custom-input>
         </div>
         <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 mt-4">
@@ -130,8 +145,7 @@
         </p-fieldset>
 
         <div
-        
-        class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
+          class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
         >
           <div class="col-span-3">
             <app-custom-input
@@ -154,7 +168,12 @@
             </app-custom-input>
           </div>
           <div class="col-span-2">
-            <app-custom-input label="Auto Time Stop" type="text" formControlName="autoStopTime" [submitted]="submitted">
+            <app-custom-input
+              label="Auto Time Stop"
+              type="text"
+              formControlName="autoStopTime"
+              [submitted]="submitted"
+            >
             </app-custom-input>
           </div>
         </div>
@@ -239,11 +258,21 @@
               </app-custom-input>
             </div>
             <div class="col-span-2">
-              <app-custom-input type="number" label="Primary Tax %" formControlName="primaryTax" [submitted]="submitted">
+              <app-custom-input
+                type="number"
+                label="Primary Tax %"
+                formControlName="primaryTax"
+                [submitted]="submitted"
+              >
               </app-custom-input>
             </div>
             <div class="col-span-2">
-              <app-custom-input type="number" label="SecondaryTax %" formControlName="secondaryTax" [submitted]="submitted">
+              <app-custom-input
+                type="number"
+                label="SecondaryTax %"
+                formControlName="secondaryTax"
+                [submitted]="submitted"
+              >
               </app-custom-input>
             </div>
             <div class="col-span-2">
@@ -357,21 +386,36 @@
             formControlName="fiscalYearStart"
             [submitted]="submitted"
           />
-          <app-custom-input label="Time/Date Format" type="text" formControlName="timeDateFormat" [submitted]="submitted"/>
+          <app-custom-input
+            label="Time/Date Format"
+            type="text"
+            formControlName="timeDateFormat"
+            [submitted]="submitted"
+          />
           <app-custom-input
             label="Discharge Orders after (days)"
             type="number"
             formControlName="dischargeDays"
             [submitted]="submitted"
           />
-          <app-custom-input label="UCO Interval" type="number" formControlName="ucoInterval" [submitted]="submitted"/>
+          <app-custom-input
+            label="UCO Interval"
+            type="number"
+            formControlName="ucoInterval"
+            [submitted]="submitted"
+          />
           <app-custom-input
             label="Password Expiration (days)"
             type="number"
             formControlName="passwordExpirationDays"
             [submitted]="submitted"
           />
-          <app-custom-input label="Next Rx Number" type="number" formControlName="nextRxNumber" [submitted]="submitted"/>
+          <app-custom-input
+            label="Next Rx Number"
+            type="number"
+            formControlName="nextRxNumber"
+            [submitted]="submitted"
+          />
           <app-custom-input
             label="Hide DC Orders after (days)"
             type="number"

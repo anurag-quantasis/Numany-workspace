@@ -7,11 +7,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  FormsModule,
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 // PrimeNG Imports - We now use DropdownModule
@@ -37,7 +33,7 @@ import { State } from '../../utils/type';
   template: `
     <div class="field flex flex-col gap-2">
       @if (label()) {
-      <label class="font-semibold text-[#334155]">{{ label() }}</label>
+        <label class="font-semibold text-[#334155]">{{ label() }}</label>
       }
 
       <!-- Switched to p-dropdown with key properties -->
@@ -94,9 +90,7 @@ export class SharedStateSelectorComponent implements ControlValueAccessor {
   // Called by the parent form to set the value.
   writeValue(code: unknown): void {
     if (typeof code === 'string' && code) {
-      const foundState = this.allStates().find(
-        (s) => s.code.toLowerCase() === code.toLowerCase()
-      );
+      const foundState = this.allStates().find((s) => s.code.toLowerCase() === code.toLowerCase());
       // If we find a matching state object, set it.
       // Otherwise, set the raw custom code string.
       this.selectedValue.set(foundState || code);

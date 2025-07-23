@@ -158,6 +158,10 @@ export const routes: Routes = [
             (m) => m.WardBedAreaMaintenanceComponent,
           ),
       },
+       {
+        path: 'database-users',
+       loadComponent: () => import('./features/database-users/database-users.component').then(m => m.DatabaseUsersComponent)
+      },
     ],
   },
 ];
