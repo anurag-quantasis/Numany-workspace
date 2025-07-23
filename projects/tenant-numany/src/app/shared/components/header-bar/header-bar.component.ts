@@ -515,9 +515,6 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f u',
             shortcutHint: 'u',
             route: 'database-users',
-            command: () => {
-              console.log('Ward/Bed Area Cost Centers');
-            },
           },
           // {
           //   label: 'Export Patients and Active Orders to Interface',
