@@ -111,6 +111,7 @@ export class PhysicianComponent implements OnInit {
         severity: 'info',
         summary: 'Info',
         detail: 'Please select a physician to update.',
+        styleClass: 'border-none bg-white',
       });
       return;
     }

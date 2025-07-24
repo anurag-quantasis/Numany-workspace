@@ -99,14 +99,12 @@
     Pharmacist Intervention Table
   </h1> -->
 
-  pharmacist-intervention-type-maintenance
-
   <div class="grid grid-cols-2 gap-x-15 justify-items-center">
     <!-- Intervention Selection -->
     <div class="w-full">
       <h2 class="text-xl font-medium text-gray-600 mb-2">Select Intervention Data to Add/Modify</h2>
       <p-dropdown
-        formControlName="selectedIntervention"
+        formControlName="table_type"
         [options]="interventionOptions"
         optionLabel="name"
         placeholder="Select Intervention"
@@ -117,64 +115,91 @@
     <!-- Activity Selection -->
     <div class="w-full">
       <h2 class="text-xl font-medium text-gray-700 mb-2">
-        Select &lt;Activity&gt; to Modify or Click &lt;New&gt;
+        Select &lt;Acuity&gt; to Modify or Click &lt;New&gt;
       </h2>
 
       <div class="flex items-center gap-x-4">
         <p-dropdown
-          formControlName="selectedActivity"
+          formControlName="item_type"
           [options]="activityOptions"
           optionLabel="name"
           placeholder="Select Activity"
-          class="w-full"
+          class="w-[320px]"
         ></p-dropdown>
 
-        <div class="flex items-center">
-          <p-checkbox formControlName="isHidden" [binary]="true"></p-checkbox>
-          <label class="ml-2 text-gray-700">Hide</label>
+        <div class="flex items-center gap-x-2">
+          <p-checkbox formControlName="hide" [binary]="true"></p-checkbox>
+          <label class="text-gray-700">Hide</label>
         </div>
       </div>
     </div>
   </div>
 
   <div class="grid grid-cols-2 gap-x-15 justify-items-center mt-5">
-    <div class="w-full">
-      <label class="text-gray-800 font-medium text-lg mb-2 block ml-5">ID</label>
+    <!-- <label class="text-gray-800 font-medium text-lg mb-2 block ml-5">ID</label>
       <input
         type="text"
         pInputText
         formControlName="interventionId"
         placeholder="Enter ID"
         class="w-full"
-      />
-    </div>
+      /> -->
+
+    <app-custom-input
+      label="ID"
+      pInputText
+      formControlName="id"
+      placeholder="Enter ID"
+      class="border-none shadow-none"
+    >
+    </app-custom-input>
 
     <div class="w-full">
-      <label class="text-gray-800 font-medium text-lg mb-2 block ml-5">Description</label>
+      <!-- <label class="text-gray-800 font-medium text-lg mb-2 block ml-5">Description</label>
       <input
         type="text"
         pInputText
         formControlName="description"
         placeholder="Enter Description"
         class="w-full"
-      />
+      /> -->
+
+      <app-custom-input
+        label="Description"
+        type="text"
+        pInputText
+        formControlName="description"
+        placeholder="Enter Description"
+        class="border-none shadow-none"
+      >
+      </app-custom-input>
     </div>
 
     <div class="w-full">
-      <label class="text-gray-800 font-medium text-lg mb-2 mt-5 block ml-5">Cost Impact</label>
+      <!-- <label class="text-gray-800 font-medium text-lg mb-2 mt-5 block">Cost Impact</label>
       <input
         type="text"
         pInputText
         formControlName="costImpact"
         placeholder="Enter Cost Impact"
         class="w-full"
-      />
+      /> -->
+
+      <app-custom-input
+        label="Cost Impact"
+        type="text"
+        pInputText
+        formControlName="value"
+        placeholder="Enter Cost Impact"
+        class="border-none shadow-none"
+      >
+      </app-custom-input>
     </div>
   </div>
 
-  <div class="flex gap-x-4 mt-15 w-full justify-center">
-    <p-button label="New" variant="outlined"></p-button>
-    <p-button label="Delete" variant="outlined" severity="danger"></p-button>
-    <p-button label="Update" variant="outlined" severity="success"></p-button>
+  <div class="flex gap-x-4 mt-5 w-full justify-end">
+    <p-button label="New" variant="outlined" severity="success" icon="pi pi-plus"></p-button>
+    <p-button label="Delete" variant="outlined" severity="danger" icon="pi pi-trash"></p-button>
+    <p-button label="Update" variant="outlined" severity="info" icon="pi pi-check"></p-button>
   </div>
 </form>

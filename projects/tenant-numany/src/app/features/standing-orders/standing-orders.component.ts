@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { SharedPanelContainerComponent } from 'shared-ui';
+import { SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
 import { Fieldset } from 'primeng/fieldset';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'tenant-standing-orders',
@@ -16,107 +17,53 @@ import { Fieldset } from 'primeng/fieldset';
     ButtonModule,
     SharedPanelContainerComponent,
     Fieldset,
+    CustomInputComponent,
+    Select,
   ],
   templateUrl: './standing-orders.component.html',
 })
 export class StandingOrdersComponent implements OnInit {
   form!: FormGroup;
-  isEdit = false;
-  isAddMode = false;
 
-  records: any[] = [];
-  selectedIndex = 0;
+  stordOptions = [
+    { label: 'AMP2IV', value: 'AMP2IV' },
+    { label: 'AMP2IV', value: 'AMP2IV' },
+    { label: 'AMP2IV', value: 'AMP2IV' },
+    { label: 'AMP2IV', value: 'AMP2IV' },
+    { label: 'AMP2IV', value: 'AMP2IV' },
+  ];
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    const formGroupObj: { [key: string]: any } = {};
-    for (let i = 1; i <= 25; i++) {
-      formGroupObj['field' + i] = [''];
-    }
-
-    this.form = this.fb.group(formGroupObj);
-  }
-
-  addClicked(): void {
-    this.form.reset();
-    this.isAddMode = true;
-    this.isEdit = false;
-  }
-
-  editClicked(): void {
-    if (this.records.length > 0) {
-      this.isEdit = true;
-      this.isAddMode = false;
-    } else {
-      alert('No record selected to edit.');
-    }
-  }
-
-  deleteClicked(): void {
-    if (this.records.length === 0) {
-      alert('No record to delete.');
-      return;
-    }
-
-    const confirmDelete = confirm('Are you sure you want to delete this record?');
-    if (confirmDelete) {
-      this.records.splice(this.selectedIndex, 1);
-      alert('Record deleted');
-
-      if (this.records.length > 0) {
-        this.selectedIndex = 0;
-        this.form.patchValue(this.records[0]);
-      } else {
-        this.form.reset();
-      }
-
-      this.isEdit = false;
-    }
-  }
-
-  refreshClicked(): void {
-    if (this.records.length > 0) {
-      this.form.patchValue(this.records[this.selectedIndex]);
-    } else {
-      this.form.reset();
-    }
-
-    this.isEdit = false;
-    this.isAddMode = false;
-  }
-
-  updateClicked(): void {
-    if (this.form.valid) {
-      const updated = this.form.value;
-
-      if (this.isAddMode) {
-        this.records.push(updated);
-        this.selectedIndex = this.records.length - 1;
-        alert('Record added');
-      } else if (this.isEdit) {
-        this.records[this.selectedIndex] = updated;
-        alert('Record updated');
-      }
-
-      this.isAddMode = false;
-      this.isEdit = false;
-    } else {
-      alert('Form is invalid. Please fill all required fields.');
-    }
-  }
-
-  cancelClicked(): void {
-    this.refreshClicked();
-  }
-
-  pasteClicked(): void {
-    alert('Paste clicked');
-    // Implement clipboard paste logic here if needed
-  }
-
-  cleanUpClicked(): void {
-    alert('CleanUp STDORD clicked');
-    // You can add your cleanup logic here
+    this.form = this.fb.group({
+      so_id: [''],
+      rph_id: [''],
+      so_ord1: [null],
+      so_ord2: [null],
+      so_ord3: [null],
+      so_ord4: [null],
+      so_ord5: [null],
+      so_ord6: [null],
+      so_ord7: [null],
+      so_ord8: [null],
+      so_ord9: [null],
+      so_ord10: [null],
+      so_ord11: [null],
+      so_ord12: [null],
+      so_ord13: [null],
+      so_ord14: [null],
+      so_ord15: [null],
+      so_ord16: [null],
+      so_ord17: [null],
+      so_ord18: [null],
+      so_ord19: [null],
+      so_ord20: [null],
+      so_ord21: [null],
+      so_ord22: [null],
+      so_ord23: [null],
+      so_ord24: [null],
+      so_ord25: [null],
+    });
   }
 }

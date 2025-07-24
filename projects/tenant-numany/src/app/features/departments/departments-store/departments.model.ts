@@ -17,6 +17,11 @@ export interface DepartmentResponse {
   paging: PagingInfo;
 }
 
+export interface AddDepartmentResponse {
+  data: Department;
+  message: string;
+}
+
 export interface PagingInfo {
   totalItems: number;
   pageNumber: number;

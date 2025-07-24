@@ -93,18 +93,11 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'pharmacist-intervention-type-maintainance',
-        loadComponent: () =>
-          import(
-            './features/pharmcist-intervention-type/pharmcist-intervention-type.component'
-          ).then((m) => m.PharmcistInterventionTypeComponent),
-      },
-      {
         path: 'pharmacist-intervention-type',
         loadComponent: () =>
           import(
-            './features/pharmcist-intervention-type/pharmcist-intervention-type.component'
-          ).then((m) => m.PharmcistInterventionTypeComponent),
+            './features/pharmacist-intervention-setup/intervention-types/intervention-types.component'
+          ).then((m) => m.InterventionTypesComponent),
       },
       {
         path: 'vendor-supplier',
@@ -158,9 +151,12 @@ export const routes: Routes = [
             (m) => m.WardBedAreaMaintenanceComponent,
           ),
       },
-       {
+      {
         path: 'database-users',
-       loadComponent: () => import('./features/database-users/database-users.component').then(m => m.DatabaseUsersComponent)
+        loadComponent: () =>
+          import('./features/database-users/database-users.component').then(
+            (m) => m.DatabaseUsersComponent,
+          ),
       },
     ],
   },
