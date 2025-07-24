@@ -60,7 +60,10 @@ export class BedsComponent {
   bedForm = this.fb.group({
     bedId: ['', Validators.required],
     area: ['', [Validators.required, Validators.maxLength(8)]],
-    section: [null as number | null, [Validators.required, Validators.pattern('^[0-9]+$'), Validators.max(9998)]],
+    section: [
+      null as number | null,
+      [Validators.required, Validators.pattern('^[0-9]+$'), Validators.max(9998)],
+    ],
   });
 
   readonly columns: ColumnDef<Bed>[] = [
@@ -103,7 +106,7 @@ export class BedsComponent {
     this.bedForm.reset();
     this.isSubmitted = false;
     this.isEditMode = false;
-    this.dialogHeader="Add a New Bed";
+    this.dialogHeader = 'Add a New Bed';
     this.isAddDialogVisible = true;
   }
 
@@ -133,7 +136,7 @@ export class BedsComponent {
 
   handleSelectionChange(bed: Bed | null): void {
     // The event now emits a single object, not an array.
-    console.log('BED',bed)
+    console.log('BED', bed);
     this.store.setSelection(bed);
   }
 

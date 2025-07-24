@@ -71,8 +71,8 @@ export class TenantComponent {
     }
   }
 
-  handleSelectionChange(bed:any): void {
+  handleSelectionChange(bed: any): void {
     // The event now emits a single object, not an array.
-    console.log('BED', bed)
+    console.log('BED', bed);
   }
 }

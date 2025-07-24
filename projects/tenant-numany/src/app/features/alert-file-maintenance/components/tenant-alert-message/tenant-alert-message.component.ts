@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit,DestroyRef, OnDestroy  } from '@angular/core';
+import { Component, inject, OnInit, DestroyRef, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomInputComponent } from 'shared-ui';
 import { TextareaModule } from 'primeng/textarea';
-import { Button } from "primeng/button";
+import { Button } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TenantAlertMessageService } from './tenant-alert-message.service';
@@ -18,12 +18,19 @@ interface AlertMessage {
 
 @Component({
   selector: 'tenant-alert-message',
-  imports: [CustomInputComponent, ReactiveFormsModule, CommonModule, TextareaModule, Button, SelectModule],
+  imports: [
+    CustomInputComponent,
+    ReactiveFormsModule,
+    CommonModule,
+    TextareaModule,
+    Button,
+    SelectModule,
+  ],
   templateUrl: './tenant-alert-message.component.html',
   styleUrl: './tenant-alert-message.component.css',
-  providers: [TenantAlertMessageService]
+  providers: [TenantAlertMessageService],
 })
-export class TenantAlertMessageComponent implements OnInit, OnDestroy{
+export class TenantAlertMessageComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly messageService = inject(MessageService);
@@ -33,7 +40,11 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
 
   existingMessages = [
     { id: 1, msg_name: 'No Scr', msg_txt: 'No Serum creatinine found' },
-    { id: 2, msg_name: 'Patient Deceased', msg_txt: 'The patient is marked as deceased in the system.' },
+    {
+      id: 2,
+      msg_name: 'Patient Deceased',
+      msg_txt: 'The patient is marked as deceased in the system.',
+    },
     { id: 3, msg_name: 'High Risk', msg_txt: 'Patient is flagged as high risk for complications.' },
   ];
 
@@ -62,13 +73,14 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
   }
 
   loadMessages(): void {
-    this.tenantAlertMessageService.getTenantAlertMessages()
+    this.tenantAlertMessageService
+      .getTenantAlertMessages()
       .pipe(take(1)) // Automatically unsubscribes after the first emission
       .subscribe({
         next: (response) => {
           this.existingMessages = response.data;
         },
-        error: (err) => console.error('Failed to load messages:', err)
+        error: (err) => console.error('Failed to load messages:', err),
       });
   }
 
@@ -106,10 +118,11 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
 
   // Automatically update form when dropdown selection changes
   private setupSelectionChanges(): void {
-    this.messageAlertForm.get('selectedMsg')?.valueChanges
-      // 2. Pass the destroyRef to the operator
-      .pipe(takeUntilDestroyed(this.destroyRef)) 
-      .subscribe(selected => {
+    this.messageAlertForm
+      .get('selectedMsg')
+      ?.valueChanges// 2. Pass the destroyRef to the operator
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((selected) => {
         if (selected) {
           // In select mode, we only want to patch the text, not the name
           this.messageAlertForm.patchValue({ msg_txt: selected.msg_txt });
@@ -136,8 +149,9 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
   onDelete(): void {
     const selected = this.messageAlertForm.get('selectedMsg')?.value;
     if (!selected) return;
-    
-    this.tenantAlertMessageService.deleteTenantAlertMessage(selected.msg_id)
+
+    this.tenantAlertMessageService
+      .deleteTenantAlertMessage(selected.msg_id)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
@@ -146,16 +160,16 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
             severity: 'error',
             summary: 'Deleted',
             detail: response.message,
-            styleClass: 'border-none bg-white'
+            styleClass: 'border-none bg-white',
           });
           // Refresh the list from the server to ensure consistency
           this.loadMessages();
           this.setMode('select');
         },
-        error: (err) => console.error('Failed to delete message:', err)
+        error: (err) => console.error('Failed to delete message:', err),
       });
   }
-  
+
   onCancel(): void {
     this.setMode('select');
   }
@@ -169,24 +183,24 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
     if (this.mode === 'add') {
       const payload = {
         msg_name: this.messageAlertForm.get('msg_name')?.value!,
-        msg_txt: this.messageAlertForm.get('msg_txt')?.value!
+        msg_txt: this.messageAlertForm.get('msg_txt')?.value!,
       };
       // ---- API call to create would go here: this.apiService.createMessage(payload).subscribe(...) ----
       // Mock creation
-      const newId = Math.max(...this.existingMessages.map(m => m.id)) + 1;
+      const newId = Math.max(...this.existingMessages.map((m) => m.id)) + 1;
       this.existingMessages.push({ id: newId, ...payload });
-
     } else if (this.mode === 'edit') {
       const selectedId = this.messageAlertForm.get('selectedMsg')?.value?.msg_id;
       const payload = {
         msg_id: selectedId,
         msg_name: this.messageAlertForm.get('msg_name')?.value!,
-        msg_txt: this.messageAlertForm.get('msg_txt')?.value!
+        msg_txt: this.messageAlertForm.get('msg_txt')?.value!,
       };
-      console.log("api",payload)
+      console.log('api', payload);
       if (selectedId) {
-        console.log("api",selectedId)
-        this.tenantAlertMessageService.updateTenantAlertMessage(selectedId, payload)
+        console.log('api', selectedId);
+        this.tenantAlertMessageService
+          .updateTenantAlertMessage(selectedId, payload)
           .pipe(take(1))
           .subscribe({
             next: (response) => {
@@ -196,7 +210,7 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
                 severity: 'success',
                 summary: 'Success',
                 detail: response.message,
-                styleClass: 'border-none bg-white'
+                styleClass: 'border-none bg-white',
               });
               this.setMode('select');
             },
@@ -206,9 +220,9 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy{
                 key: 'custom-toast',
                 severity: 'warning',
                 summary: err.message || 'Something went wrong',
-                styleClass: 'border-none bg-white'
+                styleClass: 'border-none bg-white',
               });
-            }
+            },
           });
       }
     }

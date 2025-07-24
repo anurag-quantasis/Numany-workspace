@@ -237,5 +237,4 @@ export class AlertFileMaintenanceComponent implements OnInit {
   onMessageClick() {
     this.uiDialogService.open(TenantAlertMessageComponent, 'Alert Message Maintenance');
   }
-
 }

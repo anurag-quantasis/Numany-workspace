@@ -1,12 +1,12 @@
 export interface TenantLabResult {
-  id_lab: string;       
-  nam_lab: string;      
-  l_units: string;      
-  inc_rpt: boolean;     
+  id_lab: string;
+  nam_lab: string;
+  l_units: string;
+  inc_rpt: boolean;
   low_norm: number;
   hi_norm: number;
   id_host: string;
-  status: number;       
+  status: number;
 }
 
 export interface TenantLabResultResponse {

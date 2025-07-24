@@ -1,7 +1,6 @@
-import { inject, Injectable } from "@angular/core";
-import { ApiService } from "projects/tenant-numany/src/app/core/services/api.service";
-import { Observable } from "rxjs";
-
+import { inject, Injectable } from '@angular/core';
+import { ApiService } from 'projects/tenant-numany/src/app/core/services/api.service';
+import { Observable } from 'rxjs';
 
 // This is the core data structure for an alert message from the API.
 export interface AlertMessage {
@@ -11,7 +10,7 @@ export interface AlertMessage {
 }
 
 export interface AlertMessageUpdateResponse {
-  isUpdated : boolean;
+  isUpdated: boolean;
   message: string;
 }
 
@@ -61,9 +60,14 @@ export class TenantAlertMessageService {
    * @param id The ID of the message to update.
    * @param payload The new message data.
    */
-  updateTenantAlertMessage(id: number, payload: AlertMessagePayload): Observable<AlertMessageUpdateResponse> {
+  updateTenantAlertMessage(
+    id: number,
+    payload: AlertMessagePayload,
+  ): Observable<AlertMessageUpdateResponse> {
     // A PUT or PATCH request to a specific resource URL updates it.
-    return this.apiService.put<AlertMessageUpdateResponse>(`${this.endpointUrl}/${id}`, {alertMessage:payload});
+    return this.apiService.put<AlertMessageUpdateResponse>(`${this.endpointUrl}/${id}`, {
+      alertMessage: payload,
+    });
   }
 
   /**

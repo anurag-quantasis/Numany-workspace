@@ -11,4 +11,4 @@ export const AppRoles = {
   Physician: 'Physician',
 } as const;
 
-export type AppRole = typeof AppRoles[keyof typeof AppRoles];
+export type AppRole = (typeof AppRoles)[keyof typeof AppRoles];

@@ -41,11 +41,14 @@
             class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
           >
             <app-custom-input type="text" label="Note" formControlName="note" />
-            <app-custom-input type="text" label="Cost Basis" formControlName="cost_basis" 
-            [errorMessages]="{
-              required: 'The section code is required.',
-              pattern: 'Required values AV|AW|CC|PC',
-            }"
+            <app-custom-input
+              type="text"
+              label="Cost Basis"
+              formControlName="cost_basis"
+              [errorMessages]="{
+                required: 'The section code is required.',
+                pattern: 'Required values AV|AW|CC|PC',
+              }"
             />
             <app-custom-input type="number" label="Markup" formControlName="markup" />
             <app-custom-input type="text" label="Tax Flag" formControlName="tax_flag" />

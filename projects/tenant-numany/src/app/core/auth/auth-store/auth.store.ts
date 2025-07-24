@@ -165,8 +165,8 @@ export const AuthStore = signalStore(
           return false;
         }
         // Returns true if the user has at least one of the required roles
-        return rolesToCheck.some(role => userRoles.includes(role));
-      }
+        return rolesToCheck.some((role) => userRoles.includes(role));
+      },
     }),
   ),
 );

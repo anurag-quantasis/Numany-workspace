@@ -30,11 +30,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     SharedPanelContainerComponent,
     Select,
     Fieldset,
-    ConfirmDialog
+    ConfirmDialog,
   ],
   templateUrl: './lab-result-type-maintenance.component.html',
   styleUrls: ['./lab-result-type-maintenance.component.css'],
-  providers: [TenantLabStore, TenantLabResultService, ConfirmationService]
+  providers: [TenantLabStore, TenantLabResultService, ConfirmationService],
 })
 export class LabResultTypeMaintenanceComponent implements OnInit {
   readonly store = inject(TenantLabStore);
@@ -46,27 +46,28 @@ export class LabResultTypeMaintenanceComponent implements OnInit {
   isEditMode = signal(false);
   isSubmitted = false;
 
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.labForm = this.fb.group({
-      selectedLabType: [null],
-      id_lab: ['', [Validators.required, Validators.maxLength(20)]],
-      id_host: ['', [Validators.maxLength(20)]],
-      l_units: ['', [Validators.maxLength(20)]],
-      nam_lab: ['', [Validators.maxLength(50)]],
-      low_norm: [null, Validators.pattern(/^-?\d*\.?\d+$/)],
-      hi_norm: [null, Validators.pattern(/^-?\d*\.?\d+$/)],
-      inc_rpt: [false],
-    },
+    this.labForm = this.fb.group(
       {
-        validators: [highGreaterThanLowValidator('low_norm', 'hi_norm')]
-      });
+        selectedLabType: [null],
+        id_lab: ['', [Validators.required, Validators.maxLength(20)]],
+        id_host: ['', [Validators.maxLength(20)]],
+        l_units: ['', [Validators.maxLength(20)]],
+        nam_lab: ['', [Validators.maxLength(50)]],
+        low_norm: [null, Validators.pattern(/^-?\d*\.?\d+$/)],
+        hi_norm: [null, Validators.pattern(/^-?\d*\.?\d+$/)],
+        inc_rpt: [false],
+      },
+      {
+        validators: [highGreaterThanLowValidator('low_norm', 'hi_norm')],
+      },
+    );
     this.store.loadTenantLabResults();
 
     this.labForm.get('selectedLabType')?.valueChanges.subscribe((selectedId: string) => {
-      const selected = this.store.tenantLabResult().find(lab => lab.id_lab === selectedId);
+      const selected = this.store.tenantLabResult().find((lab) => lab.id_lab === selectedId);
       if (selected) {
         this.isEditMode.set(true);
         this.labForm.patchValue({
@@ -89,14 +90,13 @@ export class LabResultTypeMaintenanceComponent implements OnInit {
           nam_lab: '',
           low_norm: '',
           hi_norm: '',
-          inc_rpt: false
+          inc_rpt: false,
         });
 
         // Optionally reset selectedLabType without emitting valueChanges again
         this.labForm.get('selectedLabType')?.setValue(null, { emitEvent: false });
       }
     });
-
   }
 
   onSubmit(): void {
@@ -125,8 +125,8 @@ export class LabResultTypeMaintenanceComponent implements OnInit {
   onNew(): void {
     this.isSubmitted = true;
     if (this.isEditMode()) {
-      this.labForm.reset()
-      return
+      this.labForm.reset();
+      return;
     }
 
     if (!this.labForm.valid) {
@@ -141,7 +141,6 @@ export class LabResultTypeMaintenanceComponent implements OnInit {
       }
     }
   }
-
 
   // onDelete(): void {
   //   const labId = this.labForm.get('labId')?.value;
@@ -180,7 +179,12 @@ export class LabResultTypeMaintenanceComponent implements OnInit {
         this.labForm.reset();
       },
       reject: () => {
-        this.messageService.add({ key: 'custom-toast', severity: 'error', summary: 'Rejected', detail: 'You have rejected' })
+        this.messageService.add({
+          key: 'custom-toast',
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
       },
     });
   }

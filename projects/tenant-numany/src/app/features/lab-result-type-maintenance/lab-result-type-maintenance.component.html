@@ -1,18 +1,25 @@
 <shared-panel-container [titleLabel]="'Lab Result Type Maintenance'">
   <form [formGroup]="labForm" (ngSubmit)="onSubmit()" class="grid grid-cols-4">
-
     <div class="flex flex-col md:col-span-1 col-span-2">
       <label for="selectedLabType" class="font-medium mb-1">Lab Type</label>
-      <p-select showClear="true" formControlName="selectedLabType" inputId="selectedLabType" [options]="store.tenantLabResult()"
-        placeholder="Select Lab Type" class="w-full" optionLabel="nam_lab" optionValue="id_lab">
+      <p-select
+        showClear="true"
+        formControlName="selectedLabType"
+        inputId="selectedLabType"
+        [options]="store.tenantLabResult()"
+        placeholder="Select Lab Type"
+        class="w-full"
+        optionLabel="nam_lab"
+        optionValue="id_lab"
+      >
         <ng-template let-labResult pTemplate="item">
           <div class="flex justify-between w-full">
             <span class="font-semibold w-[90%] text-black">{{ labResult.nam_lab }}</span>
-            <span class="font-mono w-[10%] text-gray-600">{{ labResult.id_lab  }}</span>
+            <span class="font-mono w-[10%] text-gray-600">{{ labResult.id_lab }}</span>
           </div>
         </ng-template>
         <ng-template let-labResult pTemplate="selectedItem">
-          <span *ngIf="labResult">{{ labResult.nam_lab  }} - {{ labResult.id_lab }}</span>
+          <span *ngIf="labResult">{{ labResult.nam_lab }} - {{ labResult.id_lab }}</span>
           <span *ngIf="!labResult">Select Report Format</span>
         </ng-template>
       </p-select>
@@ -22,35 +29,59 @@
       <div class="border border-grey-200 p-4.5 mt-5 rounded-md">
         <!-- First Row: Lab Type Dropdown + Lab ID + Host ID + Units -->
         <div class="grid md:grid-cols-4 grid-cols-2 gap-4">
-
           <!-- Lab ID -->
 
-          <app-custom-input [submitted]="isSubmitted" label="Lab ID" formControlName="id_lab" placeholder="Enter Lab ID" type="text">
+          <app-custom-input
+            [submitted]="isSubmitted"
+            label="Lab ID"
+            formControlName="id_lab"
+            placeholder="Enter Lab ID"
+            type="text"
+          >
           </app-custom-input>
-
 
           <!-- Host ID -->
 
-          <app-custom-input [submitted]="isSubmitted" label="Host ID" formControlName="id_host" placeholder="Enter Host ID" type="text">
+          <app-custom-input
+            [submitted]="isSubmitted"
+            label="Host ID"
+            formControlName="id_host"
+            placeholder="Enter Host ID"
+            type="text"
+          >
           </app-custom-input>
-
 
           <!-- Units -->
 
-          <app-custom-input [submitted]="isSubmitted" label="Units" formControlName="l_units" placeholder="Enter Units" type="text">
+          <app-custom-input
+            [submitted]="isSubmitted"
+            label="Units"
+            formControlName="l_units"
+            placeholder="Enter Units"
+            type="text"
+          >
           </app-custom-input>
 
           <div class="col-span-2">
             <label for="textarea" class="font-medium">Description</label>
-            <textarea id="textarea" pTextarea formControlName="nam_lab" rows="5" cols="60"
-              placeholder="Enter Description..." class="p-inputtext w-full max-w-[600px]">
+            <textarea
+              id="textarea"
+              pTextarea
+              formControlName="nam_lab"
+              rows="5"
+              cols="60"
+              placeholder="Enter Description..."
+              class="p-inputtext w-full max-w-[600px]"
+            >
             </textarea>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4 col-span-4">
+    <div
+      class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4 col-span-4"
+    >
       <div class="flex flex-col items-start gap-3 mt-1 col-span-2">
         <!-- Include on Report -->
         <div class="flex items-center gap-2">
@@ -66,17 +97,30 @@
           <div class="grid grid-cols-6 gap-4">
             <!-- Low -->
             <div class="col-span-2">
-              <app-custom-input  [submitted]="isSubmitted" label="Low" formControlName="low_norm"  type="number">
+              <app-custom-input
+                [submitted]="isSubmitted"
+                label="Low"
+                formControlName="low_norm"
+                type="number"
+              >
               </app-custom-input>
             </div>
 
             <!-- High -->
             <div class="col-span-2">
-              <app-custom-input [submitted]="isSubmitted" label="High" formControlName="hi_norm" type="number">
+              <app-custom-input
+                [submitted]="isSubmitted"
+                label="High"
+                formControlName="hi_norm"
+                type="number"
+              >
               </app-custom-input>
             </div>
           </div>
-          <div *ngIf="labForm.errors?.['highLessThanLow'] && labForm.touched" class="text-red-500 text-sm mt-1">
+          <div
+            *ngIf="labForm.errors?.['highLessThanLow'] && labForm.touched"
+            class="text-red-500 text-sm mt-1"
+          >
             High Normal must be greater than or equal to Low Normal.
           </div>
         </div>
@@ -86,8 +130,22 @@
     <!-- Buttons -->
     <div class="flex mb-2 gap-2.5 mt-2 justify-end col-span-4">
       <p-button label="New" icon="pi pi-plus" (click)="onNew()"></p-button>
-      <p-button label="Update" icon="pi pi-pencil" variant="outlined" severity="info" (click)="onUpdate()" [disabled]="!isEditMode()"></p-button>
-      <p-button [disabled]="isDeleteDisabled" label="Delete" variant="outlined" icon="pi pi-trash" severity="danger" (click)="deleteSelectedDepartment()"></p-button>
+      <p-button
+        label="Update"
+        icon="pi pi-pencil"
+        variant="outlined"
+        severity="info"
+        (click)="onUpdate()"
+        [disabled]="!isEditMode()"
+      ></p-button>
+      <p-button
+        [disabled]="isDeleteDisabled"
+        label="Delete"
+        variant="outlined"
+        icon="pi pi-trash"
+        severity="danger"
+        (click)="deleteSelectedDepartment()"
+      ></p-button>
     </div>
   </form>
   <p-confirmDialog></p-confirmDialog>

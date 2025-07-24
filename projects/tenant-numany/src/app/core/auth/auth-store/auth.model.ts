@@ -20,7 +20,6 @@ export interface LoginRequest {
 //   email: string;
 // }
 
-
 // This interface represents the clean user object you'll use in your app's state.
 export interface User {
   userId: string;

@@ -1,4 +1,4 @@
-import { TenantLabResult } from "./lab-store.models";
+import { TenantLabResult } from './lab-store.models';
 
 export interface TenantLabResultState {
   tenantLabResult: TenantLabResult[];

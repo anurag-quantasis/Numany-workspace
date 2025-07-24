@@ -120,7 +120,7 @@ export const BedStore = signalStore(
         switchMap((bed) =>
           bedService.updateBed(bed).pipe(
             tap((response) => {
-              console.log("update", response);
+              console.log('update', response);
               if (response.status === 'success') {
                 messageService.add({
                   key: 'custom-toast',

@@ -7,7 +7,7 @@ export function tenantHandleHttpError(
   err: HttpErrorResponse,
   messageService: MessageService,
   summary = 'Request Failed',
-  defaultMessage = 'An unexpected error occurred.'
+  defaultMessage = 'An unexpected error occurred.',
 ): void {
   let errorMessages: string[] = [];
 
@@ -27,14 +27,14 @@ export function tenantHandleHttpError(
   }
 
   // Show one toast per message (you can change this to show a single toast if you prefer)
-  errorMessages.forEach(msg => {
+  errorMessages.forEach((msg) => {
     messageService.add({
       key: 'custom-toast',
       severity: 'error',
       summary,
       detail: msg,
       styleClass: 'bg-white border-none',
-      life: 8000
+      life: 8000,
     });
   });
 }

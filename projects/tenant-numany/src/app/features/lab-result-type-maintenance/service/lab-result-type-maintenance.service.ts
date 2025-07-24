@@ -1,9 +1,16 @@
-import { inject, Injectable } from "@angular/core";
-import { ApiService } from "../../../core/services/api.service";
-import { Observable } from "rxjs";
-import { TenantLabAddResponse, TenantLabDeleteResponse, TenantLabResult, TenantLabResultPayload, TenantLabResultResponse } from "../lab-store/lab-store.models";
+import { inject, Injectable } from '@angular/core';
+import { ApiService } from '../../../core/services/api.service';
+import { Observable } from 'rxjs';
+import {
+  TenantLabAddResponse,
+  TenantLabDeleteResponse,
+  TenantLabResult,
+  TenantLabResultPayload,
+  TenantLabResultResponse,
+} from '../lab-store/lab-store.models';
 
-@Injectable() export class TenantLabResultService {
+@Injectable()
+export class TenantLabResultService {
   private apiService = inject(ApiService);
 
   getTenantLabResults(): Observable<TenantLabResultResponse> {
@@ -14,7 +21,10 @@ import { TenantLabAddResponse, TenantLabDeleteResponse, TenantLabResult, TenantL
     return this.apiService.post<TenantLabAddResponse>('/lab', tenantPayload);
   }
 
-  updateTenantLabResult(id: string, tenantLabResultPayload: TenantLabResultPayload): Observable<TenantLabResult> {
+  updateTenantLabResult(
+    id: string,
+    tenantLabResultPayload: TenantLabResultPayload,
+  ): Observable<TenantLabResult> {
     return this.apiService.put(`/lab/${id}`, tenantLabResultPayload);
   }
 

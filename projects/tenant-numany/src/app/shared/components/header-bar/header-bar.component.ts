@@ -551,7 +551,6 @@ export class HeaderBarComponent implements OnInit {
               console.log('Remote Inventory Location IDs clicked');
             },
           },
-          
         ],
       },
     ];

@@ -138,13 +138,13 @@ export class BedService {
       },
     };
 
-    console.log("API",apiPayload);
+    console.log('API', apiPayload);
 
     // The endpoint includes the bed's ID.
     const updateUrl = `${this.singleBedEndpoint}/${bedToUpdate.bed_Seq}`;
 
     return this.apiService.put(updateUrl, apiPayload).pipe(
-      map((apiResponse:any) => {
+      map((apiResponse: any) => {
         // 2. Check for business logic errors.
         if (apiResponse.isUpdated) {
           return { status: 'success', data: apiResponse } as const;

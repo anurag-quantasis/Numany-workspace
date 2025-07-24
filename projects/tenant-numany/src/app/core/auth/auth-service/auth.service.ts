@@ -50,7 +50,7 @@ export class AuthService {
         console.warn('JWT token has expired.');
         return null;
       }
-      
+
       // Normalize roles to always be an array
       let roles: string[] = [];
       if (typeof decoded.roles === 'string') {

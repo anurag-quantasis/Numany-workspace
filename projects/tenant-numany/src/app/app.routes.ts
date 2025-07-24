@@ -165,9 +165,12 @@ export const routes: Routes = [
             (m) => m.WardBedAreaMaintenanceComponent,
           ),
       },
-       {
+      {
         path: RoutePaths.DatabaseUsers,
-       loadComponent: () => import('./features/database-users/database-users.component').then(m => m.DatabaseUsersComponent)
+        loadComponent: () =>
+          import('./features/database-users/database-users.component').then(
+            (m) => m.DatabaseUsersComponent,
+          ),
       },
     ],
   },
