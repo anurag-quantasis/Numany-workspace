@@ -6,7 +6,7 @@ import { MessageService, LazyLoadEvent } from 'primeng/api';
 import { BedService } from '../services/beds.service';
 import { initialState } from './beds.state';
 import { Bed, NewBed } from './beds.model';
-import { toastSeverity } from '../../../core/utils/tenant.constants';
+import { toastSeverity } from '../../../shared/utils/tenant.constants';
 import { TableLazyLoadEvent } from 'primeng/table';
 
 export const BedStore = signalStore(

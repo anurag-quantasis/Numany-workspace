@@ -1,0 +1,47 @@
+<div class="">
+  <form [formGroup]="messageAlertForm" class="grid grid-cols-1 gap-4">
+    <ng-container *ngIf="mode === 'select'">
+      <p-select formControlName="selectedMsg" [options]="existingMessages" optionLabel="msg_name"
+        placeholder="Select an existing message" styleClass="w-full">
+      </p-select>
+    </ng-container>
+
+    <!-- ADD/EDIT Mode: Show name input -->
+    <ng-container *ngIf="mode === 'add' || mode === 'edit'">
+      <app-custom-input label="Alert Message Name" type="text" formControlName="msg_name">
+      </app-custom-input>
+    </ng-container>
+    <div class="grid grid-cols-1 gap-2">
+      <label class="font-semibold text-[#334155]" for="msg_txt">Alert Message Text</label>
+      <textarea rows="5" cols="30" pTextarea formControlName="msg_txt" [ngClass]="{ 'ng-invalid ng-dirty': isMsgTxtInvalid }">></textarea>
+      <div class="text-red-600 text-sm"
+        *ngIf="messageAlertForm.get('msg_txt')?.invalid && (messageAlertForm.get('msg_txt')?.dirty || messageAlertForm.get('msg_txt')?.touched)">
+        Alert message text is required.
+      </div>
+    </div>
+
+    <!-- buttons -->
+    <div class="flex gap-2 justify-end">
+
+      <!-- Buttons for SELECT mode -->
+      @if (mode === 'select') {
+      <p-button label="New" icon="pi pi-plus" (onClick)="onAdd()"></p-button>
+      <p-button label="Edit" icon="pi pi-pencil" severity="info" [outlined]="true" (onClick)="onEdit()"
+        [disabled]="!messageAlertForm.get('selectedMsg')?.value">
+      </p-button>
+      <p-button label="Delete" icon="pi pi-trash" severity="danger" [outlined]="true" (onClick)="onDelete()"
+        [disabled]="!messageAlertForm.get('selectedMsg')?.value">
+      </p-button>
+      }
+
+      <!-- Buttons for ADD/EDIT mode -->
+      @if (mode === 'add' || mode === 'edit') {
+      <p-button [label]="mode === 'add' ? 'Add Message' : 'Save Changes'"
+        [icon]="mode === 'add' ? 'pi pi-plus' : 'pi pi-pencil'" (onClick)="onSubmit()">
+      </p-button>
+      <p-button label="Cancel" severity="secondary" (onClick)="onCancel()">
+      </p-button>
+      }
+    </div>
+  </form>
+</div>

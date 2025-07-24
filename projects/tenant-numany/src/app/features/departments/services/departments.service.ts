@@ -15,8 +15,8 @@ export class DepartmentsService {
     return this.apiService.get<DepartmentResponse>('/departments');
   }
 
-  addDepartment(departmentPayload: DepartmentPayload): Observable<DepartmentResponse> {
-    return this.apiService.post<DepartmentResponse>('/department', departmentPayload);
+  addDepartment(departmentPayload: DepartmentPayload): Observable<any> {
+    return this.apiService.post<any>('/department', departmentPayload);
   }
 
   updateDepartment(id: string, departmentPayload: DepartmentPayload): Observable<Department> {

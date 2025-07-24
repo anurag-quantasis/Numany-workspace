@@ -36,8 +36,9 @@ export const DepartmentStore = signalStore(
           return departmentsService.addDepartment(apiPayload).pipe(
             tap({
               next: (response) => {
+
                 patchState(store, {
-                  department: [...store.department(), ...response.data],
+                  department: [...store.department(), response.data],
                   isLoading: false,
                 });
               },

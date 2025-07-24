@@ -74,7 +74,7 @@ export class DepartmentsComponent implements OnInit {
       zip: ['', [Validators.maxLength(20)]],
       phone: ['', [Validators.maxLength(20)]],
       note: ['', [Validators.maxLength(50)]],
-      cost_basis: ['', [Validators.maxLength(2)]],
+      cost_basis: ['', [Validators.maxLength(2),Validators.pattern(/^(AV|AW|CC|PC)?$/)]],
       markup: [null, Validators.required],
       tax_flag: ['', [Validators.maxLength(1)]],
     });
