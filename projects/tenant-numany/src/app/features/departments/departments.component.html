@@ -1,17 +1,5 @@
-<shared-panel-container [title]="'Department File Maintenance'">
+<shared-panel-container titleLabel="Department File Maintenance">
   <main class="flex flex-col w-full gap-y-2">
-    <!-- Display loading indicator from the store -->
-    @if (store.isLoading()) {
-      <p class="p-4 text-blue-600">Loading...</p>
-    }
-    <!-- Display error message from the store -->
-    @if (store.error(); as error) {
-      <div class="p-4 my-2 text-red-700 bg-red-100 border-l-4 border-red-500" role="alert">
-        <p class="font-bold">Error</p>
-        <p>{{ error }}</p>
-      </div>
-    }
-
     <form [formGroup]="departmentForm">
       <!-- The dropdown is now populated from the store's department signal -->
       <p-select
@@ -20,7 +8,7 @@
         optionLabel="name"
         optionValue="id"
         placeholder="Select a Department to Edit"
-        class="w-full md:w-56 h-8 my-4 flex justify-center items-center"
+        class="w-full md:w-[50%] my-4 flex justify-center items-center"
       />
       <section>
         <div>
@@ -84,7 +72,6 @@
           [disabled]="departmentForm.invalid"
           icon="pi pi-save"
           label="Save"
-          severity="success"
         ></p-button>
         <p-button
           (click)="cancelAddMode()"

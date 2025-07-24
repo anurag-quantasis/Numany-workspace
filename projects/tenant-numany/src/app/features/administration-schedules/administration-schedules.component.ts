@@ -1,8 +1,6 @@
 import { Component, OnInit, inject, computed, effect, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-// PrimeNG & Custom Modules
 import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
@@ -73,7 +71,6 @@ export class AdministrationSchedulesComponent implements OnInit {
       selectedSchedule: ['time interval', Validators.required],
       description: ['', Validators.required],
       dosesPerDay: [0, [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.min(0)]],
-      // Child component data holders
       timeInterval: [{ int_val: 0, int_day: 0, minutes: 0 }],
       adminTimes: [[]],
       weekDays: [null],
@@ -81,46 +78,72 @@ export class AdministrationSchedulesComponent implements OnInit {
 
     effect(() => {
       const selected = this.store.selectedSchedule();
-
-      this.form.reset({
-        selectedSchedule: 'time interval',
-        dosesPerDay: 0,
-        timeInterval: { int_val: 0, int_day: 0, minutes: 0 },
-        adminTimes: [],
-        weekDays: {
-          sun: false,
-          mon: false,
-          tue: false,
-          wed: false,
-          thu: false,
-          fri: false,
-          sat: false,
-        },
-      });
-
       if (this.isNewMode()) {
-        this.form.get('selectedId')?.disable();
-        this.form.get('newScheduleId')?.enable();
-        this.form.get('description')?.setValue('New Schedule');
-      } else if (selected) {
-        this.form.get('selectedId')?.enable();
-        this.form.get('newScheduleId')?.disable();
-
-        this.form.patchValue(this.mapApiToForm(selected));
-        const parsedInterval = this.parseHHMM(selected.int_val);
-
-        this.form.patchValue({
-          timeInterval: {
-            int_day: selected.int_day,
-            int_val: parsedInterval.hours, // int_val on the form is hours
-            minutes: parsedInterval.minutes,
+        this.form.reset(
+          {
+            selectedId: null,
+            newScheduleId: '',
+            selectedSchedule: 'time interval',
+            description: 'New Schedule',
+            dosesPerDay: 0,
+            timeInterval: { int_val: 0, int_day: 0, minutes: 0 },
+            adminTimes: [],
+            weekDays: {
+              sun: false,
+              mon: false,
+              tue: false,
+              wed: false,
+              thu: false,
+              fri: false,
+              sat: false,
+            },
           },
-          weekDays: this.transformBinaryStringToWeekdays(selected.if_day),
-          adminTimes: this.transformBinaryStringToAdminTimes(selected.if_time),
-        });
+          { emitEvent: false },
+        ); // <-- FIX
+        this.form.get('selectedId')?.disable({ emitEvent: false });
+        this.form.get('newScheduleId')?.enable({ emitEvent: false });
+      } else if (selected) {
+        this.form.get('selectedId')?.enable({ emitEvent: false });
+        this.form.get('newScheduleId')?.disable({ emitEvent: false });
+
+        this.form.patchValue(this.mapApiToForm(selected), { emitEvent: false });
+
+        const parsedInterval = this.parseHHMM(selected.int_val);
+        this.form.patchValue(
+          {
+            timeInterval: {
+              int_day: selected.int_day,
+              int_val: parsedInterval.hours,
+              minutes: parsedInterval.minutes,
+            },
+            weekDays: this.transformBinaryStringToWeekdays(selected.if_day),
+            adminTimes: this.transformBinaryStringToAdminTimes(selected.if_time),
+          },
+          { emitEvent: false },
+        );
       } else {
-        this.form.get('selectedId')?.enable();
-        this.form.get('newScheduleId')?.disable();
+        this.form.reset(
+          {
+            selectedId: null,
+            newScheduleId: '',
+            selectedSchedule: 'time interval',
+            dosesPerDay: 0,
+            timeInterval: { int_val: 0, int_day: 0, minutes: 0 },
+            adminTimes: [],
+            weekDays: {
+              sun: false,
+              mon: false,
+              tue: false,
+              wed: false,
+              thu: false,
+              fri: false,
+              sat: false,
+            },
+          },
+          { emitEvent: false },
+        );
+        this.form.get('selectedId')?.enable({ emitEvent: false });
+        this.form.get('newScheduleId')?.disable({ emitEvent: false });
       }
     });
   }
@@ -130,7 +153,6 @@ export class AdministrationSchedulesComponent implements OnInit {
   }
 
   private parseHHMM(hhmm: number): { hours: number; minutes: number } {
-    // FIX: Handle null/undefined case
     if (hhmm == null) return { hours: 0, minutes: 0 };
     const hhmmStr = hhmm.toString().padStart(4, '0');
     const hours = parseInt(hhmmStr.substring(0, 2), 10);
@@ -138,9 +160,8 @@ export class AdministrationSchedulesComponent implements OnInit {
     return { hours, minutes };
   }
 
-  // --- Data Mapping Functions (API -> Form) ---
   private mapApiToForm(schedule: Schedule): object {
-    let scheduleType = 'prn info'; // Default
+    let scheduleType = 'prn info';
     switch (schedule.ifixed) {
       case 0:
         scheduleType = 'time interval';
@@ -188,11 +209,10 @@ export class AdministrationSchedulesComponent implements OnInit {
     return times;
   }
 
-  // --- Data Mapping Functions (Form -> API) ---
   private mapFormToApi(): NewSchedulePayload {
     const formValue = this.form.getRawValue();
 
-    let ifixedValue = -1; // Default to 'prn info'
+    let ifixedValue = -1;
     switch (formValue.selectedSchedule) {
       case 'time interval':
         ifixedValue = 0;
@@ -245,11 +265,7 @@ export class AdministrationSchedulesComponent implements OnInit {
     });
     return binaryArray.join('');
   }
-
-  // --- Event Handlers ---
   handleSchedule(event: any) {
-    // This handler receives emissions from child components and patches the form.
-    // If child components are well-behaved, a simple patch is sufficient.
     this.form.patchValue(event);
   }
 

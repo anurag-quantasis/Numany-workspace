@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
 import { Observable } from 'rxjs';
 import {
+  AddDepartmentResponse,
   Department,
   DepartmentPayload,
   DepartmentResponse,
@@ -15,8 +16,8 @@ export class DepartmentsService {
     return this.apiService.get<DepartmentResponse>('/departments');
   }
 
-  addDepartment(departmentPayload: DepartmentPayload): Observable<DepartmentResponse> {
-    return this.apiService.post<DepartmentResponse>('/department', departmentPayload);
+  addDepartment(departmentPayload: DepartmentPayload): Observable<AddDepartmentResponse> {
+    return this.apiService.post<AddDepartmentResponse>('/department', departmentPayload);
   }
 
   updateDepartment(id: string, departmentPayload: DepartmentPayload): Observable<Department> {

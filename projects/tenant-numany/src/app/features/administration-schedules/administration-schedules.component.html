@@ -1,7 +1,4 @@
-<shared-panel-container>
-  <h1 class="text-2xl font-semibold text-center p-5">Administration Schedule File Maintenance</h1>
-
-  <!-- The main form group binding that connects this whole section to your component's `form` -->
+<shared-panel-container titleLabel="Administration Schedule File Maintenance">
   <main [formGroup]="form" class="p-6 space-y-6">
     <!-- Section 1: Schedule ID & Schedule Type -->
     <section class="flex justify-between items-center">
@@ -153,25 +150,23 @@
           (scheduleChange)="handleSchedule($event)"
         ></main-schedule-selector>
       </div>
-      <div class="flex items-end gap-3">
-        <!-- "Save" Button: Handles both Update and Create -->
-        <p-button
-          [label]="isNewMode() ? 'Create' : 'Update'"
-          (click)="onSubmit()"
-          styleClass="h-8 w-25"
-          icon="pi pi-check"
-          [loading]="store.isLoading()"
-          [disabled]="form.invalid"
-        ></p-button>
-
+      <div class="flex items-end gap-4">
         <!-- "New" Button: Enters the create mode -->
         <p-button
           label="New"
           (click)="onNewClick()"
-          variant="outlined"
-          styleClass="h-8 w-25 text-green-500 hover:bg-green-50 border-green-500"
           icon="pi pi-plus"
           [disabled]="isNewMode()"
+        ></p-button>
+        <!-- "Save" Button: Handles both Update and Create -->
+        <p-button
+          [label]="isNewMode() ? 'Create' : 'Update'"
+          (click)="onSubmit()"
+          variant="outlined"
+          severity="info"
+          icon="pi pi-check"
+          [loading]="store.isLoading()"
+          [disabled]="form.invalid"
         ></p-button>
 
         <!-- "Delete" Button: Deletes the selected schedule -->
@@ -179,7 +174,7 @@
           label="Delete"
           (click)="onDeleteClick()"
           variant="outlined"
-          styleClass="h-8 w-25 text-red-500 border-red-500 hover:bg-red-50"
+          severity="danger"
           icon="pi pi-trash"
           [disabled]="!store.selectedScheduleId() || isNewMode()"
         ></p-button>

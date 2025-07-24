@@ -149,8 +149,8 @@ export class InterventionTypesComponent implements OnInit {
     this.store.updateInterventionTypes(formValue as InterventionTypes);
     this.messageService.add({
       key: 'custom-toast',
-      severity: 'info',
-      summary: 'Info',
+      severity: 'success',
+      summary: 'Successful',
       detail: 'Updated Successfully.',
       styleClass: 'border-none bg-white',
     });
@@ -168,7 +168,6 @@ export class InterventionTypesComponent implements OnInit {
       });
       return;
     }
-    this.confirmationService.confirm({});
     this.confirmationService.confirm({
       key: 'delete-interventionType-confirmation',
       closable: true,

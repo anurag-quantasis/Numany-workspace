@@ -37,7 +37,7 @@ export const DepartmentStore = signalStore(
             tap({
               next: (response) => {
                 patchState(store, {
-                  department: [...store.department(), ...response.data],
+                  department: [...store.department(), response.data],
                   isLoading: false,
                 });
               },
