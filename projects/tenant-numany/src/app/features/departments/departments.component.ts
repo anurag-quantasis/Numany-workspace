@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { ShortcutDirective, SharedPanelContainerComponent, CustomInputComponent } from 'shared-ui';
 import { Fieldset } from 'primeng/fieldset';
 import { DepartmentStore } from './departments-store/department.store';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'tenant-departments',
@@ -22,11 +23,13 @@ import { DepartmentStore } from './departments-store/department.store';
   ],
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.css',
-  providers: [DepartmentStore],
+  providers: [DepartmentStore, ConfirmationService],
 })
 export class DepartmentsComponent implements OnInit {
   private fb = inject(FormBuilder);
   readonly store = inject(DepartmentStore);
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   departmentForm!: FormGroup;
   isAddMode = signal(false);

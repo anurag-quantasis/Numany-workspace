@@ -92,27 +92,16 @@
           [class]="'!w-90'"
         ></app-custom-input>
       </div>
-
-      <span class="flex flex-col items-center gap-y-4">
-        <label for="doses" class="text-sm font-medium"># of doses/24hr</label>
-        <input
-          id="doses"
-          type="number"
-          pInputText
-          formControlName="dosesPerDay"
-          class="w-20 border"
-        />
-        <small
-          *ngIf="form.get('dosesPerDay')?.touched && form.get('dosesPerDay')?.invalid"
-          class="text-red-500 text-xs"
-        >
-          <span *ngIf="form.get('dosesPerDay')?.errors?.['required']">This field is required.</span>
-          <span *ngIf="form.get('dosesPerDay')?.errors?.['pattern']"
-            >Only numbers are allowed.</span
-          >
-          <span *ngIf="form.get('dosesPerDay')?.errors?.['min']">Value must be at least 1.</span>
-        </small>
-      </span>
+      <app-custom-input
+        label="# of doses/24hr"
+        formControlName="dosesPerDay"
+        type="number"
+        [errorMessages]="{
+          required: 'No of doses required.',
+          pattern: 'Only numbers are allowed.',
+          minlength: 'Value must be at least 1.',
+        }"
+      ></app-custom-input>
 
       <div>
         <p class="text-sm font-medium mb-1">Administration Time Interval</p>
@@ -181,4 +170,29 @@
       </div>
     </section>
   </main>
+  <div>
+    <p-confirmDialog #cd key="delete-schedule-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
 </shared-panel-container>

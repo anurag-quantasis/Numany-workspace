@@ -120,7 +120,7 @@ export class TenantAlertMessageComponent implements OnInit, OnDestroy {
   private setupSelectionChanges(): void {
     this.messageAlertForm
       .get('selectedMsg')
-      ?.valueChanges// 2. Pass the destroyRef to the operator
+      ?.valueChanges // 2. Pass the destroyRef to the operator
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((selected) => {
         if (selected) {

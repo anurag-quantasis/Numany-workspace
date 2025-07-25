@@ -1,12 +1,13 @@
-import { Component, inject, OnInit, signal, effect } from '@angular/core';
+import { Component, inject, OnInit, effect } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChargeMaintenanceStore } from './charge-algorithm-store/charge-algorithm.store';
 import { ChargeParameters } from './charge-algorithm-store/charge-algorithm.model';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'tenant-charge-algorithm',
@@ -18,8 +19,9 @@ import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
     CommonModule,
     CustomInputComponent,
     SharedPanelContainerComponent,
+    ConfirmDialog,
   ],
-  providers: [ChargeMaintenanceStore, MessageService],
+  providers: [ChargeMaintenanceStore, ConfirmationService],
 })
 export class ChargeAlgorithmComponent implements OnInit {
   form!: FormGroup;
@@ -28,13 +30,14 @@ export class ChargeAlgorithmComponent implements OnInit {
   isAddMode = false;
   fb: NonNullableFormBuilder;
   initialIndex = 0;
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly messageService = inject(MessageService);
 
   constructor(fb: NonNullableFormBuilder) {
     this.fb = fb;
     effect(() => {
       const records = this.store.records();
       if (records.length > 0 && !this.isAddMode) {
-        // Only patch if not in add mode
         this.store.selectRecord(this.initialIndex);
         this.form.patchValue(records[this.initialIndex]);
       } else if (records.length === 0 && !this.isAddMode) {
@@ -42,11 +45,9 @@ export class ChargeAlgorithmComponent implements OnInit {
       }
     });
 
-    // When selectedIndex changes, update the form with the current record
     effect(() => {
       const record = this.store.currentRecord();
       if (record && !this.isEdit && !this.isAddMode) {
-        // Only patch if not in edit or add mode
         this.form.patchValue(record);
       }
     });
@@ -54,44 +55,41 @@ export class ChargeAlgorithmComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      ichid: [''],
-      namcls: [''],
-      lo1: [0],
-      hi1: [0],
-      fee1: [0],
-      markup1: [0],
-      minchrg1: [0],
-      lo2: [0],
-      hi2: [0],
-      fee2: [0],
-      markup2: [0],
-      minchrg2: [0],
-      lo3: [0],
-      hi3: [0],
-      fee3: [0],
-      markup3: [0],
-      minchrg3: [0],
-      lo4: [0],
-      hi4: [0],
-      fee4: [0],
-      markup4: [0],
-      minchrg4: [0],
-      lo5: [0],
-      hi5: [0],
-      fee5: [0],
-      markup5: [0],
-      minchrg5: [0],
+      ichid: [{ value: '', disabled: false }, [Validators.required, Validators.maxLength(4)]],
+      namcls: ['', [Validators.required, Validators.maxLength(50)]],
+      lo1: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      hi1: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      fee1: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      markup1: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      minchrg1: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      lo2: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      hi2: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      fee2: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      markup2: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      minchrg2: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      lo3: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      hi3: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      fee3: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      markup3: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      minchrg3: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      lo4: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      hi4: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      fee4: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      markup4: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      minchrg4: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      lo5: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      hi5: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      fee5: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      markup5: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      minchrg5: [0, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
     });
-
-    // Load all records and display the first one
     this.store.loadChargeParameters();
   }
 
   addClicked() {
-    this.isAddMode = true; // Set add mode to true
-    this.isEdit = false; // Ensure edit mode is false
+    this.isAddMode = true;
+    this.isEdit = false;
     this.form.reset();
-    // Set all numeric fields to 0 for a clean new record
     Object.keys(this.form.controls).forEach((key) => {
       if (
         typeof this.form.controls[key].value === 'number' ||
@@ -99,14 +97,14 @@ export class ChargeAlgorithmComponent implements OnInit {
       ) {
         this.form.controls[key].setValue(0);
       } else {
-        this.form.controls[key].setValue(''); // Clear string fields too
+        this.form.controls[key].setValue('');
       }
     });
   }
 
   editClicked() {
     this.isEdit = true;
-    this.isAddMode = false; // Ensure add mode is false
+    this.isAddMode = false;
     const record = this.store.currentRecord();
     if (record) this.form.patchValue(record);
   }
@@ -116,33 +114,65 @@ export class ChargeAlgorithmComponent implements OnInit {
       const formData = this.form.value as ChargeParameters;
 
       if (this.isAddMode) {
-        // If in add mode, call the addChargeParameter API
         this.store.addChargeParameter(formData);
+        this.messageService.add({
+          key: 'custom-toast',
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Charge Parameter added successfully.',
+          styleClass: 'bg-white border-none',
+        });
       } else if (this.isEdit) {
-        // If in edit mode, call the updateChargeParameter API
         const record = this.store.currentRecord();
         if (record) {
           this.store.updateChargeParameter({
-            id: record.id,
+            id: record.ichid,
             data: { ...record, ...formData },
+          });
+          this.messageService.add({
+            key: 'custom-toast',
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Updated successfully',
+            styleClass: 'bg-white border-none',
           });
         }
       }
-      this.isEdit = false; // Exit edit mode
-      this.isAddMode = false; // Exit add mode
+      this.isEdit = false;
+      this.isAddMode = false;
     }
   }
 
-  // The saveClicked method is now redundant and can be removed,
-  // as updateClicked handles both add and edit scenarios.
-  // saveClicked() { ... }
-
   deleteClicked() {
     const record = this.store.currentRecord();
-    if (record) {
-      this.store.deleteChargeParameter(record.id);
-      this.isEdit = false;
-      this.isAddMode = false;
+    if (!record) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please select a charge parameter to delete.',
+      });
+      return;
+    } else {
+      this.confirmationService.confirm({
+        key: 'delete-chargeParameter-confirmation',
+        closable: true,
+        closeOnEscape: true,
+        rejectButtonProps: {
+          label: 'Cancel',
+          severity: 'secondary',
+          outlined: true,
+        },
+        acceptButtonProps: {
+          label: 'Delete',
+        },
+        message: `Are you sure you want to delete ${record.namcls}`,
+        header: 'Confirm Deletion',
+        icon: 'pi pi-trash',
+        accept: () => {
+          this.store.deleteChargeParameter(record.ichid);
+        },
+      });
     }
   }
 
@@ -158,9 +188,9 @@ export class ChargeAlgorithmComponent implements OnInit {
     this.isAddMode = false;
     const record = this.store.currentRecord();
     if (record) {
-      this.form.patchValue(record); // Revert to the last selected record's data
+      this.form.patchValue(record);
     } else {
-      this.form.reset(); // If no records, just clear the form
+      this.form.reset();
     }
   }
 
@@ -169,7 +199,7 @@ export class ChargeAlgorithmComponent implements OnInit {
     if (idx > 0) {
       this.store.selectRecord(idx - 1);
       this.isEdit = false;
-      this.isAddMode = false; // Exit add mode when navigating
+      this.isAddMode = false;
     }
   }
 
@@ -178,7 +208,7 @@ export class ChargeAlgorithmComponent implements OnInit {
     if (idx < this.store.records().length - 1) {
       this.store.selectRecord(idx + 1);
       this.isEdit = false;
-      this.isAddMode = false; // Exit add mode when navigating
+      this.isAddMode = false;
     }
   }
 }
