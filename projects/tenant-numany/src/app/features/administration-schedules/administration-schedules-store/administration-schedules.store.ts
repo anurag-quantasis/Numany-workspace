@@ -29,7 +29,7 @@ export const AdministrationScheduleStore = signalStore(
     loadSchedules: rxMethod<void>(
       // ... this method is correct, no changes needed ...
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { isLoading: true, error: null })),
         switchMap(() =>
           scheduleService.getSchedule().pipe(
             tap({
@@ -46,7 +46,7 @@ export const AdministrationScheduleStore = signalStore(
 
     addSchedule: rxMethod<NewSchedulePayload>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { isLoading: true, error: null })),
         // FIX: Pass the payload directly to the service. The service now handles the wrapping.
         switchMap((payload) =>
           scheduleService.postSchedule(payload).pipe(
@@ -69,7 +69,7 @@ export const AdministrationScheduleStore = signalStore(
 
     updateSchedule: rxMethod<Schedule>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { isLoading: true, error: null })),
         // FIX: Pass the payload directly to the service. The service handles wrapping.
         switchMap((payload) =>
           scheduleService.updateSchedule(payload.id_sced, payload).pipe(
@@ -93,7 +93,7 @@ export const AdministrationScheduleStore = signalStore(
     deleteSchedule: rxMethod<string>(
       // ... this method is correct, no changes needed ...
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(() => patchState(store, { isLoading: true, error: null })),
         switchMap((id) =>
           scheduleService.deleteSchedule(id).pipe(
             tap({

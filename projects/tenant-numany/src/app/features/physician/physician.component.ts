@@ -130,26 +130,27 @@ export class PhysicianComponent implements OnInit {
         detail: 'Please select a physician to delete.',
       });
       return;
+    } else {
+      this.confirmationService.confirm({
+        key: 'delete-physician-confirmation',
+        closable: true,
+        closeOnEscape: true,
+        rejectButtonProps: {
+          label: 'Cancel',
+          severity: 'secondary',
+          outlined: true,
+        },
+        acceptButtonProps: {
+          label: 'Delete',
+        },
+        message: `Are you sure you want to delete ${physicianName}`,
+        header: 'Confirm Deletion',
+        icon: 'pi pi-trash',
+        accept: () => {
+          this.store.deletePhysician(physicianId);
+        },
+      });
     }
-    this.confirmationService.confirm({
-      key: 'delete-physician-confirmation',
-      closable: true,
-      closeOnEscape: true,
-      rejectButtonProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: 'Delete',
-      },
-      message: `Are you sure you want to delete ${physicianName}`,
-      header: 'Confirm Deletion',
-      icon: 'pi pi-trash',
-      accept: () => {
-        this.store.deletePhysician(physicianId);
-      },
-    });
   }
 
   onSave(): void {
@@ -159,6 +160,7 @@ export class PhysicianComponent implements OnInit {
         severity: 'info',
         summary: 'Info',
         detail: 'Please fill out all required fields.',
+        styleClass: 'bg-white border-none',
       });
       return;
     }

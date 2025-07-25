@@ -12,6 +12,8 @@ import {
 } from './administration-schedules-store/administration-schedules.model';
 import { CustomInputComponent, SharedPanelContainerComponent } from 'shared-ui';
 import { ScheduleSelectorComponent } from '../../shared/components/schedule-selector/schedule-selector.component';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 interface WeekdaySelection {
   sun: boolean;
@@ -22,7 +24,24 @@ interface WeekdaySelection {
   fri: boolean;
   sat: boolean;
 }
-
+const NEW_SCHEDULE_DEFAULTS = {
+  selectedId: null,
+  newScheduleId: '',
+  selectedSchedule: 'time interval',
+  description: 'New Schedule',
+  dosesPerDay: null,
+  timeInterval: { int_val: 0, int_day: 0, minutes: 0 },
+  adminTimes: [],
+  weekDays: {
+    sun: false,
+    mon: false,
+    tue: false,
+    wed: false,
+    thu: false,
+    fri: false,
+    sat: false,
+  },
+};
 @Component({
   selector: 'tenant-schedule-maintenance',
   standalone: true,
@@ -36,13 +55,16 @@ interface WeekdaySelection {
     ScheduleSelectorComponent,
     CustomInputComponent,
     SharedPanelContainerComponent,
+    ConfirmDialog,
   ],
   templateUrl: './administration-schedules.component.html',
-  providers: [AdministrationScheduleStore],
+  providers: [AdministrationScheduleStore, ConfirmationService],
 })
 export class AdministrationSchedulesComponent implements OnInit {
   private fb = inject(FormBuilder);
   readonly store = inject(AdministrationScheduleStore);
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   readonly isNewMode = signal(false);
   form: FormGroup;
@@ -70,7 +92,7 @@ export class AdministrationSchedulesComponent implements OnInit {
       newScheduleId: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.-]*$/)]],
       selectedSchedule: ['time interval', Validators.required],
       description: ['', Validators.required],
-      dosesPerDay: [0, [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.min(0)]],
+      dosesPerDay: [0, [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.min(1)]],
       timeInterval: [{ int_val: 0, int_day: 0, minutes: 0 }],
       adminTimes: [[]],
       weekDays: [null],
@@ -85,7 +107,7 @@ export class AdministrationSchedulesComponent implements OnInit {
             newScheduleId: '',
             selectedSchedule: 'time interval',
             description: 'New Schedule',
-            dosesPerDay: 0,
+            dosesPerDay: null,
             timeInterval: { int_val: 0, int_day: 0, minutes: 0 },
             adminTimes: [],
             weekDays: {
@@ -122,28 +144,22 @@ export class AdministrationSchedulesComponent implements OnInit {
           { emitEvent: false },
         );
       } else {
-        this.form.reset(
-          {
-            selectedId: null,
-            newScheduleId: '',
-            selectedSchedule: 'time interval',
-            dosesPerDay: 0,
-            timeInterval: { int_val: 0, int_day: 0, minutes: 0 },
-            adminTimes: [],
-            weekDays: {
-              sun: false,
-              mon: false,
-              tue: false,
-              wed: false,
-              thu: false,
-              fri: false,
-              sat: false,
-            },
-          },
-          { emitEvent: false },
-        );
+        // When no item is selected, reset but keep description blank
+        this.form.reset({ ...NEW_SCHEDULE_DEFAULTS, description: '' }, { emitEvent: false });
         this.form.get('selectedId')?.enable({ emitEvent: false });
         this.form.get('newScheduleId')?.disable({ emitEvent: false });
+      }
+    });
+
+    effect(() => {
+      const error = this.store.error();
+      if (error) {
+        this.messageService.add({
+          key: 'custom-toast',
+          severity: 'error',
+          summary: 'Operation Failed',
+          detail: error,
+        });
       }
     });
   }
@@ -281,25 +297,72 @@ export class AdministrationSchedulesComponent implements OnInit {
 
   onDeleteClick() {
     const id = this.store.selectedScheduleId();
-    if (id && confirm(`Are you sure you want to delete schedule "${id}"?`)) {
-      this.store.deleteSchedule(id);
+    if (!id) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please select a schedule to delete.',
+        styleClass: 'border-none bg-white',
+      });
+      return;
     }
+    this.confirmationService.confirm({
+      key: 'delete-schedule-confirmation',
+      closable: true,
+      closeOnEscape: true,
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+      },
+      message: `Are you sure you want to delete schedule "${id}"?`,
+      header: 'Confirm Deletion',
+      icon: 'pi pi-trash',
+      accept: () => {
+        this.store.deleteSchedule(id);
+      },
+    });
   }
 
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      alert('Please correct the errors before saving.');
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Please fill all the required details.',
+        styleClass: 'border-none bg-white',
+      });
       return;
     }
 
     const payload = this.mapFormToApi();
-    console.log('Submitting Payload:', payload);
-
     if (this.isNewMode()) {
       this.store.addSchedule(payload);
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Schedule is added successfully.',
+        styleClass: 'border-none bg-white',
+      });
+      this.form.reset(NEW_SCHEDULE_DEFAULTS);
+      this.form.markAsPristine();
+      this.form.markAsUntouched();
     } else {
       this.store.updateSchedule(payload as Schedule);
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Schedule is updated successfully.',
+        styleClass: 'border-none bg-white',
+      });
     }
     this.isNewMode.set(false);
   }
