@@ -165,7 +165,7 @@ export class PatientsComponent implements OnInit {
           console.log('Discharge clicked for', patient);
         this.uiDialogService.open(
           DischargeComponent,
-          'Discharge Patient',
+          'Confirm Discharge',
         )
       }
       },

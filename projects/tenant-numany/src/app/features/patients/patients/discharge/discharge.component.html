@@ -1,1 +1,26 @@
-<p>discharge works!</p>
+<div class="align-items-center flex flex-col">
+  <div class="text-[20px] font-semibold mb-2">
+    Form:
+  </div>
+  <div>
+    <form [formGroup]="formGroup">
+      <app-custom-input
+        formControlName="dischargeDate"
+        label="Discharge Date"
+        placeholder="Enter Discharge Date"
+        class="mb-3"
+      >
+      </app-custom-input>
+
+      <p-checkbox
+        formControlName="dcActive"
+        inputId="dcActive"
+        binary="true">
+      </p-checkbox>
+      <label for="dcActive" class="ml-2 font-semibold">Discharge All Active Orders</label>
+    <div class="flex justify-center mt-3">
+        <p-button label="Discharge" variant="outlined" severity="success"/>
+    </div>
+    </form>
+  </div>
+</div>
