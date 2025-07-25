@@ -5,5 +5,5 @@ export const environment = {
   ...devEnv,
   production: true,
   appVersion: version,
-  apiUrl: 'https://api.prod.com/',
+  apiUrl: 'http://20.84.43.54:5002/api',
 };
