@@ -70,4 +70,9 @@ export class TenantComponent {
       console.log('Form Invalid', this.tenantForm.invalid);
     }
   }
+
+  handleSelectionChange(bed: any): void {
+    // The event now emits a single object, not an array.
+    console.log('BED', bed);
+  }
 }

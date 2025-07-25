@@ -6,7 +6,7 @@ import { MessageService, LazyLoadEvent } from 'primeng/api';
 import { BedService } from '../services/beds.service';
 import { initialState } from './beds.state';
 import { Bed, NewBed } from './beds.model';
-import { toastSeverity } from '../../../core/utils/tenant.constants';
+import { toastSeverity } from '../../../shared/utils/tenant.constants';
 import { TableLazyLoadEvent } from 'primeng/table';
 
 export const BedStore = signalStore(
@@ -83,7 +83,7 @@ export const BedStore = signalStore(
       ),
     );
 
-    const deleteBed = rxMethod<string>(
+    const deleteBed = rxMethod<number>(
       pipe(
         tap(() => patchState(store, { isLoading: true, error: null })),
         switchMap((bedId) =>
@@ -120,13 +120,15 @@ export const BedStore = signalStore(
         switchMap((bed) =>
           bedService.updateBed(bed).pipe(
             tap((response) => {
+              console.log('update', response);
               if (response.status === 'success') {
                 messageService.add({
+                  key: 'custom-toast',
                   severity: 'success',
                   summary: 'Success',
                   detail: 'Bed updated successfully.',
                 });
-                loadBeds(store.lastLazyLoadEvent()); // Reload table on success
+                loadBeds(store.lastLazyLoadEvent());
               } else {
                 patchState(store, { error: response.error, isLoading: false });
                 messageService.add({

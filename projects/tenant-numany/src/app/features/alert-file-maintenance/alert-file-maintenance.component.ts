@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ColumnDef, SharedDataTableComponent, SharedPanelContainerComponent } from 'shared-ui';
 import {
   AlertClassesInterface,
@@ -16,6 +16,8 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Select } from 'primeng/select';
+import { UiDialogService } from '../../core/services/ui-dialog.service';
+import { TenantAlertMessageComponent } from './components/tenant-alert-message/tenant-alert-message.component';
 
 interface AlertClasses {}
 
@@ -34,6 +36,8 @@ interface AlertClasses {}
   styleUrl: './alert-file-maintenance.component.css',
 })
 export class AlertFileMaintenanceComponent implements OnInit {
+  private uiDialogService = inject(UiDialogService);
+
   alertClasses: AlertClassesInterface[] = [];
   alertClassesLoading = false;
   alertClassesTotalRecords = 0;
@@ -228,5 +232,9 @@ export class AlertFileMaintenanceComponent implements OnInit {
     const updatedRowGroup = this.classes.at(event.index);
     console.log('Cell edit complete. Updated row value in form:', updatedRowGroup.value);
     // You can now save this updatedRowGroup.value to your backend.
+  }
+
+  onMessageClick() {
+    this.uiDialogService.open(TenantAlertMessageComponent, 'Alert Message Maintenance');
   }
 }

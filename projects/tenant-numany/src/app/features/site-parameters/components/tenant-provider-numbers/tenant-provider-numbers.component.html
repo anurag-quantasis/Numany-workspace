@@ -1,0 +1,84 @@
+<div class="">
+  <form [formGroup]="providerNumbersForm" (ngSubmit)="onSubmit()">
+    <!-- Form Fields in a Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+      <app-custom-input
+        label="DEA Number"
+        formControlName="deaNumber"
+        type="text"
+        placeholder="Enter DEA Number"
+      >
+      </app-custom-input>
+
+      <app-custom-input
+        label="NCPDP Number"
+        formControlName="ncpdpNumber"
+        type="text"
+        placeholder="Enter NCPDP Number"
+      >
+      </app-custom-input>
+
+      <app-custom-input
+        label="Medicare Provider"
+        formControlName="medicareProvider"
+        type="text"
+        placeholder="Enter Medicare Provider ID"
+      >
+      </app-custom-input>
+
+      <app-custom-input
+        label="Medicaid Provider"
+        formControlName="medicaidProvider"
+        type="text"
+        placeholder="Enter Medicaid Provider ID"
+      >
+      </app-custom-input>
+
+      <app-custom-input
+        label="National Provider ID (NPI)"
+        formControlName="npi"
+        type="text"
+        placeholder="Enter NPI"
+      >
+      </app-custom-input>
+
+      <app-custom-input
+        label="State License"
+        formControlName="stateLicense"
+        type="text"
+        placeholder="Enter State License"
+      >
+      </app-custom-input>
+
+      <!-- Dropdown for TP Billing -->
+      <div class="flex flex-col gap-2">
+        <label for="tpBilling" class="font-semibold text-gray-700">
+          TP Billing <span class="text-red-500">*</span>
+        </label>
+        <p-select
+          id="tpBilling"
+          formControlName="tpBilling"
+          [options]="tpBillingOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select a billing option"
+          styleClass="w-full"
+        >
+        </p-select>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-2 mt-8">
+      <p-button label="Cancel" severity="secondary" type="button" (onClick)="resetForm()">
+      </p-button>
+      <p-button
+        label="Save Changes"
+        icon="pi pi-check"
+        type="submit"
+        [disabled]="providerNumbersForm.invalid"
+      >
+      </p-button>
+    </div>
+  </form>
+</div>

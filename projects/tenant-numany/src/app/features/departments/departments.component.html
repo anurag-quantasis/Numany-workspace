@@ -1,5 +1,17 @@
 <shared-panel-container titleLabel="Department File Maintenance">
   <main class="flex flex-col w-full gap-y-2">
+    <!-- Display loading indicator from the store -->
+    <!-- @if (store.isLoading()) {
+      <p class="p-4 text-blue-600">Loading...</p>
+    } -->
+    <!-- Display error message from the store -->
+    @if (store.error(); as error) {
+      <div class="p-4 my-2 text-red-700 bg-red-100 border-l-4 border-red-500" role="alert">
+        <p class="font-bold">Error</p>
+        <p>{{ error }}</p>
+      </div>
+    }
+
     <form [formGroup]="departmentForm">
       <!-- The dropdown is now populated from the store's department signal -->
       <p-select
@@ -7,6 +19,7 @@
         formControlName="department"
         optionLabel="name"
         optionValue="id"
+        [loading]="store.isLoading()"
         placeholder="Select a Department to Edit"
         class="w-full md:w-[50%] my-4 flex justify-center items-center"
       />
@@ -28,7 +41,15 @@
             class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
           >
             <app-custom-input type="text" label="Note" formControlName="note" />
-            <app-custom-input type="text" label="Cost Basis" formControlName="cost_basis" />
+            <app-custom-input
+              type="text"
+              label="Cost Basis"
+              formControlName="cost_basis"
+              [errorMessages]="{
+                required: 'The section code is required.',
+                pattern: 'Required values AV|AW|CC|PC',
+              }"
+            />
             <app-custom-input type="number" label="Markup" formControlName="markup" />
             <app-custom-input type="text" label="Tax Flag" formControlName="tax_flag" />
           </div>

@@ -400,14 +400,6 @@ export class HeaderBarComponent implements OnInit {
             ],
           },
           {
-            label: 'Financial Reporting Groups',
-            shortcut: 'alt.f f',
-            shortcutHint: 'F',
-            command: () => {
-              console.log('Financial Reporting Groups clicked');
-            },
-          },
-          {
             label: 'Patient/Payor Type',
             // shortcut: 'alt.f p',
             // shortcutHint: 'P',
@@ -480,22 +472,6 @@ export class HeaderBarComponent implements OnInit {
               console.log('Alert File Matrix clicked');
             },
           },
-          // {
-          //   label: 'Sig Codes',
-          //   // shortcut: 'alt.f s',
-          //   // shortcutHint: 'S',
-          //   command: () => {
-          //     console.log('Sig Codes clicked');
-          //   },
-          // },
-          {
-            label: 'Sig Parts',
-            // shortcut: 'alt.f t',
-            // shortcutHint: 'T',
-            command: () => {
-              console.log('Sig Parts clicked');
-            },
-          },
           {
             label: 'Site Parameters',
             shortcut: 'alt.f t',
@@ -537,18 +513,15 @@ export class HeaderBarComponent implements OnInit {
             shortcut: 'alt.f u',
             shortcutHint: 'u',
             route: 'database-users',
-            command: () => {
-              console.log('Ward/Bed Area Cost Centers');
-            },
           },
-          {
-            label: 'Export Patients and Active Orders to Interface',
-            // shortcut: 'alt.f e',
-            // shortcutHint: 'E',
-            command: () => {
-              console.log('Export Patients and Active Orders clicked');
-            },
-          },
+          // {
+          //   label: 'Export Patients and Active Orders to Interface',
+          //   // shortcut: 'alt.f e',
+          //   // shortcutHint: 'E',
+          //   command: () => {
+          //     console.log('Export Patients and Active Orders clicked');
+          //   },
+          // },
           {
             label: 'Lab Result Types',
             // shortcut: 'alt.f l',
@@ -556,14 +529,6 @@ export class HeaderBarComponent implements OnInit {
             route: '/lab-result-type-maintenance',
             command: () => {
               console.log('Lab Result Types clicked');
-            },
-          },
-          {
-            label: 'Import Diagnosis File Update',
-            // shortcut: 'alt.f i',
-            // shortcutHint: 'I',
-            command: () => {
-              console.log('Import Diagnosis File Update clicked');
             },
           },
           {
@@ -582,57 +547,6 @@ export class HeaderBarComponent implements OnInit {
             route: 'remote-inventory-location',
             command: () => {
               console.log('Remote Inventory Location IDs clicked');
-            },
-          },
-          {
-            label: 'Third Party Provider Data',
-            shortcut: 'alt.f t',
-            shortcutHint: 'T',
-            command: () => {
-              console.log('Third Party Provider Data clicked');
-            },
-            disabled: true, // Grayed out in image
-          },
-          {
-            label: 'Backup Current Database',
-            // shortcut: '',
-            shortcutHint: 'B',
-            command: () => {
-              console.log('Backup Current Database clicked');
-            },
-          },
-          {
-            label: 'Restore Database',
-            shortcut: 'alt.f s',
-            shortcutHint: 'S',
-            command: () => {
-              console.log('Restore Database clicked');
-            },
-            disabled: true, // Grayed out
-          },
-          {
-            label: 'Print/Display Data Dictionary',
-            shortcut: 'alt.f d',
-            shortcutHint: 'D',
-            command: () => {
-              console.log('Print/Display Data Dictionary clicked');
-            },
-            disabled: true, // Grayed out
-          },
-          {
-            label: 'Merge Patients',
-            shortcut: 'alt.f m',
-            shortcutHint: 'M',
-            command: () => {
-              console.log('Merge Patients clicked');
-            },
-          },
-          {
-            label: 'Initialize/Update Next Dose Time for EMAR',
-            shortcut: 'alt.f n',
-            shortcutHint: 'N',
-            command: () => {
-              console.log('Initialize/Update Next Dose Time for EMAR clicked');
             },
           },
         ],

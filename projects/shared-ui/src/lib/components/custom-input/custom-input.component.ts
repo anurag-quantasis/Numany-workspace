@@ -117,10 +117,11 @@ let nextId = 0;
           [disabled]="disabled"
           [placeholder]="placeholder()"
           styleClass="w-full"
+          inputStyleClass="w-full"
+          [style]="{ width: '100%' }"
           [class.ng-invalid]="isInvalid()"
           [class.ng-dirty]="isInvalid()"
           [readonly]="readonly()"
-          [fluid]="fluid()"
         >
         </p-inputNumber>
 

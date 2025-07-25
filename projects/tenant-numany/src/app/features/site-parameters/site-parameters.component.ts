@@ -11,6 +11,8 @@ import {
 } from 'shared-ui';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { UiDialogService } from '../../core/services/ui-dialog.service';
+import { TenantProviderNumbersComponent } from './components/tenant-provider-numbers/tenant-provider-numbers.component';
 
 @Component({
   selector: 'tenant-site-parameters',
@@ -32,6 +34,7 @@ import { InputText } from 'primeng/inputtext';
 export class SiteParametersComponent implements OnInit {
   siteParametersForm!: FormGroup;
   private fb = inject(FormBuilder);
+  private uiDialogService = inject(UiDialogService);
   submitted = false;
 
   // Options for dropdowns
@@ -258,5 +261,13 @@ export class SiteParametersComponent implements OnInit {
       return;
     }
     console.log('Form Submitted!', this.siteParametersForm.value);
+  }
+
+  // POP UP LOGIC
+
+  onProviderNumbersClick() {
+    this.uiDialogService.open(TenantProviderNumbersComponent, 'Provider Numbers', {
+      draggable: true,
+    });
   }
 }
