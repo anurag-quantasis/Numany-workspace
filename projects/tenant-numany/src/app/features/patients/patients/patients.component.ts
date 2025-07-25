@@ -36,7 +36,7 @@ import { TransferComponent } from './transfer/transfer.component';
 })
 export class PatientsComponent implements OnInit {
 onMenuButtonClick($event: MouseEvent,_t77: Menu) {
-throw new Error('Method not implemented.');
+   
 }
   patientForm!: FormGroup;
   
@@ -101,6 +101,26 @@ throw new Error('Method not implemented.');
       ssn: '987-65-4321',
       admitted: '2025-07-21',
       discharged: '31/8/2024 12:00'
+    }, 
+    {
+      bedId: '213-A',
+      name: 'TOM Dsouza',
+      patientId: '1308074',
+      medRec: 'MR354',
+      dob: '2002-07-25',
+      ssn: '234-654-890',
+      admitted: '2025-07-22',
+      discharged: ''
+    },
+    {
+      bedId: '213-B',
+      name: 'JERRY Dsouza',
+      patientId: '1308075',
+      medRec: 'MR354',
+      dob: '2002-07-25',
+      ssn: '234-654-890',
+      admitted: '2025-07-22',
+      discharged: ''
     }
   ];
 
