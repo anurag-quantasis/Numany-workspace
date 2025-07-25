@@ -23,5 +23,5 @@ import { Component, input } from '@angular/core';
 export class SharedPanelContainerComponent {
   // Optional inputs for customization
   titleLabel = input<string>('');
-  class = input<string>('px-[6rem] py-[1rem]');
+  class = input<string>('md:px-[6rem] px-[0.5rem] py-[1rem]');
 }

@@ -37,7 +37,6 @@ let nextId = 0;
     ValidationPipe,
     InputTextModule,
     InputNumberModule,
-    Fluid,
     CheckboxModule,
   ],
   providers: [ValidationPipe], // Provide pipe to be injectable in the class
@@ -118,10 +117,11 @@ let nextId = 0;
           [disabled]="disabled"
           [placeholder]="placeholder()"
           styleClass="w-full"
+          inputStyleClass="w-full"
+          [style]="{ width: '100%' }"
           [class.ng-invalid]="isInvalid()"
           [class.ng-dirty]="isInvalid()"
           [readonly]="readonly()"
-          [fluid]="fluid()"
         >
         </p-inputNumber>
 
@@ -230,7 +230,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   isInvalid = computed(() => {
     this.controlStatus(); // Create a dependency on our trigger signal.
     const c = this.ngControl.control;
-     return !!(c && c.invalid && (c.touched || c.dirty || this.submitted()));
+    return !!(c && c.invalid && (c.touched || c.dirty || this.submitted()));
   });
 
   isRequired = computed(() => {

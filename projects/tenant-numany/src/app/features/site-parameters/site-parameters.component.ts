@@ -4,9 +4,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { SharedPanelContainerComponent, CustomInputComponent, SharedStateSelectorComponent } from 'shared-ui';
+import {
+  SharedPanelContainerComponent,
+  CustomInputComponent,
+  SharedStateSelectorComponent,
+} from 'shared-ui';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { UiDialogService } from '../../core/services/ui-dialog.service';
+import { TenantProviderNumbersComponent } from './components/tenant-provider-numbers/tenant-provider-numbers.component';
 
 @Component({
   selector: 'tenant-site-parameters',
@@ -20,7 +26,7 @@ import { InputText } from 'primeng/inputtext';
     RadioButtonModule,
     ButtonModule,
     SharedStateSelectorComponent,
-],
+  ],
   templateUrl: './site-parameters.component.html',
   styleUrl: './site-parameters.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,6 +34,7 @@ import { InputText } from 'primeng/inputtext';
 export class SiteParametersComponent implements OnInit {
   siteParametersForm!: FormGroup;
   private fb = inject(FormBuilder);
+  private uiDialogService = inject(UiDialogService);
   submitted = false;
 
   // Options for dropdowns
@@ -233,14 +240,14 @@ export class SiteParametersComponent implements OnInit {
 
   myForm = this.fb.group({
     engineDesigner: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s.-]+$/)]], // Allow dots and hyphens
-    
+
     // Use our new custom validators and a pattern for digits only
-    hour: ['', [Validators.required, Validators.pattern(/^\d{1,2}$/),]],
-    
+    hour: ['', [Validators.required, Validators.pattern(/^\d{1,2}$/)]],
+
     minute: ['', [Validators.required, Validators.pattern(/^\d{1,2}$/)]],
   });
 
-   // Helper getters make the template cleaner
+  // Helper getters make the template cleaner
   get controls() {
     return this.myForm.controls;
   }
@@ -254,5 +261,13 @@ export class SiteParametersComponent implements OnInit {
       return;
     }
     console.log('Form Submitted!', this.siteParametersForm.value);
+  }
+
+  // POP UP LOGIC
+
+  onProviderNumbersClick() {
+    this.uiDialogService.open(TenantProviderNumbersComponent, 'Provider Numbers', {
+      draggable: true,
+    });
   }
 }

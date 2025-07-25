@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 
 export const ChargeMaintenanceStore = signalStore(
+  { providedIn: 'root' },
   withState({ ...initialState }),
 
   withComputed(({ records, selectedIndex }) => ({

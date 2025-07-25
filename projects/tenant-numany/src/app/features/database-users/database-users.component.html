@@ -1,0 +1,125 @@
+<shared-panel-container titleLabel="Add/Delete Database Users">
+  <main>
+    <div>
+      <p-dropdown
+        [options]="databaseUsersOptions"
+        class="w-[25%] my-4"
+        placeholder="Select a User"
+      ></p-dropdown>
+    </div>
+    <p-fieldset legend="User Details">
+      <form [formGroup]="databaseUserForm" class="grid grid-cols-4 gap-4">
+        <app-custom-input
+          label="Login Id"
+          type="text"
+          formControlName="txtLogin"
+          [errorMessages]="{ required: 'Login ID is required.' }"
+        ></app-custom-input>
+
+        <app-custom-input
+          label="Username"
+          type="text"
+          formControlName="txtName"
+          [errorMessages]="{ required: 'Username is required.' }"
+        ></app-custom-input>
+
+        <app-custom-input
+          label="User Initials"
+          type="text"
+          formControlName="txtInitials"
+        ></app-custom-input>
+
+        <app-custom-input
+          label="External Id"
+          type="text"
+          formControlName="txtID_External"
+        ></app-custom-input>
+
+        <!-- Error handling for PrimeNG Dropdown -->
+        <div class="flex flex-col gap-y-1">
+          <label class="font-semibold">Role <span class="text-red-500">*</span></label>
+          <p-dropdown
+            [options]="roleTypeOptions"
+            formControlName="tdbcRole"
+            placeholder="Select a Role"
+          ></p-dropdown>
+          <!-- FIX: Changed from f.tdbcRole to f['tdbcRole'] for strict template checking -->
+          <small *ngIf="f['tdbcRole'].invalid && f['tdbcRole'].touched" class="text-red-500">
+            Role is required.
+          </small>
+        </div>
+
+        <!-- Corrected this dropdown to use its own form control -->
+        <div class="flex flex-col gap-y-1">
+          <label class="font-semibold">Role Initials <span class="text-red-500">*</span></label>
+          <p-dropdown
+            [options]="roleTypeOptions"
+            formControlName="tdbcRoleInitials"
+            placeholder="Select Role Initials"
+          ></p-dropdown>
+          <!-- FIX: Changed from f.tdbcRoleInitials to f['tdbcRoleInitials'] for strict template checking -->
+          <small
+            *ngIf="f['tdbcRoleInitials'].invalid && f['tdbcRoleInitials'].touched"
+            class="text-red-500"
+          >
+            Role Initials are required.
+          </small>
+        </div>
+
+        <app-custom-input
+          label="Old Password"
+          type="password"
+          formControlName="txtOldPwd"
+          [errorMessages]="{ required: 'Old Password is required.' }"
+        ></app-custom-input>
+
+        <!-- Password Form Array fields -->
+        <div formArrayName="txtpwd" class="contents">
+          <app-custom-input
+            label="New Password"
+            type="password"
+            [formControlName]="0"
+            [errorMessages]="{ required: 'New Password is required.' }"
+          ></app-custom-input>
+
+          <app-custom-input
+            label="Repeat Password"
+            type="password"
+            [formControlName]="1"
+            [errorMessages]="{ required: 'Please repeat the password.' }"
+          ></app-custom-input>
+        </div>
+
+        <!-- Error message for password mismatch -->
+        <!-- <div>
+           <small *ngIf="passwordArray.errors?.['mismatch'] && passwordArray.touched" class="text-red-500">
+             Passwords do not match.
+           </small>
+        </div> -->
+
+        <span class="flex items-center gap-x-2">
+          <p-checkbox [binary]="true" formControlName="chkSU" inputId="chkSU"></p-checkbox>
+          <label for="chkSU">Super User</label>
+        </span>
+
+        <span class="flex items-center gap-x-2">
+          <p-checkbox [binary]="true" formControlName="chkPWExp" inputId="chkPWExp"></p-checkbox>
+          <label for="chkPWExp">No Expiration on Password</label>
+        </span>
+      </form>
+    </p-fieldset>
+
+    <div class="flex justify-end items-center gap-4 mt-4">
+      <p-button label="Add" icon="pi pi-plus" [disabled]="databaseUserForm.invalid"></p-button>
+      <!-- FIX: Corrected typo from databaseUser_form to databaseUserForm -->
+      <p-button
+        label="Update"
+        icon="pi pi-check"
+        variant="outlined"
+        severity="info"
+        [disabled]="databaseUserForm.invalid"
+      ></p-button>
+      <p-button label="Delete" icon="pi pi-trash" variant="outlined" severity="danger"></p-button>
+    </div>
+  </main>
+</shared-panel-container>

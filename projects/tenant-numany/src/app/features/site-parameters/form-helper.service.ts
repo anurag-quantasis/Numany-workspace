@@ -8,11 +8,7 @@ export class FormHelper {
   getFormControl(useForm: FormGroup, controlName: string) {
     return useForm.get(controlName) as FormControl;
   }
-  updateFormState(
-    form: FormGroup,
-    isDirty: boolean = true,
-    isTouched: boolean = true
-  ) {
+  updateFormState(form: FormGroup, isDirty: boolean = true, isTouched: boolean = true) {
     for (const controlName in form.controls) {
       if (form.controls.hasOwnProperty(controlName)) {
         const control = form.controls[controlName];
@@ -29,10 +25,7 @@ export class FormHelper {
     return (formGroup: FormGroup) => {
       const control = formGroup.controls[controlName];
       const matchingControl = formGroup.controls[matchingControlName];
-      if (
-        matchingControl.errors &&
-        !matchingControl.errors["confirmedValidator"]
-      ) {
+      if (matchingControl.errors && !matchingControl.errors['confirmedValidator']) {
         return;
       }
       if (control.value !== matchingControl.value) {
@@ -42,7 +35,6 @@ export class FormHelper {
       }
     };
   }
-
 
   validateHourInput(event: KeyboardEvent) {
     const key = event.key;
@@ -79,5 +71,4 @@ export class FormHelper {
       event.preventDefault(); // Block invalid numbers > 59
     }
   }
-
 }

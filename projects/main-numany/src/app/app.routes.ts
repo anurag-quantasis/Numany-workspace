@@ -53,9 +53,7 @@ export const routes: Routes = [
       {
         path: 'tenants',
         loadComponent: () =>
-          import('./features/tenant/tenant.component').then(
-            (m) => m.TenantComponent,
-          ),
+          import('./features/tenant/tenant.component').then((m) => m.TenantComponent),
       },
     ],
   },

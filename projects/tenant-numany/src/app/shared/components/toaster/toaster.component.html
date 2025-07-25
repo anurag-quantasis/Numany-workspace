@@ -1,6 +1,6 @@
 <p-toast key="custom-toast" position="top-right" [baseZIndex]="5000">
   <ng-template let-message #headless let-closeFn="closeFn">
-    <div class="flex min-h-16 rounded-lg justify-between border border-grey-200">
+    <div class="flex min-h-16 rounded-lg justify-between">
       <!-- Line, Info Circle, Message Sections -->
       <div class="flex flex-row gap-2">
         <!-- vertical line -->
@@ -40,7 +40,7 @@
           <!-- Message Section -->
           <div class="flex flex-col">
             <!-- Message Summary -->
-            <span class="font-steviesans text-active font-bold">
+            <span class="text-active font-bold">
               {{ message.summary }}
             </span>
 
@@ -49,7 +49,7 @@
               <ol class="list-none text-active {{ message.summary ? 'mt-2' : '' }} ml-4">
                 @for (detail of message.detail?.split('|'); track detail) {
                   <li>
-                    <span class="font-steviesans text-sm text-grey-600">{{ detail }}</span>
+                    <span class="text-sm text-[#334155] font-semibold">{{ detail }}</span>
                   </li>
                 }
               </ol>

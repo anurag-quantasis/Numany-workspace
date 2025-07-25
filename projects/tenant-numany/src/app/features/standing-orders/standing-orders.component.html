@@ -1,103 +1,60 @@
-<shared-panel-container>
-  <h1 class="text-2xl font-bold text-gray-800 my-6 text-center py-2">
-    Standing Order File Maintenance
-  </h1>
-
-  <main class="mx-20">
-    <form [formGroup]="form" class="flex flex-col justify-start items-center gap-x-5">
-      <!-- <div>
-        <h1 class="mb-5 text-[24px]">Standing Order Name</h1>
-      </div> -->
-
- <p-fieldset legend="Standing Order Name">     
-      <section class="grid grid-cols-5 gap-5">
-        <ng-container *ngFor="let i of [].constructor(25); let idx = index">
-          <input
-            type="text"
-            pInputText
-            [formControlName]="'field' + (idx + 1)"
-            [readonly]="!isEdit && !isAddMode"
-            class="w-28 px-2 py-1 rounded-md border border-gray-400 bg-white shadow-sm text-gray-800"
-          />
-        </ng-container>
+<shared-panel-container titleLabel="Standing Order File Maintenance">
+  <form [formGroup]="form" class="">
+    <p-select [options]="stordOptions"></p-select>
+    <p-fieldset legend="Standing Order Name">
+      <section class="grid grid-cols-5 gap-4">
+        <app-custom-input type="number" formControlName="so_ord1"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord2"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord3"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord4"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord5"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord6"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord7"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord8"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord9"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord10"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord11"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord12"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord13"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord14"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord15"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord16"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord17"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord18"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord19"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord20"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord21"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord22"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord23"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord24"></app-custom-input>
+        <app-custom-input type="number" formControlName="so_ord25"></app-custom-input>
       </section>
-          </p-fieldset>
-    </form>
+    </p-fieldset>
+  </form>
 
-    <section>
-      <!-- Top-right placed Paste and CleanUp buttons -->
-      <div class="flex justify-center gap-x-4 mt-8 mb-6">
-        <p-button
-          styleClass="h-8 w-36 text-sm border-blue-500 text-blue-600 hover:bg-blue-50"
-          variant="outlined"
-          (onClick)="pasteClicked()"
-        >
-          Paste
-        </p-button>
+  <section>
+    <!-- Main control buttons -->
+    <div class="flex justify-center items-center gap-x-4 mt-5">
+      <p-button icon="pi pi-plus" label="New"> </p-button>
 
-        <p-button
-          styleClass="h-8 w-48 text-sm border-orange-500 text-orange-600 hover:bg-orange-50"
-          variant="outlined"
-          (onClick)="cleanUpClicked()"
-        >
-          CleanUp STDORD
-        </p-button>
-      </div>
+      <p-button variant="outlined" severity="info" label="Update" icon="pi pi-pencil"> </p-button>
 
-      <!-- Main control buttons -->
-      <div class="flex justify-center items-center gap-x-4 mt-5" *ngIf="!isEdit && !isAddMode">
-        <p-button
-          styleClass="h-8 w-34 text-sm border-green-500 text-green-600 hover:bg-green-50"
-          variant="outlined"
-          (onClick)="addClicked()"
-        >
-          New
-        </p-button>
-
-        <p-button
-          styleClass="h-8 w-34 text-sm border-gray-400 text-gray-700 hover:bg-gray-100"
-          variant="outlined"
-          (onClick)="editClicked()"
-        >
-          Edit
-        </p-button>
-
-        <p-button
-          styleClass="h-8 w-34 text-sm border-red-500 text-red-500 hover:bg-red-50"
-          variant="outlined"
-          (onClick)="deleteClicked()"
-        >
-          Delete
-        </p-button>
-
-        <p-button
-          styleClass="h-8 w-34 text-sm border-sky-500 text-sky-500 hover:bg-sky-50"
-          variant="outlined"
-          (onClick)="refreshClicked()"
-        >
-          Refresh
-        </p-button>
-      </div>
-
-      <!-- Update/Cancel Buttons -->
-      <div class="flex justify-center items-center gap-x-4 mt-5" *ngIf="isEdit || isAddMode">
-        <p-button
-          styleClass="h-8 w-30 text-sm border-yellow-500 text-yellow-600 hover:bg-yellow-50"
-          variant="outlined"
-          (onClick)="updateClicked()"
-        >
-          Update
-        </p-button>
-        <p-button
-          styleClass="h-8 w-30 text-sm border-gray-500 text-gray-600 hover:bg-gray-50"
-          variant="outlined"
-          (onClick)="cancelClicked()"
-        >
-          Cancel
-        </p-button>
-      </div>
-
-
-    </section>
-  </main>
+      <p-button variant="outlined" label="Delete" severity="danger" icon="pi pi-trash"> </p-button>
+      <p-button label=" CleanUp STDORD" severity="danger" icon="pi pi-trash"> </p-button>
+    </div>
+    <!-- <div class="flex justify-center items-center gap-x-4 mt-5">
+      <p-button
+        styleClass="text-sm border-yellow-500 text-yellow-600 hover:bg-yellow-50"
+        variant="outlined"
+      >
+        Update
+      </p-button>
+      <p-button
+        styleClass="text-sm border-gray-500 text-gray-600 hover:bg-gray-50"
+        variant="outlined"
+      >
+        Cancel
+      </p-button>
+    </div> -->
+  </section>
 </shared-panel-container>

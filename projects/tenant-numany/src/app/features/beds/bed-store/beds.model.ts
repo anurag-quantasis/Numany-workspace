@@ -1,6 +1,6 @@
 export interface Bed {
   id: string;
-  bed_Seq?: number;
+  bed_Seq: number;
   id_Bed: string;
   id_Area: string;
   ip_Sec: number;

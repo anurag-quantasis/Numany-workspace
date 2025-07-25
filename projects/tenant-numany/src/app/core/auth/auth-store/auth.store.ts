@@ -38,6 +38,7 @@ export const AuthStore = signalStore(
     isAuthenticated: computed(() => !!token()),
     currentUser: computed(() => user()),
     userEmail: computed(() => user()?.email ?? null),
+    userRoles: computed(() => user()?.roles ?? []),
   })),
 
   // --- METHODS (Actions and Effects) ---
@@ -75,6 +76,7 @@ export const AuthStore = signalStore(
                       summary: 'Login Error',
                       detail: 'Received an invalid token from the server.',
                     });
+                    localStorage.removeItem('authToken');
                     return; // Stop processing
                   }
 
@@ -132,6 +134,7 @@ export const AuthStore = signalStore(
         patchState(store, initialState); // Reset to the very beginning
         localStorage.removeItem('authToken');
         messageService.add({
+          key: 'custom-toast',
           severity: 'info',
           summary: 'Logged Out',
           detail: 'You have been successfully logged out.',
@@ -153,6 +156,16 @@ export const AuthStore = signalStore(
             console.warn('Removed an invalid token from storage during initialization.');
           }
         }
+      },
+
+      hasRole(requiredRole: string | string[]): boolean {
+        const rolesToCheck = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+        const userRoles = store.userRoles(); // Use our new computed signal
+        if (userRoles.length === 0) {
+          return false;
+        }
+        // Returns true if the user has at least one of the required roles
+        return rolesToCheck.some((role) => userRoles.includes(role));
       },
     }),
   ),

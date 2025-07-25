@@ -12,9 +12,18 @@ export interface PatientPayor {
   non_emar_pay: boolean;
 }
 
+export interface PatientPayorPayload {
+  payor: PatientPayor;
+}
+
 export interface PatientPayorResponse {
   data: PatientPayor[];
   paging: PagingInfo;
+}
+
+export interface AddPatientPayorResponse {
+  data: PatientPayor;
+  message: string;
 }
 
 export interface PagingInfo {

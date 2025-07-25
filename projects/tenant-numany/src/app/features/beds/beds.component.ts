@@ -51,15 +51,23 @@ export class BedsComponent {
   // @ViewChild('pTable') pTable!: Table;
   private keyNavSubscription = new Subscription();
   isAddDialogVisible = false;
+  isEditMode = false;
+  dialogHeader = '';
+  isSubmitted = false;
+  private bedBeingEdited: Bed | null = null;
 
   // Form for adding a new bed
   bedForm = this.fb.group({
     bedId: ['', Validators.required],
-    area: ['', Validators.required],
-    section: [null, [Validators.required, Validators.pattern('^[0-9]+$'), Validators.max(9998)]],
+    area: ['', [Validators.required, Validators.maxLength(8)]],
+    section: [
+      null as number | null,
+      [Validators.required, Validators.pattern('^[0-9]+$'), Validators.max(9998)],
+    ],
   });
 
   readonly columns: ColumnDef<Bed>[] = [
+    { field: 'bed_Seq', header: 'Order', filter: { type: 'text', placeholder: 'Search by name' } },
     { field: 'id_Bed', header: 'Bed Id', filter: { type: 'text', placeholder: 'Search by name' } },
     { field: 'id_Area', header: 'Area', filter: { type: 'text', placeholder: 'Search by name' } },
     { field: 'ip_Sec', header: 'Section', filter: { type: 'text', placeholder: 'Search by name' } },
@@ -96,6 +104,28 @@ export class BedsComponent {
 
   showAddDialog() {
     this.bedForm.reset();
+    this.isSubmitted = false;
+    this.isEditMode = false;
+    this.dialogHeader = 'Add a New Bed';
+    this.isAddDialogVisible = true;
+  }
+
+  showEditDialog() {
+    this.bedBeingEdited = this.store.selectedBed();
+    if (!this.bedBeingEdited) {
+      return; // Safety check
+    }
+    this.isSubmitted = false;
+    this.isEditMode = true;
+    this.dialogHeader = `Edit Bed: ${this.bedBeingEdited.id_Bed}`;
+
+    // Populate the form with the selected bed's data
+    this.bedForm.patchValue({
+      bedId: this.bedBeingEdited.id_Bed,
+      area: this.bedBeingEdited.id_Area,
+      section: this.bedBeingEdited.ip_Sec,
+    });
+
     this.isAddDialogVisible = true;
   }
 
@@ -106,23 +136,55 @@ export class BedsComponent {
 
   handleSelectionChange(bed: Bed | null): void {
     // The event now emits a single object, not an array.
+    console.log('BED', bed);
     this.store.setSelection(bed);
   }
 
-  saveNewBed() {
+  // saveNewBed() {
+  //   if (this.bedForm.invalid) {
+  //     return;
+  //   }
+  //   const formValue = this.bedForm.getRawValue();
+
+  //   const newBedPayload = {
+  //     name: formValue.bedId,
+  //     area: formValue.area,
+  //     // We are certain `section` is a number because the form is valid.
+  //     section: formValue.section!,
+  //   };
+  //   this.store.addBed(newBedPayload);
+  //   this.isAddDialogVisible = false;
+  // }
+
+  saveBed() {
+    this.isSubmitted = true;
     if (this.bedForm.invalid) {
       return;
     }
     const formValue = this.bedForm.getRawValue();
 
-    const newBedPayload = {
-      name: formValue.bedId,
-      area: formValue.area,
-      // We are certain `section` is a number because the form is valid.
-      section: formValue.section!,
-    };
-    this.store.addBed(newBedPayload);
-    this.isAddDialogVisible = false;
+    if (this.isEditMode) {
+      // --- UPDATE LOGIC ---
+      if (!this.bedBeingEdited) return; // Should not happen, but good practice
+
+      const updatedBed: Bed = {
+        ...this.bedBeingEdited, // Copy existing properties like id and patientName
+        id_Bed: formValue.bedId,
+        id_Area: formValue.area,
+        ip_Sec: formValue.section!, // We are certain section is a number because the form is valid
+      };
+      this.store.updateBed(updatedBed);
+    } else {
+      // --- ADD LOGIC ---
+      const newBedPayload = {
+        name: formValue.bedId,
+        area: formValue.area,
+        section: formValue.section!,
+      };
+      this.store.addBed(newBedPayload);
+    }
+
+    this.hideDialog(); // Close and reset the dialog on successful save
   }
 
   confirmDelete() {
@@ -145,12 +207,12 @@ export class BedsComponent {
       acceptButtonProps: {
         label: 'Save',
       },
-      message: `Are you sure you want to delete "${bedToDelete.id_Area}"?`,
+      message: `Are you sure you want to delete "${bedToDelete.id_Bed}"?`,
       header: 'Confirm Deletion',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         // If the user clicks "Yes", call the deleteBed method in the store.
-        this.store.deleteBed(bedToDelete.id);
+        this.store.deleteBed(bedToDelete.bed_Seq);
       },
     });
   }
@@ -177,5 +239,11 @@ export class BedsComponent {
   /** Navigates to the next or previous page in the paginator. */
   navigatePage(direction: 'next' | 'previous'): void {
     this.store.paginate(direction);
+  }
+
+  hideDialog() {
+    this.isSubmitted = false;
+    this.isAddDialogVisible = false;
+    this.bedBeingEdited = null;
   }
 }
