@@ -83,3 +83,7 @@
   --color-error-800: #912018;
   --color-error-900: #591000;
 }
+
+html, body {
+  overflow-y: scroll !important;
+}

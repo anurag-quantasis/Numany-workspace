@@ -57,10 +57,7 @@ export const routes: Routes = [
             (m) => m.ReportSelectionComponent,
           ),
       },
-      // {
-      //   path: 'expiration',
-      //   loadComponent: () => import('./features/drugs/expiration/expiration.component').then(m => m.ExpirationComponent)
-      // },
+
       {
         path: RoutePaths.ItemMaintenance,
         children: [
@@ -98,13 +95,6 @@ export const routes: Routes = [
           import('./features/site-parameters/site-parameters.component').then(
             (m) => m.SiteParametersComponent,
           ),
-      },
-      {
-        path: RoutePaths.PharmInterventionTypeMaintenance,
-        loadComponent: () =>
-          import(
-            './features/pharmcist-intervention-type/pharmcist-intervention-type.component'
-          ).then((m) => m.PharmcistInterventionTypeComponent),
       },
       {
         path: RoutePaths.PharmInterventionType,
