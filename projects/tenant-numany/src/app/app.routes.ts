@@ -97,13 +97,6 @@ export const routes: Routes = [
           ),
       },
       {
-        path: RoutePaths.PharmInterventionTypeMaintenance,
-        loadComponent: () =>
-          import(
-            './features/pharmcist-intervention-type/pharmcist-intervention-type.component'
-          ).then((m) => m.PharmcistInterventionTypeComponent),
-      },
-      {
         path: RoutePaths.PharmInterventionType,
         loadComponent: () =>
           import(
