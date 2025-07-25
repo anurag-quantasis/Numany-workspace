@@ -13,6 +13,7 @@ import { MenuItem } from 'primeng/api';
 import { UiDialogService } from '../../../core/services/ui-dialog.service';
 import { AdmitComponent } from './admit/admit.component';
 import { TransferComponent } from './transfer/transfer.component';
+import { DischargeComponent } from './discharge/discharge.component';
 
 @Component({
   selector: 'tenant-patients',
@@ -35,11 +36,8 @@ import { TransferComponent } from './transfer/transfer.component';
   ]
 })
 export class PatientsComponent implements OnInit {
-onMenuButtonClick($event: MouseEvent,_t77: Menu) {
-   
-}
   patientForm!: FormGroup;
-  
+
   private uiDialogService = inject(UiDialogService);
 
   adtFunctions = [
@@ -119,10 +117,12 @@ onMenuButtonClick($event: MouseEvent,_t77: Menu) {
       medRec: 'MR354',
       dob: '2002-07-25',
       ssn: '234-654-890',
-      admitted: '2025-07-22',
-      discharged: ''
+      admitted: '2015-07-22',
+      discharged: '2025-07-22'
     }
   ];
+
+  selectedPatientActions: MenuItem[] = [];
 
   constructor(private fb: FormBuilder, private router: Router) {}
 
@@ -150,7 +150,8 @@ onMenuButtonClick($event: MouseEvent,_t77: Menu) {
       },
       {
         label: 'Transfer',
-          command: () => {
+        command: () => {
+          console.log('Transfer clicked for', patient);
           this.uiDialogService.open(
             TransferComponent,
             'Transfer To Bed',
@@ -159,13 +160,24 @@ onMenuButtonClick($event: MouseEvent,_t77: Menu) {
       },
       {
         label: 'Discharge',
-        command: () => console.log('Discharge clicked for', patient)
+        command: () => 
+        {
+          console.log('Discharge clicked for', patient);
+        this.uiDialogService.open(
+          DischargeComponent,
+          'Discharge Patient',
+        )
+      }
       },
       {
         label: 'Print ADT Labelx  ',
         command: () => console.log('Print ADT Label clicked for', patient)
       }
     ];
+  }
+
+  setPatientActions(patient: any) {
+    this.selectedPatientActions = this.getActions(patient);
   }
 
   onAdtFunctionChange(value: string) {

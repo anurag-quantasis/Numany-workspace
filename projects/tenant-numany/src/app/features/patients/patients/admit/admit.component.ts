@@ -17,9 +17,9 @@ export class AdmitComponent {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       admit: this.fb.array([
-        this.fb.group({ bedId: 'B001', name: 'Tenant A' }),
-        this.fb.group({ bedId: 'B002', name: 'Tenant B' }),
-        this.fb.group({ bedId: 'B003', name: 'Tenant C' }),
+        this.fb.group({ bedId: 'B001', name: 'Patient A' }),
+        this.fb.group({ bedId: 'B002', name: 'Patient B' }),
+        this.fb.group({ bedId: 'B003', name: 'Patient C' }),
       ])
     });
   }

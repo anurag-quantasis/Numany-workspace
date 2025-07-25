@@ -43,34 +43,34 @@
     <p-table [value]="patients" class="min-w-full text-sm text-left text-gray-700 divide-y divide-gray-200 table-auto">
       <ng-template pTemplate="header">
         <tr>
-          <th class="px-4 py-2 whitespace-nowrap">Bed ID</th>
-          <th class="px-4 py-2 whitespace-nowrap">Name</th>
-          <th class="px-4 py-2 whitespace-nowrap">Patient ID</th>
-          <th class="px-4 py-2 whitespace-nowrap">Med Rec No</th>
-          <th class="px-4 py-2 whitespace-nowrap">DOB</th>
-          <th class="px-4 py-2 whitespace-nowrap">SS#</th>
-          <th class="px-4 py-2 whitespace-nowrap">Admitted</th>
-          <th class="px-4 py-2 whitespace-nowrap">Discharged</th>
-          <th class="px-4 py-2 whitespace-nowrap">Actions</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">Bed ID</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">Name</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">Patient ID</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">Med Rec No</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">DOB</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">SS#</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">Admitted</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">Discharged</th>
+          <th class="px-4 py-2 whitespace-nowrap font-bold">Actions</th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-patient>
-        <tr>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.bedId }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.name }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.patientId }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.medRec }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.dob | date: 'MM/dd/yyyy' }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.ssn }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.admitted }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">{{ patient.discharged }}</td>
-          <td class="px-4 py-2 whitespace-nowrap">
-            <p-menu #menu [model]="getActions(patient)" [appendTo]="'body'" [popup]="true"></p-menu>
-            <p-button variant="outlined" icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"></p-button> 
-          </td>
-        </tr>
-      </ng-template>
+<ng-template pTemplate="body" let-patient>
+  <tr>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.bedId }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.name }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.patientId }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.medRec }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.dob | date: 'MM/dd/yyyy' }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.ssn }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.admitted }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">{{ patient.discharged }}</td>
+    <td class="px-4 py-2 whitespace-nowrap">
+      <p-menu #menu [model]="selectedPatientActions" [appendTo]="'body'" [popup]="true"></p-menu>
+      <p-button variant="outlined" icon="pi pi-ellipsis-v" (click)="setPatientActions(patient); menu.toggle($event)"></p-button>
+    </td>
+  </tr>
+</ng-template>
     </p-table>
   </div>
 </shared-panel-container>
