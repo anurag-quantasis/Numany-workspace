@@ -57,10 +57,7 @@ export const routes: Routes = [
             (m) => m.ReportSelectionComponent,
           ),
       },
-      // {
-      //   path: 'expiration',
-      //   loadComponent: () => import('./features/drugs/expiration/expiration.component').then(m => m.ExpirationComponent)
-      // },
+
       {
         path: RoutePaths.ItemMaintenance,
         children: [
