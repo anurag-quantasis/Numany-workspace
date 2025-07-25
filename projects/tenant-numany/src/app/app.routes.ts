@@ -13,11 +13,11 @@ export const routes: Routes = [
       import('./features/tenant-login/tenant-login.component').then((m) => m.TenantLoginComponent),
   },
 
-  {
-    path: RoutePaths.Patients,
-    loadComponent: () =>
-      import('./features/patients/patients/patients.component').then((m) => m.PatientsComponent),
-  },
+  // {
+  //   path: RoutePaths.Patients,
+  //   loadComponent: () =>
+  //     import('./features/patients/patients/patients.component').then((m) => m.PatientsComponent),
+  // },
 
   {
     path: RoutePaths.Layout,
@@ -57,10 +57,7 @@ export const routes: Routes = [
             (m) => m.ReportSelectionComponent,
           ),
       },
-      // {
-      //   path: 'expiration',
-      //   loadComponent: () => import('./features/drugs/expiration/expiration.component').then(m => m.ExpirationComponent)
-      // },
+
       {
         path: RoutePaths.ItemMaintenance,
         children: [
@@ -165,6 +162,11 @@ export const routes: Routes = [
             (m) => m.DatabaseUsersComponent,
           ),
       },
+      {
+        path: RoutePaths.Patients,
+        loadComponent: () =>
+        import('./features/patients/patients/patients.component').then((m) => m.PatientsComponent),
+    },
     ],
   },
 ];
