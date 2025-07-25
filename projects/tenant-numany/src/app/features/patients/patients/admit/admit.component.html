@@ -1,0 +1,23 @@
+<p-table [value]="admit" class="w-full max-w-screen-lg text-sm text-left text-gray-700 table-auto border-slate-800 bg-slate-300 gap-5">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="px-4 py-2 whitespace-nowrap">
+            Bed ID
+        </th>
+        <th class="px-4 py-2 whitespace-nowrap">
+            Name
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-a>
+      <tr>
+        <td class="px-4 py-2 whitespace-nowrap">
+            {{ a.bedId }}
+        </td>
+        <td class="px-4 py-2 whitespace-nowrap">
+            {{ a.name }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+ 

@@ -42,6 +42,9 @@
         formControlName="ipycb"
         label="Charge Cost Basis"
         placeholder="AV, AW, CC or PC"
+        [errorMessages]="{
+          pattern: 'Must be AV, AW, CC or PC'
+        }"
       />
       <app-custom-input
         formControlName="iccpy"

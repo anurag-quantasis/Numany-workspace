@@ -9,12 +9,6 @@ export const routes: Routes = [
   },
 
   {
-    path: 'patients',
-    loadComponent: () =>
-      import('./features/patients/patients/patients.component').then((m) => m.PatientsComponent),
-  },
-
-  {
     path: '',
     component: LayoutComponent,
     children: [
@@ -50,10 +44,7 @@ export const routes: Routes = [
             (m) => m.ReportSelectionComponent,
           ),
       },
-      // {
-      //   path: 'expiration',
-      //   loadComponent: () => import('./features/drugs/expiration/expiration.component').then(m => m.ExpirationComponent)
-      // },
+
       {
         path: 'item-maintenance',
         children: [
@@ -158,6 +149,19 @@ export const routes: Routes = [
             (m) => m.WardBedAreaMaintenanceComponent,
           ),
       },
+
+        {
+    path: 'patients',
+    loadComponent: () =>
+      import('./features/patients/patients/patients.component').then((m) => m.PatientsComponent),
+  },
+  {
+    path: 'transfer',
+    loadComponent: () =>
+      import('./features/patients/patients/transfer/transfer.component').then(
+        (m) => m.TransferComponent,
+      ),
+  }
     ],
   },
 ];
