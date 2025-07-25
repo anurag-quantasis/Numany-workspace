@@ -1,89 +1,149 @@
-<shared-panel-container [title]="'Patient/Payor Type Maintenance'">
+<!-- src/app/features/patient-payor-type/patient-payor-type-maintenance/patient-payor-type-maintenance.component.html -->
+
+<shared-panel-container titleLabel="Patient/Payor Type Maintenance">
   <p-button
     label="Print All Records"
     icon="pi pi-print"
     variant="outlined"
     styleClass="my-2"
+    [disabled]="store.isLoading()"
   ></p-button>
 
   <form [formGroup]="form" class="flex flex-col">
     <!-- Filter Dropdown -->
     <div class="w-[50%] pr-2 py-2">
       <p-select
-        formControlName="selectedOption"
-        [options]="dropdownOptions"
-        optionLabel="name"
-        placeholder="Choose an option"
+        formControlName="selectedPayor"
+        [options]="store.patients()"
+        optionLabel="nam_pay"
+        placeholder="Choose a Patient/Payor to edit"
         class="w-full"
+        [showClear]="true"
+        [disabled]="isAddMode() || store.isLoading()"
       ></p-select>
     </div>
 
-    <!-- Type, Name, Address, City -->
+    <!-- Form Fields -->
     <div class="grid grid-cols-4 gap-4 mt-4">
       <app-custom-input
-        formControlName="idpay"
+        formControlName="id_pay"
         label="Patient/Payor Type"
         placeholder="Enter Patient/Payor Type"
         pTooltip="Unique 4-digit ID for Payor"
       />
       <app-custom-input
-        formControlName="nampay"
+        formControlName="nam_pay"
         label="Name"
         placeholder="Enter name"
         pTooltip="Payor full name"
       />
-      <app-custom-input formControlName="iadpy" label="Address" placeholder="Enter address" />
-      <app-custom-input formControlName="ictpy" label="City" placeholder="Enter city" />
-      <app-custom-input formControlName="istpy" label="State" placeholder="Enter state" />
-      <app-custom-input formControlName="izppy" label="Postal/ZIP Code" placeholder="Enter ZIP" />
-      <app-custom-input formControlName="iphpy" label="Phone" placeholder="Enter phone number" />
-      <app-custom-input formControlName="imspy" label="Note" placeholder="Enter a note" />
+      <app-custom-input formControlName="iad_py" label="Address" placeholder="Enter address" />
+      <app-custom-input formControlName="ict_py" label="City" placeholder="Enter city" />
+      <app-custom-input formControlName="ist_py" label="State" placeholder="Enter state" />
+      <app-custom-input formControlName="izp_py" label="Postal/ZIP Code" placeholder="Enter ZIP" />
+      <app-custom-input formControlName="iph_py" label="Phone" placeholder="Enter phone number" />
+      <app-custom-input formControlName="imsp_py" label="Note" placeholder="Enter a note" />
       <app-custom-input
-        formControlName="ipycb"
+        formControlName="ipy_cb"
         label="Charge Cost Basis"
         placeholder="AV, AW, CC or PC"
       />
+
       <app-custom-input
-        formControlName="iccpy"
+        formControlName="icc_py"
         label="Charge Class"
-        placeholder="Enter charge class"
-        pTooltip="Must match predefined class"
+        class="flex-grow"
+        [readonly]="true"
       />
-      <div class="mt-8">
+      <div class="flex justify-center items-center">
         <p-select
-          formControlName="selectedOption"
-          [options]="dropdownOptions"
-          optionLabel="name"
-          placeholder="Choose an option"
-          class="w-full"
+          formControlName="chargeClassSelector"
+          [options]="chargeStore.records()"
+          optionLabel="namcls"
+          placeholder="Select Class"
+          [showClear]="true"
+          class="w-full h-10 mt-8"
         >
         </p-select>
+      </div>
+
+      <!-- non_emar_pay is a boolean -->
+      <div class="flex items-center mt-8">
+        <p-checkbox formControlName="non_emar_pay" [binary]="true" inputId="non_emar_pay_check" />
+        <label for="non_emar_pay_check" class="ml-2"> Non-eMAR Payor </label>
       </div>
     </div>
 
     <!-- Buttons -->
-    <div class="flex justify-end gap-4 mb-1">
-      <p-button
-        label="Add"
-        (onClick)="onAdd()"
-        variant="outlined"
-        severity="success"
-        icon="pi pi-plus"
-      ></p-button>
-      <p-button
-        label="Delete"
-        (onClick)="onDelete()"
-        variant="outlined"
-        severity="danger"
-        icon="pi pi-trash"
-      ></p-button>
-      <p-button
-        label="Update"
-        (onClick)="onUpdate()"
-        variant="outlined"
-        severity="info"
-        icon="pi pi-check"
-      ></p-button>
+    <div class="flex justify-end gap-4 mb-1 mt-4">
+      <!-- Standard Mode Buttons -->
+      @if (!isAddMode()) {
+        <p-button
+          label="Add"
+          (onClick)="onAddNew()"
+          icon="pi pi-plus"
+          [disabled]="store.isLoading()"
+        ></p-button>
+        <p-button
+          label="Delete"
+          (onClick)="onDelete()"
+          variant="outlined"
+          severity="danger"
+          icon="pi pi-trash"
+          [disabled]="!store.selectedPatient() || store.isLoading()"
+        ></p-button>
+        <p-button
+          label="Update"
+          (onClick)="onUpdate()"
+          variant="outlined"
+          severity="info"
+          icon="pi pi-check"
+          [disabled]="!store.selectedPatient() || store.isLoading()"
+        ></p-button>
+      }
+
+      <!-- Add Mode Buttons -->
+      @if (isAddMode()) {
+        <p-button
+          label="Save"
+          (onClick)="onSave()"
+          icon="pi pi-save"
+          [disabled]="form.invalid || store.isLoading()"
+        ></p-button>
+        <p-button
+          label="Cancel"
+          (onClick)="onCancel()"
+          variant="outlined"
+          severity="secondary"
+          icon="pi pi-times"
+          [disabled]="store.isLoading()"
+        ></p-button>
+      }
     </div>
   </form>
+  <div>
+    <p-confirmDialog #cd key="delete-payor-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
 </shared-panel-container>

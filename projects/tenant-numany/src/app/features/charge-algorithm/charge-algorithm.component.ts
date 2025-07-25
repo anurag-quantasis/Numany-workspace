@@ -25,7 +25,7 @@ export class ChargeAlgorithmComponent implements OnInit {
   form!: FormGroup;
   store = inject(ChargeMaintenanceStore);
   isEdit = false;
-  isAddMode = false; // New state to track if we are in add mode
+  isAddMode = false;
   fb: NonNullableFormBuilder;
   initialIndex = 0;
 

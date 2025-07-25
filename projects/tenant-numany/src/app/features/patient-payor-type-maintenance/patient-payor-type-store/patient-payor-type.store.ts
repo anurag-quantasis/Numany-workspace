@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { PatientPayorTypeService } from '../services/patient-payor-type.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-import { PatientPayor } from './patient-payor-type.model';
+import { PatientPayor, PatientPayorResponse } from './patient-payor-type.model';
 
 export const PatientPayorStore = signalStore(
   withState(initialState),
@@ -16,9 +16,10 @@ export const PatientPayorStore = signalStore(
         switchMap(() =>
           patienPayorService.getPatient().pipe(
             tap({
-              next: (patient) => {
-                const safePatient = Array.isArray(patient) ? patient : [];
-                patchState(store, { patients: safePatient, isLoading: false });
+              next: (response: PatientPayorResponse) => {
+                const patientArray =
+                  response.data && Array.isArray(response.data) ? response.data : [];
+                patchState(store, { patients: patientArray, isLoading: false });
               },
               error: (e) => patchState(store, { error: e.message, isLoading: false }),
             }),
@@ -29,33 +30,38 @@ export const PatientPayorStore = signalStore(
     addNewPatient: rxMethod<PatientPayor>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        switchMap((payload) =>
-          patienPayorService.addPatient(payload).pipe(
+        switchMap((patient) => {
+          const apiPayload = { payor: patient };
+          return patienPayorService.addPatient(apiPayload).pipe(
             tap({
               next: (response) => {
                 patchState(store, {
-                  patients: [...store.patients(), ...response.data],
+                  patients: [...store.patients(), response.data],
                   isLoading: false,
                 });
               },
               error: (e) => patchState(store, { error: e.message, isLoading: false }),
             }),
-          ),
-        ),
+          );
+        }),
       ),
     ),
     updatePatient: rxMethod<PatientPayor>(
       pipe(
         tap(() => patchState(store, { isLoading: false })),
-        switchMap((payload) => patienPayorService.updatePatient(payload.id_pay, payload)),
-        tap({
-          next: (updated) => {
-            const allPatient = store
-              .patients()
-              .map((p) => (p.id_pay === updated.id_pay ? updated : p));
-            patchState(store, { patients: allPatient, isLoading: false });
-          },
-          error: (e) => patchState(store, { error: e.message, isLoading: false }),
+        switchMap((patient) => {
+          const apiPayload = { payor: patient };
+          return patienPayorService.updatePatient(patient.id_pay, apiPayload).pipe(
+            tap({
+              next: (updated) => {
+                const allPatients = store
+                  .patients()
+                  .map((p) => (p.id_pay === updated.id_pay ? updated : p));
+                patchState(store, { patients: allPatients, isLoading: false });
+              },
+              error: (e) => patchState(store, { error: e.message, isLoading: false }),
+            }),
+          );
         }),
       ),
     ),
@@ -97,5 +103,8 @@ export const PatientPayorStore = signalStore(
         ),
       ),
     ),
+    selectPatient(patient: PatientPayor | null) {
+      patchState(store, { selectedPatient: patient });
+    },
   })),
 );

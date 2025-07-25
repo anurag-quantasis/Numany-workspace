@@ -16,7 +16,7 @@ import { CustomInputComponent } from 'shared-ui';
 import { toValue } from '@primeng/themes';
 
 @Component({
-  selector: 'tenant-pharmacist-intervention-type-maintenance',
+  selector: 'tenant-intervention-data-classes',
   standalone: true,
   imports: [
     FormsModule,
@@ -28,10 +28,10 @@ import { toValue } from '@primeng/themes';
     CommonModule,
     CustomInputComponent,
   ],
-  templateUrl: './pharmacist-intervention-type-maintenance.component.html',
-  styleUrl: './pharmacist-intervention-type-maintenance.component.css',
+  templateUrl: './intervention-data-classes.component.html',
+  styleUrl: './intervention-data-classes.component.css',
 })
-export class PharmacistInterventionTypeMaintenanceComponent {
+export class InterventionDataClassesComponent {
   interventionForm: FormGroup;
 
   interventionOptions = [

@@ -37,7 +37,6 @@ let nextId = 0;
     ValidationPipe,
     InputTextModule,
     InputNumberModule,
-    Fluid,
     CheckboxModule,
   ],
   providers: [ValidationPipe], // Provide pipe to be injectable in the class

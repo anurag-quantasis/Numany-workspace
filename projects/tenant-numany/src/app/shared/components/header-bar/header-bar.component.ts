@@ -11,10 +11,8 @@ import { DynamicDialogModule, DialogService, DynamicDialogRef } from 'primeng/dy
 import { ExpiredMedReportComponent } from 'projects/tenant-numany/src/app/features/drugs/expiration/expired-med-report/expired-med-report.component';
 import { ModifyDateComponent } from '../../../features/drugs/expiration/modify-date/modify-date.component';
 import { RouteOfAdministrationComponent } from '../../../features/route-of-administration/route-of-administration.component';
-import { PharmcistInterventionTypeComponent } from '../../../features/pharmcist-intervention-type/pharmcist-intervention-type.component';
-import { PharmcistInterventionTypeMaintainanceComponent } from '../../../features/pharmcist-intervention-type-maintainance/pharmacist-intervention-type-maintenance';
-import { PharmacistInterventionTypeMaintenanceComponent } from '../../../features/pharmacist-intervention-type-maintenance/pharmacist-intervention-type-maintenance.component';
 import { UiDialogService } from '../../../core/services/ui-dialog.service';
+import { InterventionDataClassesComponent } from '../../../features/pharmacist-intervention-setup/intervention-data-classes/intervention-data-classes.component';
 
 interface CustomMenuItem extends MenuItem {
   shortcut?: string; // e.g., 'Ctrl+S'
@@ -431,7 +429,7 @@ export class HeaderBarComponent implements OnInit {
                 command: () => {
                   console.log('pharmacist-intervention-type-maintenance');
                   this.uiDialogService.open(
-                    PharmacistInterventionTypeMaintenanceComponent,
+                    InterventionDataClassesComponent,
                     'Pharmacist Intervention Table',
                   );
                 },

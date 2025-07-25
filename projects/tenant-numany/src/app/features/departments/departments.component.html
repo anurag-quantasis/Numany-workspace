@@ -1,4 +1,4 @@
-<shared-panel-container [title]="'Department File Maintenance'">
+<shared-panel-container titleLabel="Department File Maintenance">
   <main class="flex flex-col w-full gap-y-2">
     <!-- Display loading indicator from the store -->
     <!-- @if (store.isLoading()) {
@@ -21,7 +21,7 @@
         optionValue="id"
         [loading]="store.isLoading()"
         placeholder="Select a Department to Edit"
-        class="w-full md:w-56 h-8 my-4 flex justify-center items-center"
+        class="w-full md:w-[50%] my-4 flex justify-center items-center"
       />
       <section>
         <div>
@@ -93,7 +93,6 @@
           [disabled]="departmentForm.invalid"
           icon="pi pi-save"
           label="Save"
-          severity="success"
         ></p-button>
         <p-button
           (click)="cancelAddMode()"

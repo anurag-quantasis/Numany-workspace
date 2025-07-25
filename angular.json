@@ -20,9 +20,7 @@
             "outputPath": "dist/main-numany",
             "index": "projects/main-numany/src/index.html",
             "browser": "projects/main-numany/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/main-numany/tsconfig.app.json",
             "inlineStyleLanguage": "css",
             "assets": [
@@ -31,9 +29,7 @@
                 "input": "projects/main-numany/public"
               }
             ],
-            "styles": [
-              "projects/main-numany/src/styles.css"
-            ],
+            "styles": ["projects/main-numany/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -79,10 +75,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/main-numany/tsconfig.spec.json",
             "inlineStyleLanguage": "css",
             "assets": [
@@ -91,9 +84,7 @@
                 "input": "projects/main-numany/public"
               }
             ],
-            "styles": [
-              "projects/main-numany/src/styles.css"
-            ],
+            "styles": ["projects/main-numany/src/styles.css"],
             "scripts": []
           }
         }
@@ -116,9 +107,7 @@
             "outputPath": "dist/tenant-numany",
             "index": "projects/tenant-numany/src/index.html",
             "browser": "projects/tenant-numany/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/tenant-numany/tsconfig.app.json",
             "inlineStyleLanguage": "css",
             "assets": [
@@ -127,9 +116,7 @@
                 "input": "projects/tenant-numany/public"
               }
             ],
-            "styles": [
-              "projects/tenant-numany/src/styles.css"
-            ],
+            "styles": ["projects/tenant-numany/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -138,7 +125,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -174,10 +161,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/tenant-numany/tsconfig.spec.json",
             "inlineStyleLanguage": "css",
             "assets": [
@@ -186,9 +170,7 @@
                 "input": "projects/tenant-numany/public"
               }
             ],
-            "styles": [
-              "projects/tenant-numany/src/styles.css"
-            ],
+            "styles": ["projects/tenant-numany/src/styles.css"],
             "scripts": []
           }
         }
@@ -219,10 +201,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/shared-ui/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "polyfills": ["zone.js", "zone.js/testing"]
           }
         }
       }

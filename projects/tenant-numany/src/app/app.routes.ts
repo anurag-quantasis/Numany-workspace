@@ -110,8 +110,8 @@ export const routes: Routes = [
         path: RoutePaths.PharmInterventionType,
         loadComponent: () =>
           import(
-            './features/pharmcist-intervention-type/pharmcist-intervention-type.component'
-          ).then((m) => m.PharmcistInterventionTypeComponent),
+            './features/pharmacist-intervention-setup/intervention-types/intervention-types.component'
+          ).then((m) => m.InterventionTypesComponent),
       },
       {
         path: RoutePaths.VendorSupplier,
