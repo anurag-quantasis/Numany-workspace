@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { AuthTokenResponse, LoginRequest, User } from './auth.model';
 import { AuthService } from '../auth-service/auth.service';
+import { tenantHandleHttpError } from '../../../shared/utils/tenant-api-error-handler.utils';
 
 // 1. DEFINE STATE SHAPE AND INITIAL STATE
 // It's a best practice to define interfaces for your state.
@@ -110,19 +111,15 @@ export const AuthStore = signalStore(
               }),
               // Step 4 (Failure Path): Catch any HTTP errors.
               catchError((err) => {
-                const errorMessage = err?.error?.message || 'Invalid credentials or server error.';
+                // const errorMessage = err?.error?.message[0] || 'Invalid credentials or server error.';
                 patchState(store, {
                   isLoading: false,
-                  error: errorMessage,
-                  user: null, // Ensure user/token are cleared on failure
+                  error: "Something went wrong",
+                  user: null,
                   token: null,
                 });
-                messageService.add({
-                  severity: 'error',
-                  summary: 'Login Error',
-                  detail: errorMessage,
-                });
-                return EMPTY; // Gracefully end the stream for this attempt.
+                tenantHandleHttpError(err, messageService, 'Login Failed');
+                return EMPTY;
               }),
             ),
           ),

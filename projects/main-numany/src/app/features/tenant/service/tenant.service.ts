@@ -14,7 +14,7 @@ interface ApiMutationResponse {
 @Injectable({ providedIn: 'root' })
 export class TenantPageService {
   private apiService = inject(MainApiService);
-  private readonly tenantsEndpoint = 'https://localhost:8001/api/Tenants';
+  private readonly tenantsEndpoint = '/Tenants';
 
   getTenants(event: TableLazyLoadEvent) {
     const params = createHttpParams(event);

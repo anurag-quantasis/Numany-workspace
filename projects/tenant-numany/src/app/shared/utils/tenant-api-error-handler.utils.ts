@@ -1,5 +1,3 @@
-// utils/error-handler.util.ts
-
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 
@@ -11,6 +9,7 @@ export function tenantHandleHttpError(
 ): void {
   let errorMessages: string[] = [];
 
+  // 400 Validation errors
   if (err.status === 400 && err.error?.errors) {
     const validationErrors = err.error.errors;
     for (const field in validationErrors) {
@@ -18,23 +17,39 @@ export function tenantHandleHttpError(
         errorMessages.push(...validationErrors[field]);
       }
     }
-  } else if (err.error?.message) {
+  }
+  // 401 with message as array: ["user not found"]
+  else if (err.status === 401 && Array.isArray(err.error)) {
+    errorMessages.push(...err.error);
+  }
+  // message is an array (e.g., { message: ["some message"] })
+  else if (Array.isArray(err.error?.message)) {
+    errorMessages.push(...err.error.message);
+  }
+  // message is a string
+  else if (typeof err.error?.message === 'string') {
     errorMessages.push(err.error.message);
-  } else if (err.message) {
+  }
+  // fallback to top-level err.message
+  else if (err.message) {
     errorMessages.push(err.message);
-  } else {
+  }
+  // final fallback
+  else {
     errorMessages.push(defaultMessage);
   }
 
-  // Show one toast per message (you can change this to show a single toast if you prefer)
-  errorMessages.forEach((msg) => {
-    messageService.add({
-      key: 'custom-toast',
-      severity: 'error',
-      summary,
-      detail: msg,
-      styleClass: 'bg-white border-none',
-      life: 8000,
+  // Ensure everything is a string before showing toast
+  errorMessages
+    .filter((msg): msg is string => typeof msg === 'string')
+    .forEach((msg) => {
+      messageService.add({
+        key: 'custom-toast',
+        severity: 'error',
+        summary,
+        detail: msg,
+        styleClass: 'bg-white border-none',
+        life: 8000,
+      });
     });
-  });
 }

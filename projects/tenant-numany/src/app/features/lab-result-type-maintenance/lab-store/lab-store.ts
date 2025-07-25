@@ -30,9 +30,7 @@ export const TenantLabStore = signalStore(
           switchMap(() =>
             tenantLabResultService.getTenantLabResults().pipe(
               tap((response: TenantLabResultResponse) => {
-                // Using the same response handling logic as BedStore
                 if (response && response.data) {
-                  // Assuming a simple success check if `status` isn't present
                   const tenantLabResultsArray = Array.isArray(response.data) ? response.data : [];
                   patchState(store, {
                     tenantLabResult: tenantLabResultsArray,
@@ -138,18 +136,14 @@ export const TenantLabStore = signalStore(
           tap(() => patchState(store, { isLoading: true, error: null })),
           switchMap((payload) =>
             tenantLabResultService.addTenantLabResult({ lab: payload }).pipe(
-              // Handle the successful API response with the CORRECT type
               tap((response: TenantLabAddResponse) => {
-                // The success condition is still valid: we check for the presence of the response and data
                 if (response && response.data) {
                   messageService.add({
                     key: 'custom-toast',
                     severity: 'success',
                     summary: 'Success',
-                    // Use the dynamic message from the API!
                     detail: response.message,
                   });
-                  // Reload the data to show the new item
                   loadTenantLabResults();
                 } else {
                   const errorMessage = 'Creation failed.';
@@ -162,7 +156,6 @@ export const TenantLabStore = signalStore(
                   });
                 }
               }),
-              // Catch HTTP errors (e.g., 400 Bad Request, 500 Server Error)
               catchError((err: HttpErrorResponse) => {
                 const errorMessage = err.error?.message || err.message || 'Something went Wrong';
                 patchState(store, { error: errorMessage, isLoading: false });
@@ -176,12 +169,10 @@ export const TenantLabStore = signalStore(
         ),
       );
 
-      // --- Synchronous method to set the selected item ---
       const setSelection = (labResult: TenantLabResult | null) => {
         patchState(store, { selectedTenantLabResult: labResult });
       };
 
-      // Return the methods so they are part of the store's public API
       return {
         loadTenantLabResults,
         addTenantLabResult,
