@@ -33,7 +33,7 @@ import { DischargeComponent } from './discharge/discharge.component';
     PaginatorModule,
     MenuModule,
     RouterModule,
-  ]
+  ],
 })
 export class PatientsComponent implements OnInit {
   patientForm!: FormGroup;
@@ -45,7 +45,7 @@ export class PatientsComponent implements OnInit {
     'Admit Ctrl+A',
     'Transfer Ctrl+T',
     'Discharge Ctrl+D',
-    'Print ADT Label Ctrl+L'
+    'Print ADT Label Ctrl+L',
   ];
   selectedAdtFunction: string | null = null;
 
@@ -58,7 +58,7 @@ export class PatientsComponent implements OnInit {
       dob: '1990-01-01',
       ssn: '123-45-6789',
       admitted: '2025-07-20',
-      discharged: ''
+      discharged: '',
     },
     {
       bedId: 'CMK02',
@@ -68,7 +68,7 @@ export class PatientsComponent implements OnInit {
       dob: '1985-04-15',
       ssn: '987-65-4321',
       admitted: '2025-07-21',
-      discharged: '8/18/2025 18:00'
+      discharged: '8/18/2025 18:00',
     },
     {
       bedId: 'CMK03',
@@ -78,7 +78,7 @@ export class PatientsComponent implements OnInit {
       dob: '1985-04-15',
       ssn: '987-65-4321',
       admitted: '2025-07-21',
-      discharged: '24/1/2023 13:00'
+      discharged: '24/1/2023 13:00',
     },
     {
       bedId: '100-A',
@@ -88,7 +88,7 @@ export class PatientsComponent implements OnInit {
       dob: '1985-04-15',
       ssn: '987-65-4321',
       admitted: '2025-07-21',
-      discharged: ''
+      discharged: '',
     },
     {
       bedId: '100-B',
@@ -98,8 +98,8 @@ export class PatientsComponent implements OnInit {
       dob: '1985-04-15',
       ssn: '987-65-4321',
       admitted: '2025-07-21',
-      discharged: '31/8/2024 12:00'
-    }, 
+      discharged: '31/8/2024 12:00',
+    },
     {
       bedId: '213-A',
       name: 'TOM Dsouza',
@@ -108,7 +108,7 @@ export class PatientsComponent implements OnInit {
       dob: '2002-07-25',
       ssn: '234-654-890',
       admitted: '2025-07-22',
-      discharged: ''
+      discharged: '',
     },
     {
       bedId: '213-B',
@@ -118,18 +118,21 @@ export class PatientsComponent implements OnInit {
       dob: '2002-07-25',
       ssn: '234-654-890',
       admitted: '2015-07-22',
-      discharged: '2025-07-22'
-    }
+      discharged: '2025-07-22',
+    },
   ];
 
   selectedPatientActions: MenuItem[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.patientForm = this.fb.group({
       discharged: [false],
-      patientsArchived: [false]
+      patientsArchived: [false],
     });
   }
 
@@ -137,42 +140,32 @@ export class PatientsComponent implements OnInit {
     return [
       {
         label: 'OP Admit',
-        command: () => console.log('OP Admit clicked for', patient)
+        command: () => console.log('OP Admit clicked for', patient),
       },
       {
         label: 'Admit',
         command: () => {
-          this.uiDialogService.open(
-            AdmitComponent,
-            'Admit to Bed',
-          )
-        }
+          this.uiDialogService.open(AdmitComponent, 'Admit to Bed');
+        },
       },
       {
         label: 'Transfer',
         command: () => {
           console.log('Transfer clicked for', patient);
-          this.uiDialogService.open(
-            TransferComponent,
-            'Transfer To Bed',
-          );
-        }
+          this.uiDialogService.open(TransferComponent, 'Transfer To Bed');
+        },
       },
       {
         label: 'Discharge',
-        command: () => 
-        {
+        command: () => {
           console.log('Discharge clicked for', patient);
-        this.uiDialogService.open(
-          DischargeComponent,
-          'Discharge Patient',
-        )
-      }
+          this.uiDialogService.open(DischargeComponent, 'Discharge Patient');
+        },
       },
       {
         label: 'Print ADT Labelx  ',
-        command: () => console.log('Print ADT Label clicked for', patient)
-      }
+        command: () => console.log('Print ADT Label clicked for', patient),
+      },
     ];
   }
 

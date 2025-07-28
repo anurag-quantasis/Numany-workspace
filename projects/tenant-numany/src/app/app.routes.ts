@@ -165,8 +165,10 @@ export const routes: Routes = [
       {
         path: RoutePaths.Patients,
         loadComponent: () =>
-        import('./features/patients/patients/patients.component').then((m) => m.PatientsComponent),
-    },
+          import('./features/patients/patients/patients.component').then(
+            (m) => m.PatientsComponent,
+          ),
+      },
     ],
   },
 ];

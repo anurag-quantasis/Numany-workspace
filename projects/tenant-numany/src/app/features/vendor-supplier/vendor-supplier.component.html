@@ -107,4 +107,29 @@
       </ng-container>
     </div>
   </form>
+  <div>
+    <p-confirmDialog #cd key="delete-vendor-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
 </shared-panel-container>

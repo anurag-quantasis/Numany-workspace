@@ -5,6 +5,11 @@ export interface InterventionDataClasses {
   pi_hide: boolean;
 }
 
+export interface AddInterventionDataClassesResponse {
+  data: InterventionDataClasses;
+  message: string;
+}
+
 export interface InterventionDataClassesResponse {
   data: InterventionDataClasses[];
   paging: PagingInfo;

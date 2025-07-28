@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ApiService } from 'projects/tenant-numany/src/app/core/services/api.service';
 import { Observable } from 'rxjs';
 import {
+  AddInterventionDataClassesResponse,
   InterventionDataClasses,
   InterventionDataClassesPayload,
   InterventionDataClassesResponse,
@@ -12,14 +13,14 @@ export class InterventionDataClassesService {
   private apiService = inject(ApiService);
 
   getInterventionDataClasses(): Observable<InterventionDataClassesResponse> {
-    return this.apiService.get<InterventionDataClassesResponse>('/');
+    return this.apiService.get<InterventionDataClassesResponse>('/InterventionDataCls');
   }
 
   addInterventionDataClasses(
     interventionDataClassesPayload: InterventionDataClassesPayload,
-  ): Observable<InterventionDataClassesResponse> {
-    return this.apiService.post<InterventionDataClassesResponse>(
-      '/',
+  ): Observable<AddInterventionDataClassesResponse> {
+    return this.apiService.post<AddInterventionDataClassesResponse>(
+      '/InterventionDataCls',
       interventionDataClassesPayload,
     );
   }
@@ -27,12 +28,12 @@ export class InterventionDataClassesService {
     id: string,
     interventionDataClassesPayload: InterventionDataClassesPayload,
   ): Observable<InterventionDataClasses> {
-    return this.apiService.put(`/${id}`, interventionDataClassesPayload);
+    return this.apiService.put(`/InterventionDataCls/${id}`, interventionDataClassesPayload);
   }
   deleteInterventionDataClasses(id: string): Observable<void> {
-    return this.apiService.delete(`/${id}`);
+    return this.apiService.delete(`/InterventionDataCls/${id}`);
   }
   getInterventionDataClassesById(id: string): Observable<InterventionDataClasses[]> {
-    return this.apiService.get<InterventionDataClasses[]>(`/${id}`);
+    return this.apiService.get<InterventionDataClasses[]>(`/InterventionDataCls/${id}`);
   }
 }

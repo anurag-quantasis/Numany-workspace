@@ -1,5 +1,8 @@
 <form [formGroup]="form">
-  <p-table [value]="transfersArray.controls" class="w-full max-w-screen-lg text-sm text-left text-gray-700 table-auto border border-slate-800 bg-slate-300">
+  <p-table
+    [value]="transfersArray.controls"
+    class="w-full max-w-screen-lg text-sm text-left text-gray-700 table-auto border border-slate-800 bg-slate-300"
+  >
     <ng-template pTemplate="header">
       <tr>
         <th class="px-4 py-2 whitespace-nowrap">Bed ID</th>

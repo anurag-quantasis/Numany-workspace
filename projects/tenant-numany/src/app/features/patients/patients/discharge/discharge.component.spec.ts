@@ -8,9 +8,8 @@ describe('DischargeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DischargeComponent]
-    })
-    .compileComponents();
+      imports: [DischargeComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DischargeComponent);
     component = fixture.componentInstance;

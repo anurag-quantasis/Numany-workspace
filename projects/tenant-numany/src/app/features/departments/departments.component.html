@@ -5,12 +5,12 @@
       <p class="p-4 text-blue-600">Loading...</p>
     } -->
     <!-- Display error message from the store -->
-    @if (store.error(); as error) {
+    <!-- @if (store.error(); as error) {
       <div class="p-4 my-2 text-red-700 bg-red-100 border-l-4 border-red-500" role="alert">
         <p class="font-bold">Error</p>
         <p>{{ error }}</p>
       </div>
-    }
+    } -->
 
     <form [formGroup]="departmentForm">
       <!-- The dropdown is now populated from the store's department signal -->
@@ -104,4 +104,29 @@
       }
     </div>
   </main>
+  <div>
+    <p-confirmDialog #cd key="delete-physician-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
 </shared-panel-container>

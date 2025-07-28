@@ -10,6 +10,8 @@ import { SharedPanelContainerComponent } from 'shared-ui';
 import { CustomInputComponent } from 'shared-ui';
 import { VendorStore } from './vendor-supplier-store/vendor-supplier.store';
 import { Vendor } from './vendor-supplier-store/vendor-supplier.model';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'tenant-vendor-supplier',
@@ -24,14 +26,17 @@ import { Vendor } from './vendor-supplier-store/vendor-supplier.model';
     ButtonModule,
     SharedPanelContainerComponent,
     CustomInputComponent,
+    ConfirmDialog,
   ],
   templateUrl: './vendor-supplier.component.html',
   styleUrls: ['./vendor-supplier.component.css'],
-  providers: [VendorStore],
+  providers: [VendorStore, ConfirmationService],
 })
 export class VendorSupplierComponent implements OnInit {
   readonly store = inject(VendorStore);
   private readonly fb = inject(FormBuilder);
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   vendorForm!: FormGroup;
   isAdding = false;
@@ -88,31 +93,95 @@ export class VendorSupplierComponent implements OnInit {
       return;
     }
     const newVendor = this.vendorForm.value as Vendor;
-    this.store.addVendor(newVendor);
-    this.resetFormAndState();
+    const vendor = this.store.addVendor(newVendor);
+    if (vendor) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'New Vendor added successfully.',
+        styleClass: 'bg-white border-none',
+      });
+      this.resetFormAndState();
+    }
   }
 
   onUpdate(): void {
     if (!this.vendorForm.get('id_vend')?.value) {
-      console.warn('No vendor selected for update.');
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No vendor selected for update.',
+        styleClass: 'bg-white border-none',
+      });
       return;
     }
     if (this.vendorForm.invalid) {
       this.vendorForm.markAllAsTouched();
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Fill all the required details.',
+        styleClass: 'bg-white border-none',
+      });
       return;
     }
     const updatedVendor = this.vendorForm.getRawValue() as Vendor;
-    this.store.updateVendor(updatedVendor);
+    const updateVendor = this.store.updateVendor(updatedVendor);
+    if (updateVendor) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Updated successfully',
+        styleClass: 'bg-white border-none',
+      });
+    }
   }
 
   onDelete(): void {
     const vendorId = this.vendorForm.get('id_vend')?.value;
+    const vendorName = this.vendorForm.get('nam_vend')?.value;
     if (!vendorId) {
-      console.warn('No vendor selected for deletion.');
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'No vendor selected for deletion.',
+        styleClass: 'bg-white bg-none',
+      });
       return;
+    } else {
+      this.confirmationService.confirm({
+        key: 'delete-vendor-confirmation',
+        closable: true,
+        closeOnEscape: true,
+        rejectButtonProps: {
+          label: 'Cancel',
+          severity: 'secondary',
+          outlined: true,
+        },
+        acceptButtonProps: {
+          label: 'Delete',
+        },
+        message: `Are you sure you want to delete ${vendorName}`,
+        header: 'Confirm Deletion',
+        icon: 'pi pi-trash',
+        accept: () => {
+          this.store.deleteVendor(vendorId);
+          this.messageService.add({
+            key: 'custom-toast',
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Deleted Successfully.',
+            styleClass: 'bg-white border-none',
+          });
+          this.resetFormAndState();
+        },
+      });
     }
-    this.store.deleteVendor(vendorId);
-    this.resetFormAndState();
   }
 
   private resetFormAndState(): void {

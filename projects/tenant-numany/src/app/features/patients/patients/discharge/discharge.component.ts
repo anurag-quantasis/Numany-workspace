@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'tenant-discharge',
   imports: [],
   templateUrl: './discharge.component.html',
-  styleUrl: './discharge.component.css'
+  styleUrl: './discharge.component.css',
 })
-export class DischargeComponent {
-
-}
+export class DischargeComponent {}

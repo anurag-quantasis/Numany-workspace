@@ -7,6 +7,7 @@ import { ShortcutDirective, SharedPanelContainerComponent, CustomInputComponent 
 import { Fieldset } from 'primeng/fieldset';
 import { DepartmentStore } from './departments-store/department.store';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'tenant-departments',
@@ -20,6 +21,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     SharedPanelContainerComponent,
     CustomInputComponent,
     Fieldset,
+    ConfirmDialog,
   ],
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.css',
@@ -115,7 +117,16 @@ export class DepartmentsComponent implements OnInit {
     delete newDepartment.department;
 
     this.isSaving.set(true);
-    this.store.addNewDepartment(newDepartment);
+    const addNewDepartment = this.store.addNewDepartment(newDepartment);
+    if (addNewDepartment) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'New Department added successfully.',
+        styleClass: 'bg-white border-none',
+      });
+    }
   }
 
   updateSelectedDepartment(): void {
@@ -128,15 +139,48 @@ export class DepartmentsComponent implements OnInit {
 
     if (updatedDepartment.id) {
       this.store.updateDepartment(updatedDepartment);
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Updated successfully.',
+        styleClass: 'bg-white border-none',
+      });
     }
   }
 
   deleteSelectedDepartment(): void {
     const departmentId = this.departmentForm.get('id')?.value;
-    if (departmentId) {
-      this.store.deleteDepartment(departmentId);
-      this.departmentForm.reset();
-      this.store.clearSelectedDepartment();
+    const departmentName = this.departmentForm.get('name')?.value;
+    if (!departmentId) {
+      this.messageService.add({
+        key: 'custom-toast',
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Select a Department name to delete',
+        styleClass: 'bg-white border-none',
+      });
+      return;
+    } else {
+      this.confirmationService.confirm({
+        key: 'delete-physician-confirmation',
+        closable: true,
+        closeOnEscape: true,
+        rejectButtonProps: {
+          label: 'Cancel',
+          severity: 'secondary',
+          outlined: true,
+        },
+        acceptButtonProps: {
+          label: 'Delete',
+        },
+        message: `Are you sure you want to delete ${departmentName}`,
+        header: 'Confirm Deletion',
+        icon: 'pi pi-trash',
+        accept: () => {
+          this.store.deleteDepartment(departmentId);
+        },
+      });
     }
   }
 }

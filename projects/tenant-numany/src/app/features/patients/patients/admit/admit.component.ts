@@ -20,7 +20,7 @@ export class AdmitComponent {
         this.fb.group({ bedId: 'B001', name: 'Patient A' }),
         this.fb.group({ bedId: 'B002', name: 'Patient B' }),
         this.fb.group({ bedId: 'B003', name: 'Patient C' }),
-      ])
+      ]),
     });
   }
 
