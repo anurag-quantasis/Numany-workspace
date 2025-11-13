@@ -8,26 +8,52 @@ export const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      // {
+      //   path: 'dashboard',
+      //   loadComponent: () =>
+      //     import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      // },
+      // {
+      //   path: 'beds',
+      //   loadComponent: () => import('./features/beds/beds.component').then((m) => m.BedsComponent),
+      // },
+      // {
+      //   path: 'settings',
+      //   loadComponent: () =>
+      //     import('./features/settings/settings.component').then((m) => m.SettingsComponent),
+      // },
+      // {
+      //   path: 'departments',
+      //   loadComponent: () =>
+      //     import('./features/departments/departments.component').then(
+      //       (m) => m.DepartmentsComponent,
+      //     ),
+      // },
+      // {
+      //   path: 'charge-maintenance',
+      //   loadComponent: () =>
+      //     import('./features/charge-maintenance/charge-maintenance.component').then(
+      //       (m) => m.ChargeMaintenanceComponent,
+      //     ),
+      // },
+      // {
+      //   path: 'report-selection',
+      //   loadComponent: () =>
+      //     import('./features/report-selection/report-selection.component').then(
+      //       (m) => m.ReportSelectionComponent,
+      //     ),
+      // },
+      // {
+      //   path: 'administration-schedules',
+      //   loadComponent: () =>
+      //     import('./features/administration-schedules/administration-schedules.component').then(
+      //       (m) => m.AdministrationSchedulesComponent,
+      //     ),
+      // },
       {
-        path: 'dashboard',
+        path: 'tenants',
         loadComponent: () =>
-          import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
-      },
-      {
-        path: 'beds',
-        loadComponent: () => import('./features/beds/beds.component').then((m) => m.BedsComponent),
-      },
-      {
-        path: 'settings',
-        loadComponent: () =>
-          import('./features/settings/settings.component').then((m) => m.SettingsComponent),
-      },
-      {
-        path: 'departments',
-        loadComponent: () =>
-          import('./features/departments/departments.component').then(
-            (m) => m.DepartmentsComponent,
-          ),
+          import('./features/tenant/tenant.component').then((m) => m.TenantComponent),
       },
     ],
   },

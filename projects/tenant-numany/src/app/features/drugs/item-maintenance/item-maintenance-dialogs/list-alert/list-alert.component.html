@@ -1,0 +1,26 @@
+<div class="max-w-7xl">
+  <shared-data-table
+    [columns]="alertMatrixColumns"
+    [data]="alertMatrix"
+    [loading]="alertMatrixLoading"
+    [totalRecords]="alertMatrixTotalRecords"
+    [rows]="3"
+    [minRows]="0"
+  >
+  </shared-data-table>
+  <div class="flex justify-end items-center gap-4 mt-4">
+    <p-button label="Add/Modify Message" icon="pi pi-plus"></p-button>
+    <p-button
+      label="Update Matrix Records"
+      icon="pi pi-pencil"
+      severity="info"
+      variant="outlined"
+    ></p-button>
+    <p-button
+      label="Delete Matrix Records"
+      icon="pi pi-trash"
+      severity="danger"
+      variant="outlined"
+    ></p-button>
+  </div>
+</div>

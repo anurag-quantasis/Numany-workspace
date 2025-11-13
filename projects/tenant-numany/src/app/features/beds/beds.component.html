@@ -1,1 +1,159 @@
-<p>beds works!</p>
+<shared-panel-container titleLabel="Bed / Ward">
+  <shared-data-table
+    [data]="store.beds()"
+    [columns]="columns"
+    [totalRecords]="store.total()"
+    [loading]="store.isLoading()"
+    [first]="store.first()"
+    [selection]="store.selectedBed()"
+    (lazyLoad)="store.loadBeds($event)"
+    (selectionChange)="handleSelectionChange($any($event))"
+    [tableActions]="true"
+    [dataKey]="'id_Bed'"
+  >
+    <!--
+      This content is projected into the [tableActions] slot
+      in the DataTableComponent.
+    -->
+    <div tableActions class="flex justify-end align-items-center gap-4">
+      <p-button
+        label="Insert Bed"
+        icon="pi pi-plus"
+        shortcut="alt.i"
+        variant="outlined"
+        (click)="showAddDialog()"
+      ></p-button>
+
+      <p-button
+        label="Edit"
+        icon="pi pi-pencil"
+        shortcut="alt.e"
+        variant="outlined"
+        severity="info"
+        [disabled]="!store.isBedSelected()"
+        styleClass="p-button-secondary"
+        (click)="showEditDialog()"
+      ></p-button>
+
+      <p-button
+        label="Delete"
+        icon="pi pi-trash"
+        severity="danger"
+        variant="outlined"
+        shortcut="alt.d"
+        (click)="confirmDelete()"
+      ></p-button>
+    </div>
+  </shared-data-table>
+</shared-panel-container>
+
+<!-- Add Bed Dialog -->
+<p-dialog [header]="dialogHeader" [(visible)]="isAddDialogVisible" [modal]="true">
+  <form
+    class="grid grid-cols-1 md:grid-cols-2 gap-x-6"
+    [formGroup]="bedForm"
+    (ngSubmit)="saveBed()"
+  >
+    <!-- <div class="flex flex-column gap-3">
+      <div class="flex flex-column gap-2">
+        <label for="name">Bed Id</label>
+        <input pInputText id="name" formControlName="bedId" />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="area">Area</label>
+        <input pInputText id="area" formControlName="area" />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="section">Section</label>
+        <input pInputText type="number" id="section" formControlName="section" />
+      </div>
+    </div> -->
+
+    <div class="min-h-24">
+      <app-custom-input
+        label="Bed Name"
+        type="text"
+        formControlName="bedId"
+        [errorMessages]="{ required: 'The bed name is required.' }"
+        [submitted]="isSubmitted"
+      ></app-custom-input>
+    </div>
+
+    <!-- Area Input (Number) -->
+    <div class="min-h-24">
+      <app-custom-input
+        label="Area"
+        placeholder=""
+        type="text"
+        formControlName="area"
+        [errorMessages]="{
+          required: 'The area is required.',
+          noNegative: 'Area cannot be a negative value.',
+        }"
+        [submitted]="isSubmitted"
+      ></app-custom-input>
+    </div>
+
+    <!-- Section Input (Text with minlength) -->
+    <div class="min-h-24">
+      <app-custom-input
+        label="Section Code"
+        type="number"
+        formControlName="section"
+        [errorMessages]="{
+          required: 'The section code is required.',
+          minlength: 'Section code must be at least 3 characters long.',
+        }"
+        [toastErrors]="{
+          minlength: { severity: 'warn', summary: 'Input Too Short' },
+        }"
+        [submitted]="isSubmitted"
+      ></app-custom-input>
+    </div>
+
+    <div class="flex justify-end col-span-2 gap-2 mt-4">
+      <p-button
+        label="Cancel"
+        shortcut="alt.c"
+        severity="secondary"
+        (click)="hideDialog()"
+      ></p-button>
+      <p-button
+        type="submit"
+        label="Save"
+        shortcut="alt.s"
+        [loading]="store.isLoading()"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>
+
+<div>
+  <p-confirmDialog #cd key="delete-bed-confirmation" [style]="{ width: '450px' }">
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <!-- The Cancel (Reject) Button -->
+        <button
+          pButton
+          type="button"
+          label="Cancel"
+          severity="secondary"
+          outlined="true"
+          shortcut="alt.c"
+          (click)="cd.onReject()"
+        ></button>
+
+        <!-- The Delete (Accept) Button -->
+        <button
+          pButton
+          type="button"
+          label="Delete"
+          severity="danger"
+          shortcut="alt.d"
+          (click)="cd.onAccept()"
+        ></button>
+      </div>
+    </ng-template>
+  </p-confirmDialog>
+</div>
+<tenant-toaster></tenant-toaster>

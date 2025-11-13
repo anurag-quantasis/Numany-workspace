@@ -1,0 +1,135 @@
+<shared-panel-container titleLabel="Vendor">
+  <form [formGroup]="vendorForm" class="mt-2">
+    <div class="border border-grey-200 p-4.5 mt-5 rounded-md grid grid-cols-4 gap-4">
+      <div class="flex flex-col w-full gap-y-2.5">
+        <label for="" class="font-semibold text-[#334155]">Select Vendor</label>
+        <p-select
+          [options]="store.vendor()"
+          formControlName="selectedOption"
+          optionLabel="nam_vend"
+          [checkmark]="true"
+          [showClear]="true"
+          placeholder="Select vendor to edit"
+          class="w-full"
+        ></p-select>
+        <small
+          *ngIf="
+            vendorForm.get('selectedOption')?.touched && vendorForm.get('selectedOption')?.invalid
+          "
+          class="text-red-600"
+        >
+          Vendor selection is required
+        </small>
+      </div>
+
+      <!-- Vendor Details -->
+      <app-custom-input
+        formControlName="id_vend"
+        label="Vendor ID"
+        placeholder="Enter vendor ID"
+        pTooltip="Unique ID for the vendor. Disabled when editing."
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="acct_no"
+        label="Account No"
+        placeholder="Enter account number"
+        pTooltip="Max 12 characters"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="nam_vend"
+        label="Vendor Name"
+        placeholder="Enter vendor name"
+        pTooltip="Full vendor name"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="vm_td"
+        label="MTD"
+        placeholder="Enter MTD"
+        pTooltip="Month-to-date total"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="vy_td"
+        label="YTD"
+        placeholder="Enter YTD"
+        pTooltip="Year-to-date total"
+      ></app-custom-input>
+
+      <app-custom-input
+        label="Note"
+        formControlName="note"
+        placeholder="Enter Note"
+        class="col-span-2"
+      ></app-custom-input>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap gap-4 mt-4 justify-end">
+      <!-- Standard Buttons -->
+      <ng-container *ngIf="!isAdding">
+        <p-button label="Add" (onClick)="onAdd()" icon="pi pi-plus"></p-button>
+        <p-button
+          label="Update"
+          variant="outlined"
+          severity="info"
+          (onClick)="onUpdate()"
+          icon="pi pi-check"
+          [disabled]="!vendorForm.get('selectedOption')?.value"
+        ></p-button>
+        <p-button
+          label="Delete"
+          variant="outlined"
+          severity="danger"
+          (onClick)="onDelete()"
+          icon="pi pi-trash"
+          [disabled]="!vendorForm.get('selectedOption')?.value"
+        ></p-button>
+      </ng-container>
+
+      <!-- Buttons for Add Mode -->
+      <ng-container *ngIf="isAdding">
+        <p-button
+          label="Save"
+          (onClick)="onSave()"
+          icon="pi pi-save"
+          [disabled]="vendorForm.invalid"
+        ></p-button>
+        <p-button
+          label="Cancel"
+          variant="outlined"
+          severity="secondary"
+          (onClick)="onCancel()"
+          icon="pi pi-times"
+        ></p-button>
+      </ng-container>
+    </div>
+  </form>
+  <div>
+    <p-confirmDialog #cd key="delete-vendor-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
+</shared-panel-container>

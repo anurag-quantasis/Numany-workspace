@@ -1,0 +1,569 @@
+<shared-panel-container titleLabel="WinPharm Site Parameters">
+  <main>
+    <form [formGroup]="siteParametersForm" (ngSubmit)="onSubmit()">
+      <p-fieldset legend="Facility Information">
+        <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
+          <app-custom-input
+            [submitted]="submitted"
+            label="Hospital Name"
+            type="text"
+            formControlName="hospitalName"
+          >
+          </app-custom-input>
+
+          <app-custom-input
+            [submitted]="submitted"
+            label="Address"
+            type="text"
+            formControlName="addressLine1"
+          >
+          </app-custom-input>
+
+          <app-custom-input
+            label="Phone Number"
+            type="text"
+            [submitted]="submitted"
+            formControlName="phoneNumber"
+            [errorMessages]="{
+              required: 'The section code is required.',
+              pattern: 'Phone Number should be Valid',
+            }"
+          >
+          </app-custom-input>
+
+          <app-custom-input label="City" type="text" formControlName="city" [submitted]="submitted">
+          </app-custom-input>
+
+          <!-- <app-custom-input label="State" type="text" formControlName="state"> </app-custom-input> -->
+          <shared-state-selector label="City" formControlName="city"></shared-state-selector>
+
+          <app-custom-input
+            label="Zip Code"
+            type="text"
+            formControlName="zipCode"
+            [submitted]="submitted"
+          >
+          </app-custom-input>
+        </div>
+        <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 mt-4">
+          <app-custom-input
+            class="flex"
+            formControlName="emarEnabled"
+            label="EMAR Enabled"
+            type="checkbox"
+            layout="horizontal"
+            [submitted]="submitted"
+          >
+          </app-custom-input>
+
+          <app-custom-input
+            formControlName="isRxOpEnabled"
+            label="RX Op Options Enabled"
+            type="checkbox"
+            layout="horizontal"
+            [submitted]="submitted"
+          >
+          </app-custom-input>
+        </div>
+        <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 mt-4">
+          <p-button label="Add Providers Numbers" (onClick)="onProviderNumbersClick()"></p-button>
+        </div>
+      </p-fieldset>
+
+      <div class="grid grid-cols-2 gap-x-4 items-stretch">
+        <p-fieldset legend="IV Labels & IV Fill Parameters">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="col-span-2">
+              <app-custom-input
+                formControlName="oeIvLabels"
+                label="Print labels at Order Entry"
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+
+            <div class="col-span-2">
+              <app-custom-input
+                formControlName="ivFillCharging"
+                label="Charge in IV Fill"
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+
+            <div class="col-span-2">
+              <app-custom-input
+                formControlName="ivoeCharging"
+                label="Charge at Order Entry"
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+          </div>
+        </p-fieldset>
+        <p-fieldset legend="Medication label Parameters">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="col-span-2">
+              <app-custom-input
+                formControlName="oeMedLabels"
+                label="Print Labels at Order Entry"
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+
+            <div class="col-span-2">
+              <app-custom-input
+                formControlName="medOeCharging"
+                label="Charge at Order Entry"
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+
+            <div class="col-span-3">
+              <app-custom-input
+                formControlName="chgBulk"
+                label='Charge "BULK" orders at Order Entry'
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+          </div>
+        </p-fieldset>
+
+        <div
+          class="border border-grey-200 p-4.5 mt-5 rounded-md grid md:grid-cols-4 sm:grid-cols-2 gap-4"
+        >
+          <div class="col-span-3">
+            <app-custom-input
+              formControlName="allowFillRange"
+              label="Allow Med & IV Fill by Range"
+              type="checkbox"
+              layout="horizontal"
+              [submitted]="submitted"
+            >
+            </app-custom-input>
+          </div>
+          <div class="col-span-3">
+            <app-custom-input
+              formControlName="printDcLabel"
+              label="Print DC Label"
+              type="checkbox"
+              layout="horizontal"
+              [submitted]="submitted"
+            >
+            </app-custom-input>
+          </div>
+          <div class="col-span-2">
+            <app-custom-input
+              label="Auto Time Stop"
+              type="text"
+              formControlName="autoStopTime"
+              [submitted]="submitted"
+            >
+            </app-custom-input>
+          </div>
+        </div>
+
+        <p-fieldset legend="Medication Batch Fill Parameters">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="col-span-2">
+              <app-custom-input
+                label="No. of days to Default Fill Thru"
+                type="text"
+                formControlName="fillDays"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input
+                label="Default Fill End Time"
+                type="text"
+                formControlName="fillEndTime"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input
+                label="Allow OneTxn/Dose"
+                type="checkbox"
+                layout="horizontal"
+                formControlName="allowOneTxnPerDose"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input
+                label="Automatic Charging"
+                type="checkbox"
+                layout="horizontal"
+                formControlName="fillCharging"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+          </div>
+        </p-fieldset>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <p-fieldset legend="Drug Usage & Cost Parameters">
+          <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
+            <div class="col-span-4">
+              <app-custom-input
+                formControlName="incMtdIdpt"
+                [label]="'Include Interdepartmental use in MTD drug usage'"
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-4">
+              <app-custom-input
+                formControlName="incYtdIdpt"
+                label="Include Interdepartmental use in YTD drug usage"
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-4">
+              <app-custom-input
+                formControlName="averInvCost"
+                [label]="
+                  'Update Average Unit Cost to last received unit cost when posting invoices'
+                "
+                type="checkbox"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input
+                type="number"
+                label="Primary Tax %"
+                formControlName="primaryTax"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input
+                type="number"
+                label="SecondaryTax %"
+                formControlName="secondaryTax"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input
+                type="number"
+                label="Primary Tax % (Discounted)"
+                formControlName="primaryTaxdiscounted"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+          </div>
+        </p-fieldset>
+        <p-fieldset legend="Clinical Settings">
+          <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
+            <div class="col-span-2">
+              <app-custom-input
+                formControlName="isClinicalCheckingOn"
+                type="checkbox"
+                label="Clinical Checking On"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <app-custom-input
+                formControlName="isDoseCheckingOn"
+                type="checkbox"
+                label="Dose Checking On"
+                layout="horizontal"
+                [submitted]="submitted"
+              >
+              </app-custom-input>
+            </div>
+            <div class="col-span-2">
+              <p-radioButton
+                name="primaryCodingSystem"
+                formControlName="primaryCodingSystem"
+                value="1"
+                inputId="icd9"
+                label="ICD9"
+              >
+              </p-radioButton>
+              <label for="icd9" title="ICD9" class="ml-2 mr-4 text-[#334155] font-semibold"
+                >ICD9</label
+              >
+
+              <p-radioButton
+                name="primaryCodingSystem"
+                formControlName="primaryCodingSystem"
+                value="2"
+                inputId="icd10"
+                label="ICD10"
+              >
+              </p-radioButton>
+              <label for="icd10" class="ml-2 text-[#334155] font-semibold">ICD10</label>
+            </div>
+          </div>
+        </p-fieldset>
+      </div>
+
+      <p-fieldset legend="System Settings">
+        <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-4">
+          <!-- System Type -->
+          <div class="field">
+            <label class="block mb-2 font-bold">System Type</label>
+            <div class="flex flex-wrap gap-x-4">
+              <div class="flex align-items-center">
+                <p-radioButton
+                  name="systemType"
+                  value="USA"
+                  formControlName="systemType"
+                  inputId="sys_usa"
+                />
+                <label for="sys_usa" class="ml-2">USA</label>
+              </div>
+              <div class="flex align-items-center">
+                <p-radioButton
+                  name="systemType"
+                  value="CAN"
+                  formControlName="systemType"
+                  inputId="sys_can"
+                />
+                <label for="sys_can" class="ml-2">CAN</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Language -->
+          <div class="field">
+            <label class="block mb-2 font-bold">Language</label>
+            <div class="flex flex-wrap gap-x-4">
+              <div class="flex align-items-center">
+                <p-radioButton
+                  name="language"
+                  value="1"
+                  formControlName="language"
+                  inputId="lang_en"
+                />
+                <label for="lang_en" class="ml-2">English</label>
+              </div>
+              <!-- Add other language options as needed -->
+            </div>
+          </div>
+
+          <!-- Numeric Inputs -->
+          <app-custom-input
+            label="Fiscal Year Start (1-12)"
+            type="number"
+            formControlName="fiscalYearStart"
+            [submitted]="submitted"
+          />
+          <app-custom-input
+            label="Time/Date Format"
+            type="text"
+            formControlName="timeDateFormat"
+            [submitted]="submitted"
+          />
+          <app-custom-input
+            label="Discharge Orders after (days)"
+            type="number"
+            formControlName="dischargeDays"
+            [submitted]="submitted"
+          />
+          <app-custom-input
+            label="UCO Interval"
+            type="number"
+            formControlName="ucoInterval"
+            [submitted]="submitted"
+          />
+          <app-custom-input
+            label="Password Expiration (days)"
+            type="number"
+            formControlName="passwordExpirationDays"
+            [submitted]="submitted"
+          />
+          <app-custom-input
+            label="Next Rx Number"
+            type="number"
+            formControlName="nextRxNumber"
+            [submitted]="submitted"
+          />
+          <app-custom-input
+            label="Hide DC Orders after (days)"
+            type="number"
+            formControlName="hideDcOrdersDays"
+            [submitted]="submitted"
+          />
+
+          <!-- Checkboxes -->
+          <div class="flex items-center mt-4">
+            <p-checkbox formControlName="isMetric" [binary]="true" inputId="isMetric" />
+            <label for="isMetric" class="ml-2">Use Metric</label>
+          </div>
+          <div class="flex items-center mt-4">
+            <p-checkbox formControlName="isDebugMode" [binary]="true" inputId="isDebugMode" />
+            <label for="isDebugMode" class="ml-2">Debug Mode</label>
+          </div>
+          <div class="flex items-center mt-4">
+            <p-checkbox
+              formControlName="defaultToDoseStrength"
+              [binary]="true"
+              inputId="defaultToDoseStrength"
+            />
+            <label for="defaultToDoseStrength" class="ml-2">Default to Dose Strength</label>
+          </div>
+          <div class="flex items-center mt-4">
+            <p-checkbox
+              formControlName="confirmValidation"
+              [binary]="true"
+              inputId="confirmValidation"
+            />
+            <label for="confirmValidation" class="ml-2">Confirm Validation</label>
+          </div>
+          <div class="flex items-center mt-4">
+            <p-checkbox formControlName="isRxOpEnabled" [binary]="true" inputId="isRxOpEnabled" />
+            <label for="isRxOpEnabled" class="ml-2">RX Op Options Enabled</label>
+          </div>
+          <div class="flex items-center mt-4">
+            <p-checkbox formControlName="emarEnabled" [binary]="true" inputId="emarEnabled" />
+            <label for="emarEnabled" class="ml-2">EMAR Enabled</label>
+          </div>
+          <div class="flex items-center mt-4">
+            <p-checkbox
+              formControlName="hideSupplierName"
+              [binary]="true"
+              inputId="hideSupplierName"
+            />
+            <label for="hideSupplierName" class="ml-2">Hide Supplier Name</label>
+          </div>
+          <div class="flex items-center mt-4">
+            <p-checkbox
+              formControlName="updateInventoryOnAdmin"
+              [binary]="true"
+              inputId="updateInventoryOnAdmin"
+            />
+            <label for="updateInventoryOnAdmin" class="ml-2">Update Inventory on Admin</label>
+          </div>
+        </div>
+      </p-fieldset>
+
+      <p-fieldset legend="Daily Charge Defaults">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6">
+          <!-- Checkboxes & Numeric -->
+          <div class="flex flex-col gap-y-4">
+            <div class="flex items-center">
+              <p-checkbox
+                formControlName="isJCodeUnitCharge"
+                [binary]="true"
+                inputId="isJCodeUnitCharge"
+              />
+              <label for="isJCodeUnitCharge" class="ml-2">J-Code Unit Charge</label>
+            </div>
+            <div class="flex items-center">
+              <p-checkbox
+                formControlName="allowDailyChargeByDateRange"
+                [binary]="true"
+                inputId="allowDailyChargeByDateRange"
+              />
+              <label for="allowDailyChargeByDateRange" class="ml-2"
+                >Allow Daily Charge by Date Range</label
+              >
+            </div>
+            <div class="flex items-center">
+              <p-checkbox
+                formControlName="includeAllTransactions"
+                [binary]="true"
+                inputId="includeAllTransactions"
+              />
+              <label for="includeAllTransactions" class="ml-2"
+                >Include All Transactions in Daily Charges</label
+              >
+            </div>
+            <app-custom-input
+              label="MAR days to look back"
+              type="number"
+              formControlName="marDays"
+              class="mt-2"
+              [submitted]="submitted"
+            />
+          </div>
+
+          <!-- Radio Groups -->
+          <div class="field">
+            <label class="block mb-2 font-bold">Bed Processing</label>
+            <div class="flex flex-col gap-2">
+              <div *ngFor="let option of processingOptions" class="flex align-items-center">
+                <p-radioButton
+                  name="bedProcessing"
+                  [value]="option.value"
+                  formControlName="bedProcessing"
+                  [inputId]="'bed_' + option.value"
+                />
+                <label [for]="'bed_' + option.value" class="ml-2">{{ option.label }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="block mb-2 font-bold">Transaction Processing</label>
+            <div class="flex flex-col gap-2">
+              <div *ngFor="let option of processingOptions" class="flex align-items-center">
+                <p-radioButton
+                  name="transactionProcessing"
+                  [value]="option.value"
+                  formControlName="transactionProcessing"
+                  [inputId]="'trans_' + option.value"
+                />
+                <label [for]="'trans_' + option.value" class="ml-2">{{ option.label }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="block mb-2 font-bold">Post Date Processing</label>
+            <div class="flex flex-col gap-2">
+              <div *ngFor="let option of processingOptions" class="flex align-items-center">
+                <p-radioButton
+                  name="postDateProcessing"
+                  [value]="option.value"
+                  formControlName="postDateProcessing"
+                  [inputId]="'post_' + option.value"
+                />
+                <label [for]="'post_' + option.value" class="ml-2">{{ option.label }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
+      <div class="mt-4">
+        <p-button type="submit" class="">Submit</p-button>
+      </div>
+    </form>
+  </main>
+</shared-panel-container>

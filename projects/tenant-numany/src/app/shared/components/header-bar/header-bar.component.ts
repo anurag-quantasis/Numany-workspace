@@ -1,0 +1,594 @@
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { MenubarModule } from 'primeng/menubar';
+import { MenuItem } from 'primeng/api';
+import { BadgeModule } from 'primeng/badge';
+import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ShortcutDirective } from '../../../../../../shared-ui/src/lib/directives/shortcut.directive';
+import { ShortcutKeyHintDirective } from '../../../../../../shared-ui/src/lib/directives/shortcut-key-hint.directive';
+import { InputTextModule } from 'primeng/inputtext';
+import { DynamicDialogModule, DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ExpiredMedReportComponent } from 'projects/tenant-numany/src/app/features/drugs/expiration/expired-med-report/expired-med-report.component';
+import { ModifyDateComponent } from '../../../features/drugs/expiration/modify-date/modify-date.component';
+import { RouteOfAdministrationComponent } from '../../../features/route-of-administration/route-of-administration.component';
+import { UiDialogService } from '../../../core/services/ui-dialog.service';
+import { InterventionDataClassesComponent } from '../../../features/pharmacist-intervention-setup/intervention-data-classes/intervention-data-classes.component';
+
+interface CustomMenuItem extends MenuItem {
+  shortcut?: string; // e.g., 'Ctrl+S'
+  items?: CustomMenuItem[];
+}
+
+@Component({
+  selector: 'shared-header-bar',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterModule,
+    MenubarModule,
+    BadgeModule,
+    InputTextModule,
+    ShortcutDirective,
+    DynamicDialogModule,
+  ],
+  templateUrl: './header-bar.component.html',
+  styleUrl: './header-bar.component.css',
+})
+export class HeaderBarComponent implements OnInit {
+  items: CustomMenuItem[] = [];
+  ref: DynamicDialogRef | undefined;
+  private uiDialogService = inject(UiDialogService);
+  ngOnInit() {
+    this.items = [
+      // UCO List
+      {
+        label: 'UCO List',
+        icon: 'pi pi-fw pi-file',
+        shortcut: undefined,
+        command: () => {
+          console.log('Helloooo from first');
+        },
+        items: [
+          {
+            label: 'Show Unconfirmed Order List',
+            icon: 'pi pi-fw pi-plus',
+            shortcut: 'ctrl.u',
+            shortcutLabel: '⌘+u',
+            shortcutHint: 'u',
+            command: () => {
+              console.log('Unconfrimed List');
+            },
+          },
+        ],
+      },
+      // Patients
+      {
+        label: 'Patients',
+        icon: 'pi pi-fw pi-file',
+        shortcut: 'alt.p',
+        shortcutLabel: 'alt+p',
+        shortcutHint: 'p',
+        route: '/patients',
+        command: () => {
+          console.log('Patients clicked');
+        },
+      },
+      // Report
+      {
+        label: 'Reports',
+        shortcut: 'alt.r',
+        shortcutLabel: 'alt+r',
+        shortcutHint: 'R',
+        // styleClass: 'scrollable-submenu',
+        items: [
+          {
+            label: 'Active Order Profile',
+            shortcut: 'alt.r a',
+            shortcutLabel: 'A',
+            shortcutHint: 'A',
+            command: () => {
+              console.log('Active Order Profile clicked');
+            },
+          },
+          {
+            label: 'Census',
+            shortcut: 'alt.r c',
+            shortcutHint: 'C',
+            command: () => {
+              console.log('Census clicked');
+            },
+          },
+          {
+            label: 'Dispensing Transaction Reports',
+            shortcut: 'alt.r d',
+            shortcutHint: 'D',
+            command: () => {
+              console.log('Dispensing Transaction Reports clicked');
+            },
+          },
+          {
+            label: 'Med Fill',
+            shortcut: 'ctrl.m', // This is a direct shortcut, not a chain
+            shortcutLabel: 'Ctrl+M',
+            shortcutHint: 'M',
+            command: () => {
+              console.log('Med Fill clicked');
+            },
+          },
+          {
+            label: 'IV Fill',
+            shortcut: 'ctrl.i',
+            shortcutLabel: 'Ctrl+I',
+            shortcutHint: 'I',
+            command: () => {
+              console.log('IV Fill clicked');
+            },
+          },
+          {
+            label: 'Financial',
+            shortcut: 'alt.r f',
+            shortcutLabel: 'F',
+            shortcutHint: 'F',
+            command: () => {
+              console.log('Financial');
+            },
+            items: [
+              {
+                label: 'Daily Charges',
+                shortcut: 'alt.r f d',
+                shortcutLabel: 'D',
+                shortcutHint: 'd',
+                command: () => {
+                  console.log('Daily Charges');
+                },
+              },
+              {
+                label: 'Formulary Repricing',
+                shortcut: 'alt.r f f',
+                shortcutLabel: 'F',
+                shortcutHint: 'f',
+                command: () => {
+                  console.log('Formulary Repricing');
+                },
+              },
+              {
+                label: 'Ward Cost Summary',
+                shortcut: 'alt.r f w',
+                shortcutLabel: 'W',
+                shortcutHint: 'w',
+                command: () => {
+                  console.log('Ward Cost Summary');
+                },
+              },
+              {
+                label: 'Financial Modeling Report',
+                shortcut: 'alt.r f m',
+                shortcutLabel: 'M',
+                shortcutHint: 'm',
+                command: () => {
+                  console.log('Financial Modeling Report');
+                },
+              },
+              {
+                label: 'Submit TP Building',
+                shortcut: 'alt.r f s',
+                shortcutLabel: 'S',
+                shortcutHint: 's',
+                command: () => {
+                  console.log('Submit TP Building');
+                },
+              },
+            ],
+          },
+          {
+            label: 'Management',
+            shortcut: 'alt.r m', // Using 'm' to avoid conflict with 'Active Order Profile' ('a')
+            shortcutHint: 'M',
+            items: [
+              /* Add management sub-items here */
+            ],
+          },
+          {
+            label: 'MAR',
+            shortcut: 'ctrl.r', // Direct shortcut
+            shortcutLabel: 'Ctrl+R',
+            shortcutHint: 'R',
+            command: () => {
+              console.log('MAR clicked');
+            },
+          },
+          {
+            label: 'Miscellaneous',
+            shortcut: 'alt.r i', // Using 'i' from miscellaneous
+            shortcutHint: 'i',
+            items: [
+              /* Add miscellaneous sub-items here */
+            ],
+          },
+          {
+            label: 'Renewal List',
+            shortcut: 'alt.r w', // Using 'w' from renewal
+            shortcutHint: 'w',
+            command: () => {
+              console.log('Renewal List clicked');
+            },
+          },
+          {
+            label: 'Recovery Utilities',
+            shortcut: 'alt.r u',
+            shortcutHint: 'U',
+            items: [
+              /* Add recovery sub-items here */
+            ],
+          },
+          {
+            label: 'EMAR Reports',
+            shortcut: 'alt.r e',
+            shortcutHint: 'E',
+            command: () => {
+              console.log('EMAR Reports clicked');
+            },
+          },
+          {
+            label: 'Utilization Review',
+            shortcut: 'alt.r t', // Using 't' from utilization to avoid conflict with 'Recovery Utilities' ('u')
+            shortcutHint: 'U',
+            command: () => {
+              console.log('Utilization Review clicked');
+            },
+          },
+          {
+            label: 'Misc Specialty Reports',
+            shortcut: 'f6', // Direct shortcut for function key
+            shortcutLabel: 'F6',
+            command: () => {
+              console.log('Misc Specialty Reports clicked');
+            },
+          },
+        ],
+      },
+      // EDIT
+      {
+        label: 'Edit',
+        shortcut: 'alt.e',
+        shortcutLabel: 'alt+e',
+        shortcutHint: 'E',
+        command: () => {
+          console.log('\clicked');
+        },
+
+        items: [
+          {
+            label: 'Batch Charge Adjustments',
+            shortcut: 'alt.e b',
+            shortcutLabel: 'B',
+            shortcutHint: 'B',
+            command: () => {
+              console.log('Batch Charge Adjustments clicked');
+            },
+          },
+          {
+            label: 'Floor Stock Charging',
+            shortcut: 'ctrl.s',
+            shortcutLabel: 'Ctrl+S',
+            shortcutHint: 'S',
+            command: () => {
+              console.log('Floor Stock Charging clicked');
+            },
+          },
+          {
+            label: 'Interdept Transfers',
+            shortcut: 'alt.e f2',
+            shortcutLabel: 'F2',
+            shortcutHint: 'F2',
+            command: () => {
+              console.log('Interdept Transfers clicked');
+            },
+          },
+          {
+            label: 'Update Med OE Fill Thru Date/Time',
+            shortcut: 'alt.e u',
+            shortcutLabel: 'U',
+            shortcutHint: 'U',
+            command: () => {
+              console.log('Update Med OE Fill Thru Date/Time clicked');
+            },
+          },
+          {
+            label: 'Zero Units Charged on TEST Patients',
+            shortcut: 'alt.e z',
+            shortcutLabel: 'Z',
+            shortcutHint: 'Z',
+            route: 'patients',
+            command: () => {
+              console.log('Zero Units Charged on TEST Patients clicked');
+            },
+          },
+        ],
+      },
+      // Files
+      {
+        label: 'Files',
+        shortcut: 'alt.f',
+        shortcutLabel: 'alt+f',
+        shortcutHint: 'f',
+        // styleClass: 'scrollable-submenu',
+        items: [
+          {
+            label: 'Administration Schedules',
+            shortcut: 'alt.f a',
+            shortcutHint: 'A',
+            route: 'administration-schedules',
+            command: () => {
+              console.log('Administration Schedules clicked');
+            },
+          },
+          {
+            label: 'Bed/Ward',
+            shortcut: 'alt.f b',
+            shortcutHint: 'B',
+            shortcutLabel: 'B',
+            route: '/bed',
+            // command: () => { console.log('Bed/Ward clicked'); },
+          },
+          {
+            label: 'Charge Algorithm',
+            shortcut: 'alt.f c',
+            shortcutHint: 'C',
+            route: 'charge-algorithm',
+            command: () => {
+              console.log('Charge Algorithm clicked');
+            },
+          },
+          {
+            label: 'Department Names',
+            shortcut: 'alt.f d',
+            shortcutHint: 'D',
+            route: '/departments',
+            command: () => {
+              console.log('Department Names clicked');
+            },
+          },
+          {
+            label: 'Drug',
+            shortcut: 'alt.f d',
+            shortcutHint: 'd',
+            command: () => {
+              console.log('Drug clicked');
+            },
+            items: [
+              {
+                label: 'Item Maintenance',
+                shortcut: 'alt.f d',
+                shortcutHint: 'd',
+                route: '/item-maintenance',
+              },
+              {
+                label: 'Expiration',
+                shortcut: 'alt.f e',
+                shortcutHint: 'e',
+                // route: '/expiration',
+                items: [
+                  {
+                    label: 'Expired Med Report',
+                    shortcut: 'alt.f x',
+                    shortcutHint: 'x',
+                    command: () => {
+                      this.uiDialogService.open(
+                        ExpiredMedReportComponent,
+                        'Drug Expiration Report',
+                      );
+                    },
+                  },
+                  {
+                    label: 'Modify Date',
+                    shortcut: 'alt.f m',
+                    shortcutHint: 'm',
+                    command: () => {
+                      this.uiDialogService.open(ModifyDateComponent, 'Update Expiration Date');
+                    },
+                  },
+                ],
+              },
+              {
+                label: 'Select Formulary Items',
+                shortcut: 'alt.f f',
+                shortcutHint: 'f',
+                route: '/formulary-items',
+              },
+            ],
+          },
+          {
+            label: 'Patient/Payor Type',
+            // shortcut: 'alt.f p',
+            // shortcutHint: 'P',
+            route: '/patient-payor-type-maintenance',
+            command: () => {
+              console.log('Patient/Payor Type clicked');
+            },
+          },
+          {
+            label: 'Pharmacist Intervention Setup',
+            // shortcut: 'alt.f v',
+            // shortcutHint: 'V',
+
+            command: () => {
+              console.log('Pharmacist Intervention Setup clicked');
+            },
+            items: [
+              {
+                label: 'Intervention Types',
+                route: '/pharmacist-intervention-type',
+                command: () => {
+                  console.log('Intervention Data Classes clicked');
+                },
+              },
+              {
+                label: 'Intervention Data Classes',
+                command: () => {
+                  console.log('pharmacist-intervention-type-maintenance');
+                  this.uiDialogService.open(
+                    InterventionDataClassesComponent,
+                    'Pharmacist Intervention Table',
+                  );
+                },
+              },
+            ],
+          },
+          {
+            label: 'Physician',
+            shortcut: 'alt.f y',
+            shortcutHint: 'Y',
+            route: '/physician',
+            command: () => {
+              console.log('Physician clicked');
+            },
+          },
+          {
+            label: 'Printer/Report Selection',
+            shortcut: 'f8',
+            shortcutLabel: 'F8',
+            route: '/report-selection',
+            command: () => {
+              console.log('Printer/Report Selection clicked');
+            },
+          },
+          {
+            label: 'Route Codes',
+            shortcut: 'alt.f r',
+            shortcutHint: 'R',
+            // route: '/route-of-codes',
+            command: () => {
+              this.uiDialogService.open(RouteOfAdministrationComponent, 'Route of Administration');
+            },
+          },
+          {
+            label: 'Alert File Matrix',
+            shortcut: 'alt.f x',
+            shortcutHint: 'x',
+            route: '/alert-file-matrix',
+            command: () => {
+              console.log('Alert File Matrix clicked');
+            },
+          },
+          {
+            label: 'Site Parameters',
+            shortcut: 'alt.f t',
+            shortcutHint: 't',
+            route: 'site-parameters',
+            command: () => {
+              console.log('SiteParameters clicked');
+            },
+          },
+          {
+            label: 'Standing Orders',
+            shortcut: 'alt.f s',
+            shortcutHint: 's',
+            route: '/standing-orders',
+            command: () => {
+              console.log('Standing Orders clicked');
+            },
+          },
+          {
+            label: 'Vendor/Supplier',
+            shortcut: 'alt.f v',
+            shortcutHint: 'v',
+            route: '/vendor-supplier',
+            command: () => {
+              console.log('Vendor/Supplier clicked');
+            },
+          },
+          {
+            label: 'Ward/Bed Area Cost Centers',
+            shortcut: 'alt.f w',
+            shortcutHint: 'w',
+            route: 'ward-bed-area-maintenanace',
+            command: () => {
+              console.log('Ward/Bed Area Cost Centers');
+            },
+          },
+          {
+            label: 'Database Users',
+            shortcut: 'alt.f u',
+            shortcutHint: 'u',
+            route: 'database-users',
+          },
+          // {
+          //   label: 'Export Patients and Active Orders to Interface',
+          //   // shortcut: 'alt.f e',
+          //   // shortcutHint: 'E',
+          //   command: () => {
+          //     console.log('Export Patients and Active Orders clicked');
+          //   },
+          // },
+          {
+            label: 'Lab Result Types',
+            // shortcut: 'alt.f l',
+            // shortcutHint: 'L',
+            route: '/lab-result-type-maintenance',
+            command: () => {
+              console.log('Lab Result Types clicked');
+            },
+          },
+          {
+            label: 'Alert File Matrix',
+            shortcut: 'alt.f x',
+            shortcutHint: 'x',
+            route: '/alert-file-matrix',
+            command: () => {
+              console.log('Alert File Matrix clicked');
+            },
+          },
+          {
+            label: 'Remote Inventory Location IDs',
+            shortcut: 'alt.f r',
+            shortcutHint: 'R',
+            route: 'remote-inventory-location',
+            command: () => {
+              console.log('Remote Inventory Location IDs clicked');
+            },
+          },
+        ],
+      },
+    ];
+  }
+
+  // openDialog(component: any, headerText: string) {
+  //   this.ref = this.dialogService.open(component, {
+  //     header: headerText,
+  //     contentStyle: { 'max-height': '500px', overflow: 'auto' },
+  //     baseZIndex: 10000,
+  //     maximizable: false,
+  //     closeOnEscape: true,
+  //     closable: true,
+  //     dismissableMask: true,
+  //     focusTrap: true,
+  //     modal: true,
+  //   });
+
+  //   // Optional: Subscribe to the dialog closing event to get data back
+  //  if (this.ref) {
+  //   this.ref.onClose.subscribe((data: any) => {
+  //     if (data) {
+  //       console.log('Dialog closed with data:', data);
+  //       // e.g., show a toast message: this.messageService.add(...)
+  //     }
+  //   });
+  // }
+  // }
+
+  // This handler is crucial to preserve the original 'command' functionality
+  handleItemClick(event: MouseEvent, item: CustomMenuItem) {
+    // If the item has a command, execute it
+    if (item.command) {
+      item.command({ originalEvent: event, item: item });
+    }
+
+    // Note: PrimeNG handles routerLink, url, and submenu toggling automatically
+    // when the click event propagates to its internal handlers.
+  }
+  handleButton() {
+    console.log('hello');
+  }
+}

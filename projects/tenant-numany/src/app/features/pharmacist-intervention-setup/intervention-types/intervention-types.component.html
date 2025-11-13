@@ -1,0 +1,195 @@
+<shared-panel-container titleLabel="Pharmacist Intervention">
+  <form [formGroup]="interventionForm">
+    <!-- Dropdown -->
+    <div class="col-span-4 flex flex-col gap-y-2.5 w-[50%]">
+      <label for="intervention-select" class="font-semibold text-[#334155]"
+        >Select intervention type to modify</label
+      >
+      <p-select
+        inputId="intervention-select"
+        formControlName="selectedIntervention"
+        [options]="interventionOptions()"
+        optionValue="value"
+        placeholder="Select Intervention"
+        [showClear]="true"
+      >
+        <ng-template let-type pTemplate="item">
+          <div class="flex justify-between w-full">
+            <span class="font-semibold w-[90%] text-black">{{ type.name }}</span>
+            <span class="w-[20%] text-gray-600">{{ type.value }}</span>
+          </div>
+        </ng-template>
+        <ng-template let-type pTemplate="selectedItem">
+          <span *ngIf="type">{{ type.name }} - {{ type.value }}</span>
+          <span *ngIf="!type">Select Intervention Type Format</span>
+        </ng-template>
+      </p-select>
+    </div>
+
+    <!-- ID, Description, Hide -->
+    <div class="grid grid-cols-3 gap-4 items-start mt-4">
+      <app-custom-input
+        formControlName="pi_id"
+        label="ID"
+        placeholder="Enter ID"
+        [readonly]="!isAddingMode()"
+        [errorMessages]="{ required: 'Id is required.' }"
+      ></app-custom-input>
+
+      <app-custom-input
+        formControlName="description"
+        label="Description"
+        placeholder="Enter activity description"
+        [errorMessages]="{ required: 'Description is required.' }"
+      ></app-custom-input>
+
+      <div class="flex items-center gap-2 mt-10">
+        <p-checkbox inputId="hideCheckbox" formControlName="pi_hide" [binary]="true"></p-checkbox>
+        <label for="hideCheckbox" class="text-gray-700 cursor-pointer">Hide</label>
+      </div>
+    </div>
+
+    <!-- Entry Form Fieldset -->
+    <div class="mt-5">
+      <p-fieldset legend="Include on Intervention Entry Form">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-sm">
+          <div class="flex items-center gap-2">
+            <p-checkbox
+              formControlName="sl_me"
+              [binary]="true"
+              inputId="medErrorSeverity"
+            ></p-checkbox>
+            <label for="medErrorSeverity" class="text-gray-700 cursor-pointer"
+              >Med Error Severity Level</label
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox
+              formControlName="cl_me"
+              [binary]="true"
+              inputId="medErrorClass"
+            ></p-checkbox>
+            <label for="medErrorClass" class="text-gray-700 cursor-pointer">Med Error Class</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox
+              formControlName="sc_me"
+              [binary]="true"
+              inputId="medErrorSubclass"
+            ></p-checkbox>
+            <label for="medErrorSubclass" class="text-gray-700 cursor-pointer"
+              >Med Error Subclass</label
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox
+              formControlName="pc_me"
+              [binary]="true"
+              inputId="probableCause"
+            ></p-checkbox>
+            <label for="probableCause" class="text-gray-700 cursor-pointer">Probable Cause</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox formControlName="sl_adr" [binary]="true" inputId="adrSeverity"></p-checkbox>
+            <label for="adrSeverity" class="text-gray-700 cursor-pointer">ADR Severity Level</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox
+              formControlName="adr_type"
+              [binary]="true"
+              inputId="adrCertainty"
+            ></p-checkbox>
+            <label for="adrCertainty" class="text-gray-700 cursor-pointer"
+              >ADR Certainty Level</label
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox formControlName="acuity" [binary]="true" inputId="acuity"></p-checkbox>
+            <label for="acuity" class="text-gray-700 cursor-pointer">Acuity</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox
+              formControlName="fi"
+              [binary]="true"
+              inputId="drugImpactFinancial"
+            ></p-checkbox>
+            <label for="drugImpactFinancial" class="text-gray-700 cursor-pointer"
+              >Drug Impact - Financial</label
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <p-checkbox
+              formControlName="oc"
+              [binary]="true"
+              inputId="interventionOutcome"
+            ></p-checkbox>
+            <label for="interventionOutcome" class="text-gray-700 cursor-pointer"
+              >Intervention Outcome</label
+            >
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
+  </form>
+
+  <!-- Action Buttons -->
+  <div class="flex justify-end gap-4 mt-5">
+    <!-- View/Update Mode Buttons -->
+    @if (!isAddingMode()) {
+      <p-button label="New" (click)="onNew()" icon="pi pi-plus"></p-button>
+      <p-button
+        label="Update"
+        variant="outlined"
+        severity="info"
+        (click)="onUpdate()"
+        icon="pi pi-check"
+        [disabled]="!interventionForm.get('pi_id')?.value"
+      ></p-button>
+      <p-button
+        label="Delete"
+        variant="outlined"
+        severity="danger"
+        (click)="onDelete()"
+        icon="pi pi-trash"
+        [disabled]="!interventionForm.get('pi_id')?.value"
+      ></p-button>
+    }
+
+    <!-- Add Mode Buttons -->
+    @if (isAddingMode()) {
+      <p-button label="Save" (click)="onSave()" icon="pi pi-save"></p-button>
+      <p-button
+        label="Cancel"
+        variant="outlined"
+        severity="secondary"
+        (click)="onCancel()"
+        icon="pi pi-times"
+      ></p-button>
+    }
+  </div>
+  <div>
+    <p-confirmDialog #cd key="delete-interventionType-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
+</shared-panel-container>

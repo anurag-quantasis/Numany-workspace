@@ -1,0 +1,198 @@
+<shared-panel-container titleLabel="Administration Schedule File Maintenance">
+  <main [formGroup]="form" class="p-6 space-y-6">
+    <!-- Section 1: Schedule ID & Schedule Type -->
+    <section class="flex justify-between items-center">
+      <div>
+        <label for="schedule-select">Schedule ID <span class="text-red-500">*</span></label>
+
+        <!-- This dropdown will now ONLY show when you are EDITING an existing schedule -->
+        @if (!isNewMode()) {
+          <p-select
+            id="schedule-select"
+            styleClass="w-full"
+            formControlName="selectedId"
+            [options]="scheduleOptions()"
+            optionLabel="name"
+            optionValue="value"
+            placeholder="Select a Schedule to Edit"
+            [showClear]="true"
+            (onChange)="onScheduleSelected($event)"
+          ></p-select>
+        }
+
+        <!-- This input field will ONLY show when you click the "New" button -->
+        @if (isNewMode()) {
+          <div class="flex flex-col">
+            <input
+              pInputText
+              id="new-schedule-id"
+              formControlName="newScheduleId"
+              placeholder="Enter New Schedule ID"
+              class="w-full"
+              [ngClass]="{
+                'ng-invalid ng-dirty':
+                  form.get('newScheduleId')?.invalid && form.get('newScheduleId')?.touched,
+              }"
+            />
+            @if (form.get('newScheduleId')?.invalid && form.get('newScheduleId')?.touched) {
+              <small class="text-red-500 mt-1">A unique ID is required.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- This section remains the same, as the formControlName was already correct -->
+      <div>
+        <h2 class="font-medium text-sm mb-2">Schedule Type</h2>
+        <div class="flex flex-wrap gap-4">
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="time interval"
+              inputId="schedule-time"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-time">Time Interval Schedule</label>
+          </span>
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="every day"
+              inputId="schedule-every"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-every">Fixed Time of Every Day</label>
+          </span>
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="specific days"
+              inputId="schedule-specific"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-specific">Fixed Time of Specific Days</label>
+          </span>
+          <span class="flex items-center gap-1">
+            <p-radiobutton
+              formControlName="selectedSchedule"
+              value="prn info"
+              inputId="schedule-prn"
+            ></p-radiobutton>
+            <label class="text-sm" for="schedule-prn">PRN Info Only</label>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Description & Doses + Interval -->
+    <section class="flex justify-start items-center gap-x-10">
+      <!-- Assuming your app-custom-input component is set up to work with formControlName -->
+      <div>
+        <app-custom-input
+          formControlName="description"
+          type="text"
+          label="Description"
+          [class]="'!w-90'"
+        ></app-custom-input>
+      </div>
+      <app-custom-input
+        label="# of doses/24hr"
+        formControlName="dosesPerDay"
+        type="number"
+        [errorMessages]="{
+          required: 'No of doses required.',
+          pattern: 'Only numbers are allowed.',
+          minlength: 'Value must be at least 1.',
+        }"
+      ></app-custom-input>
+
+      <div>
+        <p class="text-sm font-medium mb-1">Administration Time Interval</p>
+        <main-schedule-selector
+          [showDurationInputs]="true"
+          [showTimeSlots]="false"
+          [showWeekDays]="false"
+          [initialValue]="form.get('timeInterval')?.value"
+          (scheduleChange)="handleSchedule($event)"
+        ></main-schedule-selector>
+      </div>
+    </section>
+
+    <!-- Section 3: Administration Times Grid -->
+    <section>
+      <p class="text-sm font-medium mb-2">Administration Times</p>
+      <main-schedule-selector
+        [showDurationInputs]="false"
+        [showTimeSlots]="true"
+        [showWeekDays]="false"
+        [initialValue]="form.get('adminTimes')?.value"
+        (scheduleChange)="handleSchedule($event)"
+      ></main-schedule-selector>
+    </section>
+
+    <!-- Section 4: Weekdays and Action Buttons with wired-up logic -->
+    <section class="grid grid-cols-2 gap-6">
+      <div>
+        <p class="text-sm font-medium mb-2">Week Days</p>
+        <main-schedule-selector
+          [showDurationInputs]="false"
+          [showTimeSlots]="false"
+          [showWeekDays]="true"
+          [initialValue]="form.get('weekDays')?.value"
+          (scheduleChange)="handleSchedule($event)"
+        ></main-schedule-selector>
+      </div>
+      <div class="flex justify-end items-end gap-4">
+        <!-- "New" Button: Enters the create mode -->
+        <p-button
+          label="New"
+          (click)="onNewClick()"
+          icon="pi pi-plus"
+          [disabled]="isNewMode()"
+        ></p-button>
+        <!-- "Save" Button: Handles both Update and Create -->
+        <p-button
+          [label]="isNewMode() ? 'Create' : 'Update'"
+          (click)="onSubmit()"
+          variant="outlined"
+          severity="info"
+          icon="pi pi-check"
+          [loading]="store.isLoading()"
+          [disabled]="form.invalid"
+        ></p-button>
+
+        <!-- "Delete" Button: Deletes the selected schedule -->
+        <p-button
+          label="Delete"
+          (click)="onDeleteClick()"
+          variant="outlined"
+          severity="danger"
+          icon="pi pi-trash"
+          [disabled]="!store.selectedScheduleId() || isNewMode()"
+        ></p-button>
+      </div>
+    </section>
+  </main>
+  <div>
+    <p-confirmDialog #cd key="delete-schedule-confirmation" [style]="{ width: '450px' }">
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            pButton
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            outlined="true"
+            shortcut="alt.c"
+            (click)="cd.onReject()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Delete"
+            severity="danger"
+            shortcut="alt.d"
+            (click)="cd.onAccept()"
+          ></button>
+        </div>
+      </ng-template>
+    </p-confirmDialog>
+  </div>
+</shared-panel-container>

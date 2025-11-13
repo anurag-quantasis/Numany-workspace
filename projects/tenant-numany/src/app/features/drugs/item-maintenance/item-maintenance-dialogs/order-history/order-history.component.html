@@ -1,0 +1,63 @@
+<!-- A modern card-style container for the table -->
+<div class="bg-white rounded-lg">
+  <div class="flex justify-center items-center mb-4 gap-4">
+    <label for="" class="font-semibold">Quantity on Order</label>
+    <input pInputText type="number" />
+  </div>
+  <p-table
+    [value]="orders"
+    [tableStyle]="{ 'min-width': '60rem' }"
+    showGridlines="true"
+    scrollable="true"
+  >
+    <!-- Header Template with Tailwind CSS classes -->
+    <ng-template pTemplate="header">
+      <tr class="bg-slate-50">
+        <th class="p-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">
+          Ordered
+        </th>
+        <th class="p-4 text-center text-sm font-semibold text-slate-600 uppercase tracking-wider">
+          Qty
+        </th>
+        <th class="p-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">
+          Received
+        </th>
+        <th class="p-4 text-center text-sm font-semibold text-slate-600 uppercase tracking-wider">
+          Qty
+        </th>
+        <th class="p-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">
+          P.O
+        </th>
+        <th class="p-4 text-right text-sm font-semibold text-slate-600 uppercase tracking-wider">
+          Inv Cost
+        </th>
+        <th class="p-4 text-left text-sm font-semibold text-slate-600 uppercase tracking-wider">
+          Invoice
+        </th>
+      </tr>
+    </ng-template>
+
+    <!-- Body Template with alternating row colors and other styles -->
+    <ng-template pTemplate="body" let-order let-i="rowIndex">
+      <tr
+        [ngClass]="{ 'bg-white': i % 2 === 0, 'bg-slate-50': i % 2 !== 0 }"
+        class="border-b border-slate-200 hover:bg-slate-100 transition-colors duration-200"
+      >
+        <td class="p-4 text-slate-700">{{ order.orderedDate | date: 'MM/dd/yyyy' }}</td>
+        <td class="p-4 text-slate-700 text-center">{{ order.orderedQty }}</td>
+        <td class="p-4 text-slate-700">{{ order.receivedDate | date: 'MM/dd/yyyy' }}</td>
+        <td class="p-4 text-slate-700 text-center">{{ order.receivedQty }}</td>
+        <td class="p-4 font-medium text-sky-700">{{ order.poNumber }}</td>
+        <td class="p-4 text-slate-700 text-right">{{ order.invoiceCost | currency: 'USD' }}</td>
+        <td class="p-4 font-mono text-xs text-slate-500">{{ order.invoiceId }}</td>
+      </tr>
+    </ng-template>
+
+    <!-- Styled Empty Message -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="p-6 text-center text-slate-500">No order history found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
